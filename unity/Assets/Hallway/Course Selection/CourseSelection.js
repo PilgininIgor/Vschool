@@ -133,10 +133,10 @@ function Update() {
 		transform.parent.transform.Find("Menu/TextCounter").GetComponent(TextMesh).text = "";
 		
 		//БОЛЬШОЙ РУБИЛЬНИК
-		var src1 : BootstrapParser = GameObject.Find("Bootstrap").GetComponent.<BootstrapParser>();
+		/*var src1 : BootstrapParser = GameObject.Find("Bootstrap").GetComponent.<BootstrapParser>();
 		src1.CourseConstructor(src1.JSONTestString);
 		var src2 : StatisticParser = GameObject.Find("Bootstrap").GetComponent.<StatisticParser>();
-		src2.StatisticDisplay(src2.JSONTestString);
+		src2.StatisticDisplay(src2.JSONTestString);*/
 		Application.ExternalCall("LoadCourseData", cl[i-1].id);
 				
 		dieSignals.SendSignals(this);
