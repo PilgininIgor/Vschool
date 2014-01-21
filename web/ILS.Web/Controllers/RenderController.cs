@@ -291,22 +291,42 @@ namespace ILS.Web.Controllers
 
         public int UnitySaveRPG(string s)
         {
-            User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            JavaScriptSerializer jss = new JavaScriptSerializer();
-            var obj = jss.Deserialize<dynamic>(s);
+            try
+            {
+                User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+                JavaScriptSerializer jss = new JavaScriptSerializer();
+                var obj = jss.Deserialize<dynamic>(s);
 
-            u.EXP = obj["EXP"];
-            u.FacultyStands_Seen = obj["facultyStands_Seen"]; u.FacultyStands_Finish = obj["facultyStands_Finish"];
-            u.HistoryStand_Seen = obj["historyStand_Seen"]; u.HistoryStand_Finish = obj["historyStand_Finish"];
-            u.ScienceStand_Seen = obj["scienceStand_Seen"]; u.ScienceStand_Finish = obj["scienceStand_Finish"];
-            u.StaffStand_Seen = obj["staffStand_Seen"]; u.StaffStand_Finish = obj["staffStand_Finish"];
-            u.LogotypeJump = obj["logotypeJump"]; u.TableJump = obj["tableJump"]; u.TerminalJump = obj["terminalJump"];
-            u.LadderJump_First = obj["ladderJump_First"]; u.LadderJump_All = obj["ladderJump_All"]; u.LetThereBeLight = obj["letThereBeLight"];
-            u.PlantJump_First = obj["plantJump_First"]; u.PlantJump_Second = obj["plantJump_Second"]; u.BarrelRoll = obj["barrelRoll"];
-            u.FirstVisitLecture = obj["firstVisitLecture"]; u.FirstVisitTest = obj["firstVisitTest"];
-            u.Teleportations = obj["teleportations"]; u.ParagraphsSeen = obj["paragraphsSeen"]; u.TestsFinished = obj["testsFinished"];
+                u.EXP = obj["EXP"];
+                u.FacultyStands_Seen = obj["facultyStands_Seen"];
+                u.FacultyStands_Finish = obj["facultyStands_Finish"];
+                u.HistoryStand_Seen = obj["historyStand_Seen"];
+                u.HistoryStand_Finish = obj["historyStand_Finish"];
+                u.ScienceStand_Seen = obj["scienceStand_Seen"];
+                u.ScienceStand_Finish = obj["scienceStand_Finish"];
+                u.StaffStand_Seen = obj["staffStand_Seen"];
+                u.StaffStand_Finish = obj["staffStand_Finish"];
+                u.LogotypeJump = obj["logotypeJump"];
+                u.TableJump = obj["tableJump"];
+                u.TerminalJump = obj["terminalJump"];
+                u.LadderJump_First = obj["ladderJump_First"];
+                u.LadderJump_All = obj["ladderJump_All"];
+                u.LetThereBeLight = obj["letThereBeLight"];
+                u.PlantJump_First = obj["plantJump_First"];
+                u.PlantJump_Second = obj["plantJump_Second"];
+                u.BarrelRoll = obj["barrelRoll"];
+                u.FirstVisitLecture = obj["firstVisitLecture"];
+                u.FirstVisitTest = obj["firstVisitTest"];
+                u.Teleportations = obj["teleportations"];
+                u.ParagraphsSeen = obj["paragraphsSeen"];
+                u.TestsFinished = obj["testsFinished"];
 
-            context.SaveChanges();
+                context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                // TODO: log this!
+            }
             return 1;
         }
 
