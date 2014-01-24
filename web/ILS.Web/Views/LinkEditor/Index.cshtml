@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Редактор связей курса";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<div class="demo dynamic-demo" id="dynamic-demo">*@
+@*    <div class="window" id="dynamicWindow1"><strong>Информация и информационный процесс</strong><br/><br/></div>*@
+@*    <div class="window" id="dynamicWindow2"><strong>Единицы измерения информации</strong><br/><br/></div>*@
+@*    <div class="window" id="dynamicWindow3"><strong>Кодирование информации</strong></div>*@
+@*    <div class="window" id="dynamicWindow4"><strong>Кодирование графической информации</strong><br/><br/></div>*@
+@*    <div class="window" id="dynamicWindow5"><strong>Кодирование звуковой информации</strong><br/><br/></div>*@
+@*    <div class="window" id="dynamicWindow6"><strong>Кодирование символьной информации</strong><br/><br/></div>*@
+@*    <div class="window" id="dynamicWindow7"><strong>Кодирование числовой информации</strong><br/><br/></div>*@
+@*</div>*@
+
+@section scripts
+{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/jsPlumb/demo/demo-all.css")" /> 
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/jsPlumb/demo/dynamicAnchors/demo.css")" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
+    
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.linkeditor.js")"></script> 
+
+    <!-- DEP -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/lib/jquery-1.9.0.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/lib/jquery-ui-1.9.2-min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/lib/jquery.ui.touch-punch.min.js")"></script>        
+	<!-- /DEP -->
+
+			
+	<!-- JS -->
+    <!-- jsplumb geom functions -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/lib/jsplumb-geom-0.1.js")"></script>
+	<!-- jsplumb util -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/util.js")"></script>
+    <!-- base DOM adapter -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/dom-adapter.js")"></script>        
+	<!-- main jsplumb engine -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/jsPlumb.js")"></script>
+    <!-- endpoint -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/endpoint.js")"></script>                
+    <!-- connection -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/connection.js")"></script>
+    <!-- anchors -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/anchors.js")"></script>        
+	<!-- connectors, endpoint and overlays  -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/defaults.js")"></script>
+	<!-- SVG renderer -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/renderers-svg.js")"></script>
+	<!-- canvas renderer -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/renderers-canvas.js")"></script>
+	<!-- vml renderer -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/renderers-vml.js")"></script>
+        
+    <!-- jquery jsPlumb adapter -->
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/jquery.jsPlumb.js")"></script>
+	<!-- /JS -->
+	<!--  demo code -->
+@*    <script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/demo/dynamicAnchors/demo.js")"></script>*@
+}
+      

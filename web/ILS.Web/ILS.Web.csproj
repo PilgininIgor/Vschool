@@ -112,6 +112,7 @@
     <Compile Include="Controllers\RenderController.cs" />
     <Compile Include="Controllers\StructController.cs" />
     <Compile Include="Controllers\WorkflowController.cs" />
+    <Compile Include="Controllers\LinkEditorController.cs" />
     <Compile Include="DataExtensions\DataExtensions.cs" />
     <Compile Include="Extensions\ContextConfigurator.cs" />
     <Compile Include="Extensions\EFMembershipProvider.cs" />
@@ -3238,6 +3239,25 @@
     <Content Include="Scripts\ext\resources\themes\images\gray\window\icon-warning.gif" />
     <Content Include="Scripts\ils.admin.js" />
     <Content Include="Scripts\jointJS\joint.all.min.js" />
+    <Content Include="Scripts\jsPlumb\demo\demo-all.css" />
+    <Content Include="Scripts\jsPlumb\demo\demo-list.js" />
+    <Content Include="Scripts\jsPlumb\demo\dynamicAnchors\demo.css" />
+    <Content Include="Scripts\jsPlumb\demo\dynamicAnchors\demo.js" />
+    <Content Include="Scripts\jsPlumb\lib\jquery-1.9.0.js" />
+    <Content Include="Scripts\jsPlumb\lib\jquery-ui-1.9.2-min.js" />
+    <Content Include="Scripts\jsPlumb\lib\jquery.ui.touch-punch.min.js" />
+    <Content Include="Scripts\jsPlumb\lib\jsplumb-geom-0.1.js" />
+    <Content Include="Scripts\jsPlumb\src\anchors.js" />
+    <Content Include="Scripts\jsPlumb\src\connection.js" />
+    <Content Include="Scripts\jsPlumb\src\defaults.js" />
+    <Content Include="Scripts\jsPlumb\src\dom-adapter.js" />
+    <Content Include="Scripts\jsPlumb\src\endpoint.js" />
+    <Content Include="Scripts\jsPlumb\src\jquery.jsPlumb.js" />
+    <Content Include="Scripts\jsPlumb\src\jsPlumb.js" />
+    <Content Include="Scripts\jsPlumb\src\renderers-canvas.js" />
+    <Content Include="Scripts\jsPlumb\src\renderers-svg.js" />
+    <Content Include="Scripts\jsPlumb\src\renderers-vml.js" />
+    <Content Include="Scripts\jsPlumb\src\util.js" />
     <Content Include="Scripts\struct.tree.js" />
     <Content Include="Scripts\struct.forms.js" />
     <Content Include="Scripts\ils.workflow.js" />
@@ -3245,6 +3265,7 @@
     <Content Include="Scripts\render.js" />
     <Content Include="Scripts\struct.js" />
     <Content Include="Scripts\struct.toolbar.js" />
+    <Content Include="Scripts\ils.linkeditor.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -3312,6 +3333,7 @@
     <Content Include="Views\About\Index.cshtml" />
     <Content Include="Views\Contacts\Index.cshtml" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
+    <Content Include="Views\LinkEditor\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
