@@ -77,13 +77,27 @@ var vpConfig = {
             //    handler: function () {
             //        window.location.href = link_flowchart;
             //    }
-            },{
-                xtype: 'button', scale: 'large', id: 'btn5',
+            }, {
+                xtype: 'button',
+                scale: 'large',
+                id: 'btn5',
                 iconAlign: 'top',
                 iconCls: 'main_users',
-                margin: 10, width: 150,
-                handler: function () {
+                margin: 10,
+                width: 150,
+                handler: function() {
                     window.location.href = link_users;
+                }
+            }, {
+                xtype: 'button',
+                scale: 'large',
+                id: 'btn6',
+                iconAlign: 'top',
+                iconcls: 'main_linkeditor',
+                margin: 10,
+                width: 150,
+                handler: function() {
+                    window.location.href = link_linkeditor;
                 }
             }]
         }]
@@ -116,9 +130,11 @@ Ext.onReady(function () {
         if ((ifTeacher.toLowerCase() == 'true') || (ifAdmin.toLowerCase() == 'true')) {
             Ext.getCmp('btn3').setText('Редактор курсов');
             //Ext.getCmp('btn4').setText('Диаграмма выполнения');
+            Ext.getCmp('btn6').setText('Редактор связей');
         } else {
             Ext.getCmp('btn3').getEl().hide();
             //Ext.getCmp('btn4').getEl().hide();
+            Ext.getCmp('btn6').getEl().hide();
         }
         if (ifAdmin.toLowerCase() == 'true') Ext.getCmp('btn5').setText('Пользователи');
         else Ext.getCmp('btn5').getEl().hide();
@@ -133,9 +149,11 @@ Ext.onReady(function () {
         if ((ifTeacher.toLowerCase() == 'true') || (ifAdmin.toLowerCase() == 'true')) {
             Ext.getCmp('btn3').setText('Course Editor');
             //Ext.getCmp('btn4').setText('Workflow');
+            Ext.getCmp('btn6').setText('Link Editor');
         } else {
             Ext.getCmp('btn3').getEl().hide();
             //Ext.getCmp('btn4').getEl().hide();
+            Ext.getCmp('btn6').getEl().hide();
         }
         if (ifAdmin.toLowerCase() == 'true') Ext.getCmp('btn5').setText('Users');
         else Ext.getCmp('btn5').getEl().hide();

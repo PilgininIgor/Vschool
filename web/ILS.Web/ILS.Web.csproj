@@ -3239,10 +3239,7 @@
     <Content Include="Scripts\ext\resources\themes\images\gray\window\icon-warning.gif" />
     <Content Include="Scripts\ils.admin.js" />
     <Content Include="Scripts\jointJS\joint.all.min.js" />
-    <Content Include="Scripts\jsPlumb\demo\demo-all.css" />
-    <Content Include="Scripts\jsPlumb\demo\demo-list.js" />
-    <Content Include="Scripts\jsPlumb\demo\dynamicAnchors\demo.css" />
-    <Content Include="Scripts\jsPlumb\demo\dynamicAnchors\demo.js" />
+    <Content Include="Scripts\jsPlumb\css\jsPlumb.css" />
     <Content Include="Scripts\jsPlumb\lib\jquery-1.9.0.js" />
     <Content Include="Scripts\jsPlumb\lib\jquery-ui-1.9.2-min.js" />
     <Content Include="Scripts\jsPlumb\lib\jquery.ui.touch-punch.min.js" />

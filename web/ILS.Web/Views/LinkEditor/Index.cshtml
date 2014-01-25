@@ -3,20 +3,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<div class="demo dynamic-demo" id="dynamic-demo">*@
-@*    <div class="window" id="dynamicWindow1"><strong>Информация и информационный процесс</strong><br/><br/></div>*@
-@*    <div class="window" id="dynamicWindow2"><strong>Единицы измерения информации</strong><br/><br/></div>*@
-@*    <div class="window" id="dynamicWindow3"><strong>Кодирование информации</strong></div>*@
-@*    <div class="window" id="dynamicWindow4"><strong>Кодирование графической информации</strong><br/><br/></div>*@
-@*    <div class="window" id="dynamicWindow5"><strong>Кодирование звуковой информации</strong><br/><br/></div>*@
-@*    <div class="window" id="dynamicWindow6"><strong>Кодирование символьной информации</strong><br/><br/></div>*@
-@*    <div class="window" id="dynamicWindow7"><strong>Кодирование числовой информации</strong><br/><br/></div>*@
-@*</div>*@
-
 @section scripts
 {
-    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/jsPlumb/demo/demo-all.css")" /> 
-    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/jsPlumb/demo/dynamicAnchors/demo.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/jsPlumb/css/jsPlumb.css")" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
     
     <script type="text/javascript" src="@Url.Content("~/Scripts/ils.linkeditor.js")"></script> 
@@ -55,7 +44,5 @@
     <!-- jquery jsPlumb adapter -->
 	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/src/jquery.jsPlumb.js")"></script>
 	<!-- /JS -->
-	<!--  demo code -->
-@*    <script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/demo/dynamicAnchors/demo.js")"></script>*@
 }
       
