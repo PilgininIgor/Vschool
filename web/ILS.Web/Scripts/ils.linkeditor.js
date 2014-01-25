@@ -12,8 +12,7 @@ var myStore = Ext.create('Ext.data.Store', {
     model: 'Course',
     proxy: {
         type: 'ajax',
-        //warning: hardcoded
-        url: '/ils2/linkeditor/ReadCourses',
+        url: link_readCourses,
         reader: {
             type: 'json',
             root: 'courses'
@@ -29,7 +28,7 @@ initEditor = function () {
     selectedId = Ext.getCmp('coursecmb').getValue();
     wwin.hide();
     Ext.Ajax.request({
-        url: '/ils2/linkeditor/GetCourse',
+        url: link_getCourse,
         params: {
             id: selectedId
         },
@@ -251,8 +250,7 @@ var saveCourse = function() {
     }
 
     Ext.Ajax.request({
-        //warning: hardcoded
-        url: '/ils2/linkeditor/SaveCourse',
+        url: link_saveCourse,
         method: 'POST',
         params: { connections: JSON.stringify(connctionsForSend) },
         success: function() {

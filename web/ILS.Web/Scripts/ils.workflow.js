@@ -12,8 +12,7 @@ var myStore = Ext.create('Ext.data.Store', {
     model: 'Course',
     proxy: {
         type: 'ajax',
-        //warning: hardcoded
-        url: '/ils/workflow/ReadCourses',
+        url: link_readCourses,
         reader: {
             type: 'json',
             root: 'courses'
@@ -48,7 +47,7 @@ var courseSelect = new Ext.FormPanel({
             selectedId = Ext.getCmp('coursecmb').getValue();
             wwin.hide();
             Ext.Ajax.request({
-                url: '/ils/workflow/GetCourse',
+                url: link_getCourse,
                 params: {
                     id: selectedId
                 },

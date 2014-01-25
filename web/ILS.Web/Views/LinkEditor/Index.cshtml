@@ -8,8 +8,13 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/jsPlumb/css/jsPlumb.css")" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
     
-    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.linkeditor.js")"></script> 
+    <script type="text/javascript">
+           link_readCourses = '@Url.Action("ReadCourses", "LinkEditor")';
+           link_getCourse = '@Url.Action("GetCourse", "LinkEditor")';
+           link_saveCourse = '@Url.Action("SaveCourse", "LinkEditor")';
+    </script>
 
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.linkeditor.js")"></script> 
     <!-- DEP -->
 	<script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/lib/jquery-1.9.0.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/jsPlumb/lib/jquery-ui-1.9.2-min.js")"></script>
