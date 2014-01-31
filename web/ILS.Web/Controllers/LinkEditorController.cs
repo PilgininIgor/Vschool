@@ -10,11 +10,11 @@ namespace ILS.Web.Controllers
     [Authorize(Roles = "Admin, Teacher")]
     public class LinkEditorController : Controller
     {
-		ILSContext context;
+        ILSContext context;
         public LinkEditorController(ILSContext context)
-		{ 
-			this.context = context; 
-		}
+        {
+            this.context = context;
+        }
 
         public ActionResult Index(ILSContext context)
         {
@@ -36,6 +36,7 @@ namespace ILS.Web.Controllers
 
         public ActionResult GetCourse(Guid id)
         {
+            User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
             var c = context.Course.Find(id);
             return Json(new
             {
@@ -48,23 +49,32 @@ namespace ILS.Web.Controllers
                     {
                         parentThemeId = y.ParentTheme_Id,
                         linkedThemeId = y.LinkedTheme_Id,
+                    }),
+                    coordinates = x.LinkEditorCoordinates.Where(y => y.User.Equals(u)).OrderBy(y => x.OrderNumber).Select(y => new
+                    {
+                        x = y.X,
+                        y = y.Y,
                     })
                 })
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public void SaveCourse(String connections)
+        public void SaveCourse(String connections, String coordinates, Guid courseId)
         {
             JavaScriptSerializer jss = new JavaScriptSerializer();
             var conns = jss.Deserialize<dynamic>(connections);
-            List<ThemeLink> themeLinks = new List<ThemeLink>();
-            if (connections != "[0]")
+
+            List<ThemeLink> recievedThemeLinks = new List<ThemeLink>();
+            IEnumerable<ThemeLink> themeLinksByCourse =
+                context.ThemeLink.Where(x => x.ParentTheme.Course_Id.Equals(courseId));
+
+            if (conns != null)
             {
                 for (int i = 0; i < conns.Length; i++)
                 {
                     Theme parentTheme = context.Theme.Find(new Guid(conns[i]["parentThemeLink"]));
                     Theme linkedTheme = context.Theme.Find(new Guid(conns[i]["linkedThemeLink"]));
-                    themeLinks.Add(new ThemeLink
+                    recievedThemeLinks.Add(new ThemeLink
                     {
                         ParentTheme_Id = parentTheme.Id,
                         LinkedTheme_Id = linkedTheme.Id,
@@ -72,25 +82,53 @@ namespace ILS.Web.Controllers
                         LinkedTheme = linkedTheme
                     });
 
-                    ThemeLink curThemeLink = themeLinks[i];
-                    if (!context.ThemeLink.Any(x => x.ParentTheme_Id == curThemeLink.ParentTheme_Id
+                    ThemeLink curThemeLink = recievedThemeLinks[i];
+                    if (!themeLinksByCourse.Any(x => x.ParentTheme_Id == curThemeLink.ParentTheme_Id
                                                     && x.LinkedTheme_Id == curThemeLink.LinkedTheme_Id))
                     {
                         context.ThemeLink.Add(curThemeLink);
                         curThemeLink.ParentTheme.OutputThemeLinks.Add(curThemeLink);
                     }
                 }
-                context.SaveChanges();
             }
 
-            foreach (var themeLink in context.ThemeLink)
+            foreach (var themeLink in themeLinksByCourse)
             {
-                if (!themeLinks.Any(x => x.ParentTheme_Id == themeLink.ParentTheme_Id
+                if (!recievedThemeLinks.Any(x => x.ParentTheme_Id == themeLink.ParentTheme_Id
                                                 && x.LinkedTheme_Id == themeLink.LinkedTheme_Id))
                 {
                     context.ThemeLink.Remove(themeLink);
                 }
             }
+
+            User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            var coords = jss.Deserialize<dynamic>(coordinates);
+            if (coords != null)
+            {
+                for (int i = 0; i < coords.Length; i++)
+                {
+                    Theme theme = context.Theme.Find(new Guid(coords[i]["id"]));
+                    if (!theme.LinkEditorCoordinates.Any(x => x.User.Equals(u)))
+                    {
+                        var linkEditorCoordinates = new LinkEditorCoordinates
+                        {
+                            X = coords[i]["x"],
+                            Y = coords[i]["y"],
+                            User = u
+                        };
+                        context.LinkEditorCoordinates.Add(linkEditorCoordinates);
+                        theme.LinkEditorCoordinates.Add(linkEditorCoordinates);
+                    }
+                    else
+                    {
+                        LinkEditorCoordinates currentCoordinates =
+                            theme.LinkEditorCoordinates.First(x => x.User.Equals(u));
+                        currentCoordinates.X = coords[i]["x"];
+                        currentCoordinates.Y = coords[i]["y"];
+                    }
+                }
+            }
+
             context.SaveChanges();
         }
     }

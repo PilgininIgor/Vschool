@@ -34,10 +34,13 @@ initEditor = function () {
         },
         success: function (response) {
             var course = JSON.parse(response.responseText);
-            //print blocks
+            //create blocks
             var bodyText = '<div class="demo container" id="container">\n';
             for (var i = 0; i < course.themes.length; i++) {
-                bodyText += '<div class="window" id="' + course.themes[i].id + '"><strong>' + course.themes[i].name + '</strong><br/><br/></div>\n';
+                var currentEO = course.themes[i];
+                var coordinates = currentEO.coordinates[0];
+                bodyText += '<div style="position: absolute; top: ' + ((coordinates == null) ? i * 100 : coordinates.y) + 'px; left: ' + ((coordinates == null) ? i * 100 : coordinates.x) + 'px" ' +
+                    'class="window" id="' + currentEO.id + '"><strong>' + currentEO.name + '</strong><br/><br/></div>\n';
             }
             bodyText += '</div>';
 
@@ -103,15 +106,14 @@ initEditor = function () {
 
             // suspend drawing and initialise.
             instance.doWhileSuspended(function () {
-
                 var endpoints = {},
                 // ask jsPlumb for a selector for the window class
-                    divsWithWindowClass = jsPlumb.getSelector(".container .window");
+                divsWithWindowClass = jsPlumb.getSelector(".container .window");
 
                 // add endpoints to all of these - one for source, and one for target, configured so they don't sit
                 // on top of each other.
                 for (var i = 0; i < divsWithWindowClass.length; i++) {
-                    var id = instance.getId(divsWithWindowClass[i]);
+                        var id = instance.getId(divsWithWindowClass[i]);
                     endpoints[id] = [
                         instance.addEndpoint(id, anEndpoint, { anchor: sourceAnchors }),
                         instance.addEndpoint(id, anEndpoint, { anchor: targetAnchors })
@@ -152,7 +154,7 @@ initEditor = function () {
 
                 instance.draggable(divsWithWindowClass);
 
-                var isNeedDeleteConnection = function(connection) {
+                var isNeedDeleteConnection = function (connection) {
                     if (connection.targetId == connection.sourceId) {
                         return true;
                     }
@@ -201,8 +203,7 @@ var courseSelect = new Ext.FormPanel({
     }]
 });
 
-Ext.onReady(function () 
-{
+Ext.onReady(function () {
     wwin.show();
 });
 
@@ -229,7 +230,7 @@ var rWin = new Ext.Window({
     autoWidth: true,
     autoHeight: true,
     autoScroll: true,
-    bodyPadding:'10px',
+    bodyPadding: '10px',
     shadow: true,
     resizable: false,
     closable: true,
@@ -237,10 +238,26 @@ var rWin = new Ext.Window({
     modal: true
 });
 
-var saveCourse = function() {
-    var connections = instance.getAllConnections();
+var saveCourse = function () {
+    var eduObjects = instance.getSelector(".container .window");
+    var coordinatesForSend = [eduObjects.length];
+    if (coordinatesForSend[0] == 0) {
+        coordinatesForSend = null;
+    }
 
+    for (var i = 0; i < eduObjects.length; i++) {
+        var eduObject = new Object();
+        eduObject.id = eduObjects[i].attributes.Id.value;
+        eduObject.x = $('#' + eduObject.id).position().left;
+        eduObject.y = $('#' + eduObject.id).position().top;
+        coordinatesForSend[i] = eduObject;
+    }
+
+    var connections = instance.getAllConnections();
     var connctionsForSend = [connections.length];
+    if (connctionsForSend[0] == 0) {
+        connctionsForSend = null;
+    }
 
     for (var i = 0; i < connections.length; i++) {
         var conn = new Object();
@@ -252,12 +269,16 @@ var saveCourse = function() {
     Ext.Ajax.request({
         url: link_saveCourse,
         method: 'POST',
-        params: { connections: JSON.stringify(connctionsForSend) },
-        success: function() {
+        params: {
+            connections: JSON.stringify(connctionsForSend),
+            coordinates: JSON.stringify(coordinatesForSend),
+            courseId: Ext.getCmp('coursecmb').getValue()
+        },
+        success: function () {
             rWin.html = 'Связи успешно сохранены.';
             rWin.show();
         },
-        failure: function() {
+        failure: function () {
             rWin.html = 'Ошибка при сохранении связей!';
             rWin.show();
         }
