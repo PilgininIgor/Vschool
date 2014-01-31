@@ -57,7 +57,8 @@ namespace ILS.Web.Extensions
 		public override string[] GetRolesForUser(string username)
 		{
 			var context = container.Resolve<ILSContext>();
-			return context.User.Single(x => x.Name == username).Roles.Select(x => x.Name).ToArray();
+			//return context.User.Single(x => x.Name == username).Roles.Select(x => x.Name).ToArray();
+            return context.User.First(x => x.Name == username).Roles.Select(x => x.Name).ToArray();
 		}
 
 		public override string[] GetUsersInRole(string roleName)
