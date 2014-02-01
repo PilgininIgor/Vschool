@@ -1,6 +1,6 @@
 ﻿Ext.require(['Ext.draw.Component', 'Ext.Window']);
 
-Ext.define('Course', {
+Ext.define('EduObject', {
     extend: 'Ext.data.Model',
     fields: [
         { name: 'name', type: 'string' },
@@ -8,8 +8,8 @@ Ext.define('Course', {
     ]
 });
 
-var myStore = Ext.create('Ext.data.Store', {
-    model: 'Course',
+var courseStore = Ext.create('Ext.data.Store', {
+    model: 'EduObject',
     proxy: {
         type: 'ajax',
         url: link_readCourses,
@@ -21,29 +21,63 @@ var myStore = Ext.create('Ext.data.Store', {
     autoLoad: true
 });
 
+var themeStore = Ext.create('Ext.data.Store', {
+    model: 'EduObject',
+    proxy: {
+        type: 'ajax',
+        url: link_readThemes,
+        noCache: true,
+        extraParams: {
+            courseId: null
+        },
+        reader: {
+            type: 'json',
+            root: 'courses'
+        }
+    },
+    autoLoad: true
+});
+
+var typeStore = Ext.create('Ext.data.Store', {
+    fields: ['id', 'name'],
+    data: [
+        { "id": "course", "name": "Курс" },
+        { "id": "theme", "name": "Тема" }
+    ]
+});
+
+//jsPlumb instance
 var instance;
+//flag for same block connection or duplicate connection automatic removing without confirmation 
 var isAutoConnectionDelete = false;
 
 initEditor = function () {
-    selectedId = Ext.getCmp('coursecmb').getValue();
+    selectedId = (Ext.getCmp('typecmb').getValue() == 'theme') ? Ext.getCmp('themecmb').getValue() : Ext.getCmp('coursecmb').getValue();
+    if (selectedId == null || selectedId == '') {
+        rWin.title = 'Предупреждение';
+        rWin.html = 'Выберите материал!';
+        rWin.show();
+        return;
+    }
     wwin.hide();
     Ext.Ajax.request({
-        url: link_getCourse,
+        url: (Ext.getCmp('typecmb').getValue() == 'theme') ? link_getTheme : link_getCourse,
         params: {
             id: selectedId
         },
         success: function (response) {
-            var course = JSON.parse(response.responseText);
+            var eduObject = JSON.parse(response.responseText);
             //create blocks
             var bodyText = '<div class="demo container" id="container">\n';
-            for (var i = 0; i < course.themes.length; i++) {
-                var currentEO = course.themes[i];
+            for (var i = 0; i < eduObject.childs.length; i++) {
+                var currentEO = eduObject.childs[i];
                 var coordinates = currentEO.coordinates[0];
                 bodyText += '<div style="position: absolute; top: ' + ((coordinates == null) ? i * 100 : coordinates.y) + 'px; left: ' + ((coordinates == null) ? i * 100 : coordinates.x) + 'px" ' +
                     'class="window" id="' + currentEO.id + '"><strong>' + currentEO.name + '</strong><br/><br/></div>\n';
             }
             bodyText += '</div>';
 
+            //toolbar
             var body = new Ext.panel.Panel({
                 html: bodyText
             });
@@ -58,7 +92,7 @@ initEditor = function () {
             });
 
             var editor = new Ext.Panel({
-                title: course.name,
+                title: eduObject.name,
                 layout: 'auto',
                 dockedItems: [tlbar],
                 items: [body]
@@ -66,6 +100,7 @@ initEditor = function () {
 
             renderToMainArea(editor);
 
+            //jsPlumb init
             var sourceAnchors = [[0.2, 0, 0, -1, 0, 0, "foo"], [1, 0.2, 1, 0, 0, 0, "bar"], [0.8, 1, 0, 1, 0, 0, "baz"], [0, 0.8, -1, 0, 0, 0, "qux"]],
                 targetAnchors = [[0.6, 0, 0, -1], [1, 0.6, 1, 0], [0.4, 1, 0, 1], [0, 0.4, -1, 0]],
 
@@ -120,12 +155,12 @@ initEditor = function () {
                     ];
                 }
                 // connect blocks
-                for (var i = 0; i < course.themes.length; i++) {
-                    var outputLinkesArray = course.themes[i].outputThemeLinks;
+                for (var i = 0; i < eduObject.childs.length; i++) {
+                    var outputLinkesArray = eduObject.childs[i].outputLinks;
                     for (var j = 0; j < outputLinkesArray.length; j++) {
                         instance.connect({
-                            source: endpoints[outputLinkesArray[j].parentThemeId][0],
-                            target: endpoints[outputLinkesArray[j].linkedThemeId][1]
+                            source: endpoints[outputLinkesArray[j].parentId][0],
+                            target: endpoints[outputLinkesArray[j].linkedId][1]
                         });
                     }
                 }
@@ -176,7 +211,18 @@ initEditor = function () {
 };
 
 
-var courseSelect = new Ext.FormPanel({
+var themeSelect = new Ext.form.field.ComboBox({
+    id: 'themecmb',
+    xtype: 'combobox',
+    fieldLabel: 'Выберите тему',
+    store: themeStore,
+    displayField: 'name',
+    valueField: 'id',
+    labelWidth: 150,
+    msgTarget: 'side'
+});
+
+var selectPanel = new Ext.FormPanel({
     frame: true,
     defaultType: 'textfield',
     monitorValid: true,
@@ -186,16 +232,41 @@ var courseSelect = new Ext.FormPanel({
         msgTarget: 'side'
     },
     items: [{
+        id: 'typecmb',
+        xtype: 'combobox',
+        fieldLabel: 'Выберите тип материала',
+        store: typeStore,
+        displayField: 'name',
+        valueField: 'id',
+        listeners: {
+            'select': function () {
+                if (Ext.getCmp('typecmb').getValue() == 'theme') {
+                    selectPanel.items.add(themeSelect);
+                }
+                else if (Ext.getCmp('typecmb').getValue() == 'course') {
+                    selectPanel.items.remove(themeSelect);
+                }
+                selectPanel.update();
+            }
+        }
+    },{
         id: 'coursecmb',
         xtype: 'combobox',
         fieldLabel: 'Выберите курс',
-        store: myStore,
+        store: courseStore,
         displayField: 'name',
-        valueField: 'id'
+        valueField: 'id',
+        listeners: {
+            'select': function() {
+                themeStore.proxy.extraParams.courseId = Ext.getCmp('coursecmb').getValue();
+                themeStore.reload();
+                if (Ext.getCmp('themecmb') != null) {
+                    Ext.getCmp('themecmb').setValue("");
+                }
+            }
+        }
     }],
-
-    buttons: [
-    {
+    buttons: [{
         text: 'Открыть',
         formBind: false,
         // Function that fires when user clicks the button 
@@ -204,6 +275,8 @@ var courseSelect = new Ext.FormPanel({
 });
 
 Ext.onReady(function () {
+    //Default type value (course)
+    Ext.getCmp('typecmb').setValue(typeStore.getAt('0').get('id'));
     wwin.show();
 });
 
@@ -218,14 +291,13 @@ var wwin = new Ext.Window({
 
     plain: true,
     border: false,
-    title: 'Выбор курса',
-    items: [courseSelect],
+    title: 'Выбор материала',
+    items: [selectPanel],
     modal: true
 });
 
 // Report window
 var rWin = new Ext.Window({
-    title: 'Отчёт о сохранении',
     layout: 'fit',
     autoWidth: true,
     autoHeight: true,
@@ -261,24 +333,26 @@ var saveCourse = function () {
 
     for (var i = 0; i < connections.length; i++) {
         var conn = new Object();
-        conn.parentThemeLink = connections[i].sourceId;
-        conn.linkedThemeLink = connections[i].targetId;
+        conn.parentLink = connections[i].sourceId;
+        conn.linkedLink = connections[i].targetId;
         connctionsForSend[i] = conn;
     }
 
     Ext.Ajax.request({
-        url: link_saveCourse,
+        url: (Ext.getCmp('typecmb').getValue() == 'theme') ? link_saveTheme : link_saveCourse,
         method: 'POST',
         params: {
             connections: JSON.stringify(connctionsForSend),
             coordinates: JSON.stringify(coordinatesForSend),
-            courseId: Ext.getCmp('coursecmb').getValue()
+            id: (Ext.getCmp('typecmb').getValue() == 'theme')? Ext.getCmp('themecmb').getValue() : Ext.getCmp('coursecmb').getValue()
         },
         success: function () {
+            rWin.title = 'Отчёт о сохранении';
             rWin.html = 'Связи успешно сохранены.';
             rWin.show();
         },
         failure: function () {
+            rWin.title = 'Отчёт о сохранении';
             rWin.html = 'Ошибка при сохранении связей!';
             rWin.show();
         }

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Редактор связей курса";
+    ViewBag.Title = "Редактор связей";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,8 +10,11 @@
     
     <script type="text/javascript">
            link_readCourses = '@Url.Action("ReadCourses", "LinkEditor")';
+           link_readThemes = '@Url.Action("ReadThemes", "LinkEditor")';
            link_getCourse = '@Url.Action("GetCourse", "LinkEditor")';
+           link_getTheme = '@Url.Action("GetTheme", "LinkEditor")';
            link_saveCourse = '@Url.Action("SaveCourse", "LinkEditor")';
+           link_saveTheme = '@Url.Action("SaveTheme", "LinkEditor")';
     </script>
 
     <script type="text/javascript" src="@Url.Content("~/Scripts/ils.linkeditor.js")"></script> 
