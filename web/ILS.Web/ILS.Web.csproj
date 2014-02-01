@@ -142,6 +142,7 @@
     <Content Include="Content\icons\course_add.png" />
     <Content Include="Content\icons\course_remove.png" />
     <Content Include="Content\icons\english.png" />
+    <Content Include="Content\icons\flowchart.png" />
     <Content Include="Content\icons\lecture.png" />
     <Content Include="Content\icons\lecture_add.png" />
     <Content Include="Content\icons\lecture_remove.png" />
@@ -150,6 +151,7 @@
     <Content Include="Content\icons\logout1.png" />
     <Content Include="Content\icons\logout2.png" />
     <Content Include="Content\icons\main_ideology.png" />
+    <Content Include="Content\icons\main_linkeditor.png" />
     <Content Include="Content\icons\main_render.png" />
     <Content Include="Content\icons\main_struct.png" />
     <Content Include="Content\icons\move_down.png" />
@@ -160,11 +162,13 @@
     <Content Include="Content\icons\question.png" />
     <Content Include="Content\icons\remove.png" />
     <Content Include="Content\icons\russian.png" />
+    <Content Include="Content\icons\save.png" />
     <Content Include="Content\icons\test.png" />
     <Content Include="Content\icons\theme.png" />
     <Content Include="Content\icons\upload.png" />
     <Content Include="Content\icons\theme_add.png" />
     <Content Include="Content\icons\theme_remove.png" />
+    <Content Include="Content\icons\users.png" />
     <Content Include="Content\pics_service\elements\1324153973_arrow-down_red.png" />
     <Content Include="Content\pics_service\elements\unityLogo.png" />
     <Content Include="Content\pics_service\EmptyImage.png" />

@@ -85,7 +85,7 @@ initEditor = function () {
                 items: [
                     {
                         text: 'Сохранить',
-                        iconCls: 'paragraph_add',
+                        iconCls: 'save',
                         handler: function () { saveCourse(); }
                     }
                 ]

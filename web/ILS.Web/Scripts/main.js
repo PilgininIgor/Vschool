@@ -71,8 +71,8 @@ var vpConfig = {
                 }
             },{
                 xtype: 'button', scale: 'large', id: 'btn4',
-                iconalign: 'top',
-                iconcls: 'main_flowchart',
+                iconAlign: 'top',
+                iconCls: 'main_flowchart',
                 margin: 10, width: 150,
                 handler: function () {
                     window.location.href = link_flowchart;
@@ -93,7 +93,7 @@ var vpConfig = {
                 scale: 'large',
                 id: 'btn6',
                 iconAlign: 'top',
-                iconcls: 'main_linkeditor',
+                iconCls: 'main_linkeditor',
                 margin: 10,
                 width: 150,
                 handler: function() {
