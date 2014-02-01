@@ -70,8 +70,9 @@ initEditor = function () {
             for (var i = 0; i < eduObject.childs.length; i++) {
                 var currentEO = eduObject.childs[i];
                 var coordinates = currentEO.coordinates[0];
-                bodyText += '<div style="position: absolute; top: ' + ((coordinates == null) ? i * 100 : coordinates.y) + 'px; left: ' + ((coordinates == null) ? i * 100 : coordinates.x) + 'px" ' +
-                    'class="window" id="' + currentEO.id + '"><strong>' + currentEO.name + '</strong><br/><br/></div>\n';
+                var currentName = (currentEO.name.length < 40) ? currentEO.name : currentEO.name.substring(0, 40) + '...';
+                bodyText += '<div style="position: absolute; top: ' + ((coordinates == null) ? (parseInt(i / 5)) * 100 + 20 : coordinates.y) + 'px; left: ' + ((coordinates == null) ? (i % 5) * 200 : coordinates.x) + 'px" ' +
+                    'class="window" id="' + currentEO.id + '"><strong>' + currentName + '</strong><br/><br/></div>\n';
             }
             bodyText += '</div>';
 
@@ -346,4 +347,4 @@ var createAndShowNewReportWindow = function (title, msg, icon) {
         icon: icon,
         closable: true
     });
-}
+};

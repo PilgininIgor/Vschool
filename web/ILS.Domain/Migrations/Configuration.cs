@@ -26,6 +26,7 @@
 
 		protected override void Seed(ILS.Domain.ILSContext context)
 		{
+		    //context.Database.Delete();
 		    return;
 			var admin = context.Role.Add(new Role() { Name = "Admin" });
 			var teacher = context.Role.Add(new Role() { Name = "Teacher" });
