@@ -54,9 +54,7 @@ var isAutoConnectionDelete = false;
 initEditor = function () {
     selectedId = (Ext.getCmp('typecmb').getValue() == 'theme') ? Ext.getCmp('themecmb').getValue() : Ext.getCmp('coursecmb').getValue();
     if (selectedId == null || selectedId == '') {
-        rWin.title = 'Предупреждение';
-        rWin.html = 'Выберите материал!';
-        rWin.show();
+        createAndShowNewReportWindow('Предупреждение', 'Выберите материал!', Ext.MessageBox.WARNING);
         return;
     }
     wwin.hide();
@@ -85,7 +83,7 @@ initEditor = function () {
                 items: [
                     {
                         text: 'Сохранить',
-                        iconCls: 'paragraph_add',
+                        iconCls: 'save',
                         handler: function () { saveCourse(); }
                     }
                 ]
@@ -296,20 +294,6 @@ var wwin = new Ext.Window({
     modal: true
 });
 
-// Report window
-var rWin = new Ext.Window({
-    layout: 'fit',
-    autoWidth: true,
-    autoHeight: true,
-    autoScroll: true,
-    bodyPadding: '10px',
-    shadow: true,
-    resizable: false,
-    closable: true,
-    closeAction: 'hide',
-    modal: true
-});
-
 var saveCourse = function () {
     var eduObjects = instance.getSelector(".container .window");
     var coordinatesForSend = [eduObjects.length];
@@ -347,14 +331,19 @@ var saveCourse = function () {
             id: (Ext.getCmp('typecmb').getValue() == 'theme')? Ext.getCmp('themecmb').getValue() : Ext.getCmp('coursecmb').getValue()
         },
         success: function () {
-            rWin.title = 'Отчёт о сохранении';
-            rWin.html = 'Связи успешно сохранены.';
-            rWin.show();
+            createAndShowNewReportWindow('Отчёт о сохранении', 'Связи успешно сохранены!', Ext.MessageBox.INFO);
         },
         failure: function () {
-            rWin.title = 'Отчёт о сохранении';
-            rWin.html = 'Ошибка при сохранении связей!';
-            rWin.show();
+            createAndShowNewReportWindow('Отчёт о сохранении', 'Ошибка при сохранении связей!', Ext.MessageBox.ERROR);
         }
     });
 };
+
+var createAndShowNewReportWindow = function (title, msg, icon) {
+    Ext.MessageBox.show({
+        title: title,
+        msg: msg,
+        icon: icon,
+        closable: true
+    });
+}
