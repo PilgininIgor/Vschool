@@ -81,13 +81,19 @@ initEditor = function () {
                 html: bodyText
             });
             var tlbar = new Ext.toolbar.Toolbar({
-                items: [
-                    {
+                items: [{
                         text: 'Сохранить',
                         iconCls: 'save',
                         handler: function () { saveCourse(); }
-                    }
-                ]
+                    }, {
+                        text: 'Помощь',
+                        iconCls: 'help',
+                        handler: function () {
+                            createAndShowNewReportWindow('Помощь', 'Для соединения двух объектов нажмите на любой из коннекторов исходного элемента и проведите линию до любого коннектора связанного элемента.<br><br>' +
+                                'Для удаления связи нажмите левой кнопкой мыши на связь и подтвердите удаление.<br><br>' +
+                                'Чтобы сохранить изменения, нажмите кнопку "Сохранить" на тулбаре.', Ext.MessageBox.INFO);
+                        }
+                    }]
             });
 
             var editor = new Ext.Panel({

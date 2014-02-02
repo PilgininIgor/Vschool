@@ -143,6 +143,7 @@
     <Content Include="Content\icons\course_remove.png" />
     <Content Include="Content\icons\english.png" />
     <Content Include="Content\icons\flowchart.png" />
+    <Content Include="Content\icons\help.png" />
     <Content Include="Content\icons\lecture.png" />
     <Content Include="Content\icons\lecture_add.png" />
     <Content Include="Content\icons\lecture_remove.png" />
