@@ -48,31 +48,38 @@ var typeStore = Ext.create('Ext.data.Store', {
 
 //jsPlumb instance
 var instance;
-//flag for same block connection or duplicate connection automatic removing without confirmation 
-var isAutoConnectionDelete = false;
 
 initEditor = function () {
-    selectedId = (Ext.getCmp('typecmb').getValue() == 'theme') ? Ext.getCmp('themecmb').getValue() : Ext.getCmp('coursecmb').getValue();
+    //flag for same block connection or duplicate connection automatic removing without confirmation 
+    var isAutoConnectionDelete = false;
+    var selectedId = (Ext.getCmp('typecmb').getValue() == 'theme') ? Ext.getCmp('themecmb').getValue() : Ext.getCmp('coursecmb').getValue();
+
     if (selectedId == null || selectedId == '') {
         createAndShowNewReportWindow('Предупреждение', 'Выберите материал!', Ext.MessageBox.WARNING);
         return;
     }
     wwin.hide();
     Ext.Ajax.request({
-        url: (Ext.getCmp('typecmb').getValue() == 'theme') ? link_getTheme : link_getCourse,
+        url: (Ext.getCmp('typecmb').getValue() == 'theme') ? window.link_getTheme : window.link_getCourse,
         params: {
             id: selectedId
         },
         success: function (response) {
             var eduObject = JSON.parse(response.responseText);
+            //adjacency matrix for algorithm of cycles searching 
+            var adjacencyMatrix = new Array(eduObject.childs.length);
+
             //create blocks
             var bodyText = '<div class="demo container" id="container">\n';
             for (var i = 0; i < eduObject.childs.length; i++) {
                 var currentEO = eduObject.childs[i];
                 var coordinates = currentEO.coordinates[0];
                 var currentName = (currentEO.name.length < 40) ? currentEO.name : currentEO.name.substring(0, 40) + '...';
+                
                 bodyText += '<div style="position: absolute; top: ' + ((coordinates == null) ? (parseInt(i / 5)) * 100 + 20 : coordinates.y) + 'px; left: ' + ((coordinates == null) ? (i % 5) * 200 : coordinates.x) + 'px" ' +
                     'class="window" id="' + currentEO.id + '"><strong>' + currentName + '</strong><br/><br/></div>\n';
+
+                adjacencyMatrix[currentEO.id] = new Array();
             }
             bodyText += '</div>';
 
@@ -167,11 +174,15 @@ initEditor = function () {
                             source: endpoints[outputLinkesArray[j].parentId][0],
                             target: endpoints[outputLinkesArray[j].linkedId][1]
                         });
+                        adjacencyMatrix[outputLinkesArray[j].parentId][outputLinkesArray[j].linkedId] = 1;
                     }
                 }
 
                 // bind click listener; delete connections on click			
                 instance.bind("click", function (conn) {
+                    if (!isAutoConnectionDelete) {
+                        adjacencyMatrix[conn.sourceId][conn.targetId] = undefined;
+                    } 
                     instance.detach(conn);
                 });
 
@@ -181,35 +192,54 @@ initEditor = function () {
                     if (!isAutoConnectionDelete) {
                         return confirm("Вы уверены, что хотите удалить связь?");
                     }
-                    isAutoConnectionDelete = false;
                 });
 
-                //check for same block connection or duplicate connection 
+                //check for same block connection, duplicate connection and cycles 
                 instance.bind("connection", function (info, originalEvent) {
                     if (isNeedDeleteConnection(info.connection)) {
-                        isAutoConnectionDelete = true;
+                        isAutoConnectionDelete = true;   
                         instance.detach(info.connection);
+                        isAutoConnectionDelete = false;
                     }
                 });
 
                 instance.draggable(divsWithWindowClass);
 
                 var isNeedDeleteConnection = function (connection) {
-                    if (connection.targetId == connection.sourceId) {
+                    if (connection.targetId == connection.sourceId || adjacencyMatrix[connection.sourceId][connection.targetId] == 1) {
                         return true;
                     }
-                    var connections = instance.getAllConnections();
-                    var count = 0;
-                    for (var i = 0; i < connections.length; i++) {
-                        if (connections[i].sourceId == connection.sourceId && connections[i].targetId == connection.targetId) {
-                            count++;
-                        }
-                        if (connections[i].sourceId == connection.targetId && connections[i].targetId == connection.sourceId) {
-                            count++;
-                        }
+
+                    if (adjacencyMatrix[connection.targetId][connection.sourceId] == 1) {
+                        createAndShowNewReportWindow('Нельзя соединить элементы', 'Нельзя соединить элементы, так как они уже соединены в другом направлении!', Ext.MessageBox.WARNING);
+                        return true;
                     }
-                    return count > 1;
+
+                    adjacencyMatrix[connection.sourceId][connection.targetId] = 1;
+                    var hasCycles = function (matrix, currentElement, startElement) {
+                        for (var i = 0; i < eduObject.childs.length; i++) {
+                            var currentId = eduObject.childs[i].id;
+                            if (matrix[currentElement][currentId] == 1) {
+                                if (currentId == startElement) {
+                                    return true;
+                                }
+                                if (hasCycles(matrix, currentId, startElement)) {
+                                    return true;
+                                }
+                            };          
+                        }
+                        return false;
+                    };
+
+                    if (hasCycles(adjacencyMatrix, connection.sourceId, connection.sourceId)) {
+                        createAndShowNewReportWindow('Нельзя соединить элементы', 'Нельзя соединить элементы, так как образуется цикл!', Ext.MessageBox.WARNING);
+                        adjacencyMatrix[connection.sourceId][connection.targetId] = undefined;
+                        return true;
+                    };
+                    return false;
                 };
+
+                
             });
         }
     });
@@ -330,7 +360,7 @@ var saveCourse = function () {
     }
 
     Ext.Ajax.request({
-        url: (Ext.getCmp('typecmb').getValue() == 'theme') ? link_saveTheme : link_saveCourse,
+        url: (Ext.getCmp('typecmb').getValue() == 'theme') ? window.link_saveTheme : window.link_saveCourse,
         method: 'POST',
         params: {
             connections: JSON.stringify(connctionsForSend),
@@ -346,11 +376,12 @@ var saveCourse = function () {
     });
 };
 
-var createAndShowNewReportWindow = function (title, msg, icon) {
+var createAndShowNewReportWindow = function (title, msg, icon, buttons) {
     Ext.MessageBox.show({
         title: title,
         msg: msg,
         icon: icon,
-        closable: true
+        closable: true,
+        buttons: Ext.MessageBox.OK
     });
 };
