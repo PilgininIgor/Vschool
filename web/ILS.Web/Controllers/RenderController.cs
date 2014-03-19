@@ -93,8 +93,8 @@ namespace ILS.Web.Controllers
         {
             string status = "open";
             User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            IEnumerable<PersonalThemeLink> pt_links = theme_link.PersonalThemeLinks.Where(x => x.CourseRun.User_Id == u.Id);
-            if (pt_links.Count() == 0)
+            var pt_links = theme_link.PersonalThemeLinks.Where(x => x.CourseRun.User_Id == u.Id);
+            if (!pt_links.Any())
                 return "closed";
             foreach (PersonalThemeLink pt_link in pt_links)
             {
@@ -111,8 +111,8 @@ namespace ILS.Web.Controllers
         {
             string status = "open";
             User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            IEnumerable<PersonalThemeContentLink> ptc_links = tc_link.PersonalThemeContentLinks.Where(x => x.ThemeRun.CourseRun.User_Id == u.Id);
-            if (ptc_links.Count() == 0)
+            var ptc_links = tc_link.PersonalThemeContentLinks.Where(x => x.ThemeRun.CourseRun.User_Id == u.Id);
+            if (!ptc_links.Any())
                 return "closed";
             foreach (PersonalThemeContentLink ptc_link in ptc_links)
             {

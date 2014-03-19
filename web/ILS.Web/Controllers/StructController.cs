@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Objects;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -8,7 +9,6 @@ using ILS.Web.Extensions;
 
 using System.Web.Script.Serialization;
 
-using System.Data.Objects;
 using System.Data.Entity.Infrastructure;
 //using ziparciv = Ionic.Zip;
 //using HtmlAgilityPack;
@@ -552,6 +552,7 @@ namespace ILS.Web.Controllers
             Theme t = context.Theme.Find(id);
             string path = Server.MapPath("~/Content/pics_base") + "/Course_" + t.Course_Id.ToString() + "/Theme_" + t.Id.ToString();
             if (Directory.Exists(path)) Directory.Delete(path, true);
+            RemoveThemeLinks(t);
             context_obj.DeleteObject(t);
             context_obj.SaveChanges();
 
@@ -599,7 +600,7 @@ namespace ILS.Web.Controllers
             if (tc is Lecture) path += "/Lecture_"; else path += "/Test_";
             path += tc.Id.ToString();
             if (Directory.Exists(path)) Directory.Delete(path, true);
-
+            RemoveThemeContentLinks(tc);
             context_obj.DeleteObject(tc);
             context_obj.SaveChanges();
 
@@ -686,6 +687,25 @@ namespace ILS.Web.Controllers
             context.SaveChanges();
             return "OK";
         }
+
+
+        private void RemoveThemeLinks(Theme theme)
+        {
+            foreach (ThemeLink tl in context.ThemeLink.Where(x => x.LinkedTheme_Id == theme.Id))
+            {
+                context_obj.DeleteObject(tl);
+            }
+        }
+
+        private void RemoveThemeContentLinks(ThemeContent themeContent)
+        {
+            foreach (ThemeContentLink tcl in context.ThemeContentLink.Where(x => x.LinkedThemeContent_Id == themeContent.Id))
+            {
+                context_obj.DeleteObject(tcl);
+            }
+        }
+
+
         #endregion
 
         #region Move

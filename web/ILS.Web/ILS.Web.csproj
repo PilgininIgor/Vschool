@@ -112,6 +112,7 @@
     <Compile Include="Controllers\RenderController.cs" />
     <Compile Include="Controllers\StructController.cs" />
     <Compile Include="Controllers\WorkflowController.cs" />
+    <Compile Include="Controllers\LinkEditorController.cs" />
     <Compile Include="DataExtensions\DataExtensions.cs" />
     <Compile Include="Extensions\ContextConfigurator.cs" />
     <Compile Include="Extensions\EFMembershipProvider.cs" />
@@ -139,6 +140,8 @@
     <Content Include="Content\icons\course_add.png" />
     <Content Include="Content\icons\course_remove.png" />
     <Content Include="Content\icons\english.png" />
+    <Content Include="Content\icons\flowchart.png" />
+    <Content Include="Content\icons\help.png" />
     <Content Include="Content\icons\lecture.png" />
     <Content Include="Content\icons\lecture_add.png" />
     <Content Include="Content\icons\lecture_remove.png" />
@@ -147,6 +150,7 @@
     <Content Include="Content\icons\logout1.png" />
     <Content Include="Content\icons\logout2.png" />
     <Content Include="Content\icons\main_ideology.png" />
+    <Content Include="Content\icons\main_linkeditor.png" />
     <Content Include="Content\icons\main_render.png" />
     <Content Include="Content\icons\main_struct.png" />
     <Content Include="Content\icons\move_down.png" />
@@ -157,11 +161,13 @@
     <Content Include="Content\icons\question.png" />
     <Content Include="Content\icons\remove.png" />
     <Content Include="Content\icons\russian.png" />
+    <Content Include="Content\icons\save.png" />
     <Content Include="Content\icons\test.png" />
     <Content Include="Content\icons\theme.png" />
     <Content Include="Content\icons\upload.png" />
     <Content Include="Content\icons\theme_add.png" />
     <Content Include="Content\icons\theme_remove.png" />
+    <Content Include="Content\icons\users.png" />
     <Content Include="Content\pics_service\elements\1324153973_arrow-down_red.png" />
     <Content Include="Content\pics_service\elements\unityLogo.png" />
     <Content Include="Content\pics_service\EmptyImage.png" />
@@ -3238,6 +3244,22 @@
     <Content Include="Scripts\ext\resources\themes\images\gray\window\icon-warning.gif" />
     <Content Include="Scripts\ils.admin.js" />
     <Content Include="Scripts\jointJS\joint.all.min.js" />
+    <Content Include="Scripts\jsPlumb\css\jsPlumb.css" />
+    <Content Include="Scripts\jsPlumb\lib\jquery-1.9.0.js" />
+    <Content Include="Scripts\jsPlumb\lib\jquery-ui-1.9.2-min.js" />
+    <Content Include="Scripts\jsPlumb\lib\jquery.ui.touch-punch.min.js" />
+    <Content Include="Scripts\jsPlumb\lib\jsplumb-geom-0.1.js" />
+    <Content Include="Scripts\jsPlumb\src\anchors.js" />
+    <Content Include="Scripts\jsPlumb\src\connection.js" />
+    <Content Include="Scripts\jsPlumb\src\defaults.js" />
+    <Content Include="Scripts\jsPlumb\src\dom-adapter.js" />
+    <Content Include="Scripts\jsPlumb\src\endpoint.js" />
+    <Content Include="Scripts\jsPlumb\src\jquery.jsPlumb.js" />
+    <Content Include="Scripts\jsPlumb\src\jsPlumb.js" />
+    <Content Include="Scripts\jsPlumb\src\renderers-canvas.js" />
+    <Content Include="Scripts\jsPlumb\src\renderers-svg.js" />
+    <Content Include="Scripts\jsPlumb\src\renderers-vml.js" />
+    <Content Include="Scripts\jsPlumb\src\util.js" />
     <Content Include="Scripts\struct.tree.js" />
     <Content Include="Scripts\struct.forms.js" />
     <Content Include="Scripts\ils.workflow.js" />
@@ -3245,6 +3267,7 @@
     <Content Include="Scripts\render.js" />
     <Content Include="Scripts\struct.js" />
     <Content Include="Scripts\struct.toolbar.js" />
+    <Content Include="Scripts\ils.linkeditor.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -3312,6 +3335,7 @@
     <Content Include="Views\About\Index.cshtml" />
     <Content Include="Views\Contacts\Index.cshtml" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
+    <Content Include="Views\LinkEditor\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -16,11 +16,13 @@ namespace ILS.Domain
         public virtual Course Course { get; set; }
         public virtual ICollection<ThemeContent> ThemeContents { get; set; }
         public virtual ICollection<ThemeLink> OutputThemeLinks { get; set; }
+        public virtual ICollection<LinkEditorCoordinates> LinkEditorCoordinates { get; set; }
         
 		public Theme()
 		{
 			ThemeContents = new List<ThemeContent>();
             OutputThemeLinks = new List<ThemeLink>();
+            LinkEditorCoordinates = new List<LinkEditorCoordinates>();
 		}
 	}
 }

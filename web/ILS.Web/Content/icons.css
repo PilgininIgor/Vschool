@@ -6,6 +6,7 @@
 .main_struct { background-image:url("icons/main_struct.png") !important}
 .main_render { background-image:url("icons/main_render.png") !important}
 .main_flowchart {background-image:url("icons/flowchart.png") !important}
+.main_linkeditor {background-image:url("icons/main_linkeditor.png") !important}
 .main_users {background-image:url("icons/users.png") !important}
 .login1 { background-image:url("icons/login1.png") !important}
 .logout1 { background-image:url("icons/logout1.png") !important}
@@ -42,3 +43,7 @@
 
 .move_up { background-image:url("icons/move_up.png") !important}
 .move_down { background-image:url("icons/move_down.png") !important}
+
+/* linkEditor */
+.save { background-image:url("icons/save.png") !important}
+.help { background-image:url("icons/help.png") !important}

@@ -26,6 +26,8 @@
 
 		protected override void Seed(ILS.Domain.ILSContext context)
 		{
+		    //context.Database.Delete();
+		    return;
 			var admin = context.Role.Add(new Role() { Name = "Admin" });
 			var teacher = context.Role.Add(new Role() { Name = "Teacher" });
 			var student = context.Role.Add(new Role() { Name = "Student" });
@@ -884,128 +886,128 @@
 			#endregion
 
 			#region QuestionGenerator
-			// ========================== СЛОЖНОСТИ ЗАДАНИЙ =======================================
-			var simpleLevel = context.Level.Add(new Level() { Description = "Простой" });
-			var middleLevel = context.Level.Add(new Level() { Description = "Средний" });
-			var hardLevel = context.Level.Add(new Level() { Description = "Сложный" });
-
-			// ========================== ТИПЫ ЗАДАНИЙ ============================================
-			var multiplyChoisesSingleCorrectAnswer = context.TypeOfQuestion.Add(
-				new TypeOfQuestion()
-				{
-					TypeOfQuestionIdentifier = "MultiplyChoisesSingleCorrectAnswer",
-					Description = "Несколько вариантов ответов - 1 верный (часть А ЕГЭ)"
-				});
-			var freeAnswer = context.TypeOfQuestion.Add(
-				new TypeOfQuestion()
-				{
-					TypeOfQuestionIdentifier = "FreeAnswer",
-					Description = "Свой ответ (часть В ЕГЭ)"
-				});
-
-			// ========================== ШАБЛОНЫ ЗАДАНИЙ =========================================
-			var template1 = context.QuestionTemplate.Add(new QuestionTemplate()
-			{
-				Description = "Перевод десятичного числа в 2-ю СС, подсчет кол-ва нулей/единиц в двоичном представлении числа.",
-				ClassName = "NumeralSystems.NumSys_Type1"
-			});
-
-			// ========================== ПАРАМЕТРЫ ===============================================
-			var numSys_Type1_CenterGenerateNumber = context.Parameter.Add(new Parameter()
-			{
-				ParameterIdentifier = "NumSys_Type1_CenterGenerateNumber",
-				Description = "Центр генерируемого числа",
-				QuestionTemplate = template1
-			});
-			var numSys_Type1_RadiusGenerateNumber = context.Parameter.Add(new Parameter()
-			{
-				ParameterIdentifier = "NumSys_Type1_RadiusGenerateNumber",
-				Description = "Максимальный радиус разброса генерируемого числа",
-				QuestionTemplate = template1
-			});
-
-			// ========================== ОГРАНИЧЕНИЯ НА ПАРАМЕТРЫ ================================
-			context.Constraint.Add(new Constraint()
-			{
-				Parameter = numSys_Type1_CenterGenerateNumber,
-				TypeOfConstraint = "GreaterThanOrEqual",
-				Value = 10
-			});
-			context.Constraint.Add(new Constraint()
-			{
-				Parameter = numSys_Type1_CenterGenerateNumber,
-				TypeOfConstraint = "LessThanOrEqual",
-				Value = 10000
-			});
-			context.Constraint.Add(new Constraint()
-			{
-				Parameter = numSys_Type1_RadiusGenerateNumber,
-				TypeOfConstraint = "GreaterThanOrEqual",
-				Value = 5
-			});
-			context.Constraint.Add(new Constraint()
-			{
-				Parameter = numSys_Type1_RadiusGenerateNumber,
-				TypeOfConstraint = "LessThanOrEqual",
-				Value = 5000
-			});
-
-			// ========================== ЗНАЧЕНИЯ ПАРАМЕТРОВ =====================================
-			context.ParameterValue.Add(new ParameterValue()
-			{
-				Level = simpleLevel,
-				Parameter = numSys_Type1_CenterGenerateNumber,
-				Value = "128"
-			});
-			context.ParameterValue.Add(new ParameterValue()
-			{
-				Level = simpleLevel,
-				Parameter = numSys_Type1_RadiusGenerateNumber,
-				Value = "32"
-			});
-			context.ParameterValue.Add(new ParameterValue()
-			{
-				Level = middleLevel,
-				Parameter = numSys_Type1_CenterGenerateNumber,
-				Value = "512"
-			});
-			context.ParameterValue.Add(new ParameterValue()
-			{
-				Level = middleLevel,
-				Parameter = numSys_Type1_RadiusGenerateNumber,
-				Value = "128"
-			});
-			context.ParameterValue.Add(new ParameterValue()
-			{
-				Level = hardLevel,
-				Parameter = numSys_Type1_CenterGenerateNumber,
-				Value = "4096"
-			});
-			context.ParameterValue.Add(new ParameterValue()
-			{
-				Level = hardLevel,
-				Parameter = numSys_Type1_RadiusGenerateNumber,
-				Value = "512"
-			});
-
-			// ========================== ГЕНЕРИРУЕМЫЙ ТЕСТ =======================================
-			var test1 = context.GeneratedTest.Add(new GeneratedTest() { Paragraph = paragraphNumericSystem });
-
-			// ========================== ЭКЗЕМПЛЯРЫ ЗАДАНИЙ ======================================
-			var instanceOfQuestion1 = context.InstanceOfQuestion.Add(new InstanceOfQuestion()
-			{
-				Level = middleLevel,
-				QuestionTemplate = template1,
-				TypeOfQuestion = multiplyChoisesSingleCorrectAnswer
-			});
-
-			// ========================== СОДЕРЖИМОЕ ТЕСТА ========================================
-			var testContent1 = context.TestContent.Add(new TestContent()
-			{
-				GeneratedTest = test1,
-				OrderNumber = 1,
-				InstanceOfQuestion = instanceOfQuestion1
-			});
+//			// ========================== СЛОЖНОСТИ ЗАДАНИЙ =======================================
+//			var simpleLevel = context.Level.Add(new Level() { Description = "Простой" });
+//			var middleLevel = context.Level.Add(new Level() { Description = "Средний" });
+//			var hardLevel = context.Level.Add(new Level() { Description = "Сложный" });
+//
+//			// ========================== ТИПЫ ЗАДАНИЙ ============================================
+//			var multiplyChoisesSingleCorrectAnswer = context.TypeOfQuestion.Add(
+//				new TypeOfQuestion()
+//				{
+//					TypeOfQuestionIdentifier = "MultiplyChoisesSingleCorrectAnswer",
+//					Description = "Несколько вариантов ответов - 1 верный (часть А ЕГЭ)"
+//				});
+//			var freeAnswer = context.TypeOfQuestion.Add(
+//				new TypeOfQuestion()
+//				{
+//					TypeOfQuestionIdentifier = "FreeAnswer",
+//					Description = "Свой ответ (часть В ЕГЭ)"
+//				});
+//
+//			// ========================== ШАБЛОНЫ ЗАДАНИЙ =========================================
+//			var template1 = context.QuestionTemplate.Add(new QuestionTemplate()
+//			{
+//				Description = "Перевод десятичного числа в 2-ю СС, подсчет кол-ва нулей/единиц в двоичном представлении числа.",
+//				ClassName = "NumeralSystems.NumSys_Type1"
+//			});
+//
+//			// ========================== ПАРАМЕТРЫ ===============================================
+//			var numSys_Type1_CenterGenerateNumber = context.Parameter.Add(new Parameter()
+//			{
+//				ParameterIdentifier = "NumSys_Type1_CenterGenerateNumber",
+//				Description = "Центр генерируемого числа",
+//				QuestionTemplate = template1
+//			});
+//			var numSys_Type1_RadiusGenerateNumber = context.Parameter.Add(new Parameter()
+//			{
+//				ParameterIdentifier = "NumSys_Type1_RadiusGenerateNumber",
+//				Description = "Максимальный радиус разброса генерируемого числа",
+//				QuestionTemplate = template1
+//			});
+//
+//			// ========================== ОГРАНИЧЕНИЯ НА ПАРАМЕТРЫ ================================
+//			context.Constraint.Add(new Constraint()
+//			{
+//				Parameter = numSys_Type1_CenterGenerateNumber,
+//				TypeOfConstraint = "GreaterThanOrEqual",
+//				Value = 10
+//			});
+//			context.Constraint.Add(new Constraint()
+//			{
+//				Parameter = numSys_Type1_CenterGenerateNumber,
+//				TypeOfConstraint = "LessThanOrEqual",
+//				Value = 10000
+//			});
+//			context.Constraint.Add(new Constraint()
+//			{
+//				Parameter = numSys_Type1_RadiusGenerateNumber,
+//				TypeOfConstraint = "GreaterThanOrEqual",
+//				Value = 5
+//			});
+//			context.Constraint.Add(new Constraint()
+//			{
+//				Parameter = numSys_Type1_RadiusGenerateNumber,
+//				TypeOfConstraint = "LessThanOrEqual",
+//				Value = 5000
+//			});
+//
+//			// ========================== ЗНАЧЕНИЯ ПАРАМЕТРОВ =====================================
+//			context.ParameterValue.Add(new ParameterValue()
+//			{
+//				Level = simpleLevel,
+//				Parameter = numSys_Type1_CenterGenerateNumber,
+//				Value = "128"
+//			});
+//			context.ParameterValue.Add(new ParameterValue()
+//			{
+//				Level = simpleLevel,
+//				Parameter = numSys_Type1_RadiusGenerateNumber,
+//				Value = "32"
+//			});
+//			context.ParameterValue.Add(new ParameterValue()
+//			{
+//				Level = middleLevel,
+//				Parameter = numSys_Type1_CenterGenerateNumber,
+//				Value = "512"
+//			});
+//			context.ParameterValue.Add(new ParameterValue()
+//			{
+//				Level = middleLevel,
+//				Parameter = numSys_Type1_RadiusGenerateNumber,
+//				Value = "128"
+//			});
+//			context.ParameterValue.Add(new ParameterValue()
+//			{
+//				Level = hardLevel,
+//				Parameter = numSys_Type1_CenterGenerateNumber,
+//				Value = "4096"
+//			});
+//			context.ParameterValue.Add(new ParameterValue()
+//			{
+//				Level = hardLevel,
+//				Parameter = numSys_Type1_RadiusGenerateNumber,
+//				Value = "512"
+//			});
+//
+//			// ========================== ГЕНЕРИРУЕМЫЙ ТЕСТ =======================================
+//			var test1 = context.GeneratedTest.Add(new GeneratedTest() { Paragraph = paragraphNumericSystem });
+//
+//			// ========================== ЭКЗЕМПЛЯРЫ ЗАДАНИЙ ======================================
+//			var instanceOfQuestion1 = context.InstanceOfQuestion.Add(new InstanceOfQuestion()
+//			{
+//				Level = middleLevel,
+//				QuestionTemplate = template1,
+//				TypeOfQuestion = multiplyChoisesSingleCorrectAnswer
+//			});
+//
+//			// ========================== СОДЕРЖИМОЕ ТЕСТА ========================================
+//			var testContent1 = context.TestContent.Add(new TestContent()
+//			{
+//				GeneratedTest = test1,
+//				OrderNumber = 1,
+//				InstanceOfQuestion = instanceOfQuestion1
+//			});
 			#endregion
 
 			#region Math
@@ -1053,7 +1055,7 @@
                 q.AnswerVariants.Add(new AnswerVariant() { OrderNumber = 4, Text = "Ответ " + i + "4", IfCorrect = false });
 			}*/
 			#endregion
-
+            
 		}
 
 

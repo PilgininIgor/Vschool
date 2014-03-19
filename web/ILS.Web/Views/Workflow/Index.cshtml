@@ -4,6 +4,12 @@
 }
 
 @section scripts{
+    <script type="text/javascript">
+            link_readCourses = '@Url.Action("ReadCourses", "Workflow")';
+            link_getCourse = '@Url.Action("GetCourse", "Workflow")';
+            link_setDiagram = '@Url.Action("SetDiagramm", "Workflow")';
+    </script>
+    
     <script type="text/javascript" src="@Url.Content("~/Scripts/ils.workflow.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/jointJS/joint.all.min.js")"></script>
 
