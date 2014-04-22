@@ -10,6 +10,10 @@ if (isRussian)
 	ils.openid.panelName = 'Вход через OpenID';
 }
 
+function close() {
+    window.close();
+}
+
 function parseURLParams(url) {
   var queryStart = url.indexOf("?") + 1;
   var queryEnd   = url.indexOf("#") + 1 || url.length + 1;
@@ -34,158 +38,190 @@ function parseURLParams(url) {
 
 
 
-Ext.onReady(function(){
-	ils.admin.logon = new Ext.Window({
+Ext.onReady(function () {
+    ils.admin.logon = new Ext.Window({
         title: ils.openid.panelName,
         layout: 'fit',
-		width: 400,
-		height: 150,
-		y: 150,
-		closable: false,
-		resizable: false,
-		draggable: false,
-		plain: true,
-		border: false, 
+        width: 400,
+        height: 150,
+        y: 150,
+        closable: false,
+        resizable: false,
+        draggable: false,
+        plain: true,
+        border: false,
         items: new Ext.Panel({
-		
-				bodyStyle:{"background-color":"#DFE8F6"}, 
-				items: [{
-							xtype: 'displayfield',
-							value: 'Вход через сайт Школы Информатики<br>',
-							x: 95,
-							y: 10
-						},
+
+            bodyStyle: { "background-color": "#DFE8F6" },
+            items: [{
+                xtype: 'displayfield',
+                value: 'Вход через сайт Школы Информатики<br>',
+                x: 95,
+                y: 10
+            },
 						{
-							xtype: 'button',
-							height: 40,
-							width: 150,
-							text: 'Войти',
-							x: 125,
-							y: 25,
-							handler: function() {
-								if (document.location.href.indexOf("http://") == -1) {
-									document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + document.location.href;
-								}
-								else {
-									document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + document.location.href.slice(7);
-								}
-				
-							}
+						    xtype: 'button',
+						    height: 40,
+						    width: 150,
+						    text: 'Войти',
+						    x: 125,
+						    y: 25,
+						    handler: function () {
+						        if (document.location.href.indexOf("http://") == -1) {
+						            document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + document.location.href;
+						        }
+						        else {
+						            document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + document.location.href.slice(7);
+						        }
+
+						    }
 						}]
-						}
+        }
 			)
-	});
-	
-	ils.admin.success = new Ext.Window({
+    });
+
+    ils.admin.success = new Ext.Window({
         title: ils.openid.panelName,
         layout: 'fit',
-		width: 400,
-		height: 150,
-		y: 150,
-		closable: false,
-		resizable: false,
-		draggable: false,
-		plain: true,
-		border: false, 
+        width: 400,
+        height: 150,
+        y: 150,
+        closable: false,
+        resizable: false,
+        draggable: false,
+        plain: true,
+        border: false,
         items: new Ext.Panel({
-		
-				bodyStyle:{"background-color":"#DFE8F6"}, 
-				items: [{
-							xtype: 'displayfield',
-							value: 'Вход успешно произведен.',
-							x: 110,
-							y: 10
-						},
+
+            bodyStyle: { "background-color": "#DFE8F6" },
+            items: [{
+                xtype: 'displayfield',
+                value: 'Вход успешно произведен.',
+                x: 110,
+                y: 10
+            },
 						{
-							xtype: 'displayfield',
-							value: 'Вы будете перенаправлены на главную страницу.',
-							x: 60,
-							y: 10
+						    xtype: 'displayfield',
+						    value: 'Вы будете перенаправлены на главную страницу.',
+						    x: 60,
+						    y: 10
 						},
 						]
-			})
-	});
-	
-	ils.admin.failure = new Ext.Window({
+        })
+    });
+
+    ils.admin.failure = new Ext.Window({
         title: ils.openid.panelName,
         layout: 'fit',
-		width: 400,
-		height: 150,
-		y: 150,
-		closable: false,
-		resizable: false,
-		draggable: false,
-		plain: true,
-		border: false, 
+        width: 400,
+        height: 150,
+        y: 150,
+        closable: false,
+        resizable: false,
+        draggable: false,
+        plain: true,
+        border: false,
         items: new Ext.Panel({
-		
-				bodyStyle:{"background-color":"#DFE8F6"}, 
-				items: [{
-							xtype: 'displayfield',
-							value: 'Произошла неизвестная ошибка.',
-							x: 100,
-							y: 10
+
+            bodyStyle: { "background-color": "#DFE8F6" },
+            items: [{
+                xtype: 'displayfield',
+                value: 'Произошла неизвестная ошибка.',
+                x: 100,
+                y: 10
+            },
+						{
+						    xtype: 'displayfield',
+						    value: 'Попробуйте еще раз.',
+						    x: 135,
+						    y: 10
 						},
 						{
-							xtype: 'displayfield',
-							value: 'Попробуйте еще раз.',
-							x: 135,
-							y: 10
-						},
-						{
-							xtype: 'button',
-							height: 40,
-							width: 150,
-							text: 'Войти',
-							x: 125,
-							y: 15,
-							handler: function() {
-								if (document.location.href.indexOf("http://") == -1) {
-									var url = document.location.href.slice(0, document.location.href.indexOf("?"));
-									document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + url;
-								}
-								else {
-									var url = document.location.href.slice(0, document.location.href.indexOf("?"));
-									document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + url.slice(7);
-								}
-				
-							}
+						    xtype: 'button',
+						    height: 40,
+						    width: 150,
+						    text: 'Войти',
+						    x: 125,
+						    y: 15,
+						    handler: function () {
+						        if (document.location.href.indexOf("http://") == -1) {
+						            var url = document.location.href.slice(0, document.location.href.indexOf("?"));
+						            document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + url;
+						        }
+						        else {
+						            var url = document.location.href.slice(0, document.location.href.indexOf("?"));
+						            document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + url.slice(7);
+						        }
+
+						    }
 						}]
-						}
+        }
 			)
-	});
-	
-	var urlParams = parseURLParams(document.URL);
-	if (urlParams != null && urlParams['key'] != null && urlParams['login'] != null && urlParams['hash'] != null && urlParams['firstName'] != null && urlParams['lastName'] != null && urlParams['email'] != null) {
-		Ext.Ajax.request({
-				url: document.location.href.slice(0, document.location.href.indexOf("?")),    
-				success: function(response, opts) {
-					var a = eval('(' + response.responseText + ')');
-					if (a.success) {
-						ils.admin.success.show();
-						document.location.href = document.location.href.slice(0, document.location.href.indexOf("ILS/") + 4);
-					}
-					else {
-						ils.admin.failure.show();
-					}
-					
-				},
-				failure: function(response, opts) {
-					ils.admin.failure.show();
-					
-				},
-				jsonData: [{ 
-						'login' : urlParams['login'][0],
-						'hash' : urlParams['hash'][0],
-						'firstName' : urlParams['firstName'][0],
-						'lastName' : urlParams['lastName'][0],
-						'email' : urlParams['email'][0],
-						'key' : urlParams['key'][0]
-					}
+    });
+
+    var urlParams = parseURLParams(document.URL);
+    if (urlParams != null && urlParams['key'] != null && urlParams['login'] != null && urlParams['hash'] != null && /*urlParams['firstName'] != null && urlParams['lastName'] != null && */urlParams['email'] != null) {
+        Ext.Ajax.request({
+            url: document.location.href.slice(0, document.location.href.indexOf("?")),
+            success: function (response, opts) {
+                var a = eval('(' + response.responseText + ')');
+                if (a.success) {
+                    ils.admin.success.show();
+                    //document.location.href = document.location.href.slice(0, document.location.href.indexOf("ILS/") + 4);
+                    if (a.admin) {
+                        var message = new Object();
+                        message.header = "authorise";
+                        message.firstName = urlParams['firstName'] == null ? "Имя" : urlParams['firstName'][0];
+                        message.lastName = urlParams['lastName'] == null ? "Фамилия" : urlParams['lastName'][0];
+                        message.admin = true;
+                        message.success = true;
+                        //window.opener.window.authorise(true, urlParams['firstName'] == null ? "" : urlParams['firstName'][0], urlParams['lastName'] == null ? "" : urlParams['lastName'][0], true);
+                        window.opener.postMessage(JSON.stringify(message), '*');
+                    } else if (!a.admin) {
+                        var message = new Object();
+                        message.header = "authorise";
+                        message.firstName = urlParams['firstName'] == null ? "Имя" : urlParams['firstName'][0];
+                        message.lastName = urlParams['lastName'] == null ? "Фамилия" : urlParams['lastName'][0];
+                        message.admin = false;
+                        message.success = true;
+                        //window.opener.window.authorise(true, urlParams['firstName'] == null ? "" : urlParams['firstName'][0], urlParams['lastName'] == null ? "" : urlParams['lastName'][0], false);
+                        window.opener.postMessage(JSON.stringify(message), '*');
+                    }
+
+                }
+                else {
+                    ils.admin.failure.show();
+                    var message = new Object();
+                    message.header = "authorise";
+                    message.firstName = "";
+                    message.lastName = "";
+                    message.admin = false;
+                    message.success = false;
+                    //window.opener.authorise(false, '', '', false);
+                    window.opener.postMessage(JSON.stringify(message), '*');
+
+                }
+                window.open('', '_parent', '');
+                window.close();
+
+            },
+            failure: function (response, opts) {
+                ils.admin.failure.show();
+                window.open('', '_parent', '');
+                window.close();
+            },
+            jsonData: [{
+                'login': urlParams['login'][0],
+                'hash': urlParams['hash'][0],
+                'firstName': urlParams['firstName'] == null ? "" : urlParams['firstName'][0],
+                'lastName': urlParams['lastName'] == null ? "" : urlParams['lastName'][0],
+                'email': urlParams['email'][0],
+                'key': urlParams['key'][0]
+            }
 				]
-			});
-	}
-	else {
-		ils.admin.logon.show();
-	}
+        });
+    }
+    else {
+        ils.admin.logon.show();
+    }
 });

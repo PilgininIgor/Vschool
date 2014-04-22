@@ -30,3 +30,10 @@
 	left: 50%;
 	margin-left: -413px;
    }
+   .textarea {
+    width: 250px; 
+	height: 200px;
+	top: 70px;
+	position: absolute;
+	left: 40px;
+   }

@@ -39,11 +39,12 @@
    .main {
 	width: 1024px; 
 	height: 640px;
-	background: url(sprites/main2.png) repeat;
+	background: url(sprites/main3.png) repeat;
 	position: absolute;
 	left: 50%;
 	margin-left: -512px;
-	top: 0px;
+	top: 50%;
+	margin-top: -320px;
    }
   .logo {
    width: 133px;
@@ -56,9 +57,9 @@
    .play {
 	width: 236px; 
 	height: 84px;
-	position: fixed;
+	position: absolute;
 	left: 50%;
-	margin-left: -118px;
+	margin-left: -122px;
 	top: 5px;
    }
    .renderOverlayT {
@@ -105,8 +106,8 @@
 	left: 0%;
 	position: absolute;
 	top: 465px;
-	margin-top: 42px;
-	margin-left: 19px;
+	margin-top: 43px;
+	margin-left: 21px;
    }
    .demoright {
 	width: 124px; 
@@ -164,11 +165,30 @@
 	margin-top: 42px;
 	margin-left: 641px;
    }
+   .hello {
+	width: 114px; 
+	height: 159px;
+	position: absolute;
+	margin-top: 7px;
+	margin-left: 892px;
+   }
    .copyright {
     width: 220px;
 	height: 30px;
-	top: 500px;
+	top: 507px;
 	position: absolute;
 	left: 50%;
 	margin-left: -110px;
+   }
+   @font-face {
+    font-family: Futurica; 
+    src: url(Futurica.ttf); 
+   }
+   @font-face {
+    font-family: Britannic; 
+    src: url(Britannic.ttf); 
+   }
+   @font-face {
+	font-family: UpheavalPro;
+	src: url(UpheavalPro.ttf);
    }
