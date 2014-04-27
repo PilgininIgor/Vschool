@@ -151,16 +151,9 @@
         }
 
         function enter_click() {
-            var url;
-            if (document.location.href.indexOf("http://") == -1) {
-                url = "http://workstation.itschool.ssau.ru/account/logon/?extUrl=" + document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "openid";
-                //document.location.href = "http://workstation.itschool.ssau.ru/account/logon/?extUrl=" + url;
-            }
-            else {
-                url = "http://workstation.itschool.ssau.ru/account/logon/?extUrl=" + document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1).slice(7) + "openid";
-                //document.location.href = "http://workstation.itschool.ssau.ru/account/logon/?extUrl=" + url.slice(7);
-            }
-            
+            var needSlice = (document.location.href.indexOf("http://") != -1);
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1);
+            url = "http://workstation.itschool.ssau.ru/account/logon/?extUrl=" + (needSlice ? url.slice(7) : url) + "openid";
             ITHASBEGUN = true;
             var left = 0; // начальное значение
             var angle = 0;

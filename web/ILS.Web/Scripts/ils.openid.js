@@ -144,15 +144,9 @@ Ext.onReady(function () {
 						    x: 125,
 						    y: 15,
 						    handler: function () {
-						        if (document.location.href.indexOf("http://") == -1) {
-						            var url = document.location.href.slice(0, document.location.href.indexOf("?"));
-						            document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + url;
-						        }
-						        else {
-						            var url = document.location.href.slice(0, document.location.href.indexOf("?"));
-						            document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + url.slice(7);
-						        }
-
+						        var needSlice = (document.location.href.indexOf("http://") != -1);
+						        var url = document.location.href.slice(0, document.location.href.indexOf("?"));
+						        document.location.href = "http://www.ischool-ssau.ru/Account/LogOn/?extUrl=" + (needSlice ? url.slice(7) : url);
 						    }
 						}]
         }
@@ -168,26 +162,14 @@ Ext.onReady(function () {
                 if (a.success) {
                     ils.admin.success.show();
                     //document.location.href = document.location.href.slice(0, document.location.href.indexOf("ILS/") + 4);
-                    if (a.admin) {
-                        var message = new Object();
-                        message.header = "authorise";
-                        message.firstName = urlParams['firstName'] == null ? "Имя" : urlParams['firstName'][0];
-                        message.lastName = urlParams['lastName'] == null ? "Фамилия" : urlParams['lastName'][0];
-                        message.admin = true;
-                        message.success = true;
-                        //window.opener.window.authorise(true, urlParams['firstName'] == null ? "" : urlParams['firstName'][0], urlParams['lastName'] == null ? "" : urlParams['lastName'][0], true);
-                        window.opener.postMessage(JSON.stringify(message), '*');
-                    } else if (!a.admin) {
-                        var message = new Object();
-                        message.header = "authorise";
-                        message.firstName = urlParams['firstName'] == null ? "Имя" : urlParams['firstName'][0];
-                        message.lastName = urlParams['lastName'] == null ? "Фамилия" : urlParams['lastName'][0];
-                        message.admin = false;
-                        message.success = true;
-                        //window.opener.window.authorise(true, urlParams['firstName'] == null ? "" : urlParams['firstName'][0], urlParams['lastName'] == null ? "" : urlParams['lastName'][0], false);
-                        window.opener.postMessage(JSON.stringify(message), '*');
-                    }
-
+                    var message = new Object();
+                    message.header = "authorise";
+                    message.firstName = urlParams['firstName'] == null ? "Имя" : urlParams['firstName'][0];
+                    message.lastName = urlParams['lastName'] == null ? "Фамилия" : urlParams['lastName'][0];
+                    message.admin = a.admin;
+                    message.success = true;
+                    //window.opener.window.authorise(true, urlParams['firstName'] == null ? "" : urlParams['firstName'][0], urlParams['lastName'] == null ? "" : urlParams['lastName'][0], false);
+                    window.opener.postMessage(JSON.stringify(message), '*');
                 }
                 else {
                     ils.admin.failure.show();
