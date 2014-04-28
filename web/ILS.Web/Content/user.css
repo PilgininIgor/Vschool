@@ -61,3 +61,11 @@
 	left: 50%;
 	margin-left: -176px;
    }
+   .loading {
+	width: 230px; 
+	height: 230px;
+	top: 85px;
+	position: absolute;
+	left: 50%;
+	margin-left: -115px;
+   }

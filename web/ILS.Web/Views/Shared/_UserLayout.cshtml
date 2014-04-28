@@ -6,60 +6,70 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/icons.css")"/>
     <script type="text/javascript" src="@Url.Content("~/Scripts/ext/bootstrap.js")"></script>
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/user-common.css")"/>
+	<link href="/ils2/Content//Sprites//logofavicon.png" rel="shortcut icon" type="image/x-icon" />
     @RenderSection("additionalCSS", required:false)
 
 
  
- <script>
+ <script type="text/javascript">
      var sdoorl = true;
      var sdoorr = true;
 
+     var sdoorlTimer;
+     var sdoorlLeft = 0;
+     var sdoorrTimer;
+     var sdoorrLeft = 0;
+
      function sdoor_open(dir) {
-
-         if (!sdoorl && dir == 'l') return;
-         if (!sdoorr && dir == 'r') return;
-         var left = 0; // начальное значение
-         function move() { // функция для отрисовки
-             left -= 3;
-             document.getElementById('sdoor' + dir + 'l').style.left = left + 'px';
-             document.getElementById('sdoor' + dir + 'r').style.left = 46 - left + 'px';
-             if (left <= -102) {
-
-                 clearInterval(timer); // завершить анимацию
-
-                 if (dir == 'l') {
-                     sdoorl = false;
-                     setTimeout(sdoor_force_l, 10000);
-                 }
-                 else {
-                     sdoorr = false;
-                     setTimeout(sdoor_force_r, 10000);
+         if (dir == 'l') {
+             clearInterval(sdoorlTimer);
+             function move() {
+                 sdoorlLeft -= 3;
+                 document.getElementById('sdoorll').style.left = sdoorlLeft + 'px';
+                 document.getElementById('sdoorlr').style.left = 46 - sdoorlLeft + 'px';
+                 if (sdoorlLeft <= -102) {
+                     clearInterval(sdoorlTimer);
                  }
              }
+             sdoorlTimer = setInterval(move, 1)
+         } else {
+             clearInterval(sdoorrTimer);
+             function move() {
+                 sdoorrLeft -= 3;
+                 document.getElementById('sdoorrl').style.left = sdoorrLeft + 'px';
+                 document.getElementById('sdoorrr').style.left = 46 - sdoorrLeft + 'px';
+                 if (sdoorrLeft <= -102) {
+                     clearInterval(sdoorrTimer);
+                 }
+             }
+             sdoorrTimer = setInterval(move, 1);
          }
-         var timer = setInterval(move, 1) // рисовать каждые 10мс
      }
 
      function sdoor_close(dir) {
-
-         if (sdoorl && dir == 'l') return;
-         if (sdoorr && dir == 'r') return;
-         
-         var left = -102; // начальное значение
-         function move() { // функция для отрисовки
-             left += 3;
-             document.getElementById('sdoor' + dir + 'l').style.left = left + 'px';
-             document.getElementById('sdoor' + dir + 'r').style.left = 46 - left + 'px';
-             if (left >= 0) {
-                 if (dir == 'l') {
-                     sdoorl = true;
-                 } else {
-                     sdoorr = true;
+         if (dir == 'l') {
+             clearInterval(sdoorlTimer);
+             function move() {
+                 sdoorlLeft += 3;
+                 document.getElementById('sdoorll').style.left = sdoorlLeft + 'px';
+                 document.getElementById('sdoorlr').style.left = 46 - sdoorlLeft + 'px';
+                 if (sdoorlLeft >= 0) {
+                     clearInterval(sdoorlTimer);
                  }
-                 clearInterval(timer); // завершить анимацию
              }
+             sdoorlTimer = setInterval(move, 1);
+         } else {
+             clearInterval(sdoorrTimer);
+             function move() {
+                 sdoorrLeft += 3;
+                 document.getElementById('sdoorrl').style.left = sdoorrLeft + 'px';
+                 document.getElementById('sdoorrr').style.left = 46 - sdoorrLeft + 'px';
+                 if (sdoorrLeft >= 0) {
+                     clearInterval(sdoorrTimer);
+                 }
+             }
+             sdoorrTimer = setInterval(move, 1);
          }
-         var timer = setInterval(move, 1) // рисовать каждые 10мс
      }
 
      function sdoor_force_l() {
@@ -183,124 +193,135 @@
 <body>
     <div>
        <div class="background">
+       
   
 	<div class="leftshade">
 	</div> 
 	<div class="rightshade">
 	</div> 
 	<div class="topshade">
+        
 	</div> 
 	<div class="bottomshade">
 	</div> 
 	<div class="main">
-        <div class="logo">
-            <embed width="133" height="83" align="" type="application/x-shockwave-flash" src="/Content/sprites//logo.swf">
-        </div>
-		<p>
+        <!--<div class="logo">
+            <a href="/render"><img src="/ils2/Content/sprites//logo.png"></a>
+        </div>-->
+        <div id="helloPanel" class="hello">
+            <p id="hello" align="center" style="position: absolute;margin-top: 7px;margin-left: 32px;font-size: tiny;color: #bbbbbb;letter-spacing:0.8px;line-height:15px;font-family: Futurica">
+            </p>
+            <p id="credentials" align="center" style="position: absolute;margin-top: 27px;margin-left: 32px;font-size: small;color: #bbbbbb;letter-spacing:0.8px;line-height:15px;font-family: Futurica">
+            </p>
+		</div>
+        <p>
 			<map name="DemoButton">
-				<area shape="circle" coords="62,62,62" href="index.html" alt="Demo">
+				<area shape="circle" coords="62,62,62" href="/render" alt="Demo">
 			</map>
 		</p>
         <p>
 			<map name="PlayButton">
-				<area shape="rectangle" coords="15,15,220,65" href="index.html" alt="Play">
+				<area shape="rectangle" coords="15,15,220,65" href="/render" alt="Play">
 			</map>
 		</p>
         
 		@RenderSection("renderArea", required:true)
         <div class="play" id="playcontainer">
-            <img src="/Content/Sprites//play//play (1).png" usemap="#PlayButton" style="display:block">
-            <img src="/Content/Sprites//play//play (2).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (3).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (4).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (5).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (6).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (7).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (8).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (9).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (10).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (11).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//play (12).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (1).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (2).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (3).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (4).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (5).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (6).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (7).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (8).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (9).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (10).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (11).png" usemap="#PlayButton" style="display:none">
-            <img src="/Content/Sprites//play//noblink//play (12).png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_1.png" usemap="#PlayButton" style="display:block">
+            <img src="/ils2/Content/Sprites/play/play_2.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_3.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_4.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_5.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_6.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_7.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_8.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_9.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_10.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_11.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/play_12.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_1.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_2.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_3.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_4.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_5.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_6.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_7.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_8.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_9.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_10.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_11.png" usemap="#PlayButton" style="display:none">
+            <img src="/ils2/Content/Sprites/play/noblink/play_12.png" usemap="#PlayButton" style="display:none">
         </div>
-        <div class="play" onmouseover = "play_animate()" onmouseout = "play_stop()">
+        <div class="play" onmouseover = "javascript:play_animate()" onmouseout = "javascript:play_stop()" style="cursor: pointer;">
         </div>
 		@RenderSection("topPanel", required:true)
 			
 		<div class="demoleft" id="demolcontainer">
-			<img src="/Content/Sprites//demo//demo (1).png" usemap="#DemoButton" style="display:block">
-            <img src="/Content/Sprites//demo//demo (2).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (3).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (4).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (5).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (6).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (7).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (8).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (9).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (10).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (11).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (12).png" usemap="#DemoButton" style="display:none">
+			<img src="/ils2/Content/Sprites/demo/demo_1.png" usemap="#DemoButton" style="display:block">
+            <img src="/ils2/Content/Sprites/demo/demo_2.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_3.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_4.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_5.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_6.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_7.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_8.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_9.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_10.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_11.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/demo/demo_12.png" usemap="#DemoButton" style="display:none">
 		</div>
-        <div class="demoleft" onmouseover = "demol_animate()" onmouseout = "demol_stop()">
+        <div class="demoleft" onmouseover = "javascript:demol_animate()" onmouseout = "javascript:demol_stop()" style="cursor: pointer;" onclick = "javascript:demo_game()">
 		</div>
-        <div class="buttonleft">
+        <div class="buttonleft" id="leftPartnersButton">
 			<div class="sdoorll" id = "sdoorll">
-				<img src="/Content/Sprites//door_s_left.jpg">
+				<img src="/ils2/Content/Sprites//door_s_left.jpg">
 			</div>
 			<div class="sdoorlr" id = "sdoorlr">
-				<img src="/Content/Sprites//door_s_right.jpg">
+				<img src="/ils2/Content/Sprites//door_s_right.jpg">
 			</div>
 		</div>
 		<a href="http://itschool.ssau.ru" target="_blank">
-			<div class="invisiblebuttonleft" onmouseover="sdoor_open('l')" onmouseout="sdoor_close('l')">
+			<div class="invisiblebuttonleft" onmouseover="javascript:sdoor_open('l')" onmouseout="javascript:sdoor_close('l')">
 			</div>
 		</a>
-		<div class="buttonright">
+		<div class="buttonright" id="rightPartnersButton">
 			<div class="sdoorll" id = "sdoorrl">
-				<img src="/Content/Sprites//door_s_left.jpg">
+				<img src="/ils2/Content/Sprites//door_s_left.jpg">
 			</div>
 			<div class="sdoorlr" id = "sdoorrr">
-				<img src="/Content/Sprites//door_s_right.jpg">
+				<img src="/ils2/Content/Sprites//door_s_right.jpg">
 			</div>
 		</div>
 		<a href="http://distance.itschool.ssau.ru" target="_blank">
-			<div class="invisiblebuttonright" onmouseover="sdoor_open('r')" onmouseout="sdoor_close('r')">
+			<div class="invisiblebuttonright" onmouseover="javascript:sdoor_open('r')" onmouseout="javascript:sdoor_close('r')">
 			</div>
 		</a>
 		<div class="demoright" id="demorcontainer">
-			<img src="/Content/Sprites//demo//demo (1).png" usemap="#DemoButton" style="display:block">
-            <img src="/Content/Sprites//demo//demo (2).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (3).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (4).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (5).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (6).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (7).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (8).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (9).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (10).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (11).png" usemap="#DemoButton" style="display:none">
-            <img src="/Content/Sprites//demo//demo (12).png" usemap="#DemoButton" style="display:none">
+			<img src="/ils2/Content/Sprites/video/demo_1.png" usemap="#DemoButton" style="display:block">
+            <img src="/ils2/Content/Sprites/video/demo_2.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_3.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_4.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_5.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_6.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_7.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_8.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_9.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_10.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_11.png" usemap="#DemoButton" style="display:none">
+            <img src="/ils2/Content/Sprites/video/demo_12.png" usemap="#DemoButton" style="display:none">
 		</div>
-        <div class="demoright" onmouseover = "demor_animate()" onmouseout = "demor_stop()">
+        <div class="demoright" onmouseover = "javascript:demor_animate()" onmouseout = "javascript:demor_stop()" style="cursor: pointer;" onclick = "javascript:demo_video()">
 		</div>
         <div class="copyright">
-            <p align="center" style="letter-spacing:0.8px;"><font face="Britannic" color="white" size="2">&copy;2012—2013 3D Education</font></p>
+            <p align="center" style="letter-spacing:0.8px;color: #ffffff;size: small;font-family: Britannic">&copy;2012—2013 3D Education</p>
         </div>
-		@RenderSection("sliderArea", required:false)
+		<!-->@RenderSection("sliderArea", required:false)<-->
 	</div> 
         @RenderBody()
     </div>
+		@RenderSection("end", required:false)
+        
     </div>
+    
 </body>
 </html>

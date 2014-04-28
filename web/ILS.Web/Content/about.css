@@ -30,30 +30,55 @@
 	left: 50%;
 	margin-left: -413px;
    }
+   .textarea {
+    width: 809px; 
+	height: 400px;
+	top: 0px;
+	position: absolute;
+	background: #000000;
+	left: 50%;
+	margin-left: -405px;
+   }
    .slider_screen {
-    display: none;
     position: absolute;
     width: 451px;
 	height: 256px;
-	top: 350px;
+	top: 100px;
 	left: 50%;
 	margin-left: -224px;
    }
    .slider_screen_button_screen {
     position: absolute;
 	width: 46px;
+	left: 404px;
 	height: 163px;
 	top: 46px;
+	background: url(sprites/slider_screen_button_screen.png) no-repeat;
    }
    .slider_screen_frame {
     position: absolute;
 	left: 28px;
 	width: 394px;
 	height: 256px;
+	background: url(sprites/slider_screen_frame.png) no-repeat;
    }
+   .slider_screen_content {
+	position: absolute;
+	overflow: hidden;
+	height: 170px;
+	width: 334px;
+	left: 58px;
+	top: 31px;
+  }
    .slider_screen_button_authors {
     position: absolute;
-	left: 404px;
+	width: 46px;
+	height: 163px;
+	top: 46px;
+	background: url(sprites/slider_screen_button_authors.png) no-repeat;
+   }
+   .slider_screen_button_authors_inv {
+    position: absolute;
 	width: 46px;
 	height: 163px;
 	top: 46px;
@@ -94,23 +119,40 @@
     position: absolute;
     width: 259px;
 	height: 256px;
-	top: 350px;
-	left: 50%;
-	margin-left: -129px;
+	top: 100px;
+	left: 20px;
    }
+  .slider_authors_content {
+	position: absolute;
+	height: 170px;
+	overflow: hidden;
+	width: 138px;
+	left: 57px;
+	top: 31px;
+  }
    .slider_authors_button_authors {
     position: absolute;
 	width: 46px;
 	height: 163px;
 	top: 46px;
+	background: url(sprites/slider_authors_button_authors.png) no-repeat;
    }
    .slider_authors_frame {
     position: absolute;
 	left: 28px;
-	width: 394px;
+	width: 202px;
 	height: 256px;
+	background: url(sprites/slider_authors_frame.png) no-repeat;
    }
    .slider_authors_button_screen {
+    position: absolute;
+	left: 208px;
+	width: 46px;
+	height: 163px;
+	top: 46px;
+	background: url(sprites/slider_authors_button_screen.png) no-repeat;
+   }
+   .slider_authors_button_screen_inv {
     position: absolute;
 	left: 208px;
 	width: 46px;
