@@ -42,7 +42,8 @@ function Start() {
 }
 
 function ZoomIn() {
-	PlayerAvatar = GameObject.Find("Bootstrap").GetComponent.<NetworkManagerScript>().avatar;
+    /*Need to fix for multiplayer!!!*/
+	PlayerAvatar = GameObject.Find("Bootstrap");//.GetComponent(NetworkManagerScript).avatar;
 	hint_visible = false;
 	//PlayerAvatar.animation.Stop();
 	//PlayerAvatar.SetActive(false);

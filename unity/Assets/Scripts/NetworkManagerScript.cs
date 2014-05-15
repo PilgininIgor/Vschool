@@ -43,6 +43,7 @@ public class NetworkManagerScript : MonoBehaviour {
 			case "Solder": avatar = Solder; break;
 			case "Mia": avatar = Mia; break;
 		}
+        
 	}
 	
 	void StartServer(){

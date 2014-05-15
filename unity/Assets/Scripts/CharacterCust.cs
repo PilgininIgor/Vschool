@@ -50,7 +50,7 @@ public class CharacterCust : MonoBehaviour
 		GUILayout.BeginHorizontal();
 		if (!closerCamera)
 		{
-			if (GUILayout.Button("Приблизить", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
+            if (GUILayout.Button(Strings.Get("Look Around"), GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
 			{
 				Observation.transform.Find("MainCamera").localPosition = new Vector3(2,3,-3);
 				Observation.transform.Find("MainCamera").eulerAngles = new Vector3(0,325,0);
@@ -62,7 +62,7 @@ public class CharacterCust : MonoBehaviour
 				Vector3.up,
 				-20*Time.deltaTime
 			);
-			if (GUILayout.Button("Отдалить", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
+            if (GUILayout.Button(Strings.Get("Stop Watch"), GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
 			{
 				Observation.transform.Find("MainCamera").localPosition = new Vector3(2,3,-3);
 				Observation.transform.Find("MainCamera").eulerAngles = new Vector3(0,325,0);
@@ -88,8 +88,9 @@ public class CharacterCust : MonoBehaviour
         if(GUILayout.Button(Strings.Get("Go"), GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
 		{
 			nameOfAvatar = characters[curCharacter].name;
-			Debug.Log(nameOfAvatar);			
-			Application.LoadLevel("world");
+			Debug.Log(nameOfAvatar);
+            GameObject.Find("_Customization").AddComponent<PhotonMenu>();
+			//Application.LoadLevel("world");
 		}
         if (GUILayout.Button(">", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)) && (curCharacter < characters.Length - 1))
 		{

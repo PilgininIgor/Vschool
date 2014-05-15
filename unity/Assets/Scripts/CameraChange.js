@@ -23,8 +23,9 @@ StandCam.GetComponent(AudioListener).enabled = false;
 
 function setIsBound(isBound: boolean)
 {
+/*Need to fix for multiplayer!!!*/
 	if (!PlayerAvatar)
-		PlayerAvatar = GameObject.Find("Bootstrap").GetComponent.<NetworkManagerScript>().avatar;
+		PlayerAvatar = GameObject.Find("Bootstrap")/*.GetComponent(NetworkManagerScript).avatar*/;
 		
 	PlayerAvatar.SetActive(!isBound);
 	/*if (isBound)

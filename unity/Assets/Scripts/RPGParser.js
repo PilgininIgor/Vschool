@@ -37,7 +37,8 @@ var LBL = "Очки опыта";
 private var nameOfAvatar;
 
 function Start() {
-    nameOfAvatar = GameObject.Find("Bootstrap").GetComponent.<NetworkManagerScript>().nameOfAvatar;
+    /*Need to fix for multiplayer!!!*/
+    nameOfAvatar = GameObject.Find("Bootstrap");/*.GetComponent(NetworkManagerScript).nameOfAvatar;*/
 	Player = GameObject.Find(nameOfAvatar + "(Clone)");
 	//БОЛЬШОЙ РУБИЛЬНИК
 	RoleSystemSet(JSONTestString);
