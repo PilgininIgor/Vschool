@@ -3,5 +3,7 @@
 { "key":"Character", "ru":"Персонаж", "en":"Character"},
 { "key":"Clothes", "ru":"Одежда", "en":"Clothes"},
 { "key":"Closer", "ru":"Ближе", "en":"Closer"},
-{ "key":"Return", "ru":"Возврат", "en":"Return"}
+{ "key":"Return", "ru":"Возврат", "en":"Return"},
+{ "key":"Look Around", "ru":"Осмотреть", "en":"Look Around"},
+{ "key":"Stop Watch", "ru":"Остановить", "en":"Stop Watch"}
 ]
