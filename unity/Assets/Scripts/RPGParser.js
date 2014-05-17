@@ -52,8 +52,8 @@ function RoleSystemSet(JSONStringFromServer:String) {
 
 function OnGUI() {
 	if (!SkinSet) {
-		GUI.skin.box.font = helvetica; GUI.skin.box.fontSize = 18; GUI.skin.box.fontStyle = FontStyle.BoldAndItalic;
-		GUI.skin.label.font = helvetica; GUI.skin.label.fontStyle = FontStyle.Bold;
+		//GUI.skin.box.font = helvetica; GUI.skin.box.fontSize = 18; GUI.skin.box.fontStyle = FontStyle.BoldAndItalic;
+		//GUI.skin.label.font = helvetica; GUI.skin.label.fontStyle = FontStyle.Bold;
 		GUI.skin.label.fontSize = 0; GUI.skin.label.normal.textColor = Color(0.835, 0.929, 1);
 		GUI.skin.label.alignment = TextAnchor.MiddleCenter;
 		SkinSet = true;
