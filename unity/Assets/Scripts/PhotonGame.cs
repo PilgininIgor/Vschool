@@ -11,13 +11,18 @@ public class PhotonGame : Photon.MonoBehaviour
     public Transform playerPrefab;
 
     //avatars
-    public Transform Joan;
     public Transform Robot;
+    public Transform Joan;
     public Transform Alexis;
-    public Transform Mia;
+    public Transform Golem;
     public Transform Justin;
     public Transform Vincent;
     public Transform Solder;
+    public Transform Mia;
+    public Transform Punk;
+    public Transform Carl;
+
+    public Transform SpawnPlace;
 
     public string nameOfAvatar;
 
@@ -25,7 +30,10 @@ public class PhotonGame : Photon.MonoBehaviour
     {
         //select avatar
         nameOfAvatar = /*"Solder"*/CharacterCust.nameOfAvatar;
+
+
         Debug.Log("Avatar is " + nameOfAvatar);
+
         switch (nameOfAvatar)
         {
             case "Robot": playerPrefab = Robot; break;
@@ -35,6 +43,8 @@ public class PhotonGame : Photon.MonoBehaviour
             case "Vincent": playerPrefab = Vincent; break;
             case "Solder": playerPrefab = Solder; break;
             case "Mia": playerPrefab = Mia; break;
+            case "Punk": playerPrefab = Punk; break;
+            case "Carl": playerPrefab = Carl; break;
         }
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
@@ -45,8 +55,10 @@ public class PhotonGame : Photon.MonoBehaviour
         }
 
         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-        PhotonNetwork.Instantiate(this.playerPrefab.name, transform.position, Quaternion.identity, 0);
-        Camera.main.GetComponent<OrbitCam>().target = GameObject.Find(nameOfAvatar + "(Clone)").transform;
+        PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
+        Debug.Log("Player is " + PhotonNetwork.playerName);
+        GameObject instantiatedPlayer = GameObject.Find(nameOfAvatar + "(Clone)");
+        Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
     }
 
     public void OnGUI()
