@@ -57,11 +57,19 @@ namespace ILS.Web.Controllers
                 if (selectedUser.PasswordHash == null  && CalculateSHA1("Something"+data[0].Key) == data[0].Hash)
                 {
                     selectedUser.Email = data[0].Email;
-                    selectedUser.FirstName = data[0].FirstName;
-                    selectedUser.LastName = data[0].LastName;
+                    //selectedUser.FirstName = data[0].FirstName;
+                    //selectedUser.LastName = data[0].LastName;
                     context.SaveChanges();
                     FormsService.SignIn(login, false);
-                    return Json(new { success = true });
+                    bool isAdmin = selectedUser.Roles.Count<Role>(x => x.Name == "Admin" || x.Name == "Teacher") > 0 ? true : false;
+                    return Json(new 
+                        { 
+                            success = true, 
+                            admin = isAdmin, 
+                            firstName = selectedUser.FirstName, 
+                            lastName = selectedUser.LastName
+                        }
+                    );
                 }
                 return Json(new { success = false });
                 
@@ -79,7 +87,13 @@ namespace ILS.Web.Controllers
                 });
                 FormsService.SignIn(login, false);
                 context.SaveChanges();
-                return Json(new { success = true });
+                return Json(new
+                {
+                    success = true,
+                    admin = false,
+                    firstName = data[0].FirstName,
+                    lastName = data[0].LastName
+                });
             }
             return Json(new { success = false });
         }
