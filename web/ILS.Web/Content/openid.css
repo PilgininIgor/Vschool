@@ -1,0 +1,23 @@
+   body{
+	background-image: url(sprites/robot.png) !important;
+	background-position: left bottom !important;
+	background-color: transparent !important;
+	background-repeat: no-repeat !important;
+	background-attachment: fixed !important;
+   }
+   
+	form {
+    margin-left: 955px !important;
+    margin-top: 240px !important;
+	position:absolute !important;
+	}
+	
+	.classRecoverPassword {
+	margin-left: 950px !important;
+    margin-top: 500px !important;
+	position:absolute !important;
+	}
+	
+	.horizontal-menu {
+	display:none !important;
+	}

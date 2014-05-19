@@ -1,0 +1,174 @@
+   .background { 
+    width: 100%; 
+	height: 100%;
+	overflow: hidden;
+	overflow: hidden;
+    background: url(sprites/background.png) repeat;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+   }
+   .leftshade { 
+    width: 146px; 
+	height: 100%;
+    background: url(sprites/shade_left.png) repeat;
+	position: absolute;
+	left: 0px;
+   }
+   .rightshade { 
+    width: 135px; 
+	height: 100%;
+    background: url(sprites/shade_right.png) repeat;
+	position: absolute;
+	right: 0px;
+   }
+   .topshade { 
+	width: 100%; 
+	height: 146px;
+    background: url(sprites/shade_top.png) repeat;
+	position: absolute;
+	top: 0px;
+   }
+   .bottomshade { 
+    width: 100%; 
+	height: 146px;
+    background: url(sprites/shade_bottom.png) repeat;
+	position: absolute;
+	bottom: 0px;
+   }
+   .main {
+	width: 1024px; 
+	height: 640px;
+	background: url(sprites/main2.png) repeat;
+	position: absolute;
+	left: 50%;
+	margin-left: -512px;
+	top: 0px;
+   }
+  .logo {
+   width: 133px;
+   height: 83px;
+   position: absolute;
+   left: 50%;
+   margin-left: -507px;
+   top: 6px;
+  }
+   .play {
+	width: 236px; 
+	height: 84px;
+	position: fixed;
+	left: 50%;
+	margin-left: -118px;
+	top: 5px;
+   }
+   .renderOverlayT {
+    width: 767px;
+	height: 29px;
+    background: url(sprites/renderOverlayT2.png) no-repeat;
+	position: absolute;
+	top: 0px;
+	left: 24px;
+   }
+   .renderOverlayL {
+    width: 24px;
+	height: 400px;
+    background: url(sprites/renderOverlayL2.png) no-repeat;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+   }
+   .renderOverlayR {
+    width: 18px;
+	height: 400px;
+    background: url(sprites/renderOverlayR2.png) no-repeat;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+   }
+   .renderOverlayB {
+    width: 767px;
+	height: 27px;
+    background: url(sprites/renderOverlayB2.png) no-repeat;
+	position: absolute;
+	bottom: 0px;
+	left: 24px;
+   }
+   .toppanel {
+	position: absolute;
+	left: 50%;
+	top: 50px;
+	margin-left: -144px;
+   }
+   .demoleft {
+	width: 124px; 
+	height: 124px;
+	left: 0%;
+	position: absolute;
+	top: 465px;
+	margin-top: 42px;
+	margin-left: 19px;
+   }
+   .demoright {
+	width: 124px; 
+	height: 124px;
+	position: absolute;
+	top: 465px;
+	left: 100%;
+	margin-top: 42px;
+	margin-left: -124px;
+   }
+   .buttonleft {
+	width: 86px; 
+	height: 54px;
+	top: 505px;
+	overflow: hidden;
+	position: absolute;
+	margin-top: 42px;
+	margin-left: 317px;
+   }
+   .invisiblebuttonleft {
+	width: 86px; 
+	height: 54px;
+	top: 505px;
+	overflow: hidden;
+	position: absolute;
+	margin-top: 42px;
+	margin-left: 317px;
+   }
+   .sdoorll {
+	width: 43px; 
+	height: 54px;
+	position: absolute;
+	left: -3px;
+   }
+   .sdoorlr {
+	width: 43px; 
+	height: 54px;
+	position: absolute;
+	left: 43px;
+   }
+   .buttonright {
+    width: 86px; 
+	height: 54px;
+	top: 505px;
+	overflow: hidden;
+	position: absolute;
+	margin-top: 42px;
+	margin-left: 641px;
+   }
+   .invisiblebuttonright {
+    width: 86px; 
+	height: 54px;
+	top: 505px;
+	position: absolute;
+	margin-top: 42px;
+	margin-left: 641px;
+   }
+   .copyright {
+    width: 220px;
+	height: 30px;
+	top: 500px;
+	position: absolute;
+	left: 50%;
+	margin-left: -110px;
+   }
