@@ -2037,7 +2037,7 @@ public static class PhotonNetwork
         int[] viewIDs = new int[views.Length];
         for (int i = 0; i < viewIDs.Length; i++)
         {
-            //Debug.Log("Instantiate prefabName: " + prefabName + " player.ID: " + player.ID);
+            Debug.Log("Instantiate prefabName: " + prefabName + " player.ID: " + player.ID);
             viewIDs[i] = AllocateViewID(player.ID);
         }
 

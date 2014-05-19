@@ -3,8 +3,8 @@ using System.Collections;
 
 // Require these components when using this script
 [RequireComponent(typeof (Animator))]
-[RequireComponent(typeof (CapsuleCollider))]
-[RequireComponent(typeof (Rigidbody))]
+//[RequireComponent(typeof (CapsuleCollider))]
+//[RequireComponent(typeof (Rigidbody))]
 public class BotControlScript : MonoBehaviour
 {
 	[System.NonSerialized]					

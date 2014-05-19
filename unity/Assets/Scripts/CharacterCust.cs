@@ -12,21 +12,6 @@ public class CharacterCust : MonoBehaviour
 	//avatars
 	public static string nameOfAvatar;
 	
-	public GameObject Robot;
-	public GameObject Joan;
-	public GameObject Alexis;
-	public GameObject Golem;
-    public GameObject Justin;
-	public GameObject Vincent;
-	public GameObject Solider;
-	public GameObject Mia;
-	
-	//effects
-	public GameObject Fire;
-	public GameObject Sparks;
-	public GameObject Explosions;
-	public GameObject Fireworks;
-	
 	public GameObject Observation;
 	
 	int curCharacter = 0;
@@ -38,9 +23,10 @@ public class CharacterCust : MonoBehaviour
 	
 	// Use this for initialization
 	void Start () 
-	{	
-		characters = new GameObject[]{Joan, Alexis, Justin, Vincent, Solider, Mia, Robot};
-		effects = new GameObject[]{Fire, Sparks, Explosions, Fireworks};
+	{
+        characters = GameObject.FindGameObjectsWithTag("Avatar");
+        effects = GameObject.FindGameObjectsWithTag("Effect");
+        Debug.Log("Effects size:" + effects.Length);
 		ChangeCharecters(curCharacter);
 		ChangeEffects(curEffect);
 	}	
@@ -88,8 +74,11 @@ public class CharacterCust : MonoBehaviour
         if(GUILayout.Button(Strings.Get("Go"), GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
 		{
 			nameOfAvatar = characters[curCharacter].name;
-			Debug.Log(nameOfAvatar);
+            Debug.Log("Selected avatar " + characters[curCharacter].name);
             GameObject.Find("_Customization").AddComponent<PhotonMenu>();
+            //characters[curCharacter].transform.parent = null;
+            //Object.DontDestroyOnLoad(characters[curCharacter]);
+            //Object.DontDestroyOnLoad(characters[curCharacter].transform.parent.gameObject);
 			//Application.LoadLevel("world");
 		}
         if (GUILayout.Button(">", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)) && (curCharacter < characters.Length - 1))

@@ -8,27 +8,27 @@ public class NetworkCharacterAnimSync : Photon.MonoBehaviour {
 
     Animator anim;
 
-    ThirdPersonCamera cameraScript;
+    //ThirdPersonCamera cameraScript;
     BotControlScript controllerScript;
 
     void Awake()
     {
-        cameraScript = GetComponent<ThirdPersonCamera>();
+        //cameraScript = GetComponent<ThirdPersonCamera>();
         controllerScript = GetComponent<BotControlScript>();
 
         if (photonView.isMine)
         {
             //MINE: local player, simply enable the local scripts
-            cameraScript.enabled = true;
+            //cameraScript.enabled = true;
             controllerScript.enabled = true;
         }
         else
         {
-            cameraScript.enabled = false;
+            //cameraScript.enabled = false;
             controllerScript.enabled = false;
         }
 
-        gameObject.name = gameObject.name + photonView.viewID;
+        //gameObject.name = gameObject.name + photonView.viewID;
     }
 
 	// Use this for initialization
