@@ -8,15 +8,64 @@
 }
 @section scripts{
      <script type="text/javascript">
+
+         document.ready = $(function () {
+             $('.scroll-pane').jScrollPane();
+         });
+
+         window.onload = function () {
+             var updaterTop = -400;
+             var updaterTimer;
+             var updater = document.getElementById("updater");
+             function update() {
+                 updater.style.top = updaterTop + 'px';
+                 updaterTop += 3;
+                 if (updaterTop > 800)
+                     updaterTop = -400;
+             }
+             updaterTimer = setInterval(update, 10);
+
+             var frameVisors = 0;
+             var timerVisors;
+             var framesVisors = document.getElementById("visorsContainer").children;
+             function visors() {
+                 framesVisors[frameVisors].style.display = "none";
+                 frameVisors++;
+                 if (frameVisors == 15) {
+                     frameVisors = 0;
+                 }
+                 framesVisors[frameVisors].style.display = "block";
+             }
+             timerVisors = setInterval(visors, 40);
+
+             var frameDots = 0;
+             var timerDots;
+             var framesDots = document.getElementById("dotsContainer").children;
+             function Dots() {
+                 framesDots[frameDots].style.display = "none";
+                 frameDots++;
+                 if (frameDots == 15) {
+                     frameDots = 0;
+                 }
+                 framesDots[frameDots].style.display = "block";
+             }
+             timerDots = setInterval(Dots, 120);
+			 
+			 sliderAuthorsInit();
+         }
          		 
 		 var sliderAuthorsFrame;
 		 var sliderAuthorsFrames;
+		 var pointAuthorsFrames;
+		 var pointScreensFrames;
 		 var textAuthorsFrames;
 		 var textScreensFrames;
 		 
 		 function sliderAuthorsInit() {
 			sliderAuthorsFrames = document.getElementById("sliderAuthorsContainer").children;
 			textAuthorsFrames = document.getElementById('textAuthorsContainer').children;
+			pointAuthorsFrames = document.getElementById('authorsPointContainer').children;
+			document.getElementById('authorsArrowsContainer').style.marginLeft = 20 + ( - (62 + pointAuthorsFrames.length * 31) / 2) + "px";
 			if (sliderAuthorsFrame == null) {
 				sliderAuthorsFrame = 0;
 			}	
@@ -28,12 +77,14 @@
 			}
 			sliderAuthorsFrames[sliderAuthorsFrame].style.display = "none";
 			textAuthorsFrames[sliderAuthorsFrame].style.display = "none";
+			pointAuthorsFrames[sliderAuthorsFrame].style.background = "url(content/sprites/point_ia.png) no-repeat";
 			sliderAuthorsFrame--;
 			if (sliderAuthorsFrame < 0) {
-				sliderAuthorsFrame = 9;
+				sliderAuthorsFrame = 10;
 			}
 			sliderAuthorsFrames[sliderAuthorsFrame].style.display = "block";
 			textAuthorsFrames[sliderAuthorsFrame].style.display = "block";
+			pointAuthorsFrames[sliderAuthorsFrame].style.background = "url(content/sprites/point_a.png) no-repeat";
 		 }
 		 
 		 function sliderAuthorsIncr() {
@@ -42,12 +93,14 @@
 			}
 			sliderAuthorsFrames[sliderAuthorsFrame].style.display = "none";
 			textAuthorsFrames[sliderAuthorsFrame].style.display = "none";
+			pointAuthorsFrames[sliderAuthorsFrame].style.background = "url(content/sprites/point_ia.png) no-repeat";
 			sliderAuthorsFrame++;
-			if (sliderAuthorsFrame > 9) {
+			if (sliderAuthorsFrame > 10) {
 				sliderAuthorsFrame = 0;
 			}
 			sliderAuthorsFrames[sliderAuthorsFrame].style.display = "block";
 			textAuthorsFrames[sliderAuthorsFrame].style.display = "block";
+			pointAuthorsFrames[sliderAuthorsFrame].style.background = "url(content/sprites/point_a.png) no-repeat";
 		 }
 		 
 		 var sliderScreensFrame;
@@ -56,6 +109,8 @@
 		 function sliderScreensInit() {
 			sliderScreensFrames = document.getElementById("sliderScreensContainer").children;
 			textScreensFrames = document.getElementById('textScreensContainer').children;
+			pointScreensFrames = document.getElementById('screensPointContainer').children;
+			document.getElementById('screensArrowsContainer').style.marginLeft = 20 + ( - (62 + pointScreensFrames.length * 31) / 2) + "px";
 			if (sliderScreensFrame == null) {
 				sliderScreensFrame = 0;
 			}	
@@ -67,12 +122,14 @@
 			}
 			sliderScreensFrames[sliderScreensFrame].style.display = "none";
 			textScreensFrames[sliderScreensFrame].style.display = "none";
+			pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_ia.png) no-repeat";
 			sliderScreensFrame--;
 			if (sliderScreensFrame < 0) {
 				sliderScreensFrame = 10;
 			}
 			sliderScreensFrames[sliderScreensFrame].style.display = "block";
 			textScreensFrames[sliderScreensFrame].style.display = "block";
+			pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_a.png) no-repeat";
 		 }
 		 
 		 function sliderScreensIncr() {
@@ -81,19 +138,21 @@
 			}
 			sliderScreensFrames[sliderScreensFrame].style.display = "none";
 			textScreensFrames[sliderScreensFrame].style.display = "none";
+			pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_ia.png) no-repeat";
 			sliderScreensFrame++;
 			if (sliderScreensFrame > 10) {
 				sliderScreensFrame = 0;
 			}
 			sliderScreensFrames[sliderScreensFrame].style.display = "block";
 			textScreensFrames[sliderScreensFrame].style.display = "block";
+			pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_a.png) no-repeat";
 		 }
 		 
 		 function showScreen() {
 			document.getElementById('blackout').style.display = "block";
 			document.getElementById('blackout').children[sliderScreensFrame].style.display = "block";
-			document.getElementById('blackout').children[sliderScreensFrame].children[0].style.left =
-                (809 - document.getElementById('blackout').children[sliderScreensFrame].children[0].style.width) / 2;
+			//document.getElementById('blackout').children[sliderScreensFrame].children[0].style.left =
+            //    (809 - document.getElementById('blackout').children[sliderScreensFrame].children[0].style.width) / 2;
 		 }
 		 
 		 function hideScreen() {
@@ -153,60 +212,120 @@
 @section topPanel{
     <div class="toppanel">
 			<div class="toppanelleft">
-				<a href = "render"><img src="/ils2/Content/Sprites//button_main_ia.png"></a>
+				<a href = "render"><img src="/ils2/Content/Sprites/button_main_ia.png"><p align="center" style="position:absolute;top:-6px;left:13px;display:block;font-size: x-small;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Главная</p></a>
 			</div>
 			<div class="toppanelcenter">
-				<a href = "about"><img src="/ils2/Content/Sprites//button_about_a.png"></a>
+				<a href = "about"><img src="/ils2/Content/Sprites/button_about_a.png"><p align="center" style="position:absolute;top:-6px;left:5px;display:block;font-size: x-small;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">О проекте</p></a>
 			</div>
 			<div class="toppanelright">
-				<a href = "contacts"><img src="/ils2/Content/Sprites//button_contact_ia.png"></a>
+				<a href = "contacts"><img src="/ils2/Content/Sprites/button_contact_ia.png"><p align="center" style="position:absolute;top:-6px;left:9px;display:block;font-size: x-small;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Контакты</p></a>
 			</div>
 		</div>
 }
 @section renderArea{
     <div class="renderarea">
+        <img id="updater" src="/ils2/Content/Sprites/black_back.png" style="display:block; position:absolute;top:0px;left:0px;">
+        <img src="/ils2/Content/Sprites/back.png" style="display:block; position:absolute;top:0px;left:0px;">
+        <img src="/ils2/Content/Sprites/logo.png" class="logo">
+        <div class="dots" id="dotsContainer">
+            <img src="/ils2/Content/Sprites/dots/dots_1.png" style="display:block">
+            <img src="/ils2/Content/Sprites/dots/dots_2.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_3.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_4.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_5.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_6.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_7.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_8.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_9.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_10.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_11.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_12.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_13.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_14.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_15.png" style="display:none">
+        </div>
 		<div class="textarea">
             <br>
-            <div id="headers">
-                <a href = "javascript:selectAuthors()"><img src="/ils2/Content/Sprites/about/authorsSel.png" id="authorsButton"></a>
-                <a href = "javascript:selectScreens()"><img src="/ils2/Content/Sprites/about/screens.png" id="screensButton"></a>
-                <a href = "javascript:selectAwards()"><img src="/ils2/Content/Sprites/about/awards.png" id="awardsButton"></a>
-                <a href = "javascript:selectAchievements()"><img src="/ils2/Content/Sprites/about/achievements.png" id="achievementsButton"></a>
+            <div id="headers" class="headers">
+                <img src="/ils2/Content/Sprites/about/authorsSel.png" id="authorsButton" onclick="javascript:selectAuthors()" style="cursor: pointer;">
+                <img src="/ils2/Content/Sprites/about/screens.png" id="screensButton" onclick="javascript:selectScreens()" style="cursor: pointer;">
+                <img src="/ils2/Content/Sprites/about/awards.png" id="awardsButton" onclick="javascript:selectAwards()" style="cursor: pointer;">
+                <img src="/ils2/Content/Sprites/about/achievements.png" id="achievementsButton" onclick="javascript:selectAchievements()" style="cursor: pointer;">
             </div>
-            <img src="/ils2/Content/Sprites/hr.png" style="position:absolute; left:50%; margin-left:-404px; margin-top:10px; top:56px">
             <br>
 			<div id="authorsContainer" style="display:block">
                 <div class="slider_authors" id = "slider_authors">
 			        <div class="slider_authors_frame">
 			        </div>
-			        <div class="slider_authors_arrow_left" onclick="javascript:sliderAuthorsDecr()">
-			        </div>
-			        <div class="slider_authors_arrow_right" onclick="javascript:sliderAuthorsIncr()">
-			        </div>
+			        
 			        <div class="slider_authors_content" id="sliderAuthorsContainer">
 				        <img src="/ils2/Content/Sprites/authors/author_1.jpg" style="display:block">
+				        <img src="/ils2/Content/Sprites/authors/author_11.jpg" style="display:none">
 				        <img src="/ils2/Content/Sprites/authors/author_2.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_9.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_6.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_8.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_10.jpg" style="display:none">
 				        <img src="/ils2/Content/Sprites/authors/author_3.jpg" style="display:none">
 				        <img src="/ils2/Content/Sprites/authors/author_4.jpg" style="display:none">
 				        <img src="/ils2/Content/Sprites/authors/author_5.jpg" style="display:none">
-				        <img src="/ils2/Content/Sprites/authors/author_6.jpg" style="display:none">
 				        <img src="/ils2/Content/Sprites/authors/author_7.jpg" style="display:none">
-				        <img src="/ils2/Content/Sprites/authors/author_8.jpg" style="display:none">
-				        <img src="/ils2/Content/Sprites/authors/author_9.jpg" style="display:none">
-				        <img src="/ils2/Content/Sprites/authors/author_10.jpg" style="display:none">
 			        </div>
 		        </div>
-                <div id="textAuthorsContainer" style="width:579px; left:240px; position:absolute">
-				    <p align="center" style="display:block;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Зеленко Лариса Сергеевна</p>
-				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Зинченко Алексей</p>
-				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Иванов Виталий</p>
-				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Конопелькин Дмитрий</p>
-				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Оськина Наталья</p>
-				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Петрухин Иван</p>
-				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Семенов Александр</p>
-				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Халитов Ильдар</p>
-				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Белов Константин</p>
-				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Григорьев Александр</p>
+		        <div class="arrows_container" id="authorsArrowsContainer">
+					<div class="arrow" style="background: url(content/sprites/arrow_left_ia.png) no-repeat;" onclick="javascript:sliderAuthorsDecr()"></div>
+					<div id="authorsPointContainer">
+						<div class="arrow" style="background: url(content/sprites/point_a.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+					</div>
+			        <div class="arrow" style="background: url(content/sprites/arrow_right_ia.png) no-repeat;" onclick="javascript:sliderAuthorsIncr()"></div>
+		        </div>
+                <div id="textAuthorsContainer">
+                    <div class="scroll-pane">
+				        <p align="center" style="display:block;font-size: 24px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">Зеленко Лариса Сергеевна
+                            <p align="wide" style="display:block;font-size: 14px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">Зеленко Лариса Сергеевна Зеленко Лариса Сергеевна Зеленко Лариса СергеевнаЗеленко Лариса Сергеевна Зеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЛариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЛариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЛариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЛариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса СергеевнаЗеленко Лариса Сергеевна
+                            </p>
+                        </p>
+                    </div>
+                    <div>
+				        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Загуменов</p>
+				    </div>
+                    <div>
+                        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Зинченко Алексей</p>
+				    </div>
+                    <div>
+                        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Белов Константин</p>
+				    </div>
+                    <div>
+                        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Петрухин Иван</p>
+				    </div>
+                    <div>
+                        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Халитов Ильдар</p>
+				    </div>
+                    <div>
+                        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Иванов Виталий</p>
+				    </div>
+                    <div>
+                        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Григорьев Александр</p>
+				    </div>
+                    <div>
+                        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Конопелькин Дмитрий</p>
+				    </div>
+                    <div>
+                        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Оськина Наталья</p>
+				    </div>
+                    <div>   
+                        <p align="center" style="display:none;font-size: medium;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Семенов Александр</p>
+                    </div>
                 </div>
 			</div>
 			<div id="screensContainer" style="display:none">
@@ -226,13 +345,26 @@
 			        </div>
 			        <div class="slider_screen_frame">
 			        </div>
-			        <div class="slider_screen_arrow_left" onclick="javascript:sliderScreensDecr()">
-			        </div>
-			        <div class="slider_screen_arrow_right" onclick="javascript:sliderScreensIncr()">
-			        </div>
 			        <div class="slider_screen_content" onclick="javascript:showScreen()">
 			        </div>
                 </div>
+				<div class="arrows_container" id="screensArrowsContainer">
+					<div class="arrow" style="background: url(content/sprites/arrow_left_ia.png) no-repeat;" onclick="javascript:sliderScreensDecr()"></div>
+					<div id="screensPointContainer">
+						<div class="arrow" style="background: url(content/sprites/point_a.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;"></div>
+					</div>
+			        <div class="arrow" style="background: url(content/sprites/arrow_right_ia.png) no-repeat;" onclick="javascript:sliderScreensIncr()"></div>
+		        </div>
                 <div id="textScreensContainer" style="width:579px; left:240px; position:absolute">
 				    <p align="center" style="display:block;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
 				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
@@ -275,37 +407,37 @@
 			</div>
 		</div>
         <div id="blackout" style="position:absolute;background: #000000;width:809px;height:400px;display:none;overflow:hidden" onclick="javascript:hideScreen()" style="cursor: pointer;">
-			<div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
-                <img align="middle" src="/ils2/Content/Sprites//screens//full//1.png" style="max-width: 809px; max-height:400px">
+			<div style="position:absolute;left:600px;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//1.png" style="max-width: 809px; max-height:400px; left:50%">
             </div>
-            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+            <div style="position:absolute;left:535px;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//2.png" style="max-width: 809px; max-height:400px">
             </div>
             <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//3.png" style="max-width: 809px; max-height:400px">
             </div>
-            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+            <div style="position:absolute;left:510px;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//4.png" style="max-width: 809px; max-height:400px">
             </div>
-            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+            <div style="position:absolute;left:510px;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//5.png" style="max-width: 809px; max-height:400px">
             </div>
-            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+            <div style="position:absolute;left:610px;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//6.png" style="max-width: 809px; max-height:400px">
             </div>
-            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+            <div style="position:absolute;left:585px;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//7.png" style="max-width: 809px; max-height:400px">
             </div>
-            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+            <div style="position:absolute;left:550px;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//8.png" style="max-width: 809px; max-height:400px">
             </div>
-            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+            <div style="position:absolute;left:510px;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//9.png" style="max-width: 809px; max-height:400px">
             </div>
-            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+            <div style="position:absolute;left:525px;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//10.png" style="max-width: 809px; max-height:400px">
             </div>
-            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+            <div style="position:absolute;left:510px;display:none;width:809px;height:400px;margin-left:-404px">
                 <img align="middle" src="/ils2/Content/Sprites//screens//full//11.png" style="max-width: 809px; max-height:400px">
             </div>
 		</div>

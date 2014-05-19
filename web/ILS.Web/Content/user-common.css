@@ -3,7 +3,7 @@
 	height: 100%;
 	overflow: hidden;
 	overflow: hidden;
-    background: url(sprites/background.png) repeat;
+    background: url(sprites/background.jpg) repeat;
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -47,58 +47,52 @@
 	margin-top: -320px;
    }
   .logo {
-   width: 133px;
-   height: 83px;
+   width: 103px;
+   height: 103px;
    position: absolute;
-   left: 50%;
-   margin-left: -507px;
-   top: 6px;
+   left: 30px;
+   top: 15px;
   }
-   .play {
-	width: 236px; 
-	height: 84px;
-	position: absolute;
-	left: 50%;
-	margin-left: -122px;
-	top: 5px;
-   }
-   .renderOverlayT {
-    width: 767px;
-	height: 29px;
-    background: url(sprites/renderOverlayT2.png) no-repeat;
-	position: absolute;
-	top: 0px;
-	left: 24px;
-   }
-   .renderOverlayL {
-    width: 24px;
-	height: 400px;
-    background: url(sprites/renderOverlayL2.png) no-repeat;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-   }
-   .renderOverlayR {
-    width: 18px;
-	height: 400px;
-    background: url(sprites/renderOverlayR2.png) no-repeat;
-	position: absolute;
-	top: 0px;
-	right: 0px;
-   }
-   .renderOverlayB {
-    width: 767px;
-	height: 27px;
-    background: url(sprites/renderOverlayB2.png) no-repeat;
-	position: absolute;
-	bottom: 0px;
-	left: 24px;
-   }
+  .dots {
+   width: 185px;
+   height: 103px;
+   position: absolute;
+   right: 30px;
+   top: 15px;
+  }
    .toppanel {
 	position: absolute;
 	left: 50%;
-	top: 50px;
-	margin-left: -144px;
+	top: 65px;
+	margin-left: -125px;
+   }
+   .toppanelleft {
+	width: 82px; 
+	height: 43px;
+	position: relative;
+	float: left;
+	left: 0%;
+   }
+   .toppanelcenter {
+	width: 82px; 
+	left: 2px;
+	height: 43px;
+	position: relative;
+	float: left;
+   }
+   .toppanelright {
+	width: 82px; 
+	left: 4px;
+	height: 43px;
+	position: relative;
+	float: left;
+   }
+   .visors {
+	width: 59px; 
+	height: 109px;
+	position: absolute;
+	top: 124px;
+	left: 4px;
    }
    .demoleft {
 	width: 124px; 
@@ -106,8 +100,8 @@
 	left: 0%;
 	position: absolute;
 	top: 465px;
-	margin-top: 43px;
-	margin-left: 21px;
+	margin-top: 38px;
+	margin-left: -1px;
    }
    .demoright {
 	width: 124px; 
@@ -115,71 +109,78 @@
 	position: absolute;
 	top: 465px;
 	left: 100%;
-	margin-top: 42px;
-	margin-left: -124px;
+	margin-top: 38px;
+	margin-left: -132px;
    }
    .buttonleft {
 	width: 86px; 
-	height: 54px;
-	top: 505px;
+	height: 52px;
+	top: 529px;
 	overflow: hidden;
 	position: absolute;
 	margin-top: 42px;
-	margin-left: 317px;
+	margin-left: 283px;
    }
    .invisiblebuttonleft {
 	width: 86px; 
-	height: 54px;
-	top: 505px;
+	height: 52px;
+	top: 529px;
 	overflow: hidden;
 	position: absolute;
 	margin-top: 42px;
-	margin-left: 317px;
+	margin-left: 283px;
    }
    .sdoorll {
 	width: 43px; 
-	height: 54px;
+	height: 52px;
 	position: absolute;
-	left: -3px;
+	left: 0px;
    }
    .sdoorlr {
 	width: 43px; 
-	height: 54px;
+	height: 52px;
 	position: absolute;
 	left: 43px;
    }
    .buttonright {
     width: 86px; 
 	height: 54px;
-	top: 505px;
+	top: 529px;
 	overflow: hidden;
 	position: absolute;
 	margin-top: 42px;
-	margin-left: 641px;
+	margin-left: 659px;
    }
    .invisiblebuttonright {
     width: 86px; 
 	height: 54px;
-	top: 505px;
+	top: 529px;
 	position: absolute;
 	margin-top: 42px;
-	margin-left: 641px;
+	margin-left: 659px;
    }
    .hello {
-	width: 114px; 
+	width: 130px; 
 	height: 159px;
 	position: absolute;
-	margin-top: 7px;
-	margin-left: 892px;
+	margin-top: 8px;
+	margin-left: 770px;
    }
    .copyright {
     width: 220px;
 	height: 30px;
-	top: 507px;
+	top: 512px;
 	position: absolute;
 	left: 50%;
 	margin-left: -110px;
    }
+   .adminLink {
+    position: absolute;
+    top: 42px;
+	left: 92px;
+	display: none;
+   }
+
    @font-face {
     font-family: Futurica; 
     src: url(Futurica.ttf); 

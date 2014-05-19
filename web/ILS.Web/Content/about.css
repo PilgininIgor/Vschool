@@ -1,51 +1,36 @@
-   .toppanelleft {
-	width: 81px; 
-	height: 30px;
-	position: relative;
-	float: left;
-	top: 4px;
-	left: 0%;
-   }
-   .toppanelcenter {
-	width: 104px; 
-	height: 34px;
-	position: relative;
-	float: left;
-   }
-   .toppanelright {
-	width: 92px; 
-	height: 30px;
-	position: relative;
-	float: left;
-	top: 4px;
-	right: 0%;
-   }
-   .renderarea {
-	width: 809px; 
+   .renderarea{
+	width: 810px; 
 	height: 400px;
-	top: 97px;
-	background: url(sprites/black_back.jpg) no-repeat;
+	top: 120px;
+	background: #000000;
 	position: absolute;
 	overflow: hidden;
 	left: 50%;
-	margin-left: -413px;
+	margin-left: -402px;
    }
    .textarea {
-    width: 809px; 
+    width: 810px; 
 	height: 400px;
 	top: 0px;
 	position: absolute;
-	background: #000000;
 	left: 50%;
 	margin-left: -405px;
    }
+   .scroll-pane {
+	width:489px; 
+	left:266px; 
+	position:absolute; 
+	top:130px;
+	height:205px;
+	overflow: auto;
+	}
    .slider_screen {
     position: absolute;
     width: 451px;
 	height: 256px;
-	top: 100px;
+	top: 120px;
 	left: 50%;
-	margin-left: -224px;
+	margin-left: -266px;
    }
    .slider_screen_button_screen {
     position: absolute;
@@ -88,38 +73,22 @@
 	left: 100px;
 	width: 22px;
 	height: 31px;
-	top: 203px;
+	top: 208px;
 	background: url(sprites/arrow_left_ia.png) no-repeat;
-   }
-   .slider_screen_arrow_left:hover {
-	position: absolute;
-	left: 100px;
-	width: 22px;
-	height: 31px;
-	top: 203px;
-	background: url(sprites/arrow_left_a.png) no-repeat;
    }
    .slider_screen_arrow_right {
 	position: absolute;
 	left: 329px;
 	width: 22px;
 	height: 31px;
-	top: 203px;
+	top: 208px;
 	background: url(sprites/arrow_right_ia.png) no-repeat;
-   }
-   .slider_screen_arrow_right:hover {
-	position: absolute;
-	left: 329px;
-	width: 22px;
-	height: 31px;
-	top: 203px;
-	background: url(sprites/arrow_right_a.png) no-repeat;
    }
    .slider_authors {
     position: absolute;
     width: 259px;
 	height: 256px;
-	top: 100px;
+	top: 120px;
 	left: 20px;
    }
   .slider_authors_content {
@@ -164,30 +133,32 @@
 	left: 80px;
 	width: 22px;
 	height: 31px;
-	top: 203px;
+	top: 208px;
 	background: url(sprites/arrow_left_ia.png) no-repeat;
-   }
-   .slider_authors_arrow_left:hover {
-	position: absolute;
-	left: 80px;
-	width: 22px;
-	height: 31px;
-	top: 203px;
-	background: url(sprites/arrow_left_a.png) no-repeat;
    }
    .slider_authors_arrow_right {
 	position: absolute;
 	left: 148px;
 	width: 22px;
 	height: 31px;
-	top: 203px;
+	top: 208px;
 	background: url(sprites/arrow_right_ia.png) no-repeat;
    }
-   .slider_authors_arrow_right:hover {
+   .arrows_container {
 	position: absolute;
-	left: 148px;
+	left: 50%;
+	width: 461px;
+	height: 31px;
+	top: 80px;
+   }
+   .arrow {
+	position:relative;
+	float: left;
 	width: 22px;
 	height: 31px;
-	top: 203px;
-	background: url(sprites/arrow_right_a.png) no-repeat;
+   }
+   .headers {
+	position:absolute;
+	left: 170px;
+	top: 15px;
    }

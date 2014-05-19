@@ -25,8 +25,6 @@
         var embedded = false;
         var width; var height;
 
-        var kicker;
-
         function startUnityPlayer() {
             if (!embedded && typeof unityObject != "undefined") {
                 width = 809;
@@ -34,14 +32,8 @@
                 if (width < 200 || height < 200) return;
                 embedded = true;
 
-                //это для того, чтобы в Юнити по нажатию правой кнопки не вылезало контекстное меню
                 var params = { disableContextMenu: true };
                 unityObject.embedUnity("unityPlayer", link_unityfile, width, height, params);
-                //document.getElementById("unityPlayer").style.position = "absolute";
-                //document.getElementById("unityPlayer").style.left = "50%";
-                //document.getElementById("unityPlayer").style.marginLeft = "-413px";
-                //document.getElementById("unityPlayer").style.top = "97px";
-
                 if (document.getElementById("unityPlayer").childNodes[0].tagName == "DIV") {
                     document.getElementById("unityPlayer").childNodes[0].style.width = "500px";
                     document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.height = "125px";
@@ -49,26 +41,10 @@
                     document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.left = "50%";
                     document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.marginLeft = "-96px";
                     document.getElementById("unityPlayer").childNodes[0].childNodes[0].title = "";
-                    //document.getElementById("getunity").width = 500;
-                    //document.getElementById("getunity").height = 125;
-                    //document.getElementById("getunity").src = getUnityImage;
-                    kicker = setInterval(unityPlayerKickStarter, 100);
                 }
-
-
             }
-
-
         }
 
-
-
-        function unityPlayerKickStarter() {
-            //document.getElementById("unityPlayer").style.position = "absolute";
-            //document.getElementById("unityPlayer").style.left = "50%";
-            //document.getElementById("unityPlayer").style.marginLeft = "-413px";
-            //document.getElementById("unityPlayer").style.top = "97px";
-        }
 
     </script>
     <script type="text/javascript">
@@ -85,38 +61,59 @@
                 width: 809
             });
 
-            // получаем картинку
             var index = frame + 1;
             image = document.getElementById("enter" + index);
-            //создаем переменную под новую картинку
             img = new Image();
-            // url картинки
             img.src = image.src;
-
-            // получаем canvas элемент
-
             canvas = document.getElementById("rotate");
-            // устанавливем размеры canvas элемента исходя из размеров самого изображения
             canvas.width = image.width;
             canvas.height = image.height;
-
-            // создаем переменную для работы с canvas
             img.context = canvas.getContext("2d");
             img.canvas = canvas;
             img.radians = Math.PI / 180;
             canvas_rotate.call(img, 0);
-            //
-            //enter();
 
+            var frameLoading = 0;
+            var timerLoading;
+            var framesLoading = document.getElementById("loadingContainer").children;
+            function loading() {
+                framesLoading[frameLoading].style.display = "none";
+                frameLoading++;
+                if (frameLoading == 50) {
+                    frameLoading = 0;
+                }
+                framesLoading[frameLoading].style.display = "block";
+            }
+            timerLoading = setInterval(loading, 40);
+
+            var updaterTop = -400;
+            var updaterTimer;
+            var updater = document.getElementById("updater");
+            function update() {
+                updater.style.top = updaterTop + 'px';
+                updaterTop += 3;
+                if (updaterTop > 800)
+                    updaterTop = -400;
+            }
+            updaterTimer = setInterval(update, 10);
+
+            var frameVisors = 0;
+            var timerVisors;
+            var framesVisors = document.getElementById("visorsContainer").children;
+            function visors() {
+                framesVisors[frameVisors].style.display = "none";
+                frameVisors++;
+                if (frameVisors == 15) {
+                    frameVisors = 0;
+                }
+                framesVisors[frameVisors].style.display = "block";
+            }
+            timerVisors = setInterval(visors, 40);
         }
 
         function canvas_rotate(rotate) {
-            // save the current co-ordinate system
-            // before we screw with it
             img.context.clearRect(0, 0, img.width, img.height);
             this.context.save();
-
-            // move to the middle of where we want to draw our image
             this.context.translate(this.width / 2, this.height / 2);
             this.context.rotate(rotate * this.radians);
             this.context.drawImage(this, -(this.width / 2), -(this.height / 2));
@@ -140,11 +137,8 @@
             authorisationComplete = true;
             if (success) {
                 authorisationSucceed = true;
-                document.getElementById('hello').innerHTML = 'Здравствуйте,';
-                document.getElementById('credentials').innerHTML = firstName + '<br>';
-                if (admin) {
-                    //document.getElementById('hello').innerHTML = document.getElementById('hello').innerHTML + '<a href="http://localhost:8080/admin">Перейти к панели администрирования</a>';
-                }
+                document.getElementById('credentials').innerHTML = firstName;
+                document.getElementById('adminLink').style.display = admin ? "block" : "none";
             } else {
                 authorisationSucceed = false;
             }
@@ -155,32 +149,25 @@
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1);
             url = "http://workstation.itschool.ssau.ru/account/logon/?extUrl=" + (needSlice ? url.slice(7) : url) + "openid";
             ITHASBEGUN = true;
-            var left = 0; // начальное значение
+            var left = 0; 
             var angle = 0;
-            var eleft = 228;
+            var eleft = -176;
             clearInterval(enterTimer);  
-            //for (var i = 1; i < 14; i++) {
-            //    document.getElementById("enter" + i).style.display = "none";
-            //}
-                function move() { // функция для отрисовки
+            function move() { 
                 if (angle <= 90) {
-                    
-                    // поварачиваем картинку и рисуем ее
                     canvas_rotate.call(img, angle);
                     angle += 10;
                 }
                 else {
                     if (left > -700) {
-
                         left -= 30;
                         eleft -= 30;
                         document.getElementById('doorl').style.left = left + 'px';
                         document.getElementById('doorr').style.left = 406 - left + 'px';
-                        document.getElementById('container').style.left = eleft + 'px';
+                        document.getElementById('container').style.marginLeft = eleft + 'px';
                     } else {
                         if (contentType == 0) {
                             if (!authorisationStarted) {
-                                //var url = 'http://workstation.itschool.ssau.ru/account/logon/?extUrl=' + 'virtual.itschool.ssau.ru/openid/';
                                 var offsetLeft = window.screenX + (window.outerWidth - window.innerWidth) / 2;
                                 var offsetTop = window.screenY + (window.outerHeight - window.innerHeight) - 5;
                                 var obj = document.getElementById('mainDoors');
@@ -208,8 +195,8 @@
                             } else {
                                 document.getElementById('mainDoors').style.display = 'none';
                                 if (authorisationComplete) {
-                                    document.getElementById('loading').style.display = 'none';
-                                    clearInterval(timer); // завершить анимацию
+                                    document.getElementById('loadingContainer').style.display = 'none';
+                                    clearInterval(timer); 
                                     if (authorisationSucceed) {
                                         document.getElementById("videoPlayer").style.display = 'none';
                                         startUnityPlayer();
@@ -218,19 +205,19 @@
                                 }
                             }
                         } else if (contentType == 1) {
-                            document.getElementById('loading').style.display = 'none';
+                            document.getElementById('loadingContainer').style.display = 'none';
                             document.getElementById('mainDoors').style.display = 'none';
                             document.getElementById("videoPlayer").style.display = 'none';
                             startUnityPlayer();
                         } else if (contentType == 2) {
-                            document.getElementById('loading').style.display = 'none';
+                            document.getElementById('loadingContainer').style.display = 'none';
                             document.getElementById('mainDoors').style.display = 'none';
                             document.getElementById("unityPlayer").style.display = 'none';
                         } 
                     }
                 }
             }
-            var timer = setInterval(move, 50) // рисовать каждые 10мс
+            var timer = setInterval(move, 50) 
         }
 
 
@@ -246,13 +233,10 @@
                 if (ITHASBEGUN) {
                     return;
                 }
-                //frames[frame].style.display = "none";
                 frame++;
                 if (frame == 13) {
                     frame = 7;
                 }
-                //console.log(frame);
-                //frames[frame].style.display = "block";
                 img.src = frames[frame].src;
                 canvas_rotate.call(img, 0);
             }
@@ -273,10 +257,7 @@
                     clearInterval(enterTimer);
                     frame = 1;    
                 }
-                //frames[frame].style.display = "none";
                 frame--;
-                //console.log(frame);
-                //frames[frame].style.display = "block";
                 img.src = frames[frame].src;
                 canvas_rotate.call(img, 0);
 
@@ -285,11 +266,15 @@
         }
 
         function demo_video() {
+            document.getElementById("awaitingAuthorisation").style.display = "none";
+            document.getElementById("awaitingLoading").style.display = "block";
             contentType = 2;
             enter_click();
         }
 
         function demo_game() {
+            document.getElementById("awaitingAuthorisation").style.display = "none";
+            document.getElementById("awaitingLoading").style.display = "block";
             contentType = 1;
             enter_click();
         }
@@ -301,25 +286,81 @@
     <div class="toppanel">
         <div class="toppanelleft">
             <a href="render">
-                <img src="/ils2/Content/Sprites//button_main_a.png"></a>
+                <img src="/ils2/Content/Sprites/button_main_a.png">
+                <p align="center" style="position:absolute;top:-6px;left:13px;display:block;font-size: x-small;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Главная</p>
+            </a>
         </div>
         <div class="toppanelcenter">
             <a href="about">
-                <img src="/ils2/Content/Sprites//button_about_ia.png"></a>
+                <img src="/ils2/Content/Sprites/button_about_ia.png">
+                <p align="center" style="position:absolute;top:-6px;left:5px;display:block;font-size: x-small;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">О проекте</p>
+            </a>
         </div>
         <div class="toppanelright">
             <a href="contacts">
-                <img src="/ils2/Content/Sprites//button_contact_ia.png"></a>
+                <img src="/ils2/Content/Sprites/button_contact_ia.png">
+                <p align="center" style="position:absolute;top:-6px;left:9px;display:block;font-size: x-small;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Контакты</p>
+            </a>
         </div>
     </div>
 }
 @section renderArea{
     
-    <div class="unityarea">
-        <div class="loading">
-            <object id="loading" type="application/x-shockwave-flash" wmode="opaque" data="/ils2/Content/Sprites/Loading.swf" width="230" height="230">
-                <p>Waiting</p>
-            </object>
+    <div class="unityarea">   
+        <img id="updater" src="/ils2/Content/Sprites/black_back.png" style="display:block; position:absolute;top:0px;left:0px;">
+        <div class="loading" id="loadingContainer" style="overflow:visible">
+            <img src="/ils2/Content/Sprites/loading/loading_1.png" style="display:block">
+            <img src="/ils2/Content/Sprites/loading/loading_2.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_3.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_4.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_5.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_6.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_7.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_8.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_9.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_10.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_11.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_12.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_13.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_14.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_15.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_16.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_17.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_18.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_19.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_20.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_21.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_22.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_23.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_24.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_25.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_26.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_27.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_28.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_29.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_30.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_31.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_32.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_33.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_34.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_35.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_36.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_37.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_38.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_39.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_40.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_41.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_42.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_43.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_44.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_45.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_46.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_47.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_48.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_49.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading_50.png" style="display:none">
+            <p align="center" id="awaitingAuthorisation" style="position:absolute;top:50px;display:block;font-size: large;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Ожидается авторизация пользователя</p>
+            <p align="center" id="awaitingLoading" style="position:absolute;top:80px;left:65px;display:none;font-size: large;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Загрузка</p>
         </div>
         <div id="unityPlayer" style="width: 809px; height: 400px; position: static">
         </div>
