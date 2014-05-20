@@ -45,6 +45,7 @@ public class PhotonGame : Photon.MonoBehaviour
             case "Mia": playerPrefab = Mia; break;
             case "Punk": playerPrefab = Punk; break;
             case "Carl": playerPrefab = Carl; break;
+            case "Golem": playerPrefab = Golem; break;
         }
 
         playerPrefab.GetComponent<NetworkCharacterAnimSync>().enabled = true;
