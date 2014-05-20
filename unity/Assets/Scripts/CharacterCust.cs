@@ -8,7 +8,9 @@ public class CharacterCust : MonoBehaviour
 	Vector3 leftPosition = new Vector3(20.0f, 2.0f, 31.0f);
 	Vector3 middlePosition = new Vector3(21.5f, 2.0f, 31.0f);
 	Vector3 rigthPosition = new Vector3(23.0f, 2.0f, 31.0f);
-	
+
+    bool buttonsIsVisible = true;
+
 	//avatars
 	public static string nameOfAvatar;
 	
@@ -76,6 +78,7 @@ public class CharacterCust : MonoBehaviour
 			nameOfAvatar = characters[curCharacter].name;
             Debug.Log("Selected avatar " + characters[curCharacter].name);
             GameObject.Find("_Customization").AddComponent<PhotonMenu>();
+            buttonsIsVisible = false;
             //characters[curCharacter].transform.parent = null;
             //Object.DontDestroyOnLoad(characters[curCharacter]);
             //Object.DontDestroyOnLoad(characters[curCharacter].transform.parent.gameObject);
@@ -95,6 +98,7 @@ public class CharacterCust : MonoBehaviour
 		
 	void OnGUI()
     {
+        if (buttonsIsVisible)
 		using (var skin = new DefaultSkin())
 		{
 			int hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);

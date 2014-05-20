@@ -47,17 +47,23 @@ public class PhotonGame : Photon.MonoBehaviour
             case "Carl": playerPrefab = Carl; break;
         }
 
+        playerPrefab.GetComponent<NetworkCharacterAnimSync>().enabled = true;
+        playerPrefab.GetComponent<BotControlScript>().enabled = true;
+
         // in case we started this demo with the wrong scene being active, simply load the menu scene
         if (!PhotonNetwork.connected)
         {
             Application.LoadLevel(PhotonMenu.SceneNameMenu);
             return;
         }
-
         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
         PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
-        Debug.Log("Player is " + PhotonNetwork.playerName);
+       // Debug.Log("this.playerPrefab.name " + this.playerPrefab.name);
         GameObject instantiatedPlayer = GameObject.Find(nameOfAvatar + "(Clone)");
+        Debug.Log("instantiatedPlayer.name " + instantiatedPlayer.name);
+        //instantiatedPlayer.name = PhotonNetwork.playerName;
+        //instantiatedPlayer.GetComponent<NetworkCharacterAnimSync>().enabled = true;
+        //instantiatedPlayer.GetComponent<BotControlScript>().enabled = true;
         Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
     }
 

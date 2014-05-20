@@ -51,10 +51,8 @@ public class NetworkCharacterAnimSync : Photon.MonoBehaviour {
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        Debug.Log("OnPhotonSerializeView");
         if (stream.isWriting)
         {
-            Debug.Log("Writing");
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(anim.GetFloat("Speed"));
@@ -71,7 +69,6 @@ public class NetworkCharacterAnimSync : Photon.MonoBehaviour {
         }
         else 
         {
-            Debug.Log("Reading");
             realPosition = (Vector3)stream.ReceiveNext();
             realRotation = (Quaternion)stream.ReceiveNext();
             anim.SetFloat("Speed", (float)stream.ReceiveNext());
