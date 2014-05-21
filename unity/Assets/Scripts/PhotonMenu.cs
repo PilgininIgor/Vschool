@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 
 public class PhotonMenu : MonoBehaviour
 {
-    private string roomName = "myRoom";
+    private string roomName = "Информатика";
 
     private Vector2 scrollPos = Vector2.zero;
 
@@ -35,7 +35,7 @@ public class PhotonMenu : MonoBehaviour
         // generate a name for this player, if none is assigned yet
         if (String.IsNullOrEmpty(PhotonNetwork.playerName))
         {
-            PhotonNetwork.playerName = "Guest" + Random.Range(1, 9999);
+            PhotonNetwork.playerName = Strings.Get("Guest") + Random.Range(1, 9999);
         }
 
         // if you wanted more debug out, turn this on:
@@ -61,7 +61,7 @@ public class PhotonMenu : MonoBehaviour
                 GUILayout.Label(String.Format("Server: {0}", new object[] {PhotonNetwork.ServerAddress}));
                 GUILayout.Label("AppId: " + PhotonNetwork.PhotonServerSettings.AppID);
                 
-                if (GUILayout.Button("Try Again", GUILayout.Width(100)))
+                if (GUILayout.Button(Strings.Get("Try Again"), GUILayout.Width(100)))
                 {
                     this.connectFailed = false;
                     PhotonNetwork.ConnectUsingSettings("1.0");
@@ -73,14 +73,14 @@ public class PhotonMenu : MonoBehaviour
 
 
         GUI.skin.box.fontStyle = FontStyle.Bold;
-        GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 300), "Join or Create a Room");
+        GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 300), Strings.Get("Join or Create a Course"));
         GUILayout.BeginArea(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 300));
 
         GUILayout.Space(25);
 
         // Player name
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Player name:", GUILayout.Width(100));
+        GUILayout.Label(Strings.Get("User name:"), GUILayout.Width(100));
         PhotonNetwork.playerName = GUILayout.TextField(PhotonNetwork.playerName);
         GUILayout.Space(105);
         if (GUI.changed)
@@ -94,10 +94,10 @@ public class PhotonMenu : MonoBehaviour
 
         // Join room by title
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Roomname:", GUILayout.Width(100));
+        GUILayout.Label(Strings.Get("Course name:"), GUILayout.Width(100));
         this.roomName = GUILayout.TextField(this.roomName);
         
-        if (GUILayout.Button("Create Room", GUILayout.Width(100)))
+        if (GUILayout.Button(Strings.Get("Create Course"), GUILayout.Width(100)))
         {
             PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 10 }, null);
         }
@@ -108,7 +108,7 @@ public class PhotonMenu : MonoBehaviour
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
         //this.roomName = GUILayout.TextField(this.roomName);
-        if (GUILayout.Button("Join Room", GUILayout.Width(100)))
+        if (GUILayout.Button(Strings.Get("Join Course"), GUILayout.Width(100)))
         {
             PhotonNetwork.JoinRoom(this.roomName);
         }
@@ -121,9 +121,9 @@ public class PhotonMenu : MonoBehaviour
         // Join random room
         GUILayout.BeginHorizontal();
 
-        GUILayout.Label(PhotonNetwork.countOfPlayers + " users are online in " + PhotonNetwork.countOfRooms + " rooms.");
+        GUILayout.Label(PhotonNetwork.countOfPlayers + Strings.Get(" users are online in ") + PhotonNetwork.countOfRooms + Strings.Get(" courses."));
         GUILayout.FlexibleSpace();
-        if (GUILayout.Button("Join Random", GUILayout.Width(100)))
+        if (GUILayout.Button(Strings.Get("Join Course"), GUILayout.Width(100)))
         {
             PhotonNetwork.JoinRandomRoom();
         }
@@ -134,12 +134,12 @@ public class PhotonMenu : MonoBehaviour
         GUILayout.Space(15);
         if (PhotonNetwork.GetRoomList().Length == 0)
         {
-            GUILayout.Label("Currently no games are available.");
-            GUILayout.Label("Rooms will be listed here, when they become available.");
+            GUILayout.Label(Strings.Get("Currently no games are available."));
+            GUILayout.Label(Strings.Get("Courses will be listed here, when they become available."));
         }
         else
         {
-            GUILayout.Label(PhotonNetwork.GetRoomList() + " currently available. Join either:");
+            GUILayout.Label(PhotonNetwork.GetRoomList() + Strings.Get(" currently available. Join either:"));
 
             // Room listing: simply call GetRoomList: no need to fetch/poll whatever!
             this.scrollPos = GUILayout.BeginScrollView(this.scrollPos);
@@ -147,7 +147,7 @@ public class PhotonMenu : MonoBehaviour
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(roomInfo.name + " " + roomInfo.playerCount + "/" + roomInfo.maxPlayers);
-                if (GUILayout.Button("Join"))
+                if (GUILayout.Button(Strings.Get("Join")))
                 {
                     PhotonNetwork.JoinRoom(roomInfo.name);
                 }

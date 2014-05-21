@@ -5,5 +5,20 @@
 { "key":"Closer", "ru":"Ближе", "en":"Closer"},
 { "key":"Return", "ru":"Возврат", "en":"Return"},
 { "key":"Look Around", "ru":"Осмотреть", "en":"Look Around"},
-{ "key":"Stop Watch", "ru":"Остановить", "en":"Stop Watch"}
+{ "key":"Stop Watch", "ru":"Остановить", "en":"Stop Watch"},
+
+{ "key":"Guest", "ru":"Гость", "en":"Guest"},
+{ "key":"Join", "ru":"Присоединить", "en":"Join"},
+{ "key":" currently available. Join either:", "ru":" в настоящее время. Присоединиться к любому", "en":" currently available. Join either:"},
+{ "key":"Courses will be listed here, when they become available.", "ru":"Курсы будут перечислены здесь, когда они станут доступны.", "en":"Courses will be listed here, when they become available."},
+{ "key":"Currently no games are available.", "ru":"В настоящее время игры не доступны.", "en":"Currently no games are available."},
+{ "key":"Join Course", "ru":"Присоединить", "en":"Join Course"},
+{ "key":" users are online in ", "ru":" пользователей онлайн в ", "en":" users are online in "},
+{ "key":"Create Course", "ru":"Создать Курс", "en":"Create Course"},
+{ "key":"Course name:", "ru":"Имя Курса", "en":"Course name:"},
+{ "key":"User name:", "ru":"Имя пользователя", "en":"User name:"},
+{ "key":"Join or Create a Course", "ru":"Присоединиться или Создать Курс", "en":"Join or Create a Course"},
+{ "key":"Try Again", "ru":"Пробовать Снова", "en":"Try Again"},
+{ "key":" courses.", "ru":" курсах.", "en":" courses."}
+
 ]

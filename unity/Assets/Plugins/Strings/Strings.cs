@@ -31,8 +31,17 @@ public class Strings : object
 	
 	string GetStringForKey(string key)
 	{
-		key = key.ToLower();
-		return dict[key];
+        string word = "";
+        try
+        {
+            key = key.ToLower();
+            word = dict[key];
+        }
+        catch 
+        {
+            Debug.LogError(key + " is not found in dictionary");
+        }
+        return word;
 	}
 	
 	Strings()
