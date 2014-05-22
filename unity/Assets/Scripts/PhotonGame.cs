@@ -48,9 +48,6 @@ public class PhotonGame : Photon.MonoBehaviour
             case "Golem": playerPrefab = Golem; break;
         }
 
-        playerPrefab.GetComponent<NetworkCharacterAnimSync>().enabled = true;
-        playerPrefab.GetComponent<BotControlScript>().enabled = true;
-
         // in case we started this demo with the wrong scene being active, simply load the menu scene
         if (!PhotonNetwork.connected)
         {
@@ -58,19 +55,15 @@ public class PhotonGame : Photon.MonoBehaviour
             return;
         }
         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-        PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
-       // Debug.Log("this.playerPrefab.name " + this.playerPrefab.name);
-        GameObject instantiatedPlayer = GameObject.Find(nameOfAvatar + "(Clone)");
-        Debug.Log("instantiatedPlayer.name " + instantiatedPlayer.name);
+        GameObject instantiatedPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
         //instantiatedPlayer.name = PhotonNetwork.playerName;
-        //instantiatedPlayer.GetComponent<NetworkCharacterAnimSync>().enabled = true;
-        //instantiatedPlayer.GetComponent<BotControlScript>().enabled = true;
         Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
+        Camera.main.GetComponent<OrbitCam>().player = instantiatedPlayer;
     }
 
     public void OnGUI()
     {
-        if (GUILayout.Button("Return to Lobby"))
+        if (GUILayout.Button(Strings.Get("Return to Lobby")))
         {
             PhotonNetwork.LeaveRoom();  // we will load the menu level when we successfully left the room
         }

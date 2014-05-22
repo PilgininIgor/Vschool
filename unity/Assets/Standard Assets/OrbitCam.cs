@@ -4,6 +4,7 @@ using System.Collections;
 public class OrbitCam : MonoBehaviour
 {
 	public Transform target;
+    public GameObject player;
 	public Vector3 targetOffset = Vector3.zero;
 	public Vector3 movementDirection = Vector3.zero;
 	public float distance = 4.0f;

@@ -8,7 +8,7 @@
 
 var MainCam : Camera;
 var StandCam : Camera;
-var PlayerAvatar : GameObject;
+var Player : GameObject;
 var magnifier : Texture;
 var arrow : Texture;
 
@@ -23,19 +23,9 @@ StandCam.GetComponent(AudioListener).enabled = false;
 
 function setIsBound(isBound: boolean)
 {
-/*Need to fix for multiplayer!!!*/
-	if (!PlayerAvatar)
-		PlayerAvatar = GameObject.Find("Bootstrap")/*.GetComponent(NetworkManagerScript).avatar*/;
+	Player = GameObject.Find("MainCamera").GetComponent.<OrbitCam>().player;
 		
-	PlayerAvatar.SetActive(!isBound);
-	/*if (isBound)
-	{
-		PlayerAvatar.animation.Stop();
-	}
-	else
-	{
-		PlayerAvatar.animation.Play("idle");
-	}*/
+	Player.SetActive(!isBound);
 	
 	MainCam.enabled = !isBound; 
 	MainCam.GetComponent(AudioListener).enabled = !isBound;

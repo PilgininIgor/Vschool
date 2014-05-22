@@ -1,4 +1,4 @@
-#pragma strict
+//#pragma strict
 
 private var JSONTestString = "{"+
 	"\"ifGuest\":false,\"username\":\"Student1\","+
@@ -37,9 +37,6 @@ var LBL = "Очки опыта";
 private var nameOfAvatar;
 
 function Start() {
-    /*Need to fix for multiplayer!!!*/
-    nameOfAvatar = GameObject.Find("Bootstrap");/*.GetComponent(NetworkManagerScript).nameOfAvatar;*/
-	Player = GameObject.Find(nameOfAvatar + "(Clone)");
 	//БОЛЬШОЙ РУБИЛЬНИК
 	RoleSystemSet(JSONTestString);
 	//Application.ExternalCall("LoadRPG");
@@ -52,11 +49,11 @@ function RoleSystemSet(JSONStringFromServer:String) {
 
 function OnGUI() {
 	if (!SkinSet) {
-		//GUI.skin.box.font = helvetica; GUI.skin.box.fontSize = 18; GUI.skin.box.fontStyle = FontStyle.BoldAndItalic;
+		//GUI.skin.box.font = helvetica; GUI.skin.box.fontSize = 12; GUI.skin.box.fontStyle = FontStyle.BoldAndItalic;
 		//GUI.skin.label.font = helvetica; GUI.skin.label.fontStyle = FontStyle.Bold;
-		//GUI.skin.label.fontSize = 0; GUI.skin.label.normal.textColor = Color(0.835, 0.929, 1);
+		//GUI.skin.label.fontSize = 12; GUI.skin.label.normal.textColor = Color(0.835, 0.929, 1);
 		//GUI.skin.label.alignment = TextAnchor.MiddleCenter;
-		SkinSet = true;
+		//SkinSet = true;
 	}
 	if (displayHUD) {		
 		if (RPG.ifGuest) GUI.Box(Rect(10, Screen.height - 50, 200, 40), LBL+": "+RPG.EXP.ToString());
@@ -67,7 +64,7 @@ function OnGUI() {
 				if (UNwidth > 1) UNwidthCalculated = true;
 				if (UNwidth < 200) UNwidth = 200;
 			}
-			GUI.Box(Rect(10, Screen.height - 95, UNwidth, 40), RPG.username);
+			//GUI.Box(Rect(10, Screen.height - 95, UNwidth, 40), RPG.username);
 			GUI.Box(Rect(10, Screen.height - 50, UNwidth, 40), LBL+": "+RPG.EXP.ToString());
 		}		
 	}
@@ -109,31 +106,6 @@ function OnGUI() {
 
 function Update() {
 	if (Input.GetKeyDown(KeyCode.I)) displayHUD = !displayHUD;
-
-	if (Input.GetKeyDown(KeyCode.T)) 
-	{
-		Player = GameObject.Find(nameOfAvatar + "(Clone)");
-		Player.transform.position = Vector3(27, -26, 0); 
-	}
-	
-	if (Input.GetKeyDown(KeyCode.Y)) 
-	{
-		Player = GameObject.Find(nameOfAvatar + "(Clone)");
-		Player.transform.position = Vector3(47, -26, 0); 
-	}
-	
-	if (Input.GetKeyDown(KeyCode.U)) 
-	{
-		Player = GameObject.Find(nameOfAvatar + "(Clone)");
-		Player.transform.position = Vector3(75, -26, 5); 
-	}
-	
-	if (Input.GetKeyDown(KeyCode.H)) 
-	{
-		Player = GameObject.Find(nameOfAvatar + "(Clone)");
-		Player.transform.position = Vector3(-28, 2, -30); 
-	}
-
 }
 
 function Achievement(text:String, points:int) {	
