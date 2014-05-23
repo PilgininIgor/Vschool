@@ -142,7 +142,6 @@ public class BotControlScript : MonoBehaviour
 		if(Input.GetButtonDown("Jump"))
 			{
 				anim.SetBool("Jump", true);
-			
 			}
 		else if(anim.GetBool("Jump"))
 			{

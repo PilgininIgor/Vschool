@@ -11,7 +11,6 @@ public class PhotonGame : Photon.MonoBehaviour
     public Transform playerPrefab;
 
     //avatars
-    public Transform Robot;
     public Transform Joan;
     public Transform Alexis;
     public Transform Golem;
@@ -36,7 +35,6 @@ public class PhotonGame : Photon.MonoBehaviour
 
         switch (nameOfAvatar)
         {
-            case "Robot": playerPrefab = Robot; break;
             case "Joan": playerPrefab = Joan; break;
             case "Alexis": playerPrefab = Alexis; break;
             case "Justin": playerPrefab = Justin; break;
