@@ -13,6 +13,7 @@ public class CharacterCust : MonoBehaviour
 
 	//avatars
 	public static string nameOfAvatar;
+    public GameObject AvatarNameText;
 	
 	public GameObject Observation;
 	
@@ -79,10 +80,6 @@ public class CharacterCust : MonoBehaviour
             Debug.Log("Selected avatar " + characters[curCharacter].name);
             GameObject.Find("_Customization").AddComponent<PhotonMenu>();
             buttonsIsVisible = false;
-            //characters[curCharacter].transform.parent = null;
-            //Object.DontDestroyOnLoad(characters[curCharacter]);
-            //Object.DontDestroyOnLoad(characters[curCharacter].transform.parent.gameObject);
-			//Application.LoadLevel("world");
 		}
         if (GUILayout.Button(">", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)) && (curCharacter < characters.Length - 1))
 		{
@@ -137,6 +134,7 @@ public class CharacterCust : MonoBehaviour
 		for(int i = 0; i < characters.Length; i++)
 				characters[i].SetActive(false);
 		characters[curCharacter].SetActive(true);
+        AvatarNameText.guiText.text = characters[curCharacter].name;
 	}
 	
 	void ChangeEffects(int curEffect)
