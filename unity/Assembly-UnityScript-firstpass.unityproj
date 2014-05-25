@@ -46,19 +46,16 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Plugins\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" />
-     <Compile Include="Assets\Plugins\Standard Assets\Character Controllers\Sources\Scripts\FPSInputController.js" />
-     <Compile Include="Assets\Plugins\Standard Assets\Character Controllers\Sources\Scripts\PlatformInputController.js" />
-     <Compile Include="Assets\Plugins\Standard Assets\Particles\Legacy Particles\TimedObjectDestructor.js" />
-     <Compile Include="Assets\Plugins\Standard Assets\Scripts\Camera Scripts\MouseOrbit.js" />
-     <Compile Include="Assets\Plugins\Standard Assets\Scripts\Camera Scripts\SmoothFollow.js" />
-     <Compile Include="Assets\Plugins\Standard Assets\Scripts\Camera Scripts\SmoothLookAt.js" />
+     <Compile Include="Assets\Standard Assets\Particles\Legacy Particles\TimedObjectDestructor.js" />
+     <Compile Include="Assets\Standard Assets\Scripts\Camera Scripts\MouseOrbit.js" />
+     <Compile Include="Assets\Standard Assets\Scripts\Camera Scripts\SmoothFollow.js" />
+     <Compile Include="Assets\Standard Assets\Scripts\Camera Scripts\SmoothLookAt.js" />
      <None Include="Assets\Customization\Characters\Fbx\AngryBot\M-T-S\AngryInclude.cginc" />
      <None Include="Assets\Hallway\Rooms\Room\TextShader.shader" />
      <None Include="Assets\Hallway\Shaders\ReflectiveBackgroundSelfIllumination.shader" />
      <None Include="Assets\Shaders\HeightDepthOfField.shader" />
      <None Include="Assets\Shaders\BlurPassesForDof.shader" />
-     <None Include="Assets\Plugins\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
+     <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Plugins\release_history.txt" />
      <None Include="Assets\Hallway\Shaders\glass.shader" />
      <None Include="Assets\Hallway\Shaders\AngryInclude.cginc" />
@@ -69,7 +66,7 @@
      <None Include="Assets\Hallway\Shaders\InterlacePatternBlend.shader" />
      <None Include="Assets\Hallway\Shared\Font\TextShader.shader" />
      <None Include="Assets\Shaders\MobileBloom.shader" />
-     <None Include="Assets\Plugins\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
+     <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
      <None Include="Assets\Hallway\Shaders\ReflectiveBackgroundArbitrary.shader" />
      <None Include="Assets\Customization\Water (Pro Only)\Sources\Shaders\FX-Water.shader" />
      <None Include="Assets\Animations\_CompleteAnimationList.txt" />

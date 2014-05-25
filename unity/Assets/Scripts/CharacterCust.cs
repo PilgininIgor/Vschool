@@ -8,9 +8,12 @@ public class CharacterCust : MonoBehaviour
 	Vector3 leftPosition = new Vector3(20.0f, 2.0f, 31.0f);
 	Vector3 middlePosition = new Vector3(21.5f, 2.0f, 31.0f);
 	Vector3 rigthPosition = new Vector3(23.0f, 2.0f, 31.0f);
-	
+
+    bool buttonsIsVisible = true;
+
 	//avatars
 	public static string nameOfAvatar;
+    public GameObject AvatarNameText;
 	
 	public GameObject Observation;
 	
@@ -76,10 +79,7 @@ public class CharacterCust : MonoBehaviour
 			nameOfAvatar = characters[curCharacter].name;
             Debug.Log("Selected avatar " + characters[curCharacter].name);
             GameObject.Find("_Customization").AddComponent<PhotonMenu>();
-            //characters[curCharacter].transform.parent = null;
-            //Object.DontDestroyOnLoad(characters[curCharacter]);
-            //Object.DontDestroyOnLoad(characters[curCharacter].transform.parent.gameObject);
-			//Application.LoadLevel("world");
+            buttonsIsVisible = false;
 		}
         if (GUILayout.Button(">", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)) && (curCharacter < characters.Length - 1))
 		{
@@ -95,6 +95,7 @@ public class CharacterCust : MonoBehaviour
 		
 	void OnGUI()
     {
+        if (buttonsIsVisible)
 		using (var skin = new DefaultSkin())
 		{
 			int hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
@@ -133,6 +134,7 @@ public class CharacterCust : MonoBehaviour
 		for(int i = 0; i < characters.Length; i++)
 				characters[i].SetActive(false);
 		characters[curCharacter].SetActive(true);
+        AvatarNameText.guiText.text = characters[curCharacter].name;
 	}
 	
 	void ChangeEffects(int curEffect)

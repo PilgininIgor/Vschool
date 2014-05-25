@@ -11,7 +11,6 @@ public class PhotonGame : Photon.MonoBehaviour
     public Transform playerPrefab;
 
     //avatars
-    public Transform Robot;
     public Transform Joan;
     public Transform Alexis;
     public Transform Golem;
@@ -36,7 +35,6 @@ public class PhotonGame : Photon.MonoBehaviour
 
         switch (nameOfAvatar)
         {
-            case "Robot": playerPrefab = Robot; break;
             case "Joan": playerPrefab = Joan; break;
             case "Alexis": playerPrefab = Alexis; break;
             case "Justin": playerPrefab = Justin; break;
@@ -45,6 +43,7 @@ public class PhotonGame : Photon.MonoBehaviour
             case "Mia": playerPrefab = Mia; break;
             case "Punk": playerPrefab = Punk; break;
             case "Carl": playerPrefab = Carl; break;
+            case "Golem": playerPrefab = Golem; break;
         }
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
@@ -53,17 +52,16 @@ public class PhotonGame : Photon.MonoBehaviour
             Application.LoadLevel(PhotonMenu.SceneNameMenu);
             return;
         }
-
         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-        PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
-        Debug.Log("Player is " + PhotonNetwork.playerName);
-        GameObject instantiatedPlayer = GameObject.Find(nameOfAvatar + "(Clone)");
+        GameObject instantiatedPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
+        //instantiatedPlayer.name = PhotonNetwork.playerName;
         Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
+        Camera.main.GetComponent<OrbitCam>().player = instantiatedPlayer;
     }
 
     public void OnGUI()
     {
-        if (GUILayout.Button("Return to Lobby"))
+        if (GUILayout.Button(Strings.Get("Return to Lobby")))
         {
             PhotonNetwork.LeaveRoom();  // we will load the menu level when we successfully left the room
         }
