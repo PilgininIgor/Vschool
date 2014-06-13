@@ -1,4 +1,62 @@
-﻿Ext.require(['Ext.draw.Component', 'Ext.Window']);
+﻿Ext.ns('ils', 'ils.linkEditor');
+
+if (Ext.util.Cookies.get("language") == null) {
+    Ext.util.Cookies.set("language", lang_pref);
+}
+if (Ext.util.Cookies.get("language") == "Russian") {
+    isRussian = true;
+} else {
+    isRussian = false;
+}
+
+ils.linkEditor.warningMessage = 'Warning';
+ils.linkEditor.chooseMaterialMessage = 'Select a material!';
+ils.linkEditor.saveMessage = 'Save';
+ils.linkEditor.helpMessage = 'Help';
+ils.linkEditor.helpText = 'To connect two objects just click on any of the connectors of the source element and draw a line to any associated connector element.<br><br>' +
+                            'To delete a link, click the left mouse button on the link and confirm the deletion.<br><br>' +
+                            'To save your changes, click "Save" button on the toolbar.';
+ils.linkEditor.confirmDeleteMessage = 'Are you sure you want to remove the link?';
+ils.linkEditor.cannotConnectMessage = 'You can not connect the elements';
+ils.linkEditor.otherDirectionMessage = 'Elements can not be connected since they are connected in a different direction!';
+ils.linkEditor.cycleMessage = 'You can not connect the elements, as the cycle is formed!';
+ils.linkEditor.chooseMaterialTypeMessage = 'Select a type of material';
+ils.linkEditor.chooseThemeMessage = 'Select a theme';
+ils.linkEditor.chooseCourseMessage = 'Select a course';
+ils.linkEditor.chooseMaterialMessage2 = 'Material selection';
+ils.linkEditor.saveReportMessage = 'Report about saving';
+ils.linkEditor.successSaveMessage = 'Connection successfully saved!';
+ils.linkEditor.failSaveMessage = 'Error saving links!';
+ils.linkEditor.openMessage = 'Open';
+ils.linkEditor.themeMessage = 'Theme';
+ils.linkEditor.courseMessage = 'Course';
+
+if (isRussian) {
+    ils.linkEditor.warningMessage = 'Предупреждение';
+    ils.linkEditor.chooseMaterialMessage = 'Выберите материал!';
+    ils.linkEditor.saveMessage = 'Сохранить';
+    ils.linkEditor.helpMessage = 'Помощь';
+    ils.linkEditor.helpText = 'Для соединения двух объектов нажмите на любой из коннекторов исходного элемента и проведите линию до любого коннектора связанного элемента.<br><br>' +
+                                'Для удаления связи нажмите левой кнопкой мыши на связь и подтвердите удаление.<br><br>' +
+                                'Чтобы сохранить изменения, нажмите кнопку "Сохранить" на тулбаре.';
+    ils.linkEditor.confirmDeleteMessage = 'Вы уверены, что хотите удалить связь?';
+    ils.linkEditor.cannotConnectMessage = 'Нельзя соединить элементы';
+    ils.linkEditor.otherDirectionMessage = 'Нельзя соединить элементы, так как они уже соединены в другом направлении!';
+    ils.linkEditor.cycleMessage = 'Нельзя соединить элементы, так как образуется цикл!';
+    ils.linkEditor.chooseMaterialTypeMessage = 'Выберите тип материала';
+    ils.linkEditor.chooseThemeMessage = 'Выберите тему';
+    ils.linkEditor.chooseCourseMessage = 'Выберите курс';
+    ils.linkEditor.chooseMaterialMessage2 = 'Выбор материала';
+    ils.linkEditor.saveReportMessage = 'Отчёт о сохранении';
+    ils.linkEditor.successSaveMessage = 'Связи успешно сохранены!';
+    ils.linkEditor.failSaveMessage = 'Ошибка при сохранении связей!';
+    ils.linkEditor.openMessage = 'Открыть';
+    ils.linkEditor.themeMessage = 'Тема';
+    ils.linkEditor.courseMessage = 'Курс';
+}
+
+
+Ext.require(['Ext.draw.Component', 'Ext.Window']);
 
 Ext.define('EduObject', {
     extend: 'Ext.data.Model',
@@ -41,8 +99,8 @@ var themeStore = Ext.create('Ext.data.Store', {
 var typeStore = Ext.create('Ext.data.Store', {
     fields: ['id', 'name'],
     data: [
-        { "id": "course", "name": "Курс" },
-        { "id": "theme", "name": "Тема" }
+        { "id": "course", "name": ils.linkEditor.courseMessage },
+        { "id": "theme", "name": ils.linkEditor.themeMessage }
     ]
 });
 
@@ -55,7 +113,7 @@ initEditor = function () {
     var selectedId = (Ext.getCmp('typecmb').getValue() == 'theme') ? Ext.getCmp('themecmb').getValue() : Ext.getCmp('coursecmb').getValue();
 
     if (selectedId == null || selectedId == '') {
-        createAndShowNewReportWindow('Предупреждение', 'Выберите материал!', Ext.MessageBox.WARNING);
+        createAndShowNewReportWindow(ils.linkEditor.warningMessage, ils.linkEditor.chooseMaterialMessage, Ext.MessageBox.WARNING);
         return;
     }
     wwin.hide();
@@ -89,16 +147,14 @@ initEditor = function () {
             });
             var tlbar = new Ext.toolbar.Toolbar({
                 items: [{
-                        text: 'Сохранить',
+                        text: ils.linkEditor.saveMessage,
                         iconCls: 'save',
                         handler: function () { saveCourse(); }
                     }, {
-                        text: 'Помощь',
+                        text: ils.linkEditor.helpMessage,
                         iconCls: 'help',
                         handler: function () {
-                            createAndShowNewReportWindow('Помощь', 'Для соединения двух объектов нажмите на любой из коннекторов исходного элемента и проведите линию до любого коннектора связанного элемента.<br><br>' +
-                                'Для удаления связи нажмите левой кнопкой мыши на связь и подтвердите удаление.<br><br>' +
-                                'Чтобы сохранить изменения, нажмите кнопку "Сохранить" на тулбаре.', Ext.MessageBox.INFO);
+                            createAndShowNewReportWindow(ils.linkEditor.helpMessage, ils.linkEditor.helpText, Ext.MessageBox.INFO);
                         }
                     }]
             });
@@ -190,7 +246,7 @@ initEditor = function () {
                 // will be prompted to confirm deletion.
                 instance.bind("beforeDetach", function (conn) {
                     if (!isAutoConnectionDelete) {
-                        return confirm("Вы уверены, что хотите удалить связь?");
+                        return confirm(ils.linkEditor.confirmDeleteMessage);
                     }
                 });
 
@@ -211,7 +267,7 @@ initEditor = function () {
                     }
 
                     if (adjacencyMatrix[connection.targetId][connection.sourceId] == 1) {
-                        createAndShowNewReportWindow('Нельзя соединить элементы', 'Нельзя соединить элементы, так как они уже соединены в другом направлении!', Ext.MessageBox.WARNING);
+                        createAndShowNewReportWindow(ils.linkEditor.cannotConnectMessage, ils.linkEditor.otherDirectionMessage, Ext.MessageBox.WARNING);
                         return true;
                     }
 
@@ -232,7 +288,7 @@ initEditor = function () {
                     };
 
                     if (hasCycles(adjacencyMatrix, connection.sourceId, connection.sourceId)) {
-                        createAndShowNewReportWindow('Нельзя соединить элементы', 'Нельзя соединить элементы, так как образуется цикл!', Ext.MessageBox.WARNING);
+                        createAndShowNewReportWindow(ils.linkEditor.cannotConnectMessage, ils.linkEditor.cycleMessage, Ext.MessageBox.WARNING);
                         adjacencyMatrix[connection.sourceId][connection.targetId] = undefined;
                         return true;
                     };
@@ -249,7 +305,7 @@ initEditor = function () {
 var themeSelect = new Ext.form.field.ComboBox({
     id: 'themecmb',
     xtype: 'combobox',
-    fieldLabel: 'Выберите тему',
+    fieldLabel: ils.linkEditor.chooseThemeMessage,
     store: themeStore,
     displayField: 'name',
     valueField: 'id',
@@ -269,7 +325,7 @@ var selectPanel = new Ext.FormPanel({
     items: [{
         id: 'typecmb',
         xtype: 'combobox',
-        fieldLabel: 'Выберите тип материала',
+        fieldLabel: ils.linkEditor.chooseMaterialTypeMessage,
         store: typeStore,
         displayField: 'name',
         valueField: 'id',
@@ -287,7 +343,7 @@ var selectPanel = new Ext.FormPanel({
     },{
         id: 'coursecmb',
         xtype: 'combobox',
-        fieldLabel: 'Выберите курс',
+        fieldLabel: ils.linkEditor.chooseCourseMessage,
         store: courseStore,
         displayField: 'name',
         valueField: 'id',
@@ -302,7 +358,7 @@ var selectPanel = new Ext.FormPanel({
         }
     }],
     buttons: [{
-        text: 'Открыть',
+        text: ils.linkEditor.openMessage,
         formBind: false,
         // Function that fires when user clicks the button 
         handler: initEditor
@@ -326,7 +382,7 @@ var wwin = new Ext.Window({
 
     plain: true,
     border: false,
-    title: 'Выбор материала',
+    title: ils.linkEditor.chooseMaterialMessage2,
     items: [selectPanel],
     modal: true
 });
@@ -368,10 +424,10 @@ var saveCourse = function () {
             id: (Ext.getCmp('typecmb').getValue() == 'theme')? Ext.getCmp('themecmb').getValue() : Ext.getCmp('coursecmb').getValue()
         },
         success: function () {
-            createAndShowNewReportWindow('Отчёт о сохранении', 'Связи успешно сохранены!', Ext.MessageBox.INFO);
+            createAndShowNewReportWindow(ils.linkEditor.saveReportMessage, ils.linkEditor.successSaveMessage, Ext.MessageBox.INFO);
         },
         failure: function () {
-            createAndShowNewReportWindow('Отчёт о сохранении', 'Ошибка при сохранении связей!', Ext.MessageBox.ERROR);
+            createAndShowNewReportWindow(ils.linkEditor.saveReportMessage, ils.linkEditor.failSaveMessage, Ext.MessageBox.ERROR);
         }
     });
 };
