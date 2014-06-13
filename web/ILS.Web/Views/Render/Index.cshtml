@@ -5,10 +5,10 @@
 @section additionalCSS {
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/user.css")"/>
 }
-
-
 @section scripts{
     <script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
+    <script type="text/javascript" src="Scripts/jwp/jwplayer.js"></script>
+         
     <script type="text/javascript">
         getUnityImage = '@Url.Content("~/Content/pics_service/UnitySetup.png")';
         link_unityfile = '@Url.Content("~/UnityDeploy/Main.unity3d")';
@@ -25,6 +25,8 @@
         var embedded = false;
         var width; var height;
 
+        var kicker;
+
         function startUnityPlayer() {
             if (!embedded && typeof unityObject != "undefined") {
                 width = 809;
@@ -35,19 +37,22 @@
                 //это для того, чтобы в Юнити по нажатию правой кнопки не вылезало контекстное меню
                 var params = { disableContextMenu: true };
                 unityObject.embedUnity("unityPlayer", link_unityfile, width, height, params);
-                document.getElementById("unityPlayer").style.position = "absolute";
-                document.getElementById("unityPlayer").style.left = "50%";
-                document.getElementById("unityPlayer").style.marginLeft = "-413px";
-                document.getElementById("unityPlayer").style.top = "97px";
+                //document.getElementById("unityPlayer").style.position = "absolute";
+                //document.getElementById("unityPlayer").style.left = "50%";
+                //document.getElementById("unityPlayer").style.marginLeft = "-413px";
+                //document.getElementById("unityPlayer").style.top = "97px";
 
                 if (document.getElementById("unityPlayer").childNodes[0].tagName == "DIV") {
                     document.getElementById("unityPlayer").childNodes[0].style.width = "500px";
                     document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.height = "125px";
-                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.top = "-62px";
+                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.top = "0px";
+                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.left = "50%";
+                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.marginLeft = "-96px";
                     document.getElementById("unityPlayer").childNodes[0].childNodes[0].title = "";
-                    document.getElementById("getunity").width = 500;
-                    document.getElementById("getunity").height = 125;
-                    document.getElementById("getunity").src = getUnityImage;
+                    //document.getElementById("getunity").width = 500;
+                    //document.getElementById("getunity").height = 125;
+                    //document.getElementById("getunity").src = getUnityImage;
+                    kicker = setInterval(unityPlayerKickStarter, 100);
                 }
 
 
@@ -56,14 +61,30 @@
 
         }
 
-    </script>
 
+
+        function unityPlayerKickStarter() {
+            //document.getElementById("unityPlayer").style.position = "absolute";
+            //document.getElementById("unityPlayer").style.left = "50%";
+            //document.getElementById("unityPlayer").style.marginLeft = "-413px";
+            //document.getElementById("unityPlayer").style.top = "97px";
+        }
+
+    </script>
     <script type="text/javascript">
         var img;
         var canvas;
         var frame = 0;
         var ITHASBEGUN = false;
         window.onload = function () {
+
+            jwplayer("videoPlayer").setup({
+                flashplayer: "Scripts/jwp/player.swf",
+                file: "Content/video.flv",
+                height: 400,
+                width: 809
+            });
+
             // получаем картинку
             var index = frame + 1;
             image = document.getElementById("enter" + index);
@@ -83,7 +104,7 @@
             img.context = canvas.getContext("2d");
             img.canvas = canvas;
             img.radians = Math.PI / 180;
-            //canvas_rotate.call(img, 0);
+            canvas_rotate.call(img, 0);
             //
             //enter();
 
@@ -92,55 +113,126 @@
         function canvas_rotate(rotate) {
             // save the current co-ordinate system
             // before we screw with it
+            img.context.clearRect(0, 0, img.width, img.height);
             this.context.save();
 
             // move to the middle of where we want to draw our image
             this.context.translate(this.width / 2, this.height / 2);
-
-            // rotate around that point, converting our
-            // angle from degrees to radians
             this.context.rotate(rotate * this.radians);
-
-            // draw it up and to the left by half the width
-            // and height of the image
             this.context.drawImage(this, -(this.width / 2), -(this.height / 2));
-
-            // and restore the co-ords to how they were when we began
             this.context.restore();
         }
 
+        var authorisationComplete = false;
+        var authorisationSucceed = false;
+        var authorisationStarted = false;
+        var contentType = 0; //0 - authorise & play, 1 - demo play, 2 - demo video
+
+        window.addEventListener("message", receiveMessage, false);
+
+        function receiveMessage(event) {
+            var message = JSON.parse(event.data);
+            if (message.header == 'authorise')
+                this.authorise(message.success, message.firstName, message.admin); 
+        }
+
+        authorise = function (success, firstName, admin) {
+            authorisationComplete = true;
+            if (success) {
+                authorisationSucceed = true;
+                document.getElementById('hello').innerHTML = 'Здравствуйте,';
+                document.getElementById('credentials').innerHTML = firstName + '<br>';
+                if (admin) {
+                    //document.getElementById('hello').innerHTML = document.getElementById('hello').innerHTML + '<a href="http://localhost:8080/admin">Перейти к панели администрирования</a>';
+                }
+            } else {
+                authorisationSucceed = false;
+            }
+        }
+
         function enter_click() {
+            var needSlice = (document.location.href.indexOf("http://") != -1);
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1);
+            url = "http://workstation.itschool.ssau.ru/account/logon/?extUrl=" + (needSlice ? url.slice(7) : url) + "openid";
             ITHASBEGUN = true;
             var left = 0; // начальное значение
             var angle = 0;
             var eleft = 228;
             clearInterval(enterTimer);  
-            for (var i = 1; i < 14; i++) {
-                document.getElementById("enter" + i).style.display = "none";
-            }
+            //for (var i = 1; i < 14; i++) {
+            //    document.getElementById("enter" + i).style.display = "none";
+            //}
                 function move() { // функция для отрисовки
                 if (angle <= 90) {
-                    img.context.clearRect(0, 0, img.width, img.height);
+                    
                     // поварачиваем картинку и рисуем ее
                     canvas_rotate.call(img, angle);
                     angle += 10;
                 }
                 else {
+                    if (left > -700) {
 
-                    left -= 30;
-                    eleft -= 30;
-                    document.getElementById('doorl').style.left = left + 'px';
-                    document.getElementById('doorr').style.left = 406 - left + 'px';
-                    document.getElementById('container').style.left = eleft + 'px';
-                    if (left <= -700) {
-                        clearInterval(timer); // завершить анимацию
-                        mainDoors.style.display = 'none';
-                        startUnityPlayer();
+                        left -= 30;
+                        eleft -= 30;
+                        document.getElementById('doorl').style.left = left + 'px';
+                        document.getElementById('doorr').style.left = 406 - left + 'px';
+                        document.getElementById('container').style.left = eleft + 'px';
+                    } else {
+                        if (contentType == 0) {
+                            if (!authorisationStarted) {
+                                //var url = 'http://workstation.itschool.ssau.ru/account/logon/?extUrl=' + 'virtual.itschool.ssau.ru/openid/';
+                                var offsetLeft = window.screenX + (window.outerWidth - window.innerWidth) / 2;
+                                var offsetTop = window.screenY + (window.outerHeight - window.innerHeight) - 5;
+                                var obj = document.getElementById('mainDoors');
+                                do {
+                                    offsetLeft += obj.offsetLeft;
+                                    offsetTop += obj.offsetTop;
+                                } while (obj = obj.offsetParent)
+                                var awLeft = offsetLeft;
+                                var awTop = offsetTop;
+                                //var authorisationWindow = window.open(url, '_blank', 'height=399, width=809, top=' + awTop + ', left=' + awLeft + ', scrollable=no, menubar=no, resizable=no, location=no');
+                                var authorisationWindow = window.open(url, '_blank', 'fullscreen=yes, scrollable=no, menubar=no, resizable=no, location=no');
+                                authorisationWindow.focus();
+                                authorisationWindow.onload = new function () {
+                                    var awWidth = authorisationWindow.window.outerWidth;
+                                    var awHeight = authorisationWindow.window.outerHeight;
+                                    var awInnerWidth = authorisationWindow.window.innerWidth;
+                                    var awInnerHeight = authorisationWindow.window.innerHeight;
+                                    //alert(awWidth + " " + awHeight);
+                                    awWidth = awInnerWidth - awWidth;
+                                    awHeight = awInnerHeight - awHeight;
+                                    //alert(awWidth + " " + awHeight);
+                                    //authorisationWindow.window.resizeBy(awWidth, awHeight);
+                                }
+                                authorisationStarted = true;
+                            } else {
+                                document.getElementById('mainDoors').style.display = 'none';
+                                if (authorisationComplete) {
+                                    document.getElementById('loading').style.display = 'none';
+                                    clearInterval(timer); // завершить анимацию
+                                    if (authorisationSucceed) {
+                                        document.getElementById("videoPlayer").style.display = 'none';
+                                        startUnityPlayer();
+                                    }
+
+                                }
+                            }
+                        } else if (contentType == 1) {
+                            document.getElementById('loading').style.display = 'none';
+                            document.getElementById('mainDoors').style.display = 'none';
+                            document.getElementById("videoPlayer").style.display = 'none';
+                            startUnityPlayer();
+                        } else if (contentType == 2) {
+                            document.getElementById('loading').style.display = 'none';
+                            document.getElementById('mainDoors').style.display = 'none';
+                            document.getElementById("unityPlayer").style.display = 'none';
+                        } 
                     }
                 }
             }
             var timer = setInterval(move, 50) // рисовать каждые 10мс
         }
+
 
         var enterTimer;
 
@@ -154,14 +246,15 @@
                 if (ITHASBEGUN) {
                     return;
                 }
-                frames[frame].style.display = "none";
+                //frames[frame].style.display = "none";
                 frame++;
                 if (frame == 13) {
                     frame = 7;
                 }
-                console.log(frame);
-                frames[frame].style.display = "block";
-                
+                //console.log(frame);
+                //frames[frame].style.display = "block";
+                img.src = frames[frame].src;
+                canvas_rotate.call(img, 0);
             }
             enterTimer = setInterval(move, 70);
         }
@@ -180,67 +273,93 @@
                     clearInterval(enterTimer);
                     frame = 1;    
                 }
-                frames[frame].style.display = "none";
+                //frames[frame].style.display = "none";
                 frame--;
-                console.log(frame);
-                frames[frame].style.display = "block";
+                //console.log(frame);
+                //frames[frame].style.display = "block";
+                img.src = frames[frame].src;
+                canvas_rotate.call(img, 0);
 
             }
             enterTimer = setInterval(move, 70);
         }
-    </script>
 
+        function demo_video() {
+            contentType = 2;
+            enter_click();
+        }
+
+        function demo_game() {
+            contentType = 1;
+            enter_click();
+        }
+    </script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/render.js")"></script>
 }
-
 @section topPanel{
+    
     <div class="toppanel">
-			<div class="toppanelleft">
-				<a href = "render"><img src="/Content/Sprites//button_main_a.png"></a>
-			</div>
-			<div class="toppanelcenter">
-				<a href = "about"><img src="/Content/Sprites//button_about_ia.png"></a>
-			</div>
-			<div class="toppanelright">
-				<a href = "contacts"><img src="/Content/Sprites//button_contact_ia.png"></a>
-			</div>
-		</div>
+        <div class="toppanelleft">
+            <a href="render">
+                <img src="/ils2/Content/Sprites//button_main_a.png"></a>
+        </div>
+        <div class="toppanelcenter">
+            <a href="about">
+                <img src="/ils2/Content/Sprites//button_about_ia.png"></a>
+        </div>
+        <div class="toppanelright">
+            <a href="contacts">
+                <img src="/ils2/Content/Sprites//button_contact_ia.png"></a>
+        </div>
+    </div>
 }
 @section renderArea{
-    <div class="unityarea" id="unityPlayer">
+    
+    <div class="unityarea">
+        <div class="loading">
+            <object id="loading" type="application/x-shockwave-flash" wmode="opaque" data="/ils2/Content/Sprites/Loading.swf" width="230" height="230">
+                <p>Waiting</p>
+            </object>
         </div>
-		<div class="renderarea" id="mainDoors">
-			<div class="doorleft" id = "doorl">
-				<img src="/Content/Sprites//door_left.jpg">
-			</div>
-			<div class="doorright" id = "doorr">
-				<img src="/Content/Sprites//door_right.jpg">
-			</div>
-			<div class="enter" id = "container">
-				<img src="/Content/Sprites//enter//enter1.png"  id = "enter1" style = "display:block">
-                <img src="/Content/Sprites//enter//enter2.png"  id = "enter2" style = "display:none">
-                <img src="/Content/Sprites//enter//enter3.png"  id = "enter3" style = "display:none">
-                <img src="/Content/Sprites//enter//enter4.png"  id = "enter4" style = "display:none">
-                <img src="/Content/Sprites//enter//enter5.png"  id = "enter5" style = "display:none">
-                <img src="/Content/Sprites//enter//enter6.png"  id = "enter6" style = "display:none">
-                <img src="/Content/Sprites//enter//enter7.png"  id = "enter7" style = "display:none">
-                <img src="/Content/Sprites//enter//enter8.png"  id = "enter8" style = "display:none">
-                <img src="/Content/Sprites//enter//enter9.png"  id = "enter9" style = "display:none">
-                <img src="/Content/Sprites//enter//enter10.png"  id = "enter10" style = "display:none">
-                <img src="/Content/Sprites//enter//enter11.png"  id = "enter11" style = "display:none">
-                <img src="/Content/Sprites//enter//enter12.png"  id = "enter12" style = "display:none">
-                <img src="/Content/Sprites//enter//enter13.png"  id = "enter13" style = "display:none">
-				<canvas id="rotate"></canvas>
-			</div>
-            <div class="enter" id = "container" onclick = "enter_click()" onmouseover = "enter_animate()" onmouseout = "enter_stop()">
-            </div>
-            <div class="renderOverlayT">
-			</div>
-			<div class="renderOverlayL">
-			</div>
-			<div class="renderOverlayR">
-			</div>
-			<div class="renderOverlayB">
-			</div>
-		</div>
+        <div id="unityPlayer" style="width: 809px; height: 400px; position: static">
+        </div>
+        <div id="videoPlayer" style="width: 809px; height: 400px; position: static">
+        </div>
+    </div>
+    <div class="renderarea" id="mainDoors">
+        <div class="doorleft" id="doorl">
+            <img src="/ils2/Content/Sprites/door_left.jpg">
+        </div>
+        <div class="doorright" id="doorr">
+            <img src="/ils2/Content/Sprites/door_right.jpg">
+        </div>
+        <div class="enter" id="container">
+            <img src="/ils2/Content/Sprites//enter//enter1.png" id="enter1" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter2.png" id="enter2" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter3.png" id="enter3" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter4.png" id="enter4" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter5.png" id="enter5" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter6.png" id="enter6" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter7.png" id="enter7" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter8.png" id="enter8" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter9.png" id="enter9" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter10.png" id="enter10" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter11.png" id="enter11" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter12.png" id="enter12" style="display: none">
+            <img src="/ils2/Content/Sprites//enter//enter13.png" id="enter13" style="display: none">
+            <canvas id="rotate"></canvas>
+        </div>
+        <div class="enter" id="container" onclick="javascript:enter_click()" onmouseover="javascript:enter_animate()"
+            onmouseout="javascript:enter_stop()" style="cursor: pointer;">
+        </div>
+        <div class="renderOverlayT">
+        </div>
+        <div class="renderOverlayL">
+        </div>
+        <div class="renderOverlayR">
+        </div>
+        <div class="renderOverlayB">
+        </div>
+    </div>
+    
 }

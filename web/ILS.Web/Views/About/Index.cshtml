@@ -8,73 +8,310 @@
 }
 @section scripts{
      <script type="text/javascript">
-         function change() {
-             var screen = document.getElementById('slider_screen');
-             var authors = document.getElementById('slider_authors');
-             if (screen.style.display == "block") {
-                 authors.style.display = "block";
-                 screen.style.display = "none";
-             }
-             else {
-                 screen.style.display = "block";
-                 authors.style.display = "none";
-             }
+         		 
+		 var sliderAuthorsFrame;
+		 var sliderAuthorsFrames;
+		 var textAuthorsFrames;
+		 var textScreensFrames;
+		 
+		 function sliderAuthorsInit() {
+			sliderAuthorsFrames = document.getElementById("sliderAuthorsContainer").children;
+			textAuthorsFrames = document.getElementById('textAuthorsContainer').children;
+			if (sliderAuthorsFrame == null) {
+				sliderAuthorsFrame = 0;
+			}	
+		 }
+		 
+		 function sliderAuthorsDecr() {
+			if (sliderAuthorsFrames == null) {
+				sliderAuthorsInit();
+			}
+			sliderAuthorsFrames[sliderAuthorsFrame].style.display = "none";
+			textAuthorsFrames[sliderAuthorsFrame].style.display = "none";
+			sliderAuthorsFrame--;
+			if (sliderAuthorsFrame < 0) {
+				sliderAuthorsFrame = 9;
+			}
+			sliderAuthorsFrames[sliderAuthorsFrame].style.display = "block";
+			textAuthorsFrames[sliderAuthorsFrame].style.display = "block";
+		 }
+		 
+		 function sliderAuthorsIncr() {
+			if (sliderAuthorsFrames == null) {
+				sliderAuthorsInit();
+			}
+			sliderAuthorsFrames[sliderAuthorsFrame].style.display = "none";
+			textAuthorsFrames[sliderAuthorsFrame].style.display = "none";
+			sliderAuthorsFrame++;
+			if (sliderAuthorsFrame > 9) {
+				sliderAuthorsFrame = 0;
+			}
+			sliderAuthorsFrames[sliderAuthorsFrame].style.display = "block";
+			textAuthorsFrames[sliderAuthorsFrame].style.display = "block";
+		 }
+		 
+		 var sliderScreensFrame;
+		 var sliderScreensFrames;
+		 
+		 function sliderScreensInit() {
+			sliderScreensFrames = document.getElementById("sliderScreensContainer").children;
+			textScreensFrames = document.getElementById('textScreensContainer').children;
+			if (sliderScreensFrame == null) {
+				sliderScreensFrame = 0;
+			}	
+		 }
+		 
+		 function sliderScreensDecr() {
+			if (sliderScreensFrames == null) {
+				sliderScreensInit();
+			}
+			sliderScreensFrames[sliderScreensFrame].style.display = "none";
+			textScreensFrames[sliderScreensFrame].style.display = "none";
+			sliderScreensFrame--;
+			if (sliderScreensFrame < 0) {
+				sliderScreensFrame = 10;
+			}
+			sliderScreensFrames[sliderScreensFrame].style.display = "block";
+			textScreensFrames[sliderScreensFrame].style.display = "block";
+		 }
+		 
+		 function sliderScreensIncr() {
+			if (sliderScreensFrames == null) {
+				sliderScreensInit();
+			}
+			sliderScreensFrames[sliderScreensFrame].style.display = "none";
+			textScreensFrames[sliderScreensFrame].style.display = "none";
+			sliderScreensFrame++;
+			if (sliderScreensFrame > 10) {
+				sliderScreensFrame = 0;
+			}
+			sliderScreensFrames[sliderScreensFrame].style.display = "block";
+			textScreensFrames[sliderScreensFrame].style.display = "block";
+		 }
+		 
+		 function showScreen() {
+			document.getElementById('blackout').style.display = "block";
+			document.getElementById('blackout').children[sliderScreensFrame].style.display = "block";
+			document.getElementById('blackout').children[sliderScreensFrame].children[0].style.left =
+                (809 - document.getElementById('blackout').children[sliderScreensFrame].children[0].style.width) / 2;
+		 }
+		 
+		 function hideScreen() {
+			document.getElementById('blackout').style.display = "none";
+			document.getElementById('blackout').children[sliderScreensFrame].style.display = "none";
          }
+
+         function selectAuthors() {
+             sliderAuthorsInit();
+             document.getElementById('authorsButton').src = "/ils2/Content/Sprites/about/authorsSel.png";
+             document.getElementById('screensButton').src = "/ils2/Content/Sprites/about/screens.png"
+             document.getElementById('awardsButton').src = "/ils2/Content/Sprites/about/awards.png"
+             document.getElementById('achievementsButton').src = "/ils2/Content/Sprites/about/achievements.png"
+             document.getElementById('authorsContainer').style.display = "block";
+             document.getElementById('screensContainer').style.display = "none";
+             document.getElementById('awardsContainer').style.display = "none";
+             document.getElementById('achievementsContainer').style.display = "none";
+         }
+
+         function selectScreens() {
+             sliderScreensInit();
+             document.getElementById('authorsButton').src = "/ils2/Content/Sprites/about/authors.png";
+             document.getElementById('screensButton').src = "/ils2/Content/Sprites/about/screensSel.png"
+             document.getElementById('awardsButton').src = "/ils2/Content/Sprites/about/awards.png"
+             document.getElementById('achievementsButton').src = "/ils2/Content/Sprites/about/achievements.png"
+             document.getElementById('authorsContainer').style.display = "none";
+             document.getElementById('screensContainer').style.display = "block";
+             document.getElementById('awardsContainer').style.display = "none";
+             document.getElementById('achievementsContainer').style.display = "none";
+         }
+
+         function selectAwards() {
+             document.getElementById('authorsButton').src = "/ils2/Content/Sprites/about/authors.png";
+             document.getElementById('screensButton').src = "/ils2/Content/Sprites/about/screens.png"
+             document.getElementById('awardsButton').src = "/ils2/Content/Sprites/about/awardsSel.png"
+             document.getElementById('achievementsButton').src = "/ils2/Content/Sprites/about/achievements.png"
+             document.getElementById('authorsContainer').style.display = "none";
+             document.getElementById('screensContainer').style.display = "none";
+             document.getElementById('awardsContainer').style.display = "block";
+             document.getElementById('achievementsContainer').style.display = "none";
+         }
+
+         function selectAchievements() {
+             document.getElementById('authorsButton').src = "/ils2/Content/Sprites/about/authors.png";
+             document.getElementById('screensButton').src = "/ils2/Content/Sprites/about/screens.png"
+             document.getElementById('awardsButton').src = "/ils2/Content/Sprites/about/awards.png"
+             document.getElementById('achievementsButton').src = "/ils2/Content/Sprites/about/achievementsSel.png"
+             document.getElementById('authorsContainer').style.display = "none";
+             document.getElementById('screensContainer').style.display = "none";
+             document.getElementById('awardsContainer').style.display = "none";
+             document.getElementById('achievementsContainer').style.display = "block";
+         }
+
+
     </script> 
 }
 @section topPanel{
     <div class="toppanel">
 			<div class="toppanelleft">
-				<a href = "render"><img src="/Content/Sprites//button_main_ia.png"></a>
+				<a href = "render"><img src="/ils2/Content/Sprites//button_main_ia.png"></a>
 			</div>
 			<div class="toppanelcenter">
-				<a href = "about"><img src="/Content/Sprites//button_about_a.png"></a>
+				<a href = "about"><img src="/ils2/Content/Sprites//button_about_a.png"></a>
 			</div>
 			<div class="toppanelright">
-				<a href = "contacts"><img src="/Content/Sprites//button_contact_ia.png"></a>
+				<a href = "contacts"><img src="/ils2/Content/Sprites//button_contact_ia.png"></a>
 			</div>
 		</div>
 }
 @section renderArea{
     <div class="renderarea">
+		<div class="textarea">
+            <br>
+            <div id="headers">
+                <a href = "javascript:selectAuthors()"><img src="/ils2/Content/Sprites/about/authorsSel.png" id="authorsButton"></a>
+                <a href = "javascript:selectScreens()"><img src="/ils2/Content/Sprites/about/screens.png" id="screensButton"></a>
+                <a href = "javascript:selectAwards()"><img src="/ils2/Content/Sprites/about/awards.png" id="awardsButton"></a>
+                <a href = "javascript:selectAchievements()"><img src="/ils2/Content/Sprites/about/achievements.png" id="achievementsButton"></a>
+            </div>
+            <img src="/ils2/Content/Sprites/hr.png" style="position:absolute; left:50%; margin-left:-404px; margin-top:10px; top:56px">
+            <br>
+			<div id="authorsContainer" style="display:block">
+                <div class="slider_authors" id = "slider_authors">
+			        <div class="slider_authors_frame">
+			        </div>
+			        <div class="slider_authors_arrow_left" onclick="javascript:sliderAuthorsDecr()">
+			        </div>
+			        <div class="slider_authors_arrow_right" onclick="javascript:sliderAuthorsIncr()">
+			        </div>
+			        <div class="slider_authors_content" id="sliderAuthorsContainer">
+				        <img src="/ils2/Content/Sprites/authors/author_1.jpg" style="display:block">
+				        <img src="/ils2/Content/Sprites/authors/author_2.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_3.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_4.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_5.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_6.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_7.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_8.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_9.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/authors/author_10.jpg" style="display:none">
+			        </div>
+		        </div>
+                <div id="textAuthorsContainer" style="width:579px; left:240px; position:absolute">
+				    <p align="center" style="display:block;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Зеленко Лариса Сергеевна</p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Зинченко Алексей</p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Иванов Виталий</p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Конопелькин Дмитрий</p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Оськина Наталья</p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Петрухин Иван</p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Семенов Александр</p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Халитов Ильдар</p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Белов Константин</p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Григорьев Александр</p>
+                </div>
+			</div>
+			<div id="screensContainer" style="display:none">
+                <div class="slider_screen" id = "slider_screen">
+                    <div class="slider_screen_content" id="sliderScreensContainer">
+				        <img src="/ils2/Content/Sprites/screens/1.jpg" style="display:block">
+				        <img src="/ils2/Content/Sprites/screens/2.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/screens/3.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/screens/4.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/screens/5.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/screens/6.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/screens/7.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/screens/8.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/screens/9.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/screens/10.jpg" style="display:none">
+				        <img src="/ils2/Content/Sprites/screens/11.jpg" style="display:none">
+			        </div>
+			        <div class="slider_screen_frame">
+			        </div>
+			        <div class="slider_screen_arrow_left" onclick="javascript:sliderScreensDecr()">
+			        </div>
+			        <div class="slider_screen_arrow_right" onclick="javascript:sliderScreensIncr()">
+			        </div>
+			        <div class="slider_screen_content" onclick="javascript:showScreen()">
+			        </div>
+                </div>
+                <div id="textScreensContainer" style="width:579px; left:240px; position:absolute">
+				    <p align="center" style="display:block;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				    <p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+			    </div>
+            </div>
+            <div id="awardsContainer" style="display:none">
+				<p align="center" style="display:block;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+			</div>
+            <div id="achievementsContainer" style="display:none">
+				<p align="center" style="display:block;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+				<p align="center" style="display:none;font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica"></p>
+			</div>
+		</div>
+        <div id="blackout" style="position:absolute;background: #000000;width:809px;height:400px;display:none;overflow:hidden" onclick="javascript:hideScreen()" style="cursor: pointer;">
+			<div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//1.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//2.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//3.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//4.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//5.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//6.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//7.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//8.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//9.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//10.png" style="max-width: 809px; max-height:400px">
+            </div>
+            <div style="position:absolute;left:50%;display:none;width:809px;height:400px;margin-left:-404px">
+                <img align="middle" src="/ils2/Content/Sprites//screens//full//11.png" style="max-width: 809px; max-height:400px">
+            </div>
+		</div>
 	</div>
 }
-@section sliderArea{
-    <div class="slider_screen" id = "slider_screen">
-			<div class="slider_screen_button_screen">
-				<img src="/Content/Sprites//slider_screen_button_screen.png">
-			</div>
-			<div class="slider_screen_button_authors">
-				<a onclick="change()"><img src="/Content/Sprites//slider_screen_button_authors.png"></a>
-			</div>
-			<div class="slider_screen_frame">
-				<img src="/Content/Sprites//slider_screen_frame.png">
-			</div>
-			<div class="slider_screen_button_authors" onclick="change()">
-			</div>
-			<div class="slider_screen_arrow_left">
-				<img src="/Content/Sprites//arrow_left_ia.png">
-			</div>
-			<div class="slider_screen_arrow_right">
-				<img src="/Content/Sprites//arrow_right_ia.png">
-			</div>
-		</div>
-		<div class="slider_authors" id = "slider_authors">
-			<div class="slider_authors_button_authors">
-				<img src="/Content/Sprites//slider_authors_button_authors.png">
-			</div>
-			<div class="slider_authors_button_screen">
-				<img src="/Content/Sprites//slider_authors_button_screen.png" >
-			</div>
-			<div class="slider_authors_frame">
-				<img src="/Content/Sprites//slider_authors_frame.png">
-			</div>
-			<div class="slider_authors_button_screen" onclick="change()">
-			</div>
-			<div class="slider_authors_arrow_left">
-			</div>
-			<div class="slider_authors_arrow_right">
-			</div>
-		</div>
+@section end {
+		
 }
 
