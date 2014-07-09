@@ -1,0 +1,11 @@
+   body{
+	background-image: url(sprites/robot.png) !important;
+	background-position: bottom !important;
+	background-color: transparent !important;
+	background-repeat: no-repeat !important;
+	background-attachment: fixed !important;
+   }
+  	
+	.horizontal-menu {
+	display:none !important;
+	}
