@@ -10,9 +10,6 @@ if (isRussian)
 	ils.openid.panelName = 'Вход через OpenID';
 }
 
-function close() {
-    window.close();
-}
 
 function parseURLParams(url) {
   var queryStart = url.indexOf("?") + 1;
@@ -153,6 +150,8 @@ Ext.onReady(function () {
 			)
     });
 
+
+
     var urlParams = parseURLParams(document.URL);
     if (urlParams != null && urlParams['key'] != null && urlParams['login'] != null && urlParams['hash'] != null && /*urlParams['firstName'] != null && urlParams['lastName'] != null && */urlParams['email'] != null) {
         Ext.Ajax.request({
@@ -161,14 +160,12 @@ Ext.onReady(function () {
                 var a = eval('(' + response.responseText + ')');
                 if (a.success) {
                     ils.admin.success.show();
-                    //document.location.href = document.location.href.slice(0, document.location.href.indexOf("ILS/") + 4);
                     var message = new Object();
                     message.header = "authorise";
-                    message.firstName = urlParams['firstName'] == null ? "Имя" : urlParams['firstName'][0];
-                    message.lastName = urlParams['lastName'] == null ? "Фамилия" : urlParams['lastName'][0];
+                    message.firstName = a.firstName == null ? "Имя" : a.firstName;
+                    message.lastName = a.lastName == null ? "Фамилия" : a.lastName;
                     message.admin = a.admin;
                     message.success = true;
-                    //window.opener.window.authorise(true, urlParams['firstName'] == null ? "" : urlParams['firstName'][0], urlParams['lastName'] == null ? "" : urlParams['lastName'][0], false);
                     window.opener.postMessage(JSON.stringify(message), '*');
                 }
                 else {
@@ -179,18 +176,16 @@ Ext.onReady(function () {
                     message.lastName = "";
                     message.admin = false;
                     message.success = false;
-                    //window.opener.authorise(false, '', '', false);
                     window.opener.postMessage(JSON.stringify(message), '*');
 
                 }
                 window.open('', '_parent', '');
-                window.close();
-
+                setTimeout(window.close, 250);
             },
             failure: function (response, opts) {
                 ils.admin.failure.show();
                 window.open('', '_parent', '');
-                window.close();
+                setTimeout(window.close, 250);
             },
             jsonData: [{
                 'login': urlParams['login'][0],

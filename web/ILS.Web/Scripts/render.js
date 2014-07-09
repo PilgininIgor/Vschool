@@ -7,7 +7,8 @@
 //ФУНКЦИИ, ВЫЗЫВАЕМЫЕ ИЗНУТРИ ЮНИТИ
 
 function UnityLoaded() {
-    alert('Unity loaded!');
+    document.getElementById("unityPlayer").style.height = "400px";
+	document.getElementById("unityPlayer").style.width = "810px";
 }
 
 function GetLanguage() {

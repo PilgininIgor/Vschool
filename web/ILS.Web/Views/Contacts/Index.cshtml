@@ -7,38 +7,129 @@
 }
 
 @section scripts{
- 
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var updaterTop = -400;
+            var updaterTimer;
+            var updater = document.getElementById("updater");
+            function update() {
+                updater.style.top = updaterTop + 'px';
+                updaterTop += 3;
+                if (updaterTop > 800)
+                    updaterTop = -400;
+            }
+            updaterTimer = setInterval(update, 10);
+
+            var frameVisors = 0;
+            var timerVisors;
+            var framesVisors = document.getElementById("visorsContainer").children;
+            function visors() {
+                framesVisors[frameVisors].style.display = "none";
+                frameVisors++;
+                if (frameVisors == 15) {
+                    frameVisors = 0;
+                }
+                framesVisors[frameVisors].style.display = "block";
+            }
+            timerVisors = setInterval(visors, 40);
+
+            var framePointer = 1;
+            var pointer = document.getElementById("pointer");
+            function point() {
+                pointer.style.opacity = framePointer;
+                framePointer -= 0.05;
+                if (framePointer < 0.3)
+                    framePointer = 1;
+            }
+            var timerPointer = setInterval(point, 100);
+
+            var frameDots = 0;
+            var timerDots;
+            var framesDots = document.getElementById("dotsContainer").children;
+            function Dots() {
+                framesDots[frameDots].style.display = "none";
+                frameDots++;
+                if (frameDots == 15) {
+                    frameDots = 0;
+                }
+                framesDots[frameDots].style.display = "block";
+            }
+            timerDots = setInterval(Dots, 120);
+        }
+
+        function demo_video() {
+            var needSlice = (document.location.href.indexOf("http://") != -1);
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1);
+            document.location.href = url + "render?action=video";
+        }
+
+        function demo_game() {
+            var needSlice = (document.location.href.indexOf("http://") != -1);
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1);
+            document.location.href = url + "render?action=game";
+        }
+    
+    </script>
 }
 
 @section topPanel{
     <div class="toppanel">
 			<div class="toppanelleft">
-				<a href = "render"><img src="/ils2/Content/Sprites//button_main_ia.png"></a>
+				<a href = "render"><img src="/ils2/Content/Sprites/button_main_ia.png"><p align="center" style="position:absolute;top:-6px;left:13px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Главная</p></a>
 			</div>
 			<div class="toppanelcenter">
-				<a href = "about"><img src="/ils2/Content/Sprites//button_about_ia.png"></a>
+				<a href = "about"><img src="/ils2/Content/Sprites/button_about_ia.png"><p align="center" style="position:absolute;top:-6px;left:5px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">О проекте</p></a>
 			</div>
 			<div class="toppanelright">
-				<a href = "contacts"><img src="/ils2/Content/Sprites//button_contact_a.png"></a>
+				<a href = "contacts"><img src="/ils2/Content/Sprites/button_contact_a.png"><p align="center" style="position:absolute;top:-6px;left:9px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Контакты</p></a>
 			</div>
 		</div>
 }
 @section renderArea{
     <div class="renderarea">
-		<div class="textarea">
-			<p align="center" style="font-size: medium;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">
-				Школа информатики СГАУ
-				<br>
-            </p>
-			<p align="center" style="font-size: small;color: #39f295;letter-spacing:0.8px;line-height:30px;font-family: Futurica">
-            	Кафедра программных систем
-				<br><br>
+        <img id="updater" src="/ils2/Content/Sprites/black_back.png" style="display:block; position:absolute;top:0px;left:0px;">
+        <img src="/ils2/Content/Sprites/contacts_back.png" style="display:block; position:absolute;top:0px;left:0px;">
+        <img id="pointer" src="/ils2/Content/Sprites/contacts_pointer.jpg" style="display:block; position:absolute;top:200px;left:460px;">
+        <img src="/ils2/Content/Sprites/logo.png" class="logo">
+        <div class="dots" id="dotsContainer">
+            <img src="/ils2/Content/Sprites/dots/dots_1.png" style="display:block">
+            <img src="/ils2/Content/Sprites/dots/dots_2.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_3.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_4.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_5.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_6.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_7.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_8.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_9.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_10.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_11.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_12.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_13.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_14.png" style="display:none">
+            <img src="/ils2/Content/Sprites/dots/dots_15.png" style="display:none">
+        </div>
+		<div class="headerarea">
+			<p style="font-size: 24px;color: #eeeeee;letter-spacing:0.8px;line-height:10px;font-family: Futurica">Школа информатики СГАУ</p>	
+            <p style="font-size: 14px;color: #eeeeee;letter-spacing:0.8px;line-height:10px;font-family: Futurica">Кафедра программных систем</p>
+        </div>
+        <div class="textarea">
+			<p align="center" style="font-size: 15px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">
 				ул. Гая, д. 43 
 				<br>
-				ауд. 515 (14 корпус)
+				ком. 515 (14 корпус)
 				<br>
 				телефон 8(846) 267-46-73
 			</p>
 		</div>
+        <p align="center" style="position:absolute;top:121px;left:520px;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">
+				ул. Гая
+		</p>
+        <p align="center" style="position:absolute;top:153px;left:468px;font-size: 15px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">
+				43
+		</p>
+        <p align="center" style="position:absolute;top:270px;left:315px;-webkit-transform: rotate(270deg);-moz-transform: rotate(270deg);-ms-transform: rotate(270deg);-o-transform: rotate(270deg);transform: rotate(270deg);font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">
+				ул. Лукачева
+		</p>
 	</div>
 }
