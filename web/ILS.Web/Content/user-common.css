@@ -176,11 +176,17 @@
    }
    .adminLink {
     position: absolute;
-    top: 42px;
-	left: 92px;
+    top: 41px;
+	left: 49px;
 	display: none;
    }
-
+   .logoLink {
+   position: absolute;
+   top: 0px;
+   left: 0px;
+   width: 310px;
+   height: 100px;
+	}   
    @font-face {
     font-family: Futurica; 
     src: url(Futurica.ttf); 

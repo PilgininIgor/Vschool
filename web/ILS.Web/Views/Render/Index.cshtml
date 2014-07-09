@@ -42,6 +42,8 @@
                     document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.marginLeft = "-96px";
                     document.getElementById("unityPlayer").childNodes[0].childNodes[0].title = "";
                 }
+                document.getElementById("unityPlayer").style.height = "1px";
+                document.getElementById("unityPlayer").style.width = "1px";
             }
         }
 
@@ -56,7 +58,7 @@
 
             jwplayer("videoPlayer").setup({
                 flashplayer: "Scripts/jwp/player.swf",
-                file: "Content/video.flv",
+                file: "Content/demo.flv",
                 height: 400,
                 width: 809
             });
@@ -109,6 +111,15 @@
                 framesVisors[frameVisors].style.display = "block";
             }
             timerVisors = setInterval(visors, 40);
+
+            var index = document.location.href.indexOf("?action=");
+            if (index != -1) {
+                var action = document.location.href.slice(index + 8);
+                if (action == "video")
+                    demo_video();
+                else if (action == "game")
+                    demo_game();
+            }
         }
 
         function canvas_rotate(rotate) {
@@ -152,6 +163,7 @@
             var left = 0; 
             var angle = 0;
             var eleft = -176;
+            var authorisationWindow;
             clearInterval(enterTimer);  
             function move() { 
                 if (angle <= 90) {
@@ -178,7 +190,7 @@
                                 var awLeft = offsetLeft;
                                 var awTop = offsetTop;
                                 //var authorisationWindow = window.open(url, '_blank', 'height=399, width=809, top=' + awTop + ', left=' + awLeft + ', scrollable=no, menubar=no, resizable=no, location=no');
-                                var authorisationWindow = window.open(url, '_blank', 'fullscreen=yes, scrollable=no, menubar=no, resizable=no, location=no');
+                                authorisationWindow = window.open(url, '_blank', 'fullscreen=yes, scrollable=no, menubar=no, resizable=no, location=no');
                                 authorisationWindow.focus();
                                 authorisationWindow.onload = new function () {
                                     var awWidth = authorisationWindow.window.outerWidth;
@@ -193,19 +205,34 @@
                                 }
                                 authorisationStarted = true;
                             } else {
+                                if (authorisationWindow == null || authorisationWindow.closed) {
+                                    clearInterval(timer);
+                                    document.getElementById('awaitingAuthorisation').style.display = 'none';
+                                    document.getElementById('awaitingLoading').style.display = 'none';
+                                    document.getElementById('error').style.display = 'block';
+                                }
                                 document.getElementById('mainDoors').style.display = 'none';
                                 if (authorisationComplete) {
-                                    document.getElementById('loadingContainer').style.display = 'none';
-                                    clearInterval(timer); 
+                                    
+                                    clearInterval(timer);
                                     if (authorisationSucceed) {
+                                        document.getElementById('awaitingAuthorisation').style.display = 'none';
+                                        document.getElementById('awaitingLoading').style.display = 'block';
+                                        document.getElementById('error').style.display = 'none';
                                         document.getElementById("videoPlayer").style.display = 'none';
                                         startUnityPlayer();
+                                    } else {
+                                        document.getElementById('awaitingAuthorisation').style.display = 'none';
+                                        document.getElementById('awaitingLoading').style.display = 'none';
+                                        document.getElementById('error').style.display = 'block';
                                     }
 
                                 }
                             }
                         } else if (contentType == 1) {
-                            document.getElementById('loadingContainer').style.display = 'none';
+                            document.getElementById('awaitingAuthorisation').style.display = 'none';
+                            document.getElementById('awaitingLoading').style.display = 'block';
+                            document.getElementById('error').style.display = 'none';
                             document.getElementById('mainDoors').style.display = 'none';
                             document.getElementById("videoPlayer").style.display = 'none';
                             startUnityPlayer();
@@ -287,19 +314,19 @@
         <div class="toppanelleft">
             <a href="render">
                 <img src="/ils2/Content/Sprites/button_main_a.png">
-                <p align="center" style="position:absolute;top:-6px;left:13px;display:block;font-size: x-small;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Главная</p>
+                <p align="center" style="position:absolute;top:-6px;left:13px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Главная</p>
             </a>
         </div>
         <div class="toppanelcenter">
             <a href="about">
                 <img src="/ils2/Content/Sprites/button_about_ia.png">
-                <p align="center" style="position:absolute;top:-6px;left:5px;display:block;font-size: x-small;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">О проекте</p>
+                <p align="center" style="position:absolute;top:-6px;left:5px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">О проекте</p>
             </a>
         </div>
         <div class="toppanelright">
             <a href="contacts">
                 <img src="/ils2/Content/Sprites/button_contact_ia.png">
-                <p align="center" style="position:absolute;top:-6px;left:9px;display:block;font-size: x-small;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Контакты</p>
+                <p align="center" style="position:absolute;top:-6px;left:9px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Контакты</p>
             </a>
         </div>
     </div>
@@ -361,6 +388,7 @@
             <img src="/ils2/Content/Sprites/loading/loading_50.png" style="display:none">
             <p align="center" id="awaitingAuthorisation" style="position:absolute;top:50px;display:block;font-size: large;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Ожидается авторизация пользователя</p>
             <p align="center" id="awaitingLoading" style="position:absolute;top:80px;left:65px;display:none;font-size: large;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Загрузка</p>
+            <p align="center" id="error" style="position:absolute;top:80px;left:70px;display:none;font-size: large;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Ошибка</p>
         </div>
         <div id="unityPlayer" style="width: 809px; height: 400px; position: static">
         </div>

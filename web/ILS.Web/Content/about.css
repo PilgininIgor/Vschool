@@ -16,13 +16,30 @@
 	left: 50%;
 	margin-left: -405px;
    }
-   .scroll-pane {
+   .text-pane {
 	width:489px; 
 	left:266px; 
 	position:absolute; 
-	top:130px;
+	top:125px;
 	height:205px;
+   }
+   .scroll-pane {
+	width:489px; 
+	position:absolute; 
+	top:60px;
+	height:160px;
 	overflow: auto;
+	}
+	.jspTrack {
+	background: none;
+	}
+	.jspVerticalBar {
+	background: none;
+	width: 8px;
+	right: -5px;
+	}
+	.jspDrag {
+	background:none repeat scroll 0 0 #3AEBF2;
 	}
    .slider_screen {
     position: absolute;
@@ -49,11 +66,10 @@
    }
    .slider_screen_content {
 	position: absolute;
-	overflow: hidden;
-	height: 170px;
-	width: 334px;
-	left: 58px;
-	top: 31px;
+	height: 233px;
+	width: 595px;
+	left: 110px;
+	top: 130px;
   }
    .slider_screen_button_authors {
     position: absolute;
@@ -84,6 +100,31 @@
 	top: 208px;
 	background: url(sprites/arrow_right_ia.png) no-repeat;
    }
+   .screen_lt {
+	position: absolute;
+   }
+   .screen_mt {
+	position: absolute;
+	left: 195px;
+   }
+   .screen_rt {
+	position: absolute;
+	left: 390px;
+   }
+   .screen_lb {
+	position: absolute;
+	top: 118px;
+   }
+   .screen_mb {
+	position: absolute;
+	left: 195px;
+	top: 118px;
+   }
+   .screen_rb {
+	position: absolute;
+	left: 390px;
+	top: 118px;
+   }
    .slider_authors {
     position: absolute;
     width: 259px;
@@ -93,7 +134,7 @@
    }
   .slider_authors_content {
 	position: absolute;
-	height: 170px;
+	height: 173px;
 	overflow: hidden;
 	width: 138px;
 	left: 57px;
@@ -161,4 +202,22 @@
 	position:absolute;
 	left: 170px;
 	top: 15px;
+   }
+   .screens_left {
+	position:absolute;
+	left: 0px;
+	top: 0px;
+	opacity: 0.5;
+   }
+   .screens_left:hover {
+	opacity: 1;
+   }
+   .screens_right {
+	position:absolute;
+	left: 744px;
+	top: 0px;
+	opacity: 0.5;
+   }
+   .screens_right:hover {
+	opacity: 1;
    }

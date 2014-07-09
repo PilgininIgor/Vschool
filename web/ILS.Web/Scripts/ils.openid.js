@@ -150,6 +150,8 @@ Ext.onReady(function () {
 			)
     });
 
+
+
     var urlParams = parseURLParams(document.URL);
     if (urlParams != null && urlParams['key'] != null && urlParams['login'] != null && urlParams['hash'] != null && /*urlParams['firstName'] != null && urlParams['lastName'] != null && */urlParams['email'] != null) {
         Ext.Ajax.request({
@@ -178,13 +180,12 @@ Ext.onReady(function () {
 
                 }
                 window.open('', '_parent', '');
-                window.close();
-
+                setTimeout(window.close, 250);
             },
             failure: function (response, opts) {
                 ils.admin.failure.show();
                 window.open('', '_parent', '');
-                window.close();
+                setTimeout(window.close, 250);
             },
             jsonData: [{
                 'login': urlParams['login'][0],

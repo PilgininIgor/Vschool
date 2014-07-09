@@ -14,6 +14,9 @@
                   '<img style = "position: absolute; right: 0px; bottom: -10px;" src=' + '@Url.Content("~/Content/pics_service/Robot.jpg")' + '></img>'
         });
         Ext.onReady(function () {
+            var needSlice = (document.location.href.indexOf("http://") != -1);
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1);
+            document.location.href = url + "render";
             renderToMainArea(logo);
         });
     </script>

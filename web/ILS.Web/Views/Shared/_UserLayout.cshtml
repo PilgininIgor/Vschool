@@ -29,63 +29,64 @@
      var sdoorrTimer;
      var sdoorrLeft = 0;
 
-     function sdoor_open(dir) {
-         if (dir == 'l') {
-             clearInterval(sdoorlTimer);
-             function move() {
-                 sdoorlLeft -= 3;
-                 document.getElementById('sdoorll').style.left = sdoorlLeft + 'px';
-                 document.getElementById('sdoorlr').style.left = 43 - sdoorlLeft + 'px';
-                 if (sdoorlLeft <= -102) {
-                     clearInterval(sdoorlTimer);
-                 }
-             }
-             sdoorlTimer = setInterval(move, 1)
-         } else {
-             clearInterval(sdoorrTimer);
-             function move() {
-                 sdoorrLeft -= 3;
-                 document.getElementById('sdoorrl').style.left = sdoorrLeft + 'px';
-                 document.getElementById('sdoorrr').style.left = 43 - sdoorrLeft + 'px';
-                 if (sdoorrLeft <= -102) {
-                     clearInterval(sdoorrTimer);
-                 }
-             }
-             sdoorrTimer = setInterval(move, 1);
-         }
+     function sdoor_open_l() {
+        clearInterval(sdoorlTimer);
+        function move() {
+            sdoorlLeft -= 3;
+            document.getElementById('sdoorll').style.left = sdoorlLeft + 'px';
+            document.getElementById('sdoorlr').style.left = 43 - sdoorlLeft + 'px';
+            if (sdoorlLeft <= -102) {
+                clearInterval(sdoorlTimer);
+            }
+        }
+        sdoorlTimer = setInterval(move, 1)
      }
 
-     function sdoor_close(dir) {
-         if (dir == 'l') {
-             clearInterval(sdoorlTimer);
-             function move() {
-                 sdoorlLeft += 3;
-                 document.getElementById('sdoorll').style.left = sdoorlLeft + 'px';
-                 document.getElementById('sdoorlr').style.left = 43 - sdoorlLeft + 'px';
-                 if (sdoorlLeft >= 0) {
-                     clearInterval(sdoorlTimer);
-                 }
-             }
-             sdoorlTimer = setInterval(move, 1);
-         } else {
-             clearInterval(sdoorrTimer);
-             function move() {
-                 sdoorrLeft += 3;
-                 document.getElementById('sdoorrl').style.left = sdoorrLeft + 'px';
-                 document.getElementById('sdoorrr').style.left = 43 - sdoorrLeft + 'px';
-                 if (sdoorrLeft >= 0) {
-                     clearInterval(sdoorrTimer);
-                 }
-             }
-             sdoorrTimer = setInterval(move, 1);
-         }
+     function sdoor_open_r() {
+        clearInterval(sdoorrTimer);
+        function move() {
+            sdoorrLeft -= 3;
+            document.getElementById('sdoorrl').style.left = sdoorrLeft + 'px';
+            document.getElementById('sdoorrr').style.left = 43 - sdoorrLeft + 'px';
+            if (sdoorrLeft <= -102) {
+                clearInterval(sdoorrTimer);
+            }
+        }
+        sdoorrTimer = setInterval(move, 1)
+     }
+
+     function sdoor_close_l() {
+        clearInterval(sdoorlTimer);
+        function move() {
+            sdoorlLeft += 3;
+            document.getElementById('sdoorll').style.left = sdoorlLeft + 'px';
+            document.getElementById('sdoorlr').style.left = 43 - sdoorlLeft + 'px';
+            if (sdoorlLeft >= 0) {
+                clearInterval(sdoorlTimer);
+            }
+        }
+        sdoorlTimer = setInterval(move, 1);
+     }
+
+
+     function sdoor_close_r() {
+        clearInterval(sdoorrTimer);
+        function move() {
+            sdoorrLeft += 3;
+            document.getElementById('sdoorrl').style.left = sdoorrLeft + 'px';
+            document.getElementById('sdoorrr').style.left = 43 - sdoorrLeft + 'px';
+            if (sdoorrLeft >= 0) {
+                clearInterval(sdoorrTimer);
+            }
+        }
+        sdoorrTimer = setInterval(move, 1);
      }
 
      function sdoor_force_l() {
-         sdoor_close('l');
+         sdoor_close_l();
      }
      function sdoor_force_r() {
-         sdoor_close('r');
+         sdoor_close_r();
      }
 
      var frameLeftIndex = 0;
@@ -315,10 +316,10 @@
             <a href="/render"><img src="/ils2/Content/sprites//logo.png"></a>
         </div>-->
         <div id="helloPanel" class="hello">
-            <p id="credentials" align="center" style="position: absolute;width:130px;font-size: small;color: #eeeeee;letter-spacing:0.8px;line-height:15px;font-family: Futurica">
+            <p id="credentials" align="center" style="position: absolute;width:130px;font-size: 5ox;color: #eeeeee;letter-spacing:0.8px;line-height:15px;font-family: Futurica">
             </p>
             <div id="adminLink" class = "adminLink">
-                <a href = "/struct"><img src="/ils2/Content/sprites/admin.png"></a>
+                <a href = "/ils2/struct"><img src="/ils2/Content/sprites/admin.png"></a>
             </div>
 		</div>
         <p>
@@ -347,7 +348,10 @@
             <img src="/ils2/Content/Sprites/visors/visors_14.png" style="display:none">
             <img src="/ils2/Content/Sprites/visors/visors_15.png" style="display:none">
         </div>
-        <div class="demoleft" id="demolScreenshots" style="display:none">
+		<a href="/ils2/render">
+			<div class="logoLink"></div>
+        </a>
+		<div class="demoleft" id="demolScreenshots" style="display:none">
             <img src="/ils2/Content/Sprites/demo_screenshots/demo_1.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:1">
             <img src="/ils2/Content/Sprites/demo_screenshots/demo_2.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:0">
             <img src="/ils2/Content/Sprites/demo_screenshots/demo_3.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:0">
@@ -390,7 +394,7 @@
 			</div>
 		</div>
 		<a href="http://itschool.ssau.ru" target="_blank">
-			<div class="invisiblebuttonleft" onmouseover="javascript:sdoor_open('l')" onmouseout="javascript:sdoor_close('l')">
+			<div class="invisiblebuttonleft" onmouseover="javascript:sdoor_open_l()" onmouseout="javascript:sdoor_close_l()">
 			</div>
 		</a>
 		<div class="buttonright" id="rightPartnersButton">
@@ -402,7 +406,7 @@
 			</div>
 		</div>
 		<a href="http://distance.itschool.ssau.ru" target="_blank">
-			<div class="invisiblebuttonright" onmouseover="javascript:sdoor_open('r')" onmouseout="javascript:sdoor_close('r')">
+			<div class="invisiblebuttonright" onmouseover="javascript:sdoor_open_r()" onmouseout="javascript:sdoor_close_r()">
 			</div>
 		</a>
         <div class="demoright" id="demorScreenshots" style="display:none">
@@ -440,7 +444,7 @@
         <div class="demoright" onmouseover = "javascript:demor_animate()" onmouseout = "javascript:demor_stop()" style="cursor: pointer;" onclick = "javascript:demo_video()">
 		</div>
         <div class="copyright">
-            <p align="center" style="letter-spacing:0.8px;color: #ffffff;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;font-size: small;font-family: Britannic">&copy; 2012—2014 3D Education</p>
+            <p align="center" style="letter-spacing:0.8px;color: #ffffff;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;font-size: 15px;font-family: Britannic">&copy; 2012—2014 3D Education</p>
         </div>
 	</div> 
         @RenderBody()
