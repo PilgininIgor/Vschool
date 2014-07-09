@@ -15,9 +15,7 @@ var Player : GameObject;
 var be_ready_to_receive = false;
 
 function OnTriggerEnter () {
-    /*Need to fix for multiplayer!!!*/
-	//var nameOfAvatar = GameObject.Find("Bootstrap").GetComponent(NetworkManagerScript).nameOfAvatar;
-	Player = GameObject.Find(/*nameOfAvatar + */"avatar (Clone)");
+	Player = GameObject.Find("MainCamera").GetComponent.<OrbitCam>().player;
 	Debug.Log("Destination.transform.position:" + Destination.transform.position);
 	if (!be_ready_to_receive) {
 		//если мы - отправитель, значит, начинаем

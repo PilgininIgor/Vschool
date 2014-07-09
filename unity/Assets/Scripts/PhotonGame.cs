@@ -12,12 +12,16 @@ public class PhotonGame : Photon.MonoBehaviour
 
     //avatars
     public Transform Joan;
-    public Transform Robot;
     public Transform Alexis;
-    public Transform Mia;
+    public Transform Golem;
     public Transform Justin;
     public Transform Vincent;
     public Transform Solder;
+    public Transform Mia;
+    public Transform Punk;
+    public Transform Carl;
+
+    public Transform SpawnPlace;
 
     public string nameOfAvatar;
 
@@ -25,16 +29,21 @@ public class PhotonGame : Photon.MonoBehaviour
     {
         //select avatar
         nameOfAvatar = /*"Solder"*/CharacterCust.nameOfAvatar;
+
+
         Debug.Log("Avatar is " + nameOfAvatar);
+
         switch (nameOfAvatar)
         {
-            case "Robot": playerPrefab = Robot; break;
             case "Joan": playerPrefab = Joan; break;
             case "Alexis": playerPrefab = Alexis; break;
             case "Justin": playerPrefab = Justin; break;
             case "Vincent": playerPrefab = Vincent; break;
             case "Solder": playerPrefab = Solder; break;
             case "Mia": playerPrefab = Mia; break;
+            case "Punk": playerPrefab = Punk; break;
+            case "Carl": playerPrefab = Carl; break;
+            case "Golem": playerPrefab = Golem; break;
         }
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
@@ -43,15 +52,16 @@ public class PhotonGame : Photon.MonoBehaviour
             Application.LoadLevel(PhotonMenu.SceneNameMenu);
             return;
         }
-
         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-        PhotonNetwork.Instantiate(this.playerPrefab.name, transform.position, Quaternion.identity, 0);
-        Camera.main.GetComponent<OrbitCam>().target = GameObject.Find(nameOfAvatar + "(Clone)").transform;
+        GameObject instantiatedPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
+        //instantiatedPlayer.name = PhotonNetwork.playerName;
+        Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
+        Camera.main.GetComponent<OrbitCam>().player = instantiatedPlayer;
     }
 
     public void OnGUI()
     {
-        if (GUILayout.Button("Return to Lobby"))
+        if (GUILayout.Button(Strings.Get("Return to Lobby")))
         {
             PhotonNetwork.LeaveRoom();  // we will load the menu level when we successfully left the room
         }

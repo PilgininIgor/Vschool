@@ -8,24 +8,12 @@ public class CharacterCust : MonoBehaviour
 	Vector3 leftPosition = new Vector3(20.0f, 2.0f, 31.0f);
 	Vector3 middlePosition = new Vector3(21.5f, 2.0f, 31.0f);
 	Vector3 rigthPosition = new Vector3(23.0f, 2.0f, 31.0f);
-	
+
+    bool buttonsIsVisible = true;
+
 	//avatars
 	public static string nameOfAvatar;
-	
-	public GameObject Robot;
-	public GameObject Joan;
-	public GameObject Alexis;
-	public GameObject Golem;
-    public GameObject Justin;
-	public GameObject Vincent;
-	public GameObject Solider;
-	public GameObject Mia;
-	
-	//effects
-	public GameObject Fire;
-	public GameObject Sparks;
-	public GameObject Explosions;
-	public GameObject Fireworks;
+    public GameObject AvatarNameText;
 	
 	public GameObject Observation;
 	
@@ -38,9 +26,10 @@ public class CharacterCust : MonoBehaviour
 	
 	// Use this for initialization
 	void Start () 
-	{	
-		characters = new GameObject[]{Joan, Alexis, Justin, Vincent, Solider, Mia, Robot};
-		effects = new GameObject[]{Fire, Sparks, Explosions, Fireworks};
+	{
+        characters = GameObject.FindGameObjectsWithTag("Avatar");
+        effects = GameObject.FindGameObjectsWithTag("Effect");
+        Debug.Log("Effects size:" + effects.Length);
 		ChangeCharecters(curCharacter);
 		ChangeEffects(curEffect);
 	}	
@@ -88,9 +77,9 @@ public class CharacterCust : MonoBehaviour
         if(GUILayout.Button(Strings.Get("Go"), GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
 		{
 			nameOfAvatar = characters[curCharacter].name;
-			Debug.Log(nameOfAvatar);
+            Debug.Log("Selected avatar " + characters[curCharacter].name);
             GameObject.Find("_Customization").AddComponent<PhotonMenu>();
-			//Application.LoadLevel("world");
+            buttonsIsVisible = false;
 		}
         if (GUILayout.Button(">", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)) && (curCharacter < characters.Length - 1))
 		{
@@ -106,6 +95,7 @@ public class CharacterCust : MonoBehaviour
 		
 	void OnGUI()
     {
+        if (buttonsIsVisible)
 		using (var skin = new DefaultSkin())
 		{
 			int hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
@@ -144,6 +134,7 @@ public class CharacterCust : MonoBehaviour
 		for(int i = 0; i < characters.Length; i++)
 				characters[i].SetActive(false);
 		characters[curCharacter].SetActive(true);
+        AvatarNameText.guiText.text = characters[curCharacter].name;
 	}
 	
 	void ChangeEffects(int curEffect)

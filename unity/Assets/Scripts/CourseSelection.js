@@ -23,7 +23,7 @@ var LBL4 = "Enter - загрузка";
 
 var MainCam : Camera;
 var StandCam : Camera;
-var PlayerAvatar : GameObject;
+var Player : GameObject;
 var magnifier : Texture;
 var arrow : Texture;
 var helvetica : Font;
@@ -42,11 +42,10 @@ function Start() {
 }
 
 function ZoomIn() {
-    /*Need to fix for multiplayer!!!*/
-	PlayerAvatar = GameObject.Find("Bootstrap");//.GetComponent(NetworkManagerScript).avatar;
+
+    Player = GameObject.Find("MainCamera").GetComponent.<OrbitCam>().player;
 	hint_visible = false;
-	//PlayerAvatar.animation.Stop();
-	//PlayerAvatar.SetActive(false);
+    Player.SetActive(false);
 	MainCam.enabled = false;
 	MainCam.GetComponent(AudioListener).enabled = false;
 	StandCam.enabled = true; StandCam.GetComponent(AudioListener).enabled = true;
@@ -75,7 +74,7 @@ function CourseDisplay(JSONStringFromServer : String) {
 
 function ZoomOut() {
 	escape_visible = false;
-	//PlayerAvatar.SetActive(true); PlayerAvatar.animation.Play("idle");
+	Player.SetActive(true);
 	MainCam.enabled = true; MainCam.GetComponent(AudioListener).enabled = true;
 	StandCam.enabled = false; StandCam.GetComponent(AudioListener).enabled = false;
 	transform.parent.transform.Find("Menu").gameObject.SetActive(false);	

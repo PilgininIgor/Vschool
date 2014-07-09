@@ -8,27 +8,27 @@ public class NetworkCharacterAnimSync : Photon.MonoBehaviour {
 
     Animator anim;
 
-    ThirdPersonCamera cameraScript;
+    //ThirdPersonCamera cameraScript;
     BotControlScript controllerScript;
 
     void Awake()
     {
-        cameraScript = GetComponent<ThirdPersonCamera>();
+        //cameraScript = GetComponent<ThirdPersonCamera>();
         controllerScript = GetComponent<BotControlScript>();
 
         if (photonView.isMine)
         {
             //MINE: local player, simply enable the local scripts
-            cameraScript.enabled = true;
+            //cameraScript.enabled = true;
             controllerScript.enabled = true;
         }
         else
         {
-            cameraScript.enabled = false;
+            //cameraScript.enabled = false;
             controllerScript.enabled = false;
         }
 
-        gameObject.name = gameObject.name + photonView.viewID;
+        //gameObject.name = gameObject.name + photonView.viewID;
     }
 
 	// Use this for initialization
@@ -51,10 +51,8 @@ public class NetworkCharacterAnimSync : Photon.MonoBehaviour {
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        Debug.Log("OnPhotonSerializeView");
         if (stream.isWriting)
         {
-            Debug.Log("Writing");
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(anim.GetFloat("Speed"));
@@ -71,7 +69,6 @@ public class NetworkCharacterAnimSync : Photon.MonoBehaviour {
         }
         else 
         {
-            Debug.Log("Reading");
             realPosition = (Vector3)stream.ReceiveNext();
             realRotation = (Quaternion)stream.ReceiveNext();
             anim.SetFloat("Speed", (float)stream.ReceiveNext());
