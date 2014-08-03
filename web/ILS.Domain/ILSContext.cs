@@ -14,6 +14,10 @@ namespace ILS.Domain
         //все дальнейшие операции с ней будем проводить через этот класс
         public DbSet<User> User { get; set; }
         public DbSet<Role> Role { get; set; }
+
+        public DbSet<EDucationAuthor> EDucationAuthor { get; set; }
+        public DbSet<Award> Award { get; set; }
+        public DbSet<Achievement> Achievement { get; set; }
         
         public DbSet<Course> Course { get; set; }
         public DbSet<Theme> Theme { get; set; }

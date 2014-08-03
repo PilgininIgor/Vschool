@@ -28,7 +28,7 @@
 	position:absolute; 
 	top:60px;
 	height:160px;
-	overflow: auto;
+	overflow: hidden;
 	}
 	.jspTrack {
 	background: none;
@@ -198,6 +198,28 @@
 	width: 22px;
 	height: 31px;
    }
+   .big_arrow_left {
+   position:absolute;
+   width: 40px;
+   height: 235px;
+   top: 129px;
+   left: 64px;
+   background: url(sprites/big_arrow_left_ia.png) no-repeat;
+   }
+   .big_arrow_left:hover {
+   background: url(sprites/big_arrow_left_a.png) no-repeat;
+   }
+   .big_arrow_right{
+   position:absolute;
+   width: 40px;
+   height: 235px;
+   top: 129px;
+   left:700px;
+   background: url(sprites/big_arrow_right_ia.png) no-repeat;
+   }
+   .big_arrow_right:hover {
+   background: url(sprites/big_arrow_right_a.png) no-repeat;
+   }
    .headers {
 	position:absolute;
 	left: 170px;
@@ -207,17 +229,82 @@
 	position:absolute;
 	left: 0px;
 	top: 0px;
-	opacity: 0.5;
+	width: 65px;
+	height: 400px;
+	background: url(sprites/screens_left_ia.png) no-repeat;
+	cursor:pointer;
    }
    .screens_left:hover {
-	opacity: 1;
+	background: url(sprites/screens_left_a.png) no-repeat;
+	cursor:pointer;
    }
    .screens_right {
 	position:absolute;
 	left: 744px;
 	top: 0px;
-	opacity: 0.5;
+	width: 65px;
+	height: 400px;
+	background: url(sprites/screens_right_ia.png) no-repeat;
+	cursor:pointer;
    }
    .screens_right:hover {
-	opacity: 1;
+	background: url(sprites/screens_right_a.png) no-repeat;
+	cursor:pointer;
+   }
+   .author_name {
+    display:block;
+	font-size: 24px;
+	color: #eeeeee;
+	letter-spacing:0.8px;
+	line-height:20px;
+	font-family: Futurica;
+   }
+   .author_description {
+    display:block;
+	margin-top:-3px;
+	font-size: 14px;
+	color: #eeeeee;
+	letter-spacing:0.8px;
+	line-height:20px;
+	font-family: Futurica;
+   }
+   .slider_awards_left {
+   position:absolute;
+   width: 20px;
+   height: 195px;
+   background: url(sprites/slider_left_ia.png) no-repeat;
+   }
+   .slider_awards_left:hover {
+   background: url(sprites/slider_left_a.png) no-repeat;
+   }
+   .slider_awards_right {
+   position:absolute;
+   width: 20px;
+   height: 195px;
+   left: 179px;
+   background: url(sprites/slider_right_ia.png) no-repeat;
+   }
+   .slider_awards_right:hover {
+   background: url(sprites/slider_right_a.png) no-repeat;
+   }
+   .slider_awards {
+   width:219px;
+   height:196px;
+   position:absolute;
+   top:150px;
+   left:40px;
+   }
+   .slider_awards_frame {
+   background: url(sprites/slider_awards_frame.png) no-repeat;
+   width:139px;
+   height:196px;
+   position:absolute;
+   left:30px;
+   }
+   .slider_awards_content {
+   width:133px;
+   height:190px;
+   position:absolute;
+   top:3px;
+   left:33px;
    }

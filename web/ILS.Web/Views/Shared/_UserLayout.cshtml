@@ -312,16 +312,18 @@
 	<div class="bottomshade">
 	</div> 
 	<div class="main">
-        <!--<div class="logo">
-            <a href="/render"><img src="/ils2/Content/sprites//logo.png"></a>
-        </div>-->
-        <div id="helloPanel" class="hello">
-            <p id="credentials" align="center" style="position: absolute;width:130px;font-size: 5ox;color: #eeeeee;letter-spacing:0.8px;line-height:15px;font-family: Futurica">
-            </p>
-            <div id="adminLink" class = "adminLink">
-                <a href = "/ils2/struct"><img src="/ils2/Content/sprites/admin.png"></a>
-            </div>
+		<div id="helloInactive" class="hello_ia">
 		</div>
+        <div id="helloPanel" class="hello">
+			<div style="width: 130px;height: 159px; top: 8px; left: 26px; position:absolute">
+				<p id="credentials" align="center" style="position: absolute;width:130px;font-size: 5ox;color: #eeeeee;letter-spacing:0.8px;line-height:15px;font-family: Futurica">
+				</p>
+				<div id="adminLink" class = "adminLink">
+					<a href = "/ils2/struct"><img src="/ils2/Content/sprites/admin.png"></a>
+				</div>
+			</div>
+		</div>
+		<img src="/ils2/Content/Sprites/main3.png" style="position:absolute;">
         <p>
 			<map name="DemoButton">
 				<area shape="circle" coords="62,62,62" href="/render" alt="Demo">
@@ -448,8 +450,9 @@
         </div>
 	</div> 
         @RenderBody()
-    </div>
 		@RenderSection("end", required:false)
+    </div>
+		
         
     </div>
     

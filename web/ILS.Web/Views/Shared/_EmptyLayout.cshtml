@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/ext/resources/css/ext-all.css")"/>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/icons.css")"/>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ext/bootstrap.js")"></script>
+    @RenderSection("additionalCSS", required:false)
+    @RenderSection("scripts", required:false)
+</head>
+<body>
+    
+        @RenderBody()
+		@RenderSection("body", required:true)
+
+</body>
+</html>

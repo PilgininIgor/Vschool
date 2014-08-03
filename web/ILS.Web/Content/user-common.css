@@ -39,7 +39,6 @@
    .main {
 	width: 1024px; 
 	height: 640px;
-	background: url(sprites/main3.png) repeat;
 	position: absolute;
 	left: 50%;
 	margin-left: -512px;
@@ -160,11 +159,20 @@
 	margin-left: 659px;
    }
    .hello {
-	width: 130px; 
-	height: 159px;
+	width: 250px; 
+	height: 185px;
 	position: absolute;
-	margin-top: 8px;
-	margin-left: 770px;
+	margin-left: 745px;
+	display: none;
+	background: url(sprites/credentials.png) no-repeat;
+   }
+   .hello_ia {
+	width: 151px; 
+	height: 18px;
+	position: absolute;
+	margin-top: 87px;
+	margin-left: 759px;
+	background: url(sprites/credentials_ia.png) no-repeat;
    }
    .copyright {
     width: 220px;
@@ -176,9 +184,10 @@
    }
    .adminLink {
     position: absolute;
-    top: 41px;
-	left: 49px;
+    top: 43px;
+	left: 50px;
 	display: none;
+	z-index: 100;
    }
    .logoLink {
    position: absolute;
