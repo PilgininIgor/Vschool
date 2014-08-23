@@ -8,6 +8,10 @@
 }
 @section scripts{
      <script type="text/javascript">
+	 
+		 function escapeRegExp(string) {
+			return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+		 }
 
          window.onload = function () {
              var updaterTop = -400;
@@ -74,6 +78,12 @@
 		 var imgAchievementsFrame;
 		 var imgAchievementsFrames;
 		 
+		 
+		 var sliderScreensFrame;
+		 var sliderScreensFrames;
+		 var screenshotsCount;
+		 var screenListsCount;
+		 
 		 function initContents() {
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "about/getAuthors";
 		     Ext.Ajax.request({
@@ -87,7 +97,7 @@
 					document.getElementById('authorsPointContainer').innerHTML = "";
 					
 					for (i = 0; i < authorsCount; i++) {
-						document.getElementById("sliderAuthorsContainer").innerHTML += '<img src="' + a.authors[i].Image + '">';
+						document.getElementById("sliderAuthorsContainer").innerHTML += '<img src="/ils2/Content/Sprites/authors/' + a.authors[i].Image + '">';
 						document.getElementById('authorsPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderAuthorsFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAuthorsGoto(' + i + ')"></div>';
 						document.getElementById('textAuthorsContainer').innerHTML += '<div class="text-pane"><p align="center" class="author_name">' + a.authors[i].Name + '</p><div class="scroll-pane"><p align="justify" class="author_description">' + a.authors[i].Description + '</p></div></div>';
 					}
@@ -132,10 +142,13 @@
 						var imgs = a.awards[i].Image.split(";");
 						var imgString = '<div style="display:' + (i == 0 ? 'block': 'none') + '">';
 						for (j = 0; j < imgs.length; j++) {
-							imgString += '<img style="position:absolute;display:' + (j == 0 ? 'block': 'none') + '" src="' + imgs[j] + '"';
+							if (imgs[j] == "")
+								continue;
+							imgString += '<img style="position:absolute;display:' + (j == 0 ? 'block': 'none') + '" src="/ils2/Content/Sprites/awards/' + imgs[j].replace(new RegExp(escapeRegExp('.png'), 'g'), '.jpg') + '"';
 							imgString += 'onclick="javascript:enlargeImage(';
 							imgString += "'";
-							imgString += [imgs[j].slice(0,imgs[j].lastIndexOf('/')), '/full', imgs[j].slice(imgs[j].lastIndexOf('/'))].join('');
+							//imgString += [imgs[j].slice(0,imgs[j].lastIndexOf('/')), '/full', imgs[j].slice(imgs[j].lastIndexOf('/'))].join('');
+							imgString += ['/ils2/Content/Sprites/awards/full/', imgs[j]].join('');
 							imgString += "')";
 							imgString += '">';
 						}
@@ -187,10 +200,13 @@
 						var imgs = a.achievements[i].Image.split(";");
 						var imgString = '<div style="display:' + (i == 0 ? 'block': 'none') + '">';
 						for (j = 0; j < imgs.length; j++) {
-							imgString += '<img style="position:absolute;display:' + (j == 0 ? 'block': 'none') + '" src="' + imgs[j] + '"';
+							if (imgs[j] == "")
+								continue;
+							imgString += '<img style="position:absolute;display:' + (j == 0 ? 'block': 'none') + '" src="/ils2/Content/Sprites/achievements/' + imgs[j].replace(new RegExp(escapeRegExp('.png'), 'g'), '.jpg') + '"';
 							imgString += 'onclick="javascript:enlargeImage(';
 							imgString += "'";
-							imgString += [imgs[j].slice(0,imgs[j].lastIndexOf('/')), '/full', imgs[j].slice(imgs[j].lastIndexOf('/'))].join('');
+							//imgString += [imgs[j].slice(0,imgs[j].lastIndexOf('/')), '/full', imgs[j].slice(imgs[j].lastIndexOf('/'))].join('');
+							imgString += ['/ils2/Content/Sprites/achievements/full/', imgs[j]].join('');
 							imgString += "')";
 							imgString += '">';
 						}
@@ -221,6 +237,76 @@
 					}
 					
 					document.getElementById("achievementsNumber").innerHTML = sliderAchievementsFrame + 1 + "/" + achievementsCount;
+		         },
+		         failure: function (response, opts) {
+		             //alert('fail');
+		         }
+		     });
+			 
+			 var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "about/getScreenshots";
+		     Ext.Ajax.request({
+		         url: url,
+		         success: function (response, opts) {
+		            var a = eval('(' + response.responseText + ')');
+		            //alert('success');
+					screenshotsCount = a.screenshots.length;
+					document.getElementById("screenshots").innerHTML = "";
+					document.getElementById('sliderScreensContainer').innerHTML = "";
+					document.getElementById('screensPointContainer').innerHTML = "";
+					sliderScreensFrame = 0;
+					var display = true;
+					var containerString = '';
+					var screenshotsString = '';
+					for (i = 0; i < screenshotsCount; i++) {	
+						
+						switch (i % 6) {
+							case 0:
+								containerString += display ? '<div>' : '<div style="display:none">';
+								containerString += '<img class="screen_lt" ';
+								break;
+							case 1:
+								containerString += '<img class="screen_mt" ';
+								break;
+							case 2:
+								containerString += '<img class="screen_rt" ';
+								break;
+							case 3:
+								containerString += '<img class="screen_lb" ';
+								break;
+							case 4:
+								containerString += '<img class="screen_mb" ';
+								break;
+							case 5:
+								containerString += '<img class="screen_rb" ';
+								display = false;
+								break;
+						}
+						containerString += 'src="' + a.screenshots[i] + '" '; 
+						containerString += 'onclick="javascript:showScreen(';
+						containerString += "'" + (i + 1) + "'";
+						containerString += ')"';
+						containerString += 'style="cursor: pointer;">';
+						if (i % 6 == 5)
+							containerString += '</div>';
+						
+						
+						screenshotsString += '<div style="position:absolute;top:10px;left:50%;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen(';
+						screenshotsString += "'";
+						screenshotsString += (i + 1);
+						screenshotsString += "')";
+						screenshotsString += '">';
+						screenshotsString += '<img align="middle" src="';
+						screenshotsString += [a.screenshots[i].slice(0,a.screenshots[i].lastIndexOf('/')), '/full', a.screenshots[i].slice(a.screenshots[i].lastIndexOf('/'))].join('');
+						screenshotsString += '" style="max-width: 809px; max-height:400px; left:50%">';
+						screenshotsString += '</div>';
+											
+						document.getElementById('screensPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderScreensFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAchievementsGoto(' + i + ')"></div>';
+					}
+					screenshotsString += '<div class="screens_left" onclick="javascript:screensDecr()" style="cursor:ponter;"></div><div class="screens_right" onclick="javascript:screensIncr()" style="cursor:ponter;"></div>';
+					containerString = containerString.replace(new RegExp(escapeRegExp('.png'), 'g'), '.jpg');
+					screenListsCount = Math.ceil(a.screenshots.length / 6);	
+					document.getElementById('sliderScreensContainer').innerHTML = containerString;	
+					document.getElementById("screenshots").innerHTML = screenshotsString;					
 		         },
 		         failure: function (response, opts) {
 		             //alert('fail');
@@ -461,8 +547,6 @@
 
 		 }
 		 
-		 var sliderScreensFrame;
-		 var sliderScreensFrames;
 		 
 		 function sliderScreensInit() {
 			document.getElementById("backScreens").style.display = "block";
@@ -484,7 +568,7 @@
 			pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_ia.png) no-repeat";
 			sliderScreensFrame--;
 			if (sliderScreensFrame < 0) {
-				sliderScreensFrame = 1;
+				sliderScreensFrame = screenListsCount - 1;
 			}
 			sliderScreensFrames[sliderScreensFrame].style.display = "block";
 			pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_a.png) no-repeat";
@@ -497,7 +581,7 @@
 			sliderScreensFrames[sliderScreensFrame].style.display = "none";
 			pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_ia.png) no-repeat";
 			sliderScreensFrame++;
-			if (sliderScreensFrame > 1) {
+			if (sliderScreensFrame > screenListsCount - 1) {
 				sliderScreensFrame = 0;
 			}
 			sliderScreensFrames[sliderScreensFrame].style.display = "block";
@@ -513,14 +597,14 @@
 		     sliderScreensFrame = index;
 		     sliderScreensFrames[sliderScreensFrame].style.display = "block";
 		     pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_a.png) no-repeat";
-		     document.getElementById("ScreensNumber").innerHTML = sliderScreensFrame + 1 + "/2";
+		     document.getElementById("ScreensNumber").innerHTML = sliderScreensFrame + 1 + "/" + screenListsCount;
 
 		 }
 		 
 		 function screensIncr() {
 			document.getElementById('screenshots').children[currentScreen].style.display = "none";
 			currentScreen++;
-			if (currentScreen > 7) {
+			if (currentScreen > screenshotsCount - 1) {
 				currentScreen = 0;
 			}
 			document.getElementById('screenshots').children[currentScreen].style.display = "block";
@@ -530,7 +614,7 @@
 			document.getElementById('screenshots').children[currentScreen].style.display = "none";
 			currentScreen--;
 			if (currentScreen < 0) {
-				currentScreen = 7;
+				currentScreen = screenshotsCount - 1;
 			}
 			document.getElementById('screenshots').children[currentScreen].style.display = "block";
 		 }

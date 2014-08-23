@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ILS.Domain;
 using ILS.Models;
 using System.Web.Routing;
+using System.IO;
 
 namespace ILS.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace ILS.Web.Controllers
         {
             if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
             if (MembershipService == null) { MembershipService = new AccountMembershipService(); }
-
+            context.Database.Initialize(false);
             base.Initialize(requestContext);
         }
 
@@ -36,21 +37,8 @@ namespace ILS.Web.Controllers
 
         public JsonResult getAuthors()
         {
-            List<EDucationAuthor> list = Enumerable.ToList<EDucationAuthor>(context.EDucationAuthor);
-            List<EDucationAuthor> authors = new List<EDucationAuthor>();
-            putAuthor(list, authors, "Зеленко Лариса Сергеевна");
-            putAuthor(list, authors, "Загуменнов Дмитрий");
-            putAuthor(list, authors, "Зинченко Алексей");
-            putAuthor(list, authors, "Белов Константин");
-            putAuthor(list, authors, "Петрухин Иван");
-            putAuthor(list, authors, "Халитов Ильдар");
-            putAuthor(list, authors, "Григорьев Александр");
-            putAuthor(list, authors, "Иванов Виталий");
-            putAuthor(list, authors, "Конопелькин Дмитрий");
-            putAuthor(list, authors, "Оськина Наталья");
-            putAuthor(list, authors, "Семенов Александр");
-            putAuthor(list, authors, "Пученков Евгений");
-            authors.AddRange(list);
+            List<EDucationAuthor> authors = 
+                Enumerable.OrderBy<EDucationAuthor, int>(context.EDucationAuthor, x => x.Priority).ToList();
             return Json(new
             {
                 authors
@@ -78,6 +66,21 @@ namespace ILS.Web.Controllers
             return Json(new
             {
                 achievements
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult getScreenshots()
+        {
+            List<String> list = Directory.GetFiles(Server.MapPath(Url.Content("~/Content/Sprites/screens/full"))).ToList<String>();
+            List<String> screenshots = new List<string>();
+            foreach (String item in list)
+            {
+                screenshots.Add(item.Substring(item.IndexOf("Content")).Replace("\\", "/").Replace("full/", ""));
+            }
+            return Json(new
+            {
+                screenshots
             }, JsonRequestBehavior.AllowGet);
         }
     }
