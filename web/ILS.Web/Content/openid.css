@@ -9,3 +9,23 @@
 	.horizontal-menu {
 	display:none !important;
 	}
+	
+	.classRecoverPassword {
+	position: absolute;
+	right:0px;
+	width: 250px;
+	}
+	
+	.divSubmit {
+	position:absolute;
+	left:50%;
+	margin-left:-71px;
+	top:350px;
+	}
+	
+	.divMain {
+	position:absolute;
+	left:50%;
+	margin-left:-214px;
+	top:150px;
+	}

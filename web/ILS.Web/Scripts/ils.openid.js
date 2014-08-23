@@ -33,7 +33,7 @@ function parseURLParams(url) {
   return params;
 }
 
-
+/*
 
 Ext.onReady(function () {
     ils.admin.logon = new Ext.Window({
@@ -150,7 +150,7 @@ Ext.onReady(function () {
 			)
     });
 
-
+*/
 
     var urlParams = parseURLParams(document.URL);
     if (urlParams != null && urlParams['key'] != null && urlParams['login'] != null && urlParams['hash'] != null && /*urlParams['firstName'] != null && urlParams['lastName'] != null && */urlParams['email'] != null) {
@@ -159,7 +159,7 @@ Ext.onReady(function () {
             success: function (response, opts) {
                 var a = eval('(' + response.responseText + ')');
                 if (a.success) {
-                    ils.admin.success.show();
+                    //ils.admin.success.show();
                     var message = new Object();
                     message.header = "authorise";
                     message.firstName = a.firstName == null ? "Имя" : a.firstName;
@@ -169,7 +169,7 @@ Ext.onReady(function () {
                     window.opener.postMessage(JSON.stringify(message), '*');
                 }
                 else {
-                    ils.admin.failure.show();
+                    //ils.admin.failure.show();
                     var message = new Object();
                     message.header = "authorise";
                     message.firstName = "";
@@ -199,6 +199,6 @@ Ext.onReady(function () {
         });
     }
     else {
-        ils.admin.logon.show();
+        //ils.admin.logon.show();
     }
-});
+//});

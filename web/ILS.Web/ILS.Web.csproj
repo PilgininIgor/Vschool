@@ -81,6 +81,7 @@
       <HintPath>..\packages\valueinjecter.2.3.3\lib\net35\Omu.ValueInjecter.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Helpers" />
     <Reference Include="System" />
@@ -106,6 +107,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\AboutAdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IdeologyController.cs" />
     <Compile Include="Controllers\OpenIDController.cs" />
@@ -125,8 +127,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\OpenIDModel.cs" />
+    <Compile Include="Models\AwardModel.cs" />
+    <Compile Include="Models\AchievementModel.cs" />
+    <Compile Include="Models\ScreenModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\OpenIDModel.cs" />
+    <Compile Include="Models\EDucationAuthorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -295,8 +301,6 @@
     <Content Include="Content\Sprites\point_ia.png" />
     <Content Include="Content\Sprites\robot.png" />
     <Content Include="Content\Sprites\screens\1.jpg" />
-    <Content Include="Content\Sprites\screens\10.jpg" />
-    <Content Include="Content\Sprites\screens\11.jpg" />
     <Content Include="Content\Sprites\screens\2.jpg" />
     <Content Include="Content\Sprites\screens\3.jpg" />
     <Content Include="Content\Sprites\screens\4.jpg" />
@@ -304,10 +308,7 @@
     <Content Include="Content\Sprites\screens\6.jpg" />
     <Content Include="Content\Sprites\screens\7.jpg" />
     <Content Include="Content\Sprites\screens\8.jpg" />
-    <Content Include="Content\Sprites\screens\9.jpg" />
     <Content Include="Content\Sprites\screens\full\1.png" />
-    <Content Include="Content\Sprites\screens\full\10.png" />
-    <Content Include="Content\Sprites\screens\full\11.png" />
     <Content Include="Content\Sprites\screens\full\2.png" />
     <Content Include="Content\Sprites\screens\full\3.png" />
     <Content Include="Content\Sprites\screens\full\4.png" />
@@ -315,17 +316,12 @@
     <Content Include="Content\Sprites\screens\full\6.png" />
     <Content Include="Content\Sprites\screens\full\7.png" />
     <Content Include="Content\Sprites\screens\full\8.png" />
-    <Content Include="Content\Sprites\screens\full\9.png" />
     <Content Include="Content\Sprites\shade_bottom.png" />
     <Content Include="Content\Sprites\shade_left.png" />
     <Content Include="Content\Sprites\shade_right.png" />
     <Content Include="Content\Sprites\shade_top.png" />
     <Content Include="Content\Sprites\shi.jpg" />
-    <Content Include="Content\Sprites\slider_authors_button_authors.png" />
-    <Content Include="Content\Sprites\slider_authors_button_screen.png" />
     <Content Include="Content\Sprites\slider_authors_frame.png" />
-    <Content Include="Content\Sprites\slider_screen_button_authors.png" />
-    <Content Include="Content\Sprites\slider_screen_button_screen.png" />
     <Content Include="Content\Sprites\slider_screen_frame.png" />
     <Content Include="Content\Sprites\video\demo_1.png" />
     <Content Include="Content\Sprites\video\demo_10.png" />
@@ -343,6 +339,7 @@
     <Content Include="Content\user.css" />
     <Content Include="Content\video.flv" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\ils.aboutadmin.js" />
     <Content Include="Scripts\ext\bootstrap.js" />
     <Content Include="Scripts\ext\ext-all-debug-w-comments.js" />
     <Content Include="Scripts\ext\ext-all-debug.js" />
@@ -3405,6 +3402,7 @@
     <Content Include="Views\Contacts\Index.cshtml" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\LinkEditor\Index.cshtml" />
+    <Content Include="Views\AboutAdmin\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

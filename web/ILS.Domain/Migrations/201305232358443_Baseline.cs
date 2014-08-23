@@ -43,7 +43,7 @@ namespace ILS.Domain.Migrations
                         TestsFinished = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
-            
+
             CreateTable(
                 "dbo.Roles",
                 c => new

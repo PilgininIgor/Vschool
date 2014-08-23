@@ -35,7 +35,7 @@
   <ItemGroup>
     <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-	  <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -48,8 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Achievement.cs" />
     <Compile Include="Answer.cs" />
     <Compile Include="AnswerVariant.cs" />
+    <Compile Include="Award.cs" />
+    <Compile Include="EDucationAuthor.cs" />
     <Compile Include="CourseRun.cs" />
     <Compile Include="ILSContext.cs" />
     <Compile Include="Lecture.cs" />

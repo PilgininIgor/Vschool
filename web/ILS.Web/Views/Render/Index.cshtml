@@ -44,6 +44,7 @@
                 }
                 document.getElementById("unityPlayer").style.height = "1px";
                 document.getElementById("unityPlayer").style.width = "1px";
+				setTimeout(UnityLoaded, 10000);
             }
         }
 
@@ -133,8 +134,9 @@
 
         var authorisationComplete = false;
         var authorisationSucceed = false;
-        var authorisationStarted = false;
+        var authorisationNotStarted = true;
         var contentType = 0; //0 - authorise & play, 1 - demo play, 2 - demo video
+		var timer;
 
         window.addEventListener("message", receiveMessage, false);
 
@@ -148,14 +150,18 @@
             authorisationComplete = true;
             if (success) {
                 authorisationSucceed = true;
+				document.getElementById('helloPanel').style.display = "block";
+				document.getElementById('helloInactive').style.display = "none";
                 document.getElementById('credentials').innerHTML = firstName;
                 document.getElementById('adminLink').style.display = admin ? "block" : "none";
             } else {
                 authorisationSucceed = false;
+				document.getElementById('helloPanel').style.display = "none";
+				document.getElementById('helloInactive').style.display = "block";
             }
         }
 
-        function enter_click() {
+        function enter_click(animate) {
             var needSlice = (document.location.href.indexOf("http://") != -1);
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1);
             url = "http://workstation.itschool.ssau.ru/account/logon/?extUrl=" + (needSlice ? url.slice(7) : url) + "openid";
@@ -166,12 +172,12 @@
             var authorisationWindow;
             clearInterval(enterTimer);  
             function move() { 
-                if (angle <= 90) {
+                if (angle <= 90 && animate) {
                     canvas_rotate.call(img, angle);
                     angle += 10;
                 }
                 else {
-                    if (left > -700) {
+                    if (left > -700 && animate) {
                         left -= 30;
                         eleft -= 30;
                         document.getElementById('doorl').style.left = left + 'px';
@@ -179,7 +185,7 @@
                         document.getElementById('container').style.marginLeft = eleft + 'px';
                     } else {
                         if (contentType == 0) {
-                            if (!authorisationStarted) {
+                            if (authorisationNotStarted) {
                                 var offsetLeft = window.screenX + (window.outerWidth - window.innerWidth) / 2;
                                 var offsetTop = window.screenY + (window.outerHeight - window.innerHeight) - 5;
                                 var obj = document.getElementById('mainDoors');
@@ -203,7 +209,7 @@
                                     //alert(awWidth + " " + awHeight);
                                     //authorisationWindow.window.resizeBy(awWidth, awHeight);
                                 }
-                                authorisationStarted = true;
+                                authorisationNotStarted = false;
                             } else {
                                 if (authorisationWindow == null || authorisationWindow.closed) {
                                     clearInterval(timer);
@@ -244,8 +250,16 @@
                     }
                 }
             }
-            var timer = setInterval(move, 50) 
+            timer = setInterval(move, 50) 
         }
+		
+		function openAuthWindow() {
+			authorisationComplete = false;
+			authorisationNotStarted = true;
+			authorisationSucceed = false;
+			contentType = 0;
+			enter_click(false);
+		}
 
 
         var enterTimer;
@@ -296,14 +310,14 @@
             document.getElementById("awaitingAuthorisation").style.display = "none";
             document.getElementById("awaitingLoading").style.display = "block";
             contentType = 2;
-            enter_click();
+            enter_click(true);
         }
 
         function demo_game() {
             document.getElementById("awaitingAuthorisation").style.display = "none";
             document.getElementById("awaitingLoading").style.display = "block";
             contentType = 1;
-            enter_click();
+            enter_click(true);
         }
     </script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/render.js")"></script>
@@ -388,8 +402,12 @@
             <img src="/ils2/Content/Sprites/loading/loading_50.png" style="display:none">
             <p align="center" id="awaitingAuthorisation" style="position:absolute;top:50px;display:block;font-size: large;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Ожидается авторизация пользователя</p>
             <p align="center" id="awaitingLoading" style="position:absolute;top:80px;left:65px;display:none;font-size: large;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Загрузка</p>
-            <p align="center" id="error" style="position:absolute;top:80px;left:70px;display:none;font-size: large;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Ошибка</p>
-        </div>
+			<div id="error" style="display:none">
+				<p align="center" style="cursor: pointer;position:absolute;top:60px;left:70px;font-size: 20px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica" onclick="javascript:openAuthWindow()">Ошибка</p>
+				<p align="center" style="cursor: pointer;position:absolute;top:100px;left:40px;font-size: 14px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica" onclick="javascript:openAuthWindow()">попробуйте еще раз</p>
+				<img src="/ils2/Content/Sprites/refresh.png" style="cursor: pointer; position:absolute; top: 145px; left: 102px;" onclick="javascript:openAuthWindow()">
+			</div>
+		</div>
         <div id="unityPlayer" style="width: 809px; height: 400px; position: static">
         </div>
         <div id="videoPlayer" style="width: 809px; height: 400px; position: static">
@@ -418,7 +436,7 @@
             <img src="/ils2/Content/Sprites//enter//enter13.png" id="enter13" style="display: none">
             <canvas id="rotate"></canvas>
         </div>
-        <div class="enter" id="container" onclick="javascript:enter_click()" onmouseover="javascript:enter_animate()"
+        <div class="enter" id="container" onclick="javascript:enter_click(true)" onmouseover="javascript:enter_animate()"
             onmouseout="javascript:enter_stop()" style="cursor: pointer;">
         </div>
         <div class="renderOverlayT">
