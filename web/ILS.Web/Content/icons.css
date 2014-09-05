@@ -44,6 +44,9 @@
 .move_up { background-image:url("icons/move_up.png") !important}
 .move_down { background-image:url("icons/move_down.png") !important}
 
+.moodle { background-image:url("icons/moodle.png") !important}
+.moodleUpdate { background-image:url("icons/updateMoodle.png") !important}
+
 /* linkEditor */
 .save { background-image:url("icons/save.png") !important}
 .help { background-image:url("icons/help.png") !important}

@@ -15,6 +15,15 @@ using System.Data.Entity.Infrastructure;
 
 namespace ILS.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Net;
+
+    using ILS.Web.ContentFromMoodle;
+
+    using Paragraph = ILS.Domain.Paragraph;
+    using Question = ILS.Domain.Question;
+    using Test = ILS.Domain.Test;
+
     [Authorize(Roles = "Admin, Teacher")]
     public class StructController : JsonController
     {
@@ -22,6 +31,12 @@ namespace ILS.Web.Controllers
 
         ObjectContext context_obj;
         ObjectContext contextGenerator_obj;
+        ContentFromMoodle.Run r = null;
+
+        private Guid themeId;
+        private Theme theme;
+
+        private string physpathToFile_PathsToFilesFromMoodle;
 
         public StructController(ILSContext context)
         {
@@ -854,5 +869,480 @@ namespace ILS.Web.Controllers
 				{"success", "true"}
 			}, JsonRequestBehavior.AllowGet);
         }*/
+
+        //Метод добавления контента из LMS Moodle
+        public string AddMoodle(Guid id, string DB, string host, string user, string password)
+        {
+            Guid id_lectOrTest;
+            Guid id_ParagraphOrQuestion;
+            bool ThemeNoExist = true;
+            themeId = id;
+            theme = context.Theme.Find(id);
+            
+            physpathToFile_PathsToFilesFromMoodle = Server.MapPath("~/Content/DownloadedListFromMoodle");
+            if (!Directory.Exists(physpathToFile_PathsToFilesFromMoodle)) Directory.CreateDirectory(physpathToFile_PathsToFilesFromMoodle);
+
+            //если ни разу не делали выгрузку путей к файлам, расположенным на ftp сервере
+            if (!System.IO.File.Exists(this.physpathToFile_PathsToFilesFromMoodle + "\\DownloadedListFromMoodle.txt"))
+            {
+                ContentFromMoodle.GetLisAllFiles.Run();
+                List<string> listPathFiles = ContentFromMoodle.GetLisAllFiles.listPathFile;
+
+                physpathToFile_PathsToFilesFromMoodle = Server.MapPath("~/Content/DownloadedListFromMoodle");
+                if (!Directory.Exists(physpathToFile_PathsToFilesFromMoodle)) Directory.CreateDirectory(physpathToFile_PathsToFilesFromMoodle);
+
+                FileInfo fi = new FileInfo(physpathToFile_PathsToFilesFromMoodle + "/DownloadedListFromMoodle.txt");
+                StreamWriter sw = fi.CreateText();
+                foreach (string pathFile in listPathFiles)
+                {
+                    sw.WriteLine(pathFile);
+                }
+                sw.Close();
+            }
+
+            if (r == null)
+                try
+                {
+                    r = new ContentFromMoodle.Run(DB, host, user, password, physpathToFile_PathsToFilesFromMoodle);
+                }
+                catch (Exception e)
+                {
+                    return "{\"success\":false}";
+                }
+
+            foreach (var v in r.Lections)
+            {
+                ThemeNoExist = true;
+                for (int i = 0; i < theme.ThemeContents.Count; i++)
+                {
+                    if (v.nameLection == theme.ThemeContents.ElementAt(i).Name)
+                        ThemeNoExist = false;
+                }
+                if (ThemeNoExist)
+                {
+                    id_lectOrTest = AddLectureMoodle(id, v.nameLection);
+                    foreach (var v1 in v.ListParagraphs)
+                    {
+                        id_ParagraphOrQuestion = AddParagraphMoodle(id_lectOrTest, v1.nameParagraph, v1.textParagraph);
+                        SavePicturesForParagraphMoodle(id_ParagraphOrQuestion, v1.s_pictures, v1.s_name_pictures);
+                    }
+                }               
+            }
+            foreach (var v in r.Tests)
+            {
+                ThemeNoExist = true;
+                for (int i = 0; i < theme.ThemeContents.Count; i++)
+                {
+                    if (v.name == theme.ThemeContents.ElementAt(i).Name)
+                        ThemeNoExist = false;
+                }
+                if (ThemeNoExist)
+                {
+                    id_lectOrTest = AddTestMoodle(id, v.name);
+                    foreach (var v1 in v.lQuestion)
+                    {
+                        id_ParagraphOrQuestion = AddQuestionMoodle(id_lectOrTest, v1.text);
+                        SaveQuestionMoodle(id_ParagraphOrQuestion, v1);
+                    }
+                }
+                //}
+            }
+
+
+            string path = "/Course_" + theme.Course.Id.ToString();
+
+            return "{\"success\":true}";
+        }
+
+
+        //Метод формирования путей всех файлов, добавленных в лекции и тесты в системе LMS Moodle
+        //[Authorize(Roles = "Teacher")]
+        public string MoodleListUpdate(Guid id)
+        {
+            //return "{\"success\":true}";
+
+            //if (r == null)
+            //    r = new ContentFromMoodle.Run("distanceitschool", "localhost", "zhek", "dosSqrt03Den");
+            //норм
+            //r = new ContentFromMoodle.Run("distanceitschool", "distance.itschool.ssau.ru", "distanceitschool", "zD6ZCZA");
+
+            ContentFromMoodle.GetLisAllFiles.Run();
+            List<string> listPathFiles = ContentFromMoodle.GetLisAllFiles.listPathFile;
+
+            physpathToFile_PathsToFilesFromMoodle = Server.MapPath("~/Content/DownloadedListFromMoodle");
+            if (!Directory.Exists(physpathToFile_PathsToFilesFromMoodle)) Directory.CreateDirectory(physpathToFile_PathsToFilesFromMoodle);
+
+            FileInfo fi = new FileInfo(physpathToFile_PathsToFilesFromMoodle + "/DownloadedListFromMoodle.txt");
+            StreamWriter sw = fi.CreateText();
+            //= new StreamWriter(physpath + "/DownloadedListFromMoodle.txt", false, Encoding.UTF8);
+            foreach (string pathFile in listPathFiles)
+            {
+                sw.WriteLine(pathFile);
+            }
+            sw.Close();
+
+            return "{\"success\":true}";
+        }
+        public class ContentBaseArray:List<ContentBase>
+        {
+            public ContentBaseArray()
+            {
+                
+            }
+
+            public ContentBaseArray(IEnumerable<ContentBase> arr)
+            {
+                this.AddRange(arr);
+            }
+
+        }
+        public string ListDownloadedContentFromMoodle(Guid id, string host, string db, string user, string password, string list)
+        {
+            Guid id_lectOrTest;
+            Guid id_ParagraphOrQuestion;
+            theme = context.Theme.Find(id);
+
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            // не определён конструктор без параметров ContentBase[] при десериализации массива с одним объектом.
+            // вынести в отдельный класс и определить конструктор без параметров.
+            var lectionsAndTests = jss.Deserialize<ContentBase[]>(list);
+            bool ThemeNoExist = true;
+
+            physpathToFile_PathsToFilesFromMoodle = Server.MapPath("~/Content/DownloadedListFromMoodle");
+            if (!Directory.Exists(physpathToFile_PathsToFilesFromMoodle)) Directory.CreateDirectory(physpathToFile_PathsToFilesFromMoodle);
+
+            //если ни разу не делали выгрузку путей к файлам, расположенным на ftp сервере
+            if (!System.IO.File.Exists(this.physpathToFile_PathsToFilesFromMoodle + "\\DownloadedListFromMoodle.txt"))
+            {
+                ContentFromMoodle.GetLisAllFiles.Run();
+                List<string> listPathFiles = ContentFromMoodle.GetLisAllFiles.listPathFile;
+
+                physpathToFile_PathsToFilesFromMoodle = Server.MapPath("~/Content/DownloadedListFromMoodle");
+                if (!Directory.Exists(physpathToFile_PathsToFilesFromMoodle)) Directory.CreateDirectory(physpathToFile_PathsToFilesFromMoodle);
+
+                FileInfo fi = new FileInfo(physpathToFile_PathsToFilesFromMoodle + "/DownloadedListFromMoodle.txt");
+                StreamWriter sw = fi.CreateText();
+                foreach (string pathFile in listPathFiles)
+                {
+                    sw.WriteLine(pathFile);
+                }
+                sw.Close();
+            }
+
+            if (r == null)
+                try
+                {
+                    r = new ContentFromMoodle.Run(db, host, user, password, physpathToFile_PathsToFilesFromMoodle);
+                }
+                catch (Exception e)
+                {
+                    return "{\"success\":false}";
+                }
+
+            foreach (
+                var v in
+                    r.Lections.Where(
+                        x => lectionsAndTests.Where(e => e.Type == ContentType.Lecture).Select(e => e.Id).Contains(x.id)))
+            {
+                ThemeNoExist = true;
+                for (int i = 0; i < theme.ThemeContents.Count; i++)
+                {
+                    if (v.nameLection == theme.ThemeContents.ElementAt(i).Name)
+                        ThemeNoExist = false;
+                }
+                if (ThemeNoExist)
+                {
+                    id_lectOrTest = AddLectureMoodle(id, v.nameLection);
+                    foreach (var v1 in v.ListParagraphs)
+                    {
+                        id_ParagraphOrQuestion = AddParagraphMoodle(id_lectOrTest, v1.nameParagraph, v1.textParagraph);
+                        SavePicturesForParagraphMoodle(id_ParagraphOrQuestion, v1.s_pictures, v1.s_name_pictures);
+                    }
+                }
+            }
+            foreach (var v in r.Tests.Where(
+                        x => lectionsAndTests.Where(e => e.Type == ContentType.Test).Select(e => e.Id).Contains(x.id)))
+            {
+                ThemeNoExist = true;
+                for (int i = 0; i < theme.ThemeContents.Count; i++)
+                {
+                    if (v.name == theme.ThemeContents.ElementAt(i).Name)
+                        ThemeNoExist = false;
+                }
+                if (ThemeNoExist)
+                {
+                    id_lectOrTest = AddTestMoodle(id, v.name);
+                    foreach (var v1 in v.lQuestion)
+                    {
+                        id_ParagraphOrQuestion = AddQuestionMoodle(id_lectOrTest, v1.text);
+                        SaveQuestionMoodle(id_ParagraphOrQuestion, v1);
+                    }
+                }
+            }
+
+            return "{\"success\":true}";
+        }
+
+        public ActionResult GetListFromMoodle(string BD, string host, string login, string password)
+        {
+            physpathToFile_PathsToFilesFromMoodle = Server.MapPath("~/Content/DownloadedListFromMoodle");
+
+            List<ContentBase> lectionsAndTests = new List<ContentBase>();
+
+            r = null;
+            r = new ContentFromMoodle.Run(BD, host, login, password, physpathToFile_PathsToFilesFromMoodle);
+            for (int i = 0; i < r.Lections.Count; i++)
+            {
+                var lection = r.Lections[i];
+                lectionsAndTests.Add(new ContentBase(lection.id, lection.nameLection + "(лекция)", ContentType.Lecture));
+            }
+            for (int i = 0; i < r.Tests.Count; i++)
+            {
+                var test = r.Tests[i]; 
+                lectionsAndTests.Add(new ContentBase(test.id, test.name + "(тест)", ContentType.Test));
+            }
+
+            return Json(lectionsAndTests);           
+        }   
+
+        public Guid AddQuestionMoodle(Guid parent_id, string text)
+        {
+            var t = context.ThemeContent.Find(parent_id);
+            int num;
+            if (((Test)t).Questions.Count == 0) num = 1;
+            else num = ((Test)t).Questions.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
+            var q = new Question
+            {
+                OrderNumber = num,
+                Text = text,
+                PicQ = null,
+                IfPictured = false,
+                PicA = null
+            };
+            q.AnswerVariants.Add(new AnswerVariant { OrderNumber = 1, Text = "Вариант ответа №1", IfCorrect = false });
+            q.AnswerVariants.Add(new AnswerVariant { OrderNumber = 2, Text = "Вариант ответа №2", IfCorrect = false });
+            q.AnswerVariants.Add(new AnswerVariant { OrderNumber = 3, Text = "Вариант ответа №3", IfCorrect = false });
+            q.AnswerVariants.Add(new AnswerVariant { OrderNumber = 4, Text = "Вариант ответа №4", IfCorrect = false });
+            ((Test)t).Questions.Add(q);
+            context.SaveChanges();
+            return q.Id;
+        }
+
+        public Guid AddParagraphMoodle(Guid parent_id, string name, string text)
+        {
+            var l = context.ThemeContent.Find(parent_id);
+            int num;
+            var lecture = l as Lecture;
+            if (lecture.Paragraphs.Count == 0) num = 1;
+            else num = lecture.Paragraphs.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
+            var p = new Paragraph { OrderNumber = num, Header = name, Text = text };
+            lecture.Paragraphs.Add(p);
+            context.SaveChanges();
+            return p.Id;
+        }
+
+        public Guid AddTestMoodle(Guid parent_id, string name)
+        {
+            var t = context.Theme.Find(parent_id);
+            int num;
+            if (t.ThemeContents.Count == 0) num = 1;
+            else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
+            var tc = new Test{ OrderNumber = num, Name = name };
+            t.ThemeContents.Add(tc);
+            context.SaveChanges();
+            return tc.Id;
+        }
+
+        public Guid AddLectureMoodle(Guid parent_id, string name)
+        {
+            var t = context.Theme.Find(parent_id);
+            int num;
+            if (t.ThemeContents.Count == 0) num = 1;
+            else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
+            var tc = new Lecture { OrderNumber = num, Name = name };
+            t.ThemeContents.Add(tc);
+            context.SaveChanges();
+            return tc.Id;
+        }
+
+        [ValidateInput(false)]
+        public string SavePicturesForParagraphMoodle(Guid id, string[] pict, string[] name_pict)
+        {
+            if (pict != null)
+            {
+                var p = context.Paragraph.Find(id);
+
+                string path = "";
+                string error_path = Server.MapPath("~/Content/pics_base");
+                path += "/Course_" + p.Lecture.Theme.Course_Id.ToString();
+                path += "/Theme_" + p.Lecture.Theme_Id.ToString();
+                path += "/Lecture_" + p.Lecture_Id.ToString();
+                path += "/Paragraph_" + p.Id.ToString();
+                string physpath = Server.MapPath("~/Content/pics_base") + path;
+                string virtpath = HttpContext.Request.Url.ToString().Replace("/Struct/addMoodle", "") + "/Content/pics_base" + path;
+                if (!Directory.Exists(physpath)) Directory.CreateDirectory(physpath);
+
+                for (var i = p.Pictures.Count + 1; i <= pict.Length; i++)
+                {
+                    p.Pictures.Add(new Picture { OrderNumber = i, Path = null });
+                }
+
+                context_obj.SaveChanges();
+
+                int iz = 0;
+                foreach (var pic in p.Pictures.OrderBy(x => x.OrderNumber))
+                {
+                    WebClient webClient = new WebClient();
+                    if (pict[iz].IndexOf("http://") > -1)                    {
+                        
+                        try
+                        {
+                            webClient.DownloadFile(pict[iz], physpath + "/" + pic.OrderNumber + "_" + name_pict[iz]);
+                        }
+                        catch (Exception e)
+                        {
+                            //http://lenagold.ru/fon/clipart/s/simb/znak25.jpg
+                            webClient.DownloadFile("http://img534.imageshack.us/img534/5839/gmez.jpg",
+                                physpath + "/" + pic.OrderNumber + "_" + name_pict[iz]);
+                        }
+                    }
+                    //если путь к изображению - это путь для скачивания с FTP сервера
+                    else if (pict[iz].IndexOf("ftp://") > -1)
+                    {
+                        try
+                        {
+                            DownloadFileFTP(physpath + "/" + pic.OrderNumber + "_" + name_pict[iz], pict[iz]);
+                        }
+                        catch (Exception e)
+                        {
+                            //http://lenagold.ru/fon/clipart/s/simb/znak25.jpg
+                            webClient.DownloadFile("http://img534.imageshack.us/img534/5839/gmez.jpg",
+                                physpath + "/" + pic.OrderNumber + "_" + name_pict[iz]);
+                        }
+                    }
+                    else
+                    {
+                        webClient.DownloadFile("http://img534.imageshack.us/img534/5839/gmez.jpg",
+                                physpath + "/" + pic.OrderNumber + "_" + name_pict[iz]);
+                    }
+                    pic.Path = virtpath + "/" + pic.OrderNumber + "_" + name_pict[iz];
+                    iz++;
+                }
+
+                context.SaveChanges();
+            }
+            return "{\"success\":true}";
+        }
+
+        //Загрузка файла с FTP сервера
+        private void DownloadFileFTP(string inputfilepath, string ftphost_Plus_ftpfilepath)
+        {
+            string ftpfullpath = ftphost_Plus_ftpfilepath;
+
+            using (WebClient request = new WebClient())
+            {
+                request.Credentials = new NetworkCredential("distanceitschool", "4tXeKbwK");
+                byte[] fileData = request.DownloadData(ftpfullpath);
+                
+                using (FileStream file = System.IO.File.Create(inputfilepath))
+                {
+                    file.Write(fileData, 0, fileData.Length);
+                    file.Close();
+                }                
+            }
+        }
+
+        [ValidateInput(false)]
+        public string SaveQuestionMoodle(Guid id, ContentFromMoodle.Question question)
+        {
+            var q = context.Question.Find(id);
+            q.Text = question.text;
+
+            if (question.pathToPicture != null)
+            {
+                string path = "";
+                path += "/Course_" + q.Test.Theme.Course_Id.ToString();
+                path += "/Theme_" + q.Test.Theme_Id.ToString();
+                path += "/Test_" + q.Test_Id.ToString();
+                string physpath = Server.MapPath("~/Content/pics_base") + path;
+                string virtpath = HttpContext.Request.Url.ToString().Replace("/Struct/addMoodle", "") + "/Content/pics_base" + path;
+                if (!Directory.Exists(physpath)) Directory.CreateDirectory(physpath);
+                if (System.IO.File.Exists(q.PicQ)) System.IO.File.Delete(q.PicQ); //если есть старый, то удаляем его
+                physpath += "/" + q.OrderNumber + "q_" + question.namePicture;
+                virtpath += "/" + q.OrderNumber + "q_" + question.namePicture;
+
+                WebClient webClient = new WebClient();                
+                //webClient.DownloadFile(question.pathToPicture, physpath);
+                                
+                if (question.pathToPicture.IndexOf("http://") > -1)
+                {
+
+                    try
+                    {
+                        webClient.DownloadFile(question.pathToPicture, physpath);
+                    }
+                    catch (Exception e)
+                    {
+                        //http://lenagold.ru/fon/clipart/s/simb/znak25.jpg
+                        webClient.DownloadFile("http://img534.imageshack.us/img534/5839/gmez.jpg",
+                            physpath);
+                    }
+                }
+                //если путь к изображению - это путь для скачивания с FTP сервера
+                else if (question.pathToPicture.IndexOf("ftp://") > -1)
+                {
+                    try
+                    {
+                        DownloadFileFTP(physpath, question.pathToPicture);
+                    }
+                    catch (Exception e)
+                    {
+                        //http://lenagold.ru/fon/clipart/s/simb/znak25.jpg
+                        webClient.DownloadFile("http://img534.imageshack.us/img534/5839/gmez.jpg",
+                            physpath);
+                    }
+                }
+                else
+                {
+                    webClient.DownloadFile("http://img534.imageshack.us/img534/5839/gmez.jpg",
+                            physpath);
+                }     
+
+                q.PicQ = virtpath;
+                //q.PicA = virtpath;
+
+                q.IfPictured = false;
+                while (q.AnswerVariants.Count() > 0) context_obj.DeleteObject(q.AnswerVariants.First());
+                int count_var = (question.answersOnQuestion.Count <= 5) ? question.answersOnQuestion.Count : 5;
+                for (int i = 0; i < count_var; i++)
+                {
+                    q.AnswerVariants.Add(new AnswerVariant
+                    {
+                        OrderNumber = i + 1,
+                        Text = question.answersOnQuestion[i].text,
+                        IfCorrect = question.answersOnQuestion[i].rightly
+                    });
+                }
+            }
+            else
+            {
+                q.IfPictured = false; q.PicA = null;
+                while (q.AnswerVariants.Count() > 0) context_obj.DeleteObject(q.AnswerVariants.First());
+                int count_var = (question.answersOnQuestion.Count <= 5) ? question.answersOnQuestion.Count : 5;
+                for (int i = 0; i < count_var; i++)
+                {
+                    q.AnswerVariants.Add(new AnswerVariant
+                    {
+                        OrderNumber = i + 1,
+                        Text = question.answersOnQuestion[i].text,
+                        IfCorrect = question.answersOnQuestion[i].rightly
+                    });
+                }
+            }
+
+            context.SaveChanges(); context_obj.SaveChanges();
+            return "{\"success\":true}";
+        }
     }
 }
