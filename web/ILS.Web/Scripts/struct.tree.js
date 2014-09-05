@@ -105,6 +105,7 @@ tree.on('selectionchange', function (dataView, selections) {
         tlbar.items.items[4].hide(); tlbar.items.items[5].hide(); tlbar.items.items[6].hide(); tlbar.items.items[7].hide();
         tlbar.items.items[8].hide(); tlbar.items.items[9].hide(); tlbar.items.items[10].hide(); tlbar.items.items[11].hide();
         tlbar.items.items[12].hide(); tlbar.items.items[13].hide(); tlbar.items.items[14].hide(); tlbar.items.items[15].hide();
+        tlbar.items.items[16].hide(); //tlbar.items.items[17].hide();
         switch (d) {
             case 1:
                 tlbar.items.items[0].show(); tlbar.items.items[1].show(); tlbar.items.items[2].show();
@@ -112,6 +113,8 @@ tree.on('selectionchange', function (dataView, selections) {
             case 2:
                 tlbar.items.items[3].show(); tlbar.items.items[4].show(); tlbar.items.items[6].show();
                 tlbar.items.items[12].show(); tlbar.items.items[13].show();
+                tlbar.items.items[16].show();
+                //tlbar.items.items[17].show();
                 break;
             case 3:
                 if (selections[0].raw.iconCls == "test") {
