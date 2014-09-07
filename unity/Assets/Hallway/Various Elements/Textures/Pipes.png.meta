@@ -35,6 +35,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaIsTransparency: 0
   textureType: 0
@@ -42,19 +43,23 @@ TextureImporter:
   - buildTarget: Web
     maxTextureSize: 1024
     textureFormat: -1
-    compressionQuality: 50
+    compressionQuality: -1
   - buildTarget: Standalone
     maxTextureSize: 1024
     textureFormat: -1
-    compressionQuality: 50
+    compressionQuality: -1
   - buildTarget: iPhone
     maxTextureSize: 512
     textureFormat: -1
-    compressionQuality: 50
+    compressionQuality: -1
   - buildTarget: Android
     maxTextureSize: 512
     textureFormat: -1
-    compressionQuality: 50
+    compressionQuality: -1
+  - buildTarget: FlashPlayer
+    maxTextureSize: 1024
+    textureFormat: -1
+    compressionQuality: 10
   spriteSheet:
     sprites: []
   spritePackingTag: 

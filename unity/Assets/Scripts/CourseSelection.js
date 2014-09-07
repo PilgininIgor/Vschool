@@ -16,6 +16,10 @@ private var JSONTestString = "{\"coursesNames\":["+
 	//"{\"id\":\"47942238-8168-404c-965e-222222222222\", \"name\":\"Больше физики\"}"+
 "]}";
 
+var ServerUrl : String = "http://virtual.itschool.ssau.ru";
+private var courseDataUrl : String = "/Render/UnityData";
+private var statUrl : String = "/Render/UnityStat";
+
 var LBL1 = "Загрузка...";
 var LBL2 = "A / стрелка влево - предыдущий курс";
 var LBL3 = "D / стрелка вправо - следующий курс";
@@ -115,6 +119,20 @@ function OnGUI() {
 function OnTriggerEnter(other: Collider) { hint_visible = true; }
 function OnTriggerExit(other: Collider) { hint_visible = false; }
 
+function LoadCourseData(id : String) {
+	var form : WWWForm = new WWWForm();
+	form.AddField("id", cl[i-1].id);
+	var www : WWW = new WWW(ServerUrl + courseDataUrl, form);
+	yield www;
+	var src1 : BootstrapParser = GameObject.Find("Bootstrap").GetComponent.<BootstrapParser>();
+	src1.CourseConstructor(www.text);
+	www = new WWW(ServerUrl + statUrl, form);
+	yield www;
+	var src2 : StatisticParser = GameObject.Find("Bootstrap").GetComponent.<StatisticParser>();
+	src2.StatisticDisplay(src2.JSONTestString);
+	www.Dispose();
+}
+
 function Update() {
 	if ((Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) && escape_visible) {
 		i--; if (i <= 0) i = cl.Count;
@@ -138,7 +156,9 @@ function Update() {
 		var src2 : StatisticParser = GameObject.Find("Bootstrap").GetComponent.<StatisticParser>();
 		src2.StatisticDisplay(src2.JSONTestString);*/
 		Application.ExternalCall("LoadCourseData", cl[i-1].id);
-				
+		
+		LoadCourseData(cl[i-1].id);
+		
 		dieSignals.SendSignals(this);
 		this.renderer.material = NewScreen;
 		transform.parent.transform.Find("UnlockPipe").renderer.material = NewPipe;

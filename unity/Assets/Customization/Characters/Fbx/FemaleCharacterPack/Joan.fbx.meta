@@ -1,26 +1,25 @@
 fileFormatVersion: 2
 guid: 6142a6b8fc847a24aa567290b62ea54b
 labels:
-- rig
-- charactercontroller
-- playablecharacter
-- mesh
-- rigged
 - 3D
-- model
-- character
-- animated
-- motion-capture
-- mo-cap
-- mocap
-- motion
-- animation
-- mixamo
-- lady
-- woman
-- girl
-- female
 - Human
+- Animated
+- Animation
+- Character
+- Charactercontroller
+- Female
+- Lady
+- Mesh
+- Mixamo
+- Mo-cap
+- Mocap
+- Model
+- Motion
+- Motion-capture
+- Playablecharacter
+- Rig
+- Rigged
+- Woman
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
@@ -144,8 +143,8 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 180
     splitTangentsAcrossUV: 1
-    normalImportMode: 1
-    tangentImportMode: 2
+    normalImportMode: 0
+    tangentImportMode: 1
   importAnimation: 1
   copyAvatar: 0
   humanDescription:

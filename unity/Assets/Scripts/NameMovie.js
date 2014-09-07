@@ -1,7 +1,7 @@
  //var hdr = new Array();
 
 var hdr = new Array(
-	"1) Программа",
+	"1) 3Ducation Демо",
 	"2) Переменнные",
 	"3) Типы данных",
 	"4) Линейный алгоритм",
@@ -10,11 +10,11 @@ var hdr = new Array(
 
 
  var movie = new Array (
-	"file://С:/UnityProject/Video/Program.ogv",
-	"file://С:/UnityProject/Video/Peremen.ogv",
-	"file://С:/UnityProject/Video/TipeDate.ogv",
-	"file://С:/UnityProject/Video/LineAlgorim.ogv",
-	"file://С:/UnityProject/Video/Vetvlen.ogv"
+	"file://D:/Video/UnityDemo.ogv",
+	"file://D:/Video/Peremen.ogv",
+	"file://D:/Video/TipeDate.ogv",
+	"file://D:/Video/LineAlgorim.ogv",
+	"file://D:/Video/Vetvlen.ogv"
 ); 
 
 /* var movie = new Array (

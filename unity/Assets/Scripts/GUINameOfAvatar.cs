@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GUINameOfAvatar : MonoBehaviour {
 
-    //public GameObject palyer;
+public class GUINameOfAvatar : Photon.MonoBehaviour
+{
+
+
     Vector3 pos;
     Vector3 worldPos;
     public string textUnderAvatar = "";
@@ -13,7 +15,7 @@ public class GUINameOfAvatar : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         if(isNetworking)
-            textUnderAvatar = PhotonNetwork.playerName;
+            textUnderAvatar = photonView.owner.name;
         style = new GUIStyle();
         style.fontSize = 14;
         style.fontStyle = FontStyle.Bold;
@@ -24,8 +26,11 @@ public class GUINameOfAvatar : MonoBehaviour {
     void FixedUpdate()
     {
         pos = new Vector3(this.transform.position.x, this.transform.position.y + 3f, this.transform.position.z);
-        worldPos = Camera.main.WorldToScreenPoint(pos);
-        worldPos.y = Screen.height - worldPos.y;
+        if (Camera.main != null)
+        {
+            worldPos = Camera.main.WorldToScreenPoint(pos);
+            worldPos.y = Screen.height - worldPos.y;
+        }
     }
 
 	// Update is called once per frame

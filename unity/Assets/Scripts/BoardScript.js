@@ -86,7 +86,7 @@ function UpdateBeginning() {
 	if (qPicPath[i] == 0) GameObject.Find("Plane_RightButton").renderer.enabled = false;
 	else GameObject.Find("Plane_RightButton").renderer.enabled = true;
 	
-	/*switch (qAnsNum[i]) {
+	switch (qAnsNum[i]) {
 		case 3:
 			GameObject.Find("Cube4").GetComponent(Renderer).enabled = false;
 			GameObject.Find("Cube5").GetComponent(Renderer).enabled = false;
@@ -111,7 +111,7 @@ function UpdateBeginning() {
 			GameObject.Find("CubeGroup4").GetComponent(Transform).position.x = 2;
 			GameObject.Find("CubeGroup5").GetComponent(Transform).position.x = 4;
 			break;
-	}*/
+	}
 }
 
 function UpdateQuestion() {

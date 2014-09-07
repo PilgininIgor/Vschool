@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 4a461e42cd11fe64a0002e294ada8c59
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 15
   fileIDToRecycleName:
     100000: Lerpz
     100002: rootJoint
@@ -173,16 +173,13 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    optimizeGameObjects: 0
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
     animationScaleError: .5
     animationWrapMode: 0
-    extraExposedTransformPaths: []
     clipAnimations:
-    - serializedVersion: 16
-      name: walk
+    - name: walk
       takeName: 
       firstFrame: 1
       lastFrame: 33
@@ -191,7 +188,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -203,12 +199,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: run
+    - name: run
       takeName: 
       firstFrame: 41
       lastFrame: 57
@@ -217,7 +209,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -229,12 +220,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: kick
+    - name: kick
       takeName: 
       firstFrame: 81
       lastFrame: 97
@@ -243,7 +230,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -255,12 +241,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: punch
+    - name: punch
       takeName: 
       firstFrame: 101
       lastFrame: 117
@@ -269,7 +251,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -281,12 +262,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: jump
+    - name: jump
       takeName: 
       firstFrame: 121
       lastFrame: 129
@@ -295,7 +272,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -307,12 +283,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: jumpfall
+    - name: jumpfall
       takeName: 
       firstFrame: 149
       lastFrame: 157
@@ -321,7 +293,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -333,12 +304,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: idle
+    - name: idle
       takeName: 
       firstFrame: 201
       lastFrame: 401
@@ -347,7 +314,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -359,12 +325,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: gotbit
+    - name: gotbit
       takeName: 
       firstFrame: 411
       lastFrame: 419
@@ -373,7 +335,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -385,12 +346,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: gothit
+    - name: gothit
       takeName: 
       firstFrame: 421
       lastFrame: 429
@@ -399,7 +356,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -411,12 +367,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: walljump
+    - name: walljump
       takeName: 
       firstFrame: 431
       lastFrame: 448
@@ -425,7 +377,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -437,12 +388,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: deathfall
+    - name: deathfall
       takeName: 
       firstFrame: 451
       lastFrame: 459
@@ -451,7 +398,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -463,12 +409,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: jetpackjump
+    - name: jetpackjump
       takeName: 
       firstFrame: 149
       lastFrame: 150
@@ -477,7 +419,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -489,12 +430,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: ledgefall
+    - name: ledgefall
       takeName: 
       firstFrame: 149
       lastFrame: 150
@@ -503,7 +440,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -515,12 +451,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: buttstomp
+    - name: buttstomp
       takeName: 
       firstFrame: 137
       lastFrame: 145
@@ -529,7 +461,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -541,12 +472,8 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
-    - serializedVersion: 16
-      name: jumpland
+    - name: jumpland
       takeName: 
       firstFrame: 161
       lastFrame: 177
@@ -555,7 +482,6 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -567,10 +493,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
       transformMask: []
-      maskType: 0
-      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -597,6 +520,7 @@ ModelImporter:
   humanDescription:
     human: []
     skeleton: []
+    handles: []
     armTwist: .5
     foreArmTwist: .5
     upperLegTwist: .5
@@ -606,6 +530,6 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 1
   additionalBone: 1
+  animationType: 1
   userData: 
