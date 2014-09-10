@@ -3,14 +3,14 @@ var firstline;
 function OnMouseDown () {
 	
 	//бшбнд б апюсгеп
-	var scr = GameObject.Find("BoardGroup").GetComponent("BoardScript");
-	var s = new Array();
-	var i;
+	var scr = GameObject.Find("BoardGroup").GetComponent(BoardScript);
+	var s : String[] = new String[scr.qText.Length];
+	var i : int;
 	
-	for (i=0; i<scr.qText.length; i++) {
-		s[i] = "Q"+(i+1)+": "+scr.a[i][0]+" "+scr.a[i][1]+" "+scr.a[i][2];
-		if (scr.qAnsNum[i] >= 4) s[i] = s[i]+" "+scr.a[i][3];
-		if (scr.qAnsNum[i] == 5) s[i] = s[i]+" "+scr.a[i][4];
+	for (i=0; i<scr.qText.Length; i++) {
+		s[i] = "Q"+(i+1)+": "+scr.a[i,0]+" "+scr.a[i,1]+" "+scr.a[i,2];
+		if (scr.qAnsNum[i] >= 4) s[i] = s[i]+" "+scr.a[i,3];
+		if (scr.qAnsNum[i] == 5) s[i] = s[i]+" "+scr.a[i,4];
 	}
 	
 	for (i=0; i<scr.qText.length; i++) {

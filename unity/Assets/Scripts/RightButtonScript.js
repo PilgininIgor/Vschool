@@ -5,7 +5,7 @@ function AnimationStart() { animation_in_progress = true; }
 function AnimationStop() { animation_in_progress = false; }
 
 function LoadPicture() {
-	var scr = GameObject.Find("BoardGroup").GetComponent("BoardScript");
+	var scr = GameObject.Find("BoardGroup").GetComponent(BoardScript);
 	var www : WWW = new WWW (scr.qPicPath[scr.i]);
 	yield www;
 	GameObject.Find("Plane_RightButton").renderer.material.mainTexture = www.texture;

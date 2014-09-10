@@ -9,12 +9,12 @@ function AnimationStart() { animation_in_progress = true; }
 function AnimationStop() { animation_in_progress = false; }
 
 function SetAnswer(ans) {
-	var scr = GameObject.Find("BoardGroup").GetComponent("BoardScript");
-	if (name == "Cube1") scr.a[scr.i][0] = ans;
-	else if (name == "Cube2") scr.a[scr.i][1] = ans;
-	else if (name == "Cube3") scr.a[scr.i][2] = ans;
-	else if (name == "Cube4") scr.a[scr.i][3] = ans;
-	else if (name == "Cube5") scr.a[scr.i][4] = ans;
+	var scr = GameObject.Find("BoardGroup").GetComponent(BoardScript);
+	if (name == "Cube1") scr.a[scr.i,0] = ans;
+	else if (name == "Cube2") scr.a[scr.i,1] = ans;
+	else if (name == "Cube3") scr.a[scr.i,2] = ans;
+	else if (name == "Cube4") scr.a[scr.i,3] = ans;
+	else if (name == "Cube5") scr.a[scr.i,4] = ans;
 }
 
 function OnMouseDown() {

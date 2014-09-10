@@ -4,9 +4,9 @@
     function OnMouseDown() { 
 	    
 	
-	    renderer.material.mainTexture.Play(); 
+	    /*renderer.material.mainTexture.Play(); 
 		audio.clip = renderer.material.mainTexture.audioClip;
-		audio.Play();
+		audio.Play();*/
         //renderer.material.mainTexture = movTexture;
         //movTexture.Play();
     }

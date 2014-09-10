@@ -13,14 +13,14 @@ var LBL8 = "Z - скрыть это окно";
 function Update() 
 {
 	if (Input.GetKeyDown(KeyCode.Z)) show = !show;
-    if (Input.GetKeyDown(KeyCode.X))
+    /*if (Input.GetKeyDown(KeyCode.X))
     {
         chat = GameObject.Find("Bootstrap").GetComponent("InRoomChat");
         if(chat.IsVisible)
             chat.IsVisible = false;
         else
             chat.IsVisible = true;
-    }
+    }*/
 }
 
 function OnGUI () 

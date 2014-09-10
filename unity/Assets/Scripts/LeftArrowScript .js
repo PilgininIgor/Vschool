@@ -11,7 +11,7 @@ function OnMouseDown() {
 	&& (!scr3.animation_in_progress) && (!scr4.animation_in_progress)
 	&& (!scr5.animation_in_progress) && (!scrb.animation_in_progress)) {
 	
-		var scr = GameObject.Find("BoardGroup").GetComponent("BoardScript");
+		var scr = GameObject.Find("BoardGroup").GetComponent(BoardScript);
 		var anim = GameObject.Find("BoardGroup").GetComponent(Animation);
 		var anim1 = GameObject.Find("Cube1").GetComponent(Animation);
 		var anim2 = GameObject.Find("Cube2").GetComponent(Animation);

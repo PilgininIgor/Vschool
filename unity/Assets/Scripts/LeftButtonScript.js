@@ -1,7 +1,7 @@
 var looking_at_question = true;
 
 function OnMouseDown() {
-	var scr = GameObject.Find("BoardGroup").GetComponent("BoardScript");
+	var scr = GameObject.Find("BoardGroup").GetComponent(BoardScript);
 	if (looking_at_question) {
 		looking_at_question = false;
 		renderer.material = Resources.Load("button_question");

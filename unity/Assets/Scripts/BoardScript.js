@@ -1,11 +1,12 @@
 //массивы с информацией о вопросах (одинаковый индекс - одинаковый вопрос)
-var qText = new Array(); //текст вопроса
-var qPicPath = new Array(); //путь к картинке для вопроса либо 0, если таковой не предусмотрено
-var qType = new Array(); //тип ответов: 0 - текстом, 1 - картинкой
-var qAns = new Array(); //ответы текстом (тип = 0) либо путь к картинке с ними (тип = 1)
-var qAnsNum = new Array(); //количество вариантов ответа
+var SIZE : int = 6;
+var qText : String[] = new String[SIZE]; //текст вопроса
+var qPicPath : String[] = new String[SIZE]; //путь к картинке для вопроса либо 0, если таковой не предусмотрено
+var qType : int[] = new int[SIZE]; //тип ответов: 0 - текстом, 1 - картинкой
+var qAns : String[] = new String[SIZE]; //ответы текстом (тип = 0) либо путь к картинке с ними (тип = 1)
+var qAnsNum : int[] = new int[SIZE]; //количество вариантов ответа
 
-var a = new Array(); //двумерный массив двоичных значений, запоминающий все ответы пользователя
+var a : int[,] = new int[SIZE,SIZE];//двумерный массив двоичных значений, запоминающий все ответы пользователя
 //a[i][j] = true/false - пользователь выбрал/не выбрал j-тый вариант ответа на i-тый вопрос
 var i = 0; //номер текущего вопроса (нумеруются с нуля)
 
@@ -60,20 +61,19 @@ function generateTest() {
 				   "4) с = 180"+"\n"+"5) с = 220";
 	qAns[5] = "file://E:/Unity3D/a6.jpg";
 	
-	qPicPath[0] = 0;
-	qPicPath[1] = 0;
+	qPicPath[0] = "0";
+	qPicPath[1] = "0";
 	qPicPath[2] = "pics/q3.jpg"; //qPicPath[2] = "file://E:/Unity3D/q3.jpg";
-	qPicPath[3] = 0;
+	qPicPath[3] = "0";
 	qPicPath[4] = "pics/q5.jpg"; //qPicPath[4] = "file://E:/Unity3D/q5.jpg";
 	qPicPath[5] = "pics/q6.jpg"; //qPicPath[5] = "file://E:/Unity3D/q6.jpg";
 }
 
 function initializeAnsArray() {
-	var j; var k;
-	for (j=0; j<qText.length; j++) {
-		a[j] = new Array();
+	var j : int; var k : int;
+	for (j=0; j<qText.Length; j++) {
 		for (k=0; k<qAnsNum[j]; k++)
-			a[j][k] = 0;
+			a[j,k] = 0;
 	}		
 }
 
@@ -122,21 +122,21 @@ function UpdateQuestion() {
 	GameObject.Find("Text_Question").renderer.enabled = true;
 	GameObject.Find("Plane_Pic_Answers").renderer.enabled = false;
 			
-	if (a[i][0] == 0) { 
+	if (a[i,0] == 0) { 
 		GameObject.Find("Cube1").animation.Play("CubeInactiveUp");
 		GameObject.Find("Cube1").GetComponent("CubeScript").is_active = false;
 	} else {
 		GameObject.Find("Cube1").animation.Play("CubeActiveUp");
 		GameObject.Find("Cube1").GetComponent("CubeScript").is_active = true;
 	}
-	if (a[i][1] == 0) {
+	if (a[i,1] == 0) {
 		GameObject.Find("Cube2").animation.Play("CubeInactiveUp");
 		GameObject.Find("Cube2").GetComponent("CubeScript").is_active = false;
 	} else {
 		GameObject.Find("Cube2").animation.Play("CubeActiveUp");
 		GameObject.Find("Cube2").GetComponent("CubeScript").is_active = true;
 	}	
-	if (a[i][2] == 0) {
+	if (a[i,2] == 0) {
 		GameObject.Find("Cube3").animation.Play("CubeInactiveUp");
 		GameObject.Find("Cube3").GetComponent("CubeScript").is_active = false;
 	} else {
@@ -144,7 +144,7 @@ function UpdateQuestion() {
 		GameObject.Find("Cube3").GetComponent("CubeScript").is_active = true;
 	}	
 	if ((qAnsNum[i] == 4) || (qAnsNum[i] == 5)) {
-		if (a[i][3] == 0) {
+		if (a[i,3] == 0) {
 			GameObject.Find("Cube4").animation.Play("CubeInactiveUp");
 			GameObject.Find("Cube4").GetComponent("CubeScript").is_active = false;
 		} else {
@@ -153,7 +153,7 @@ function UpdateQuestion() {
 		}	
 	}	
 	if (qAnsNum[i] == 5) {
-		if (a[i][4] == 0) {
+		if (a[i,4] == 0) {
 			GameObject.Find("Cube5").animation.Play("CubeInactiveUp");
 			GameObject.Find("Cube5").GetComponent("CubeScript").is_active = false;
 		} else {
