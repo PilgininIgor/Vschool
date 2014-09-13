@@ -1,6 +1,6 @@
 function OnMouseDown() {
 	
-	var scr1 = GameObject.Find("Cube1").GetComponent("CubeScript");
+	/*var scr1 = GameObject.Find("Cube1").GetComponent("CubeScript");
 	var scr2 = GameObject.Find("Cube2").GetComponent("CubeScript");
 	var scr3 = GameObject.Find("Cube3").GetComponent("CubeScript");
 	var scr4 = GameObject.Find("Cube4").GetComponent("CubeScript");
@@ -35,6 +35,6 @@ function OnMouseDown() {
 		if (scr4.is_active) anim4.Play("CubeActiveDown"); else anim4.Play("CubeInactiveDown");
 		if (scr5.is_active) anim5.Play("CubeActiveDown"); else anim5.Play("CubeInactiveDown");
 		
-	}		
+	}*/		
 	
 }
