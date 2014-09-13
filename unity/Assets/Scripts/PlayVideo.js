@@ -6,7 +6,7 @@ var check: boolean;
 	    var PlaneBoardMaterial = GameObject.Find("Plane_Board").GetComponent(Renderer);
 		//if (check==true ){
 
-	    PlaneBoardMaterial.material.mainTexture.Play(); 
+	    //PlaneBoardMaterial.material.mainTexture.Play(); 
 	
 		//}
 		
