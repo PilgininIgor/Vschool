@@ -117,7 +117,7 @@ function UpdateBeginning() {
 function UpdateQuestion() {
 	UpdateBeginning();
 	
-	GameObject.Find("Plane_LeftButton").GetComponent("LeftButtonScript").looking_at_question = true;
+	GameObject.Find("Plane_LeftButton").GetComponent(LeftButtonScript).looking_at_question = true;
 	GameObject.Find("Plane_LeftButton").renderer.material = Resources.Load("button_answers");
 	GameObject.Find("Text_Question").renderer.enabled = true;
 	GameObject.Find("Plane_Pic_Answers").renderer.enabled = false;
