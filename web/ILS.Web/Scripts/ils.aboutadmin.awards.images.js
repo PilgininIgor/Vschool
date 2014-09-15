@@ -161,7 +161,11 @@ function getAwardImageGrid() {
 												}
 											});
 										}
-										
+										if (img.indexOf("/") != -1)
+											img = img.slice(img.lastIndexOf("/") + 1);
+										if (img.indexOf("\\") != -1)
+											img = img.slice(img.lastIndexOf("\\") + 1);
+
 										var newItem = {Image: img};
 										ils.aboutadmin.awards.images.store.add(newItem);
 									}

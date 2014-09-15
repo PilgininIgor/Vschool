@@ -195,7 +195,10 @@ var ScreenGrid = new Ext.grid.GridPanel({
                                             }
                                         });
                                     }
-                                    
+									if (img.indexOf("/") != -1)
+										img = img.slice(img.lastIndexOf("/") + 1);
+									if (img.indexOf("\\") != -1)
+										img = img.slice(img.lastIndexOf("\\") + 1);
 									var newItem = {Image: img};
 									ils.aboutadmin.screens.store.add(newItem);
                                 }

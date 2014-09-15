@@ -337,8 +337,8 @@ namespace ILS.Web.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
 
-            System.IO.File.Delete(Server.MapPath(Url.Content("~/Content/Sprites/awards/full/")) + image);
-            System.IO.File.Delete(Server.MapPath(Url.Content("~/Content/Sprites/awards/")) + image.Substring(0, image.IndexOf(".") + 1) + "jpg");
+            //System.IO.File.Delete(Server.MapPath(Url.Content("~/Content/Sprites/awards/full/")) + image);
+            //System.IO.File.Delete(Server.MapPath(Url.Content("~/Content/Sprites/awards/")) + image.Substring(0, image.IndexOf(".") + 1) + "jpg");
             return Json(new
             {
                 success = "true"
@@ -497,8 +497,8 @@ namespace ILS.Web.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
 
-            System.IO.File.Delete(Server.MapPath(Url.Content("~/Content/Sprites/achievements/full/")) + image);
-            System.IO.File.Delete(Server.MapPath(Url.Content("~/Content/Sprites/achievements/")) + image.Substring(0, image.IndexOf(".") + 1) + "jpg");
+            //System.IO.File.Delete(Server.MapPath(Url.Content("~/Content/Sprites/achievements/full/")) + image);
+            //System.IO.File.Delete(Server.MapPath(Url.Content("~/Content/Sprites/achievements/")) + image.Substring(0, image.IndexOf(".") + 1) + "jpg");
             return Json(new
             {
                 success = "true"
