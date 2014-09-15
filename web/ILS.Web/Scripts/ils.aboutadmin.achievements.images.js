@@ -153,7 +153,7 @@ function getAchievementImageGrid() {
 										if (uploaded && img != null && img != "") {
 											var form = ils.aboutadmin.achievements.images.imageForm.getForm();
 											form.submit({
-												url: '/ils2/aboutadmin/uploadachievementimage',
+												url: '/aboutadmin/uploadachievementimage',
 												waitMsg: 'Uploading your file...',
 												success: function (form, action) {
 													uploadFinished = true;
@@ -161,7 +161,10 @@ function getAchievementImageGrid() {
 												}
 											});
 										}
-										
+										if (img.indexOf("/") != -1)
+											img = img.slice(img.lastIndexOf("/") + 1);
+										if (img.indexOf("\\") != -1)
+											img = img.slice(img.lastIndexOf("\\") + 1);
 										var newItem = {Image: img};
 										ils.aboutadmin.achievements.images.store.add(newItem);
 									}

@@ -165,20 +165,25 @@
 					
 					
 					
-					
-					imgAwardsFrames = sliderAwardsFrames[sliderAwardsFrame].children;
-					imgAwardsFrame = 0;
-					for (i = 0; i < awardsCount; i++) {
-						if(i == sliderAwardsFrame) {
-							textAwardsFrames[i].style.display = "block";
-							sliderAwardsFrames[i].style.display = "block";
-						} else {
-							textAwardsFrames[i].style.display = "none";
-							sliderAwardsFrames[i].style.display = "none";
+					if (sliderAwardsFrames.length > 0) {
+						imgAwardsFrames = sliderAwardsFrames[sliderAwardsFrame].children;
+						imgAwardsFrame = 0;
+						for (i = 0; i < awardsCount; i++) {
+							if(i == sliderAwardsFrame) {
+								textAwardsFrames[i].style.display = "block";
+								sliderAwardsFrames[i].style.display = "block";
+							} else {
+								textAwardsFrames[i].style.display = "none";
+								sliderAwardsFrames[i].style.display = "none";
+							}
 						}
+						
+						document.getElementById("awardsNumber").innerHTML = sliderAwardsFrame + 1 + "/" + awardsCount;
+					} else {
+						imgAwardsFrames = { };
+						imgAwardsFrame = 0;
+						document.getElementById("awardsNumber").innerHTML = sliderAwardsFrame + 0 + "/" + awardsCount;
 					}
-					
-					document.getElementById("awardsNumber").innerHTML = sliderAwardsFrame + 1 + "/" + awardsCount;
 		         },
 		         failure: function (response, opts) {
 		             //alert('fail');
@@ -224,19 +229,26 @@
 					
 					
 					
-					imgAchievementsFrames = sliderAchievementsFrames[sliderAchievementsFrame].children;
-					imgAchievementsFrame = 0;
-					for (i = 0; i < achievementsCount; i++) {
-						if(i == sliderAchievementsFrame) {
-							textAchievementsFrames[i].style.display = "block";
-							sliderAchievementsFrames[i].style.display = "block";
-						} else {
-							textAchievementsFrames[i].style.display = "none";
-							sliderAchievementsFrames[i].style.display = "none";
+					if (sliderAchievementsFrames.length > 0) {
+						imgAchievementsFrames = sliderAchievementsFrames[sliderAchievementsFrame].children;
+						imgAchievementsFrame = 0;
+						for (i = 0; i < achievementsCount; i++) {
+							if(i == sliderAchievementsFrame) {
+								textAchievementsFrames[i].style.display = "block";
+								sliderAchievementsFrames[i].style.display = "block";
+							} else {
+								textAchievementsFrames[i].style.display = "none";
+								sliderAchievementsFrames[i].style.display = "none";
+							}
 						}
+						
+						document.getElementById("achievementsNumber").innerHTML = sliderAchievementsFrame + 1 + "/" + achievementsCount;
+					} else {
+						imgAchievementsFrames = {};
+						imgAchievementsFrame = 0;
+						document.getElementById("achievementsNumber").innerHTML = sliderAchievementsFrame + 0 + "/" + achievementsCount;
 					}
-					
-					document.getElementById("achievementsNumber").innerHTML = sliderAchievementsFrame + 1 + "/" + achievementsCount;
+
 		         },
 		         failure: function (response, opts) {
 		             //alert('fail');
@@ -320,6 +332,8 @@
 		 function sliderAwardsInit() {
 			document.getElementById("backScreens").style.display = "none";
 			document.getElementById("back").style.display = "block";
+			if (sliderAwardsFrames.length == 0)
+				return;
 			if (sliderAwardsFrame == null)
 					sliderAwardsFrame = 0;
 			imgAwardsFrames = sliderAwardsFrames[sliderAwardsFrame].children;
@@ -327,6 +341,8 @@
 		 }
 		 
 		 function sliderAwardsDecr() {
+			if (sliderAwardsFrames.length == 0)
+				return;
 			if (sliderAwardsFrames == null) {
 				sliderAwardsInit();
 			}
@@ -347,6 +363,8 @@
 		 }
 		 
 		 function sliderAwardsIncr() {
+			if (sliderAwardsFrames.length == 0)
+				return;
 			if (sliderAwardsFrames == null) {
 				sliderAwardsInit();
 			}
@@ -367,6 +385,8 @@
 		 }
 
 		 function sliderAwardsGoto(index) {
+			if (sliderAwardsFrames.length == 0)
+				return;
 		     if (sliderAwardsFrames == null) {
 		         sliderAwardsInit();
 		     }
@@ -384,6 +404,8 @@
 		 }
 		 
 		 function sliderAwardsImgIncr() {
+			if (sliderAwardsFrames.length == 0 || imgAwardsFrames.length == 0)
+				return;
 			imgAwardsFrames[imgAwardsFrame].style.display = "none";
 			imgAwardsFrame--;
 			if (imgAwardsFrame < 0) {
@@ -393,6 +415,8 @@
 		 }
 		 
 		 function sliderAwardsImgDecr() {
+			if (sliderAwardsFrames.length == 0 || imgAwardsFrames.length == 0)
+				return;
 			imgAwardsFrames[imgAwardsFrame].style.display = "none";
 			imgAwardsFrame++;
 			if (imgAwardsFrame > imgAwardsFrames.length - 1) {
@@ -406,6 +430,8 @@
 		 function sliderAchievementsInit() {
 			document.getElementById("backScreens").style.display = "none";
 			document.getElementById("back").style.display = "block";
+			if (sliderAchievementsFrames.length == 0)
+				return;
 			if (sliderAchievementsFrame == null)
 					sliderAchievementsFrame = 0;
 			imgAchievementsFrames = sliderAchievementsFrames[sliderAchievementsFrame].children;
@@ -413,6 +439,8 @@
 		 }
 		 
 		 function sliderAchievementsDecr() {
+			if (sliderAchievementsFrames.length == 0)
+				return;
 			if (sliderAchievementsFrames == null) {
 				sliderAchievementsInit();
 			}
@@ -433,6 +461,8 @@
 		 }
 		 
 		 function sliderAchievementsIncr() {
+			if (sliderAchievementsFrames.length == 0)
+				return;
 			if (sliderAchievementsFrames == null) {
 				sliderAchievementsInit();
 			}
@@ -453,6 +483,8 @@
 		 }
 
 		 function sliderAchievementsGoto(index) {
+			if (sliderAchievementsFrames.length == 0)
+				return;
 		     if (sliderAchievementsFrames == null) {
 		         sliderAchievementsInit();
 		     }
@@ -470,6 +502,8 @@
 		 }
 		 
 		 function sliderAchievementsImgIncr() {
+			if (sliderAchievementsFrames.length == 0 || imgAchievementsFrames.length == 0)
+				return;
 			imgAchievementsFrames[imgAchievementsFrame].style.display = "none";
 			imgAchievementsFrame--;
 			if (imgAchievementsFrame < 0) {
@@ -479,6 +513,8 @@
 		 }
 		 
 		 function sliderAchievementsImgDecr() {
+			if (sliderAchievementsFrames.length == 0 || imgAchievementsFrames.length == 0)
+				return;
 			imgAchievementsFrames[imgAchievementsFrame].style.display = "none";
 			imgAchievementsFrame++;
 			if (imgAchievementsFrame > imgAchievementsFrames.length - 1) {
@@ -551,6 +587,8 @@
 		 function sliderScreensInit() {
 			document.getElementById("backScreens").style.display = "block";
 			document.getElementById("back").style.display = "none";
+			if (document.getElementById('screenshots').children.length == 2)
+				return;
 			sliderScreensFrames = document.getElementById("sliderScreensContainer").children;
 			pointScreensFrames = document.getElementById('screensPointContainer').children;
 			document.getElementById('screensArrowsContainer').style.marginLeft = 20 + (-(62 + pointScreensFrames.length * 31) / 2) + "px";
@@ -564,6 +602,8 @@
 			if (sliderScreensFrames == null) {
 				sliderScreensInit();
 			}
+			if (document.getElementById('screenshots').children.length == 2)
+				return;
 			sliderScreensFrames[sliderScreensFrame].style.display = "none";
 			pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_ia.png) no-repeat";
 			sliderScreensFrame--;
@@ -578,6 +618,8 @@
 			if (sliderScreensFrames == null) {
 				sliderScreensInit();
 			}
+			if (document.getElementById('screenshots').children.length == 2)
+				return;
 			sliderScreensFrames[sliderScreensFrame].style.display = "none";
 			pointScreensFrames[sliderScreensFrame].style.background = "url(content/sprites/point_ia.png) no-repeat";
 			sliderScreensFrame++;
@@ -589,6 +631,8 @@
 		 }
 		 
 		 function sliderScreensGoto(index) {
+			if (document.getElementById('screenshots').children.length == 2)
+				return;
 		     if (sliderScreensFrames == null) {
 		         sliderScreensInit();
 		     }
@@ -602,6 +646,8 @@
 		 }
 		 
 		 function screensIncr() {
+			if (document.getElementById('screenshots').children.length == 2)
+				return;
 			document.getElementById('screenshots').children[currentScreen].style.display = "none";
 			currentScreen++;
 			if (currentScreen > screenshotsCount - 1) {
@@ -611,6 +657,8 @@
 		 }
 		 
 		 function screensDecr() {
+			if (document.getElementById('screenshots').children.length == 2)
+				return;
 			document.getElementById('screenshots').children[currentScreen].style.display = "none";
 			currentScreen--;
 			if (currentScreen < 0) {
@@ -795,24 +843,11 @@
 			</div>
 			<div id="screensContainer" style="display:none">    
 				<div class="slider_screen_content" id="sliderScreensContainer">
-					<div>
-						<img class="screen_lt" src="/ils2/Content/Sprites/screens/1.jpg" onclick="javascript:showScreen('1')" style="cursor: pointer;">
-						<img class="screen_mt" src="/ils2/Content/Sprites/screens/2.jpg" onclick="javascript:showScreen('2')" style="cursor: pointer;">
-						<img class="screen_rt" src="/ils2/Content/Sprites/screens/3.jpg" onclick="javascript:showScreen('3')" style="cursor: pointer;">
-						<img class="screen_lb" src="/ils2/Content/Sprites/screens/4.jpg" onclick="javascript:showScreen('4')" style="cursor: pointer;">
-						<img class="screen_mb" src="/ils2/Content/Sprites/screens/5.jpg" onclick="javascript:showScreen('5')" style="cursor: pointer;">
-						<img class="screen_rb" src="/ils2/Content/Sprites/screens/6.jpg" onclick="javascript:showScreen('6')" style="cursor: pointer;">
-					</div>
-					<div style="display:none">
-						<img class="screen_lt" src="/ils2/Content/Sprites/screens/7.jpg" onclick="javascript:showScreen('7')" style="cursor: pointer;">
-						<img class="screen_mt" src="/ils2/Content/Sprites/screens/8.jpg" onclick="javascript:showScreen('8')" style="cursor: pointer;">
-					</div>
+					
 				</div>
 				<div class="arrows_container" id="screensArrowsContainer" style="display:none">
 					<div class="arrow" style="background: url(content/sprites/arrow_left_ia.png) no-repeat;" onclick="javascript:sliderScreensDecr()"></div>
 					<div id="screensPointContainer">
-						<div class="arrow" style="background: url(content/sprites/point_a.png) no-repeat;" onclick="javascript:sliderScreensGoto('0')"></div>
-						<div class="arrow" style="background: url(content/sprites/point_ia.png) no-repeat;" onclick="javascript:sliderScreensGoto('1')"></div>
 					</div>
 			        <div class="arrow" style="background: url(content/sprites/arrow_right_ia.png) no-repeat;" onclick="javascript:sliderScreensIncr()"></div>
 		        </div>
@@ -855,30 +890,7 @@
 			</div>
 		</div>
 		<div id="screenshots" style="position:absolute;background: #000000;width:809px;height:400px;display:none;overflow:hidden" style="cursor: pointer;">
-			<div style="position:absolute;left:530px;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen('1')">
-                <img align="middle" src="/ils2/Content/Sprites/screens/full/1.png" style="max-width: 809px; max-height:400px; left:50%">
-            </div>
-            <div style="position:absolute;left:535px;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen('2')">
-                <img align="middle" src="/ils2/Content/Sprites/screens/full/2.png" style="max-width: 809px; max-height:400px">
-            </div>
-            <div style="position:absolute;top:10px;left:50%;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen('3')">
-                <img align="middle" src="/ils2/Content/Sprites/screens/full/3.png" style="max-width: 809px; max-height:400px">
-            </div>
-            <div style="position:absolute;left:510px;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen('4')">
-                <img align="middle" src="/ils2/Content/Sprites/screens/full/4.png" style="max-width: 809px; max-height:400px">
-            </div>
-            <div style="position:absolute;left:510px;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen('5')">
-                <img align="middle" src="/ils2/Content/Sprites/screens/full/5.png" style="max-width: 809px; max-height:400px">
-            </div>
-            <div style="position:absolute;left:610px;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen('6')">
-                <img align="middle" src="/ils2/Content/Sprites/screens/full/6.png" style="max-width: 809px; max-height:400px">
-            </div>
-            <div style="position:absolute;left:585px;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen('7')">
-                <img align="middle" src="/ils2/Content/Sprites/screens/full/7.png" style="max-width: 809px; max-height:400px">
-            </div>
-            <div style="position:absolute;left:505px;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen('8')">
-                <img align="middle" src="/ils2/Content/Sprites/screens/full/8.png" style="max-width: 809px; max-height:400px">
-            </div>
+			
 			<div class="screens_left" onclick="javascript:screensDecr()" style="cursor:ponter;"></div>
 			<div class="screens_right" onclick="javascript:screensIncr()" style="cursor:ponter;"></div>
 		</div>

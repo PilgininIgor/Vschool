@@ -263,6 +263,11 @@ var EDucationAuthorGrid = new Ext.grid.GridPanel({
                                     }
                                     if (img == null || img == "")
                                         img = a[0].Image;
+									if (img.indexOf("/") != -1)
+										img = img.slice(img.lastIndexOf("/") + 1);
+									if (img.indexOf("\\") != -1)
+										img = img.slice(img.lastIndexOf("\\") + 1);
+
                                     var f = ils.aboutadmin.authors.EDucationAuthorProfile.items.items[0];
                                     Ext.Ajax.request({
                                         url: document.location.href + '/UpdateProfile',

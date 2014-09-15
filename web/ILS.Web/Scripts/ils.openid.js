@@ -2,7 +2,7 @@
 
 
 
-if (Ext.util.Cookies.get("language") == null) Ext.util.Cookies.set("language", lang_pref);
+if (Ext.util.Cookies.get("language") == null) Ext.util.Cookies.set("language", "Russian");
 if (Ext.util.Cookies.get("language") == "Russian") isRussian = true; else isRussian = false;
 ils.openid.panelName = 'Login via OpenID';
 if (isRussian)

@@ -55,10 +55,13 @@
         var canvas;
         var frame = 0;
         var ITHASBEGUN = false;
+
+        var reinitialized = false;
+
         window.onload = function () {
 
             jwplayer("videoPlayer").setup({
-                flashplayer: "Scripts/jwp/player.swf",
+                flashplayer: "@Url.Content("~/Scripts/jwp/player.swf")",
                 file: "Content/demo.flv",
                 height: 400,
                 width: 809
@@ -171,7 +174,12 @@
             var eleft = -176;
             var authorisationWindow;
             clearInterval(enterTimer);  
-            function move() { 
+            function move() {
+                if (reinitialized) {
+                    clearInterval(timer);
+                    reinitialized = false;
+                    return;
+                }
                 if (angle <= 90 && animate) {
                     canvas_rotate.call(img, angle);
                     angle += 10;
@@ -236,6 +244,7 @@
                                 }
                             }
                         } else if (contentType == 1) {
+                            clearInterval(timer);
                             document.getElementById('awaitingAuthorisation').style.display = 'none';
                             document.getElementById('awaitingLoading').style.display = 'block';
                             document.getElementById('error').style.display = 'none';
@@ -243,6 +252,7 @@
                             document.getElementById("videoPlayer").style.display = 'none';
                             startUnityPlayer();
                         } else if (contentType == 2) {
+                            clearInterval(timer);
                             document.getElementById('loadingContainer').style.display = 'none';
                             document.getElementById('mainDoors').style.display = 'none';
                             document.getElementById("unityPlayer").style.display = 'none';
@@ -306,7 +316,13 @@
             enterTimer = setInterval(move, 70);
         }
 
+        function enter_main() {
+            reinit();
+            enter_click(true);
+        }
+
         function demo_video() {
+            reinit();
             document.getElementById("awaitingAuthorisation").style.display = "none";
             document.getElementById("awaitingLoading").style.display = "block";
             contentType = 2;
@@ -314,10 +330,66 @@
         }
 
         function demo_game() {
+            reinit();
             document.getElementById("awaitingAuthorisation").style.display = "none";
             document.getElementById("awaitingLoading").style.display = "block";
             contentType = 1;
             enter_click(true);
+        }
+
+        function reinit() {
+
+            clearInterval(timer);
+            reinitialized = true;
+            ITHASBEGUN = false;
+            embedded = false;
+
+            index = 1;
+
+            image = document.getElementById("enter" + index);
+            img = new Image();
+            img.src = image.src;
+            canvas = document.getElementById("rotate");
+            canvas.width = image.width;
+            canvas.height = image.height;
+            img.context = canvas.getContext("2d");
+            img.canvas = canvas;
+            img.radians = Math.PI / 180;
+            canvas_rotate.call(img, 0);
+
+            authorisationComplete = false;
+            authorisationSucceed = false;
+            authorisationNotStarted = true;
+            contentType = 0; 
+            timer = null;
+
+            document.getElementById('doorl').style.left = 0 + 'px';
+            document.getElementById('doorr').style.left = 406 + 'px';
+            document.getElementById('container').style.marginLeft = -176 + 'px';
+            contentType = 0;
+            authorisationNotStarted = true;
+            authorisationWindow = null;
+            enterTimer = null;
+
+            document.getElementById('loadingContainer').style.display = 'block';
+            document.getElementById('awaitingAuthorisation').style.display = 'block';
+            document.getElementById('awaitingLoading').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('mainDoors').style.display = 'block';
+
+            if (document.getElementById('videoPlayer_wrapper') != null) {
+                document.getElementById('videoPlayer_wrapper').innerHTML = '';
+                document.getElementById('videoPlayer_wrapper').id = 'videoPlayer';
+                jwplayer("videoPlayer").setup({
+                        flashplayer: "@Url.Content("~/Scripts/jwp/player.swf")",
+                    file: "Content/demo.flv",
+                    height: 400,
+                    width: 809
+                });
+
+            }
+            document.getElementById('unityPlayer').innerHTML = '';
+            reinitialized = false;
         }
     </script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/render.js")"></script>
@@ -326,7 +398,7 @@
     
     <div class="toppanel">
         <div class="toppanelleft">
-            <a href="render">
+            <a href="javascript:reinit()">
                 <img src="/ils2/Content/Sprites/button_main_a.png">
                 <p align="center" style="position:absolute;top:-6px;left:13px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Главная</p>
             </a>
@@ -436,7 +508,7 @@
             <img src="/ils2/Content/Sprites//enter//enter13.png" id="enter13" style="display: none">
             <canvas id="rotate"></canvas>
         </div>
-        <div class="enter" id="container" onclick="javascript:enter_click(true)" onmouseover="javascript:enter_animate()"
+        <div class="enter" id="container" onclick="javascript:enter_main()" onmouseover="    javascript: enter_animate()"
             onmouseout="javascript:enter_stop()" style="cursor: pointer;">
         </div>
         <div class="renderOverlayT">
