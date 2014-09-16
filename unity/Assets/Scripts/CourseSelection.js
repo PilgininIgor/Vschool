@@ -59,8 +59,8 @@ function ZoomIn() {
 		transform.parent.transform.Find("Menu/TextCounter").GetComponent(TextMesh).text = "";
 		
 		//БОЛЬШОЙ РУБИЛЬНИК
-		CourseDisplay(JSONTestString);
-		//Application.ExternalCall("LoadCoursesList");
+		//CourseDisplay(JSONTestString);
+		Application.ExternalCall("LoadCoursesList");
 		
 	} else {
 		escape_visible = true;
@@ -157,7 +157,7 @@ function Update() {
 		src2.StatisticDisplay(src2.JSONTestString);*/
 		Application.ExternalCall("LoadCourseData", cl[i-1].id);
 		
-		LoadCourseData(cl[i-1].id);
+		//LoadCourseData(cl[i-1].id);
 		
 		dieSignals.SendSignals(this);
 		this.renderer.material = NewScreen;
