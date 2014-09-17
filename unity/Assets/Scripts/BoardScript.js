@@ -124,41 +124,41 @@ function UpdateQuestion() {
 			
 	if (a[i,0] == 0) { 
 		GameObject.Find("Cube1").animation.Play("CubeInactiveUp");
-		GameObject.Find("Cube1").GetComponent("CubeScript").is_active = false;
+		GameObject.Find("Cube1").GetComponent(CubeScript).is_active = false;
 	} else {
 		GameObject.Find("Cube1").animation.Play("CubeActiveUp");
-		GameObject.Find("Cube1").GetComponent("CubeScript").is_active = true;
+		GameObject.Find("Cube1").GetComponent(CubeScript).is_active = true;
 	}
 	if (a[i,1] == 0) {
 		GameObject.Find("Cube2").animation.Play("CubeInactiveUp");
-		GameObject.Find("Cube2").GetComponent("CubeScript").is_active = false;
+		GameObject.Find("Cube2").GetComponent(CubeScript).is_active = false;
 	} else {
 		GameObject.Find("Cube2").animation.Play("CubeActiveUp");
-		GameObject.Find("Cube2").GetComponent("CubeScript").is_active = true;
+		GameObject.Find("Cube2").GetComponent(CubeScript).is_active = true;
 	}	
 	if (a[i,2] == 0) {
 		GameObject.Find("Cube3").animation.Play("CubeInactiveUp");
-		GameObject.Find("Cube3").GetComponent("CubeScript").is_active = false;
+		GameObject.Find("Cube3").GetComponent(CubeScript).is_active = false;
 	} else {
 		GameObject.Find("Cube3").animation.Play("CubeActiveUp");
-		GameObject.Find("Cube3").GetComponent("CubeScript").is_active = true;
+		GameObject.Find("Cube3").GetComponent(CubeScript).is_active = true;
 	}	
 	if ((qAnsNum[i] == 4) || (qAnsNum[i] == 5)) {
 		if (a[i,3] == 0) {
 			GameObject.Find("Cube4").animation.Play("CubeInactiveUp");
-			GameObject.Find("Cube4").GetComponent("CubeScript").is_active = false;
+			GameObject.Find("Cube4").GetComponent(CubeScript).is_active = false;
 		} else {
 			GameObject.Find("Cube4").animation.Play("CubeActiveUp");
-			GameObject.Find("Cube4").GetComponent("CubeScript").is_active = true;
+			GameObject.Find("Cube4").GetComponent(CubeScript).is_active = true;
 		}	
 	}	
 	if (qAnsNum[i] == 5) {
 		if (a[i,4] == 0) {
 			GameObject.Find("Cube5").animation.Play("CubeInactiveUp");
-			GameObject.Find("Cube5").GetComponent("CubeScript").is_active = false;
+			GameObject.Find("Cube5").GetComponent(CubeScript).is_active = false;
 		} else {
 			GameObject.Find("Cube5").animation.Play("CubeActiveUp");
-			GameObject.Find("Cube5").GetComponent("CubeScript").is_active = true;
+			GameObject.Find("Cube5").GetComponent(CubeScript).is_active = true;
 		}	
 	}
 }

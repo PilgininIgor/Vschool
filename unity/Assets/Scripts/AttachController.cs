@@ -36,10 +36,6 @@ public class AttachController : MonoBehaviour
 			
 			var oc = cameraScript.GetComponent<OrbitCam>();
 			oc.target = avatar.transform;
-			
-			var jb = GameObject.Find("Dual Joysticks").GetComponent<JoysticksBehaviour>();
-			jb.targetCamera = oc;
-			jb.tpc = tpc;
 		}
 	}
 }

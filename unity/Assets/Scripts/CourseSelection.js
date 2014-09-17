@@ -25,11 +25,13 @@ var LBL2 = "A / стрелка влево - предыдущий курс";
 var LBL3 = "D / стрелка вправо - следующий курс";
 var LBL4 = "Enter - загрузка";
 
+var GuiCam : Camera;
 var MainCam : Camera;
 var StandCam : Camera;
 var Player : GameObject;
 var magnifier : Texture;
 var arrow : Texture;
+var select : Texture;
 var helvetica : Font;
 
 var NewPipe : Material;
@@ -40,6 +42,7 @@ var cl : List.<CourseName>; var i : int;
 private var hint_visible = false;
 private var escape_visible = false;
 private var data_loaded = false;
+private var ButtonSize : int = 100;
 
 function Start() {
 	StandCam.enabled = false; StandCam.GetComponent(AudioListener).enabled = false;	
@@ -50,6 +53,7 @@ function ZoomIn() {
     Player = GameObject.Find("MainCamera").GetComponent.<OrbitCam>().player;
 	hint_visible = false;
     Player.SetActive(false);
+    GuiCam.enabled = false;
 	MainCam.enabled = false;
 	MainCam.GetComponent(AudioListener).enabled = false;
 	StandCam.enabled = true; StandCam.GetComponent(AudioListener).enabled = true;
@@ -79,40 +83,58 @@ function CourseDisplay(JSONStringFromServer : String) {
 function ZoomOut() {
 	escape_visible = false;
 	Player.SetActive(true);
+	GuiCam.enabled = true;
 	MainCam.enabled = true; MainCam.GetComponent(AudioListener).enabled = true;
 	StandCam.enabled = false; StandCam.GetComponent(AudioListener).enabled = false;
 	transform.parent.transform.Find("Menu").gameObject.SetActive(false);	
 }
 
 function OnGUI() {
-	if (hint_visible) if (GUI.Button(Rect(10,10,100,100), magnifier)) ZoomIn();
+	if (hint_visible)
+	{
+		if (GUI.Button(Rect(10,10,ButtonSize,ButtonSize), magnifier)) ZoomIn();
+	}
 	if (escape_visible) {
-		var old_font = GUI.skin.box.font;
-		var old_fontSize = GUI.skin.box.fontSize;
-		var old_fontStyle = GUI.skin.box.fontStyle;
-		var old_textColor = GUI.skin.box.normal.textColor;
-		var old_texture = GUI.skin.box.normal.background;
-				
-		GUI.skin.box.font = helvetica;
-		GUI.skin.box.fontSize = 18;
-		GUI.skin.box.fontStyle = FontStyle.Normal;
-		GUI.skin.box.normal.textColor = Color.black;
-		var texture = new Texture2D(1,1);
-		texture.SetPixel(0,0, new Color(1,1,1,0.7));
-		texture.Apply();
-		GUI.skin.box.normal.background = texture;
+		if (GUI.Button(Rect(10,10,ButtonSize,ButtonSize), arrow)) ZoomOut();
+		if (GUI.Button(Rect(Screen.width - ButtonSize, 10, ButtonSize, ButtonSize), select))
+		{
+			transform.parent.transform.Find("Menu/TextMain").GetComponent(TextMesh).text = LBL1;
+			transform.parent.transform.Find("Menu/TextCounter").GetComponent(TextMesh).text = "";
+			
+			//БОЛЬШОЙ РУБИЛЬНИК
+			/*var src1 : BootstrapParser = GameObject.Find("Bootstrap").GetComponent.<BootstrapParser>();
+			src1.CourseConstructor(src1.JSONTestString);
+			var src2 : StatisticParser = GameObject.Find("Bootstrap").GetComponent.<StatisticParser>();
+			src2.StatisticDisplay(src2.JSONTestString);*/
+			Application.ExternalCall("LoadCourseData", cl[i-1].id);
+			
+			//LoadCourseData(cl[i-1].id);
+			
+			dieSignals.SendSignals(this);
+			this.renderer.material = NewScreen;
+			transform.parent.transform.Find("UnlockPipe").renderer.material = NewPipe;
+			escape_visible = false; data_loaded = false; //ZoomOut();
+		}
+		var hUnit : int = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
+		var wUnit : int = Mathf.RoundToInt(Screen.width * DefaultSkin.LayoutScale);
+		var blockWidth : int = wUnit * 3 + 30;
+		var blockHeight : int = hUnit * 3;
+		var x : int = (Screen.width/2) - (blockWidth / 2);
+		var y : int = (Screen.height/2) - (blockHeight / 2);
+		wUnit /= 4;
+		if (GUI.Button(Rect(x, y, wUnit, hUnit), "<"))
+		{
+            i--; if (i <= 0) i = cl.Count;
+			transform.parent.transform.Find("Menu/TextMain").GetComponent(TextMesh).text = cl[i-1].name;
+			transform.parent.transform.Find("Menu/TextCounter").GetComponent(TextMesh).text = i.ToString()+"/"+cl.Count.ToString();
+		}
 		
-		GUI.Box(Rect(Screen.width - 360, 10, 350, 37), LBL2);
-		GUI.Box(Rect(Screen.width - 360, 60, 350, 37), LBL3);
-		GUI.Box(Rect(Screen.width - 360, 110, 350, 37), LBL4);
-		
-		GUI.skin.box.font = old_font;
-		GUI.skin.box.fontSize = old_fontSize;
-		GUI.skin.box.fontStyle = old_fontStyle;
-		GUI.skin.box.normal.textColor = old_textColor;
-		GUI.skin.box.normal.background = old_texture;		
-		
-		if (GUI.Button(Rect(10,10,100,100), arrow)) ZoomOut();
+        if (GUI.Button(Rect(x + blockWidth, y, wUnit, hUnit), ">"))
+		{
+			i++; if (i > cl.Count) i = 1;
+			transform.parent.transform.Find("Menu/TextMain").GetComponent(TextMesh).text = cl[i-1].name;
+			transform.parent.transform.Find("Menu/TextCounter").GetComponent(TextMesh).text = i.ToString()+"/"+cl.Count.ToString();
+		}		
 	}	
 }
 

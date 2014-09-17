@@ -1,11 +1,11 @@
 function OnMouseDown() {
 	
-	var scr1 = GameObject.Find("Cube1").GetComponent("CubeScript");
-	var scr2 = GameObject.Find("Cube2").GetComponent("CubeScript");
-	var scr3 = GameObject.Find("Cube3").GetComponent("CubeScript");
-	var scr4 = GameObject.Find("Cube4").GetComponent("CubeScript");
-	var scr5 = GameObject.Find("Cube5").GetComponent("CubeScript");
-	var scrb = GameObject.Find("Plane_RightButton").GetComponent("RightButtonScript");
+	var scr1 = GameObject.Find("Cube1").GetComponent(CubeScript);
+	var scr2 = GameObject.Find("Cube2").GetComponent(CubeScript);
+	var scr3 = GameObject.Find("Cube3").GetComponent(CubeScript);
+	var scr4 = GameObject.Find("Cube4").GetComponent(CubeScript);
+	var scr5 = GameObject.Find("Cube5").GetComponent(CubeScript);
+	var scrb = GameObject.Find("Plane_RightButton").GetComponent(RightButtonScript);
 	
 	if ((!scr1.animation_in_progress) && (!scr2.animation_in_progress)
 	&& (!scr3.animation_in_progress) && (!scr4.animation_in_progress)

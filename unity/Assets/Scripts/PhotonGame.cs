@@ -57,6 +57,8 @@ public class PhotonGame : Photon.MonoBehaviour
         //instantiatedPlayer.name = PhotonNetwork.playerName;
         Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
         Camera.main.GetComponent<OrbitCam>().player = instantiatedPlayer;
+
+		Camera.main.GetComponent<CNCameraFollow>().targetObject = instantiatedPlayer.transform;
     }
 
     public void OnGUI()
