@@ -49,3 +49,15 @@
 	left: 50%;
 	margin-left: -115px;
    }
+    .textareaContacts {
+    width: 250px; 
+	height: 200px;
+	top: 160px;
+	position: absolute;
+	left: 40px;
+   }
+   .headerareaContacts {
+	top: 25px;
+	position: absolute;
+	left: 155px;
+   }

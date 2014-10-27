@@ -1,4 +1,4 @@
-   .renderarea{
+   /*.renderarea{
 	width: 810px; 
 	height: 400px;
 	top: 120px;
@@ -7,8 +7,8 @@
 	overflow: hidden;
 	left: 50%;
 	margin-left: -402px;
-   }
-   .textarea {
+   }*/
+   .textareaAbout {
     width: 810px; 
 	height: 400px;
 	top: 0px;
@@ -220,7 +220,7 @@
    .big_arrow_right:hover {
    background: url(sprites/big_arrow_right_a.png) no-repeat;
    }
-   .headers {
+   .headersAbout {
 	position:absolute;
 	left: 170px;
 	top: 15px;
