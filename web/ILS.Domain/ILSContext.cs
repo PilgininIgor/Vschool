@@ -5,6 +5,7 @@ using System.Text;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using ILS.Domain.QuestionGenerator;
+using ILS.Domain.GameAchievements;
 
 namespace ILS.Domain
 {
@@ -52,6 +53,9 @@ namespace ILS.Domain
         public DbSet<PersonalThemeContentLink> PersonalThemeContentLink { get; set; }
 
         public DbSet<LinkEditorCoordinates> LinkEditorCoordinates { get; set; }
+
+        public DbSet<GameAchievement> GameAchievements { get; set; }
+        public DbSet<GameAchievementRun> GameAchievementRuns { get; set; }
 
         //имя базы по умолчанию: ILS.Domain.ILSContext. Если Entity Framework не обнаружит ее в СУБД, то попытается создать
         //но masterhost не даст нам программно создать новую базу - у нас есть только одна существующая под названием u273630
