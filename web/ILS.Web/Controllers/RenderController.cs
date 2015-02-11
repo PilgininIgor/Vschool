@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ILS.Domain;
-using ILS.Web.Extensions;
 using System.Web.Script.Serialization;
+using ILS.Domain.GameAchievements;
+using ILS.Web.GameAchievements;
 
 namespace ILS.Web.Controllers
 {
-    //[Authorize]
     public class RenderController : Controller
     {
-        ILSContext context;
+        private readonly ILSContext context;
+        private readonly AchievementsManager achievementsManager;
+
         public RenderController(ILSContext context)
         {
             this.context = context;
+            achievementsManager = new AchievementsManager();
         }
 
         public ActionResult Index()
@@ -89,37 +91,51 @@ namespace ILS.Web.Controllers
             });
         }
 
-        private string GetThemeLinkStatus(ThemeLink theme_link)
+        private string GetThemeLinkStatus(ThemeLink themeLink)
         {
             string status = "open";
             User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            var pt_links = theme_link.PersonalThemeLinks.Where(x => x.CourseRun.User_Id == u.Id);
-            if (!pt_links.Any())
-                return "closed";
-            foreach (PersonalThemeLink pt_link in pt_links)
+            var ptLinks = themeLink.PersonalThemeLinks.Where(x => x.CourseRun.User_Id == u.Id);
+            var personalThemeLinks = ptLinks as PersonalThemeLink[] ?? ptLinks.ToArray();
+            if (!personalThemeLinks.Any())
             {
-                if (pt_link.Status == "frozen")
-                    return "frozen";
-                if (pt_link.Status == "closed")
-                    status = "closed";
+                return "closed";
+            }
+            foreach (var ptLink in personalThemeLinks)
+            {
+                switch (ptLink.Status)
+                {
+                    case "frozen":
+                        return "frozen";
+                    case "closed":
+                        status = "closed";
+                        break;
+                }
             }
 
             return status;
         }
 
-        private string GetThemeContentLinkStatus(ThemeContentLink tc_link)
+        private string GetThemeContentLinkStatus(ThemeContentLink tcLink)
         {
             string status = "open";
             User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            var ptc_links = tc_link.PersonalThemeContentLinks.Where(x => x.ThemeRun.CourseRun.User_Id == u.Id);
-            if (!ptc_links.Any())
-                return "closed";
-            foreach (PersonalThemeContentLink ptc_link in ptc_links)
+            var ptcLinks = tcLink.PersonalThemeContentLinks.Where(x => x.ThemeRun.CourseRun.User_Id == u.Id);
+            var personalThemeContentLinks = ptcLinks as PersonalThemeContentLink[] ?? ptcLinks.ToArray();
+            if (!personalThemeContentLinks.Any())
             {
-                if (ptc_link.Status == "frozen")
-                    return "frozen";
-                if (ptc_link.Status == "closed")
-                    status = "closed";
+                return "closed";
+            }
+            foreach (var ptcLink in personalThemeContentLinks)
+            {
+                switch (ptcLink.Status)
+                {
+                    case "frozen":
+                        return "frozen";
+                    case "closed":
+                        status = "closed";
+                        break;
+                }
             }
 
             return status;
@@ -322,6 +338,8 @@ namespace ILS.Web.Controllers
                 u.TestsFinished = obj["testsFinished"];
 
                 context.SaveChanges();
+
+                achievementsManager.ExecuteAchievement(AchievementTrigger.Game, new Dictionary<string, object> { {AchievementsConstants.GameAchievementParamName, s } });
             }
             catch (Exception e)
             {
