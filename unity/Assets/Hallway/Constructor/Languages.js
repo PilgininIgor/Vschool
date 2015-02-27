@@ -15,8 +15,8 @@ var QRA_pic : Texture2D;
 
 function Start () {
 		//РУБИЛЬНИК ДЛЯ ВЫБОРА МЕЖДУ РУССКИМ И АНГЛИЙСКИМ ЯЗЫКАМИ
-		//SetLanguage(0);
-		Application.ExternalCall("GetLanguage");		
+		SetLanguage(0);
+		//Application.ExternalCall("GetLanguage");		
 }
 
 function SetLanguage(ifEnglish : int) {

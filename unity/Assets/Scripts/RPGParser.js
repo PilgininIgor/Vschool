@@ -122,6 +122,8 @@ function Achievement(text:String, points:int) {
 function Save() {
 	if (!RPG.ifGuest) {
 		var s = JsonFx.Json.JsonWriter.Serialize(RPG);
-		Application.ExternalCall("SaveRPG", s);
+		//Application.ExternalCall("SaveRPG", s);
+	    var httpConnector = new HttpConnector();
+    	httpConnector.SaveRPG(s); 
 	}
 }
