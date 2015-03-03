@@ -158,5 +158,9 @@ function UpdateThemeStat(i : int) {
 function Save() {
 	//сохранение статистики (пересылка данных на сервер)
 	var s : String = JsonFx.Json.JsonWriter.Serialize(STAT); //print(s);
-	if (STAT.mode != "guest") Application.ExternalCall("SaveStatistic", s);
+	if (STAT.mode != "guest") {
+		//Application.ExternalCall("SaveStatistic", s);
+		    var httpConnector = new HttpConnector();
+    		httpConnector.SaveStatistic(s); 
+	}
 }

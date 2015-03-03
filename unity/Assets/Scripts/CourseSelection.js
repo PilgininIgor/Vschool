@@ -14,11 +14,7 @@ private var JSONTestString = "{\"coursesNames\":["+
 	"{\"id\":\"be549932-1844-4d2f-bded-f4b9aac61f97\", \"name\":\"Математика\"},"+
 	"{\"id\":\"47942238-8168-404c-965e-111111111111\", \"name\":\"Физика\"}"+
 	//"{\"id\":\"47942238-8168-404c-965e-222222222222\", \"name\":\"Больше физики\"}"+
-"]}";
-
-var ServerUrl : String = "http://virtual.itschool.ssau.ru";
-private var courseDataUrl : String = "/Render/UnityData";
-private var statUrl : String = "/Render/UnityStat";
+"]}"; 
 
 var LBL1 = "Загрузка...";
 var LBL2 = "A / стрелка влево - предыдущий курс";
@@ -64,7 +60,9 @@ function ZoomIn() {
 		
 		//БОЛЬШОЙ РУБИЛЬНИК
 		//CourseDisplay(JSONTestString);
-		Application.ExternalCall("LoadCoursesList");
+		var httpConnector = new HttpConnector();
+	    httpConnector.LoadCoursesList(); 
+		//Application.ExternalCall("LoadCoursesList");
 		
 	} else {
 		escape_visible = true;
@@ -102,13 +100,8 @@ function OnGUI() {
 			transform.parent.transform.Find("Menu/TextCounter").GetComponent(TextMesh).text = "";
 			
 			//БОЛЬШОЙ РУБИЛЬНИК
-			/*var src1 : BootstrapParser = GameObject.Find("Bootstrap").GetComponent.<BootstrapParser>();
-			src1.CourseConstructor(src1.JSONTestString);
-			var src2 : StatisticParser = GameObject.Find("Bootstrap").GetComponent.<StatisticParser>();
-			src2.StatisticDisplay(src2.JSONTestString);*/
-			Application.ExternalCall("LoadCourseData", cl[i-1].id);
-			
-			//LoadCourseData(cl[i-1].id);
+			//Application.ExternalCall("LoadCourseData", cl[i-1].id);			
+			LoadCourseData(cl[i-1].id);
 			
 			dieSignals.SendSignals(this);
 			this.renderer.material = NewScreen;
@@ -142,17 +135,8 @@ function OnTriggerEnter(other: Collider) { hint_visible = true; }
 function OnTriggerExit(other: Collider) { hint_visible = false; }
 
 function LoadCourseData(id : String) {
-	var form : WWWForm = new WWWForm();
-	form.AddField("id", cl[i-1].id);
-	var www : WWW = new WWW(ServerUrl + courseDataUrl, form);
-	yield www;
-	var src1 : BootstrapParser = GameObject.Find("Bootstrap").GetComponent.<BootstrapParser>();
-	src1.CourseConstructor(www.text);
-	www = new WWW(ServerUrl + statUrl, form);
-	yield www;
-	var src2 : StatisticParser = GameObject.Find("Bootstrap").GetComponent.<StatisticParser>();
-	src2.StatisticDisplay(src2.JSONTestString);
-	www.Dispose();
+    var httpConnector = new HttpConnector();
+    httpConnector.LoadCourseData(id); 
 }
 
 function Update() {
@@ -173,13 +157,8 @@ function Update() {
 		transform.parent.transform.Find("Menu/TextCounter").GetComponent(TextMesh).text = "";
 		
 		//БОЛЬШОЙ РУБИЛЬНИК
-		/*var src1 : BootstrapParser = GameObject.Find("Bootstrap").GetComponent.<BootstrapParser>();
-		src1.CourseConstructor(src1.JSONTestString);
-		var src2 : StatisticParser = GameObject.Find("Bootstrap").GetComponent.<StatisticParser>();
-		src2.StatisticDisplay(src2.JSONTestString);*/
-		Application.ExternalCall("LoadCourseData", cl[i-1].id);
-		
-		//LoadCourseData(cl[i-1].id);
+		//Application.ExternalCall("LoadCourseData", cl[i-1].id);
+		LoadCourseData(cl[i-1].id);
 		
 		dieSignals.SendSignals(this);
 		this.renderer.material = NewScreen;
