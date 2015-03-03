@@ -39,7 +39,7 @@ public class PhotonMenu : MonoBehaviour
         // generate a name for this player, if none is assigned yet
         if (String.IsNullOrEmpty(PhotonNetwork.playerName))
         {
-			PhotonNetwork.playerName = "Петрухин Иван";//userName + Random.Range(1, 9999);
+			PhotonNetwork.playerName = userName + Random.Range(1, 9999);
         }
 
         // if you wanted more debug out, turn this on:
