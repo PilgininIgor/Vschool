@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-namespace ILS.Domain
+﻿namespace ILS.Domain
 {
+    using System.Collections.Generic;
+
 	public class UserGroup : EntityBase
 	{
 		public string Name { get; set; }
