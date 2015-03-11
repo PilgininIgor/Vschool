@@ -105,9 +105,7 @@ function UpdateBeginning() {
 	prev_time = Time.timeSinceLevelLoad;
 	
 	transform.Find("Text_Question").GetComponent(TextMesh).text = qText[i];
-	if (!(GameObject.Find("Bootstrap").GetComponent.<Languages>().eng))
-		Text_Header.GetComponent(TextMesh).text = "Вопрос №"+(i+1);
-	else Text_Header.GetComponent(TextMesh).text = "Question №"+(i+1);
+	Text_Header.GetComponent(TextMesh).text = "Вопрос №"+(i+1);
 	
 	if (qPicPath[i] == "0") transform.Find("Plane_RightButton").renderer.enabled = false;
 	else transform.Find("Plane_RightButton").renderer.enabled = true;

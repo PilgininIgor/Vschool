@@ -43,7 +43,6 @@ var pr : ParagraphRun;;
 var sp : StatisticParser;
 var inp : InputScript;
 var rpg : RPGParser;
-var lng : Languages;
 
 //создание текста-объекта (программный аналог GameObject -> CreateOther -> 3D Text)
 //под названием name с координатами pos и со всеми прочими параметрами,
@@ -223,8 +222,6 @@ function Display(hdr:String, txt:String, hdr_size:float, txt_size:float, spacing
 	var pt = this.transform.parent.transform;
 	var group_rotation = pt.rotation;
 	pt.rotation = Quaternion.identity;
-	
-	var lng : Languages = GameObject.Find("Bootstrap").GetComponent.<Languages>();
 																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												
 	pos = Vector3(center.x, center.y+height/2, 0);
 	h = createText("Header", pos, offZ, hdr_size, spacing, TextAnchor.UpperCenter, 
@@ -234,17 +231,17 @@ function Display(hdr:String, txt:String, hdr_size:float, txt_size:float, spacing
 	pos = Vector3(center.x, center.y-height/2+0.3, 0);
 	c = createText("PageCounter", pos, offZ, txt_size, spacing, TextAnchor.LowerCenter,
 					TextAlignment.Center, TextFont, TextMaterial_Other);
-	if (!lng.eng) c.GetComponent(TextMesh).text = "Стр.1 из 1"; else c.GetComponent(TextMesh).text = "Page 1 of 1";
+	c.GetComponent(TextMesh).text = "Стр.1 из 1";
 	
 	pos = Vector3(center.x-width/2+0.1, center.y-height/2+0.3, 0);
 	prev = createText("PrevButton", pos, offZ, txt_size, spacing, TextAnchor.LowerLeft,
 					   TextAlignment.Left, TextFont, TextMaterial_Other);
-	if (!lng.eng) prev.GetComponent(TextMesh).text = "<<< Назад"; else prev.GetComponent(TextMesh).text = "<<< Back";
+	prev.GetComponent(TextMesh).text = "<<< Назад";
 	
 	pos = Vector3(center.x+width/2-0.1, center.y-height/2+0.3, 0);
 	next = createText("NextButton", pos, offZ, txt_size, spacing, TextAnchor.LowerRight,
 					   TextAlignment.Right, TextFont, TextMaterial_Other);
-	if (!lng.eng) next.GetComponent(TextMesh).text = "Далее >>>"; else next.GetComponent(TextMesh).text = "Next >>>";
+	next.GetComponent(TextMesh).text = "Далее >>>";
 
 	pos = Vector3(center.x-width/2+0.1, center.y+height/2-h.renderer.bounds.size.y-0.1, 0);
 	t = createText("Content", pos, offZ, txt_size, spacing, TextAnchor.UpperLeft,
@@ -255,8 +252,7 @@ function Display(hdr:String, txt:String, hdr_size:float, txt_size:float, spacing
 	
 	current_page = 1;
 	t.GetComponent(TextMesh).text = p[current_page-1];
-	if (!lng.eng) c.GetComponent(TextMesh).text = "Стр."+current_page+" из "+pages_number;
-	else c.GetComponent(TextMesh).text = "Page "+current_page+" of "+pages_number;
+	c.GetComponent(TextMesh).text = "Стр."+current_page+" из "+pages_number;
 	
 	//BoxCollider'ы, чтобы по тексту можно было кликать
 	prev.AddComponent(BoxCollider); next.AddComponent(BoxCollider);
@@ -270,7 +266,8 @@ function Display(hdr:String, txt:String, hdr_size:float, txt_size:float, spacing
 	
 	//статистика
 	var bs = GameObject.Find("Bootstrap").gameObject;
-	sp = bs.GetComponent.<StatisticParser>(); rpg = bs.GetComponent.<RPGParser>(); lng = bs.GetComponent.<Languages>();
+	sp = bs.GetComponent.<StatisticParser>();
+	rpg = bs.GetComponent.<RPGParser>();
 	inp = transform.parent.transform.parent.transform.parent.GetComponent.<InputScript>();
 	pr = sp.STAT.themesRuns[inp.theme_num].lecturesRuns[inp.lec_num].paragraphsRuns[orderNumber-1]; 
 	if (!pr.haveSeen) {
@@ -278,19 +275,11 @@ function Display(hdr:String, txt:String, hdr_size:float, txt_size:float, spacing
 			pr.haveSeen = true;
 			sp.UpdateThemeStat(inp.theme_num+1);
 			rpg.RPG.paragraphsSeen += 1;
-			if (!lng.eng) {
-				if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
-				else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
-				else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("Просмотрено 50 параграфов!\n+100 очков!", 100);
-				else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("Просмотрено 100 параграфов!\n+200 очков!", 200);
-				else rpg.Save();
-			} else {
-				if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("First viewed paragraph!\n10 points!", 10);
-				else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("20 paragraphs are viewed!\n+50 points!", 50);
-				else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("50 paragraphs are viewed!\n+100 points!", 100);
-				else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("100 paragraphs are viewed!\n+200 points!", 200);
-				else rpg.Save();
-			}	
+			if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
+			else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
+			else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("Просмотрено 50 параграфов!\n+100 очков!", 100);
+			else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("Просмотрено 100 параграфов!\n+200 очков!", 200);
+			else rpg.Save();
 		} else {
 			have_seen[0] = true;
 			for (var kk=1; kk<pages_number; kk++) have_seen[kk] = false;
@@ -308,19 +297,11 @@ function CheckIfComplete() {
  			pr.haveSeen = true;
 			sp.UpdateThemeStat(inp.theme_num+1);
 			rpg.RPG.paragraphsSeen += 1;
-			if (!lng.eng) {
-				if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
-				else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
-				else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("Просмотрено 50 параграфов!\n+100 очков!", 100);
-				else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("Просмотрено 100 параграфов!\n+200 очков!", 200);
-				else rpg.Save();
-			} else {
-				if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("First viewed paragraph!\n10 points!", 10);
-				else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("20 paragraphs are viewed!\n+50 points!", 50);
-				else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("50 paragraphs are viewed!\n+100 points!", 100);
-				else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("100 paragraphs are viewed!\n+200 points!", 200);
-				else rpg.Save();
-			}
+			if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
+			else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
+			else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("Просмотрено 50 параграфов!\n+100 очков!", 100);
+			else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("Просмотрено 100 параграфов!\n+200 очков!", 200);
+			else rpg.Save();
  		}
  	}
 }

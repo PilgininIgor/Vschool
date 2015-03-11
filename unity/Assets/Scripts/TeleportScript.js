@@ -75,17 +75,9 @@ function SaveStat() {
 function SetAchievement() {
 	var scr : RPGParser = GameObject.Find("Bootstrap").GetComponent.<RPGParser>();	
 	scr.RPG.teleportations += 1;
-	if (!(GameObject.Find("Bootstrap").GetComponent.<Languages>().eng)) {
-		if (scr.RPG.teleportations == 1) scr.Achievement("Первая телепортация!\n+10 очков!", 10);
-		else if (scr.RPG.teleportations == 20) scr.Achievement("20 телепортаций!\n+30 очков!", 30);
-		else if (scr.RPG.teleportations == 50) scr.Achievement("50 телепортаций!\n+50 очков!", 50);
-		else if (scr.RPG.teleportations == 100) scr.Achievement("100 телепортаций!\n+80 очков!", 80);
-		else scr.Save();
-	} else {
-		if (scr.RPG.teleportations == 1) scr.Achievement("First teleportation!\n10 points!", 10);
-		else if (scr.RPG.teleportations == 20) scr.Achievement("20 teleportations!\n30 points!", 30);
-		else if (scr.RPG.teleportations == 50) scr.Achievement("50 teleportations!\n50 points!", 50);
-		else if (scr.RPG.teleportations == 100) scr.Achievement("100 teleportations!\n80 points!", 80);
-		else scr.Save();
-	}
+	if (scr.RPG.teleportations == 1) scr.Achievement("Первая телепортация!\n+10 очков!", 10);
+	else if (scr.RPG.teleportations == 20) scr.Achievement("20 телепортаций!\n+30 очков!", 30);
+	else if (scr.RPG.teleportations == 50) scr.Achievement("50 телепортаций!\n+50 очков!", 50);
+	else if (scr.RPG.teleportations == 100) scr.Achievement("100 телепортаций!\n+80 очков!", 80);
+	else scr.Save();
 }

@@ -8,9 +8,7 @@ function OnMouseDown() {
 	if (scr.current_page<1) scr.current_page = scr.pages_number;
  	scr.t.GetComponent(TextMesh).text = scr.p[scr.current_page-1];
  	
- 	if (!(GameObject.Find("Bootstrap").GetComponent.<Languages>().eng))
- 		scr.c.GetComponent(TextMesh).text = "Стр."+scr.current_page+" из "+scr.pages_number;
- 	scr.c.GetComponent(TextMesh).text = "Page "+scr.current_page+" of "+scr.pages_number;
+ 	scr.c.GetComponent(TextMesh).text = "Стр."+scr.current_page+" из "+scr.pages_number;
  	
  	scr.CheckIfComplete(); //статистика
 }

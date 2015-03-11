@@ -67,7 +67,6 @@ var LBL2 = "Тема";
 
 var STAT : CourseRun;
 var scr : BootstrapParser;
-var lng : Languages;
 
 function StatisticDisplay (JSONStringFromServer : String) {
 //	var reader = new JsonFx.Json.JsonReader();
@@ -79,8 +78,6 @@ function StatisticDisplay (JSONStringFromServer : String) {
 	scr.statDisplays[0].transform.Find("TextProgress").GetComponent(TextMesh).text = STAT.progress.ToString()+"%";
 	for (var i=1; i<scr.sdlng; i++)
 		UpdateThemeStat(i);
-		
-	lng = GetComponent.<Languages>();	
 }
 
 function UpdateThemeStat(i : int) {
@@ -92,8 +89,7 @@ function UpdateThemeStat(i : int) {
 	if ((!STAT.themesRuns[i-1].allTests) &&
 		(STAT.themesRuns[i-1].testsComplete == STAT.themesRuns[i-1].testsOverall) &&
 		(STAT.themesRuns[i-1].testsOverall != 0)) {
-		if (!lng.eng) GetComponent.<RPGParser>().Achievement("Пройдены все тесты в теме!\n+100 очков!", 100);
-		else GetComponent.<RPGParser>().Achievement("All tests in this theme are completed!\n100 points!", 100);
+		GetComponent.<RPGParser>().Achievement("Пройдены все тесты в теме!\n+100 очков!", 100);
 		STAT.themesRuns[i-1].allTests = true;
 	}
 	
@@ -107,8 +103,7 @@ function UpdateThemeStat(i : int) {
 		aac.ToString()+"/"+aao.ToString();
 	
 	if ((!STAT.themesRuns[i-1].allTestsMax) && (aac == aao) && (aao != 0)) {
-		if (!lng.eng) GetComponent.<RPGParser>().Achievement("Все тесты в теме пройдены идеально!\n+150 очков!", 150);
-		else GetComponent.<RPGParser>().Achievement("All tests in this theme are completed perfectly!\n150 points!", 150);
+		GetComponent.<RPGParser>().Achievement("Все тесты в теме пройдены идеально!\n+150 очков!", 150);
 		STAT.themesRuns[i-1].allTestsMax = true;
 	}
 	
@@ -123,8 +118,7 @@ function UpdateThemeStat(i : int) {
 		aps.ToString()+"/"+apo.ToString();
 		
 	if ((!STAT.themesRuns[i-1].allLectures) && (aps == apo) && (apo != 0)) {
-		if (!lng.eng) GetComponent.<RPGParser>().Achievement("Изучены все лекции по теме!\n+100 очков!", 100);
-		else GetComponent.<RPGParser>().Achievement("All lectures in this theme are studied!\n100 points!", 100);
+		GetComponent.<RPGParser>().Achievement("Изучены все лекции по теме!\n+100 очков!", 100);
 		STAT.themesRuns[i-1].allLectures = true;
 	}
 	
@@ -136,8 +130,7 @@ function UpdateThemeStat(i : int) {
 		Mathf.RoundToInt(STAT.themesRuns[i-1].progress).ToString()+"%";
 		
 	if ((!STAT.themesRuns[i-1].completeAll) && (Mathf.RoundToInt(STAT.themesRuns[i-1].progress) == 100)) {
-		if (!lng.eng) GetComponent.<RPGParser>().Achievement("Тема пройдена на 100%!\n+250 очков!", 250);
-		else GetComponent.<RPGParser>().Achievement("100% completed theme!\n250 points!", 250);
+		GetComponent.<RPGParser>().Achievement("Тема пройдена на 100%!\n+250 очков!", 250);
 		STAT.themesRuns[i-1].completeAll = true;
 	}
 			
@@ -149,8 +142,7 @@ function UpdateThemeStat(i : int) {
 		Mathf.RoundToInt(STAT.progress).ToString()+"%";
 		
 	if ((!STAT.completeAll) && (Mathf.RoundToInt(STAT.progress) == 100)) {
-		if (!lng.eng) GetComponent.<RPGParser>().Achievement("Курс пройден на 100%!\n+1000 очков!", 1000);
-		else GetComponent.<RPGParser>().Achievement("100% completed course!\n1000 points!", 1000);
+		GetComponent.<RPGParser>().Achievement("Курс пройден на 100%!\n+1000 очков!", 1000);
 		STAT.completeAll = true;	
 	}
 }
