@@ -125,3 +125,14 @@ class OverallRPG {
 	var paragraphsSeen : int;
 	var testsFinished : int;
 }
+
+class GameAchievement {
+	var id : String;
+	var name : String;
+	var message : String;
+}
+
+class GameAchievementRun {
+	var id : String;
+	var achievementId : String;
+}

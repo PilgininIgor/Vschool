@@ -1,17 +1,13 @@
-﻿using ILS.Domain.GameAchievements;
-
-namespace ILS.Domain.Migrations
+﻿namespace ILS.Domain.Migrations
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Data.Entity;
 	using System.Data.Entity.Migrations;
-	using System.Linq;
 	using System.Security.Cryptography;
 	using System.Text;
-	using ILS.Domain.QuestionGenerator;
+    using ILS.Domain.GameAchievements;
 
-	public sealed class Configuration : DbMigrationsConfiguration<ILS.Domain.ILSContext>
+    public sealed class Configuration : DbMigrationsConfiguration<ILS.Domain.ILSContext>
 	{
 		public Configuration()
 		{
@@ -26,16 +22,16 @@ namespace ILS.Domain.Migrations
 			return hash;
 		}
 
-		protected override void Seed(ILS.Domain.ILSContext context)
+		protected override void Seed(ILSContext context)
 		{
 		    //context.Database.Delete();
-            context.GameAchievements.Add(new GameAchievement
-            {
-                Name = "Первое посещение курса",
-                AchievementExecutor = "ILS.Web.GameAchievements.VirtualWordAchievementExecutor",
-                AchievementTrigger = AchievementTrigger.Game,
-                Priority = 10
-            });
+//            context.GameAchievements.Add(new GameAchievement
+//            {
+//                Name = "Первое посещение курса",
+//                AchievementExecutor = "ILS.Web.GameAchievements.VirtualWordAchievementExecutor",
+//                AchievementTrigger = AchievementTrigger.Game,
+//                Priority = 10
+//            });
 		    return;
 			var admin = context.Role.Add(new Role() { Name = "Admin" });
 			var teacher = context.Role.Add(new Role() { Name = "Teacher" });

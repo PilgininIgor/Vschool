@@ -27,7 +27,6 @@ namespace ILS.Web.Controllers
 
         public ActionResult UnityList()
         {
-
             return Json(new
             {
                 coursesNames = context.Course.OrderBy(x => x.Name).Select(x => new
@@ -152,7 +151,7 @@ namespace ILS.Web.Controllers
                 {
                     ifGuest = ifGuest,
                     username = (ifGuest) ? "" : u.Name,
-                    EXP = (ifGuest) ? 0 : u.EXP,
+                    EXP = (ifGuest) ? 0 : u.Coins,
                     facultyStands_Seen = (ifGuest) ? false : u.FacultyStands_Seen,
                     facultyStands_Finish = (ifGuest) ? false : u.FacultyStands_Finish,
                     historyStand_Seen = (ifGuest) ? false : u.HistoryStand_Seen,
@@ -314,7 +313,7 @@ namespace ILS.Web.Controllers
                 JavaScriptSerializer jss = new JavaScriptSerializer();
                 var obj = jss.Deserialize<dynamic>(s);
 
-                u.EXP = obj["EXP"];
+                u.Coins = obj["Coins"];
                 u.FacultyStands_Seen = obj["facultyStands_Seen"];
                 u.FacultyStands_Finish = obj["facultyStands_Finish"];
                 u.HistoryStand_Seen = obj["historyStand_Seen"];
@@ -349,17 +348,22 @@ namespace ILS.Web.Controllers
 
         public ActionResult SaveGameAchievement(String achievementId)
         {
-            List<GameAchievementRun> changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game, 
+            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game, 
                 new Dictionary<string, object> { { AchievementsConstants.GameAchievementIdParamName, achievementId } });
+            return Json(changedAchievementRuns.Select(a => new { id = a.Id, GameAchievement = a.GameAchievementId}));
+        }
 
+        public ActionResult GetGameAchievements()
+        {
             return Json(new
             {
-                changedAchievementRuns.OrderBy(x => x.GameAchievementId).Select(x => new
+                achievementsNames = context.GameAchievements.OrderBy(x => x.Name).Select(x => new
                 {
                     id = x.Id,
-                    name = x.GameAchievementId
+                    name = x.Name,
+                    message = x.DisplayMessage
                 })
-            });
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public int UnitySave(string s)
@@ -553,7 +557,6 @@ namespace ILS.Web.Controllers
                     FreezeOutputLinks(pt_link.ThemeLink.LinkedTheme);
                 }
             }
-            return;
         }
 
     }

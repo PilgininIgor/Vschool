@@ -4,6 +4,8 @@
     {
         public string Name { get; set; }
 
+        public string DisplayMessage { get; set; }
+
         public string ImagePath { get; set; }
 
         public int Priority { get; set; }
