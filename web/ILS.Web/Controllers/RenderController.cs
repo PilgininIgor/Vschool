@@ -27,6 +27,7 @@ namespace ILS.Web.Controllers
 
         public ActionResult UnityList()
         {
+
             return Json(new
             {
                 coursesNames = context.Course.OrderBy(x => x.Name).Select(x => new
@@ -34,7 +35,7 @@ namespace ILS.Web.Controllers
                     id = x.Id,
                     name = x.Name
                 })
-            });
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult UnityData(Guid id)
@@ -338,14 +339,27 @@ namespace ILS.Web.Controllers
                 u.TestsFinished = obj["testsFinished"];
 
                 context.SaveChanges();
-
-                achievementsManager.ExecuteAchievement(AchievementTrigger.Game, new Dictionary<string, object> { {AchievementsConstants.GameAchievementParamName, s } });
             }
             catch (Exception e)
             {
                 // TODO: log this!
             }
             return 1;
+        }
+
+        public ActionResult SaveGameAchievement(String achievementId)
+        {
+            List<GameAchievementRun> changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game, 
+                new Dictionary<string, object> { { AchievementsConstants.GameAchievementIdParamName, achievementId } });
+
+            return Json(new
+            {
+                changedAchievementRuns.OrderBy(x => x.GameAchievementId).Select(x => new
+                {
+                    id = x.Id,
+                    name = x.GameAchievementId
+                })
+            });
         }
 
         public int UnitySave(string s)

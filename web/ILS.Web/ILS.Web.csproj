@@ -140,10 +140,10 @@
     <Compile Include="Extensions\JsonController.cs" />
     <Compile Include="Extensions\PerSessionLifetimeManager.cs" />
     <Compile Include="Extensions\UnityDependencyResolver.cs" />
-    <Compile Include="GameAchievements\AchievementExecutor.cs" />
+    <Compile Include="GameAchievements\AchievementsExecutors\IAchievementExecutor.cs" />
     <Compile Include="GameAchievements\AchievementsConstants.cs" />
     <Compile Include="GameAchievements\AchievementsManager.cs" />
-    <Compile Include="GameAchievements\VirtualWordAchievementExecutor.cs" />
+    <Compile Include="GameAchievements\AchievementsExecutors\VirtualWordAchievementExecutor.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
