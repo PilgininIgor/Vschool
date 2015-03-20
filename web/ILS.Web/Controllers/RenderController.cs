@@ -34,7 +34,7 @@ namespace ILS.Web.Controllers
                     id = x.Id,
                     name = x.Name
                 })
-            });
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult UnityData(Guid id)
@@ -151,7 +151,7 @@ namespace ILS.Web.Controllers
                 {
                     ifGuest = ifGuest,
                     username = (ifGuest) ? "" : u.Name,
-                    EXP = (ifGuest) ? 0 : u.EXP,
+                    EXP = (ifGuest) ? 0 : u.Coins,
                     facultyStands_Seen = (ifGuest) ? false : u.FacultyStands_Seen,
                     facultyStands_Finish = (ifGuest) ? false : u.FacultyStands_Finish,
                     historyStand_Seen = (ifGuest) ? false : u.HistoryStand_Seen,
@@ -313,7 +313,7 @@ namespace ILS.Web.Controllers
                 JavaScriptSerializer jss = new JavaScriptSerializer();
                 var obj = jss.Deserialize<dynamic>(s);
 
-                u.EXP = obj["EXP"];
+                u.Coins = obj["Coins"];
                 u.FacultyStands_Seen = obj["facultyStands_Seen"];
                 u.FacultyStands_Finish = obj["facultyStands_Finish"];
                 u.HistoryStand_Seen = obj["historyStand_Seen"];
@@ -338,14 +338,40 @@ namespace ILS.Web.Controllers
                 u.TestsFinished = obj["testsFinished"];
 
                 context.SaveChanges();
-
-                achievementsManager.ExecuteAchievement(AchievementTrigger.Game, new Dictionary<string, object> { {AchievementsConstants.GameAchievementParamName, s } });
             }
             catch (Exception e)
             {
                 // TODO: log this!
             }
             return 1;
+        }
+
+        public ActionResult SaveGameAchievement(String achievementId)
+        {
+            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game, 
+                new Dictionary<string, object> { { AchievementsConstants.GameAchievementIdParamName, achievementId } });
+            return Json(changedAchievementRuns.Select(a => new { id = a.Id, GameAchievement = a.GameAchievementId}));
+        }
+
+        public ActionResult GetGameAchievements()
+        {
+            return Json(context.GameAchievements.OrderBy(x => x.Name).Select(x => new
+            {
+                id = x.Id,
+                name = x.Name,
+                message = x.Message
+            }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetGameAchievementRuns()
+        {
+            var user = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            
+            return Json(context.GameAchievementRuns.Where(a => a.UserId.Equals(user.Id)).Select(x => new
+            {
+                id =x.Id,
+                name = x.Result
+            }), JsonRequestBehavior.AllowGet);
         }
 
         public int UnitySave(string s)
@@ -539,7 +565,6 @@ namespace ILS.Web.Controllers
                     FreezeOutputLinks(pt_link.ThemeLink.LinkedTheme);
                 }
             }
-            return;
         }
 
     }

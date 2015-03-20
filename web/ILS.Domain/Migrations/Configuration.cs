@@ -2,14 +2,12 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Data.Entity;
 	using System.Data.Entity.Migrations;
-	using System.Linq;
 	using System.Security.Cryptography;
 	using System.Text;
-	using ILS.Domain.QuestionGenerator;
+    using ILS.Domain.GameAchievements;
 
-	public sealed class Configuration : DbMigrationsConfiguration<ILS.Domain.ILSContext>
+    public sealed class Configuration : DbMigrationsConfiguration<ILS.Domain.ILSContext>
 	{
 		public Configuration()
 		{
@@ -24,9 +22,16 @@
 			return hash;
 		}
 
-		protected override void Seed(ILS.Domain.ILSContext context)
+		protected override void Seed(ILSContext context)
 		{
 		    //context.Database.Delete();
+//            context.GameAchievements.Add(new GameAchievement
+//            {
+//                Name = "Первое посещение курса",
+//                AchievementExecutor = "ILS.Web.GameAchievements.VirtualWordAchievementExecutor",
+//                AchievementTrigger = AchievementTrigger.Game,
+//                Priority = 10
+//            });
 		    return;
 			var admin = context.Role.Add(new Role() { Name = "Admin" });
 			var teacher = context.Role.Add(new Role() { Name = "Teacher" });
@@ -1130,8 +1135,17 @@
                 q.AnswerVariants.Add(new AnswerVariant() { OrderNumber = 4, Text = "Ответ " + i + "4", IfCorrect = false });
 			}*/
 			#endregion
-            
-		}
+
+            #region GameAchievements
+            context.GameAchievements.Add(new GameAchievement
+            {
+                Name = "Первое посещение курса",
+                AchievementExecutor = "ILS.Web.GameAchievements.VirtualWordAchievementExecutor",
+                AchievementTrigger = AchievementTrigger.Game,
+                Priority = 10
+            });
+            #endregion
+        }
 
 
 		static string DefaultDiagramm = @"[{'dx':0,'dy':0,'rot':0,'sx':1,'sy':1,'module':'fsa','object':'State','position':{'x':300,'y':50},'label':'state 2','radius':30,'labelOffsetX':15,'labelOffsetY':23,'attrs':{'fill':'white'},'euid':2},{'dx':0,'dy':0,'rot':0,'sx':1,'sy':1,'module':'fsa','object':'State','position':{'x':120,'y':120},'label':'state 1','radius':30,'labelOffsetX':15,'labelOffsetY':23,'attrs':{'fill':'white'},'euid':3},{'dx':0,'dy':0,'rot':0,'sx':1,'sy':1,'module':'fsa','object':'EndState','position':{'x':450,'y':150},'radius':10,'innerRadius':5,'attrs':{'fill':'white'},'innerAttrs':{'fill':'black'},'euid':4},{'dx':0,'dy':0,'rot':0,'sx':1,'sy':1,'module':'fsa','object':'StartState','position':{'x':50,'y':50},'radius':10,'attrs':{'fill':'black'},'euid':5},{'object':'joint','euid':6,'opt':{'vertices':[],'attrs':{'stroke':'#000','fill-opacity':0,'stroke-width':1,'stroke-dasharray':'none','stroke-linecap':'round','stroke-linejoin':'round','stroke-miterlimit':1,'stroke-opacity':1},'cursor':'move','beSmooth':false,'interactive':true,'labelAttrsDefault':{'position':0.5,'offset':0,'font-size':12,'fill':'#000'},'labelAttrs':[],'labelBoxAttrsDefault':{'stroke':'white','fill':'white'},'labelBoxAttrs':[],'bboxCorrection':{'start':{'type':null,'x':0,'y':0,'width':0,'height':0},'end':{'type':null,'x':0,'y':0,'width':0,'height':0}},'dummy':{'start':{'radius':1,'attrs':{'opacity':0,'fill':'red'}},'end':{'radius':1,'attrs':{'opacity':0,'fill':'yellow'}}},'handle':{'timeout':2000,'start':{'enabled':false,'radius':4,'attrs':{'opacity':1,'fill':'red','stroke':'black'}},'end':{'enabled':false,'radius':4,'attrs':{'opacity':1,'fill':'red','stroke':'black'}}},'arrow':{'start':{'path':['M','2','0','L','-2','0'],'dx':2,'dy':2,'attrs':{'opacity':0}},'end':{'path':['M','5','0','L','-5','-5','L','-5','5','z'],'dx':5,'dy':5,'attrs':{'stroke':'black','fill':'black'}}}},'from':2,'to':4,'registered':{'start':[],'end':[],'both':[4,2,3,5]}},{'object':'joint','euid':7,'opt':{'vertices':[],'attrs':{'stroke':'#000','fill-opacity':0,'stroke-width':1,'stroke-dasharray':'none','stroke-linecap':'round','stroke-linejoin':'round','stroke-miterlimit':1,'stroke-opacity':1},'cursor':'move','beSmooth':false,'interactive':true,'labelAttrsDefault':{'position':0.5,'offset':0,'font-size':12,'fill':'#000'},'labelAttrs':[],'labelBoxAttrsDefault':{'stroke':'white','fill':'white'},'labelBoxAttrs':[],'bboxCorrection':{'start':{'type':null,'x':0,'y':0,'width':0,'height':0},'end':{'type':null,'x':0,'y':0,'width':0,'height':0}},'dummy':{'start':{'radius':1,'attrs':{'opacity':0,'fill':'red'}},'end':{'radius':1,'attrs':{'opacity':0,'fill':'yellow'}}},'handle':{'timeout':2000,'start':{'enabled':false,'radius':4,'attrs':{'opacity':1,'fill':'red','stroke':'black'}},'end':{'enabled':false,'radius':4,'attrs':{'opacity':1,'fill':'red','stroke':'black'}}},'arrow':{'start':{'path':['M','2','0','L','-2','0'],'dx':2,'dy':2,'attrs':{'opacity':0}},'end':{'path':['M','5','0','L','-5','-5','L','-5','5','z'],'dx':5,'dy':5,'attrs':{'stroke':'black','fill':'black'}}}},'from':3,'to':2,'registered':{'start':[],'end':[],'both':[4,2,3,5]}},{'object':'joint','euid':8,'opt':{'vertices':[],'attrs':{'stroke':'#000','fill-opacity':0,'stroke-width':1,'stroke-dasharray':'none','stroke-linecap':'round','stroke-linejoin':'round','stroke-miterlimit':1,'stroke-opacity':1},'cursor':'move','beSmooth':false,'interactive':true,'labelAttrsDefault':{'position':0.5,'offset':0,'font-size':12,'fill':'#000'},'labelAttrs':[],'labelBoxAttrsDefault':{'stroke':'white','fill':'white'},'labelBoxAttrs':[],'bboxCorrection':{'start':{'type':null,'x':0,'y':0,'width':0,'height':0},'end':{'type':null,'x':0,'y':0,'width':0,'height':0}},'dummy':{'start':{'radius':1,'attrs':{'opacity':0,'fill':'red'}},'end':{'radius':1,'attrs':{'opacity':0,'fill':'yellow'}}},'handle':{'timeout':2000,'start':{'enabled':false,'radius':4,'attrs':{'opacity':1,'fill':'red','stroke':'black'}},'end':{'enabled':false,'radius':4,'attrs':{'opacity':1,'fill':'red','stroke':'black'}}},'arrow':{'start':{'path':['M','2','0','L','-2','0'],'dx':2,'dy':2,'attrs':{'opacity':0}},'end':{'path':['M','5','0','L','-5','-5','L','-5','5','z'],'dx':5,'dy':5,'attrs':{'stroke':'black','fill':'black'}}}},'from':5,'to':3,'registered':{'start':[],'end':[],'both':[4,2,3,5]}}]";

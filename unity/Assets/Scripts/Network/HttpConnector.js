@@ -1,25 +1,14 @@
 #pragma strict
 
 //TODO move to config file
-//private var serverUrl : String = "http://localhost:25565/ils2";
-private var serverUrl : String = "http://virtual.itschool.ssau.ru/";
+private var serverUrl : String = "http://localhost:25565/ils2";
+//private var serverUrl : String = "http://virtual.itschool.ssau.ru/";
 
 private var courseDataUrl : String = "/Render/UnityData";
 private var statUrl : String = "/Render/UnityStat";
 private var saveStatisticUrl : String = "/Render/UnitySave";
 private var unityListUrl : String = "/Render/UnityList";
 private var unitySaveRPG : String = "/Render/UnitySaveRPG";
-
-//function LoadDataFromServer(parameters : Dictionary.<String, String>, additionalURL : String) {
-//	var form : WWWForm = new WWWForm();
-//
-//	for(var pKey in parameters.Keys) {
-//		form.AddField(pKey, parameters[pKey]); 
-//	}
-//
-//	www = new WWW(serverUrl + additionalURL, form);
-//	yield www;
-//}
 
 function LoadCourseData(id : String) {
 	var form : WWWForm = new WWWForm();
@@ -41,6 +30,7 @@ function SaveStatistic(s : String) {
 	form.AddField("s", s);
 	var www : WWW = new WWW(serverUrl + saveStatisticUrl, form);
 	yield www;
+	www.Dispose();
 }
 
 function LoadCoursesList() {
@@ -48,6 +38,8 @@ function LoadCoursesList() {
 	yield www;
 	var src1 : CourseSelection = GameObject.Find("Hallway/Course Selection/CS_Screen").GetComponent.<CourseSelection>();	
 	src1.CourseDisplay(www.text);
+	yield www;
+	www.Dispose();
 }
 
 function SaveRPG(s : String) {
@@ -55,4 +47,5 @@ function SaveRPG(s : String) {
 	form.AddField("s", s);
 	var www : WWW = new WWW(serverUrl + unitySaveRPG, form);
 	yield www;
+	www.Dispose();
 }
