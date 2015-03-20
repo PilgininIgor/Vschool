@@ -38,9 +38,8 @@ private var nameOfAvatar;
 
 function Start() {
 	//БОЛЬШОЙ РУБИЛЬНИК
-	//RoleSystemSet(JSONTestString);
-    var httpConnector = new HttpConnector();
-	httpConnector.GetGameAchievements();
+	RoleSystemSet(JSONTestString);
+	//Application.ExternalCall("LoadRPG");
 }
 
 function RoleSystemSet(JSONStringFromServer:String) {
@@ -109,7 +108,6 @@ function Update() {
 	if (Input.GetKeyDown(KeyCode.I)) displayHUD = !displayHUD;
 }
 
-//@Deprecated
 function Achievement(text:String, points:int) {	
 	count++;
 	achievementText.Add("");
@@ -121,22 +119,11 @@ function Achievement(text:String, points:int) {
 	}
 }
 
-function ShowAchievement(achievementId : String) {	
-}
-
-//@Deprecated
 function Save() {
 	if (!RPG.ifGuest) {
 		var s = JsonFx.Json.JsonWriter.Serialize(RPG);
 		//Application.ExternalCall("SaveRPG", s);
 	    var httpConnector = new HttpConnector();
     	httpConnector.SaveRPG(s); 
-	}
-}
-
-function SaveAchievement(achievementId : String) {
-	if (!RPG.ifGuest) {
-	    var httpConnector = new HttpConnector();
-		httpConnector.SaveGameAchievement(achievementId); 
 	}
 }
