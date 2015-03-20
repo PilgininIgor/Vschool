@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameAchievements\AchievementAwardType.cs" />
     <Compile Include="GameAchievements\AchievementTrigger.cs" />
     <Compile Include="GameAchievements\GameAchievementRun.cs" />
     <Compile Include="GameAchievements\GameAchievement.cs" />

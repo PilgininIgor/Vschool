@@ -355,15 +355,23 @@ namespace ILS.Web.Controllers
 
         public ActionResult GetGameAchievements()
         {
-            return Json(new
+            return Json(context.GameAchievements.OrderBy(x => x.Name).Select(x => new
             {
-                achievementsNames = context.GameAchievements.OrderBy(x => x.Name).Select(x => new
-                {
-                    id = x.Id,
-                    name = x.Name,
-                    message = x.DisplayMessage
-                })
-            }, JsonRequestBehavior.AllowGet);
+                id = x.Id,
+                name = x.Name,
+                message = x.Message
+            }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetGameAchievementRuns()
+        {
+            var user = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            
+            return Json(context.GameAchievementRuns.Where(a => a.UserId.Equals(user.Id)).Select(x => new
+            {
+                id =x.Id,
+                name = x.Result
+            }), JsonRequestBehavior.AllowGet);
         }
 
         public int UnitySave(string s)

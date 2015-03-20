@@ -140,8 +140,11 @@
     <Compile Include="Extensions\JsonController.cs" />
     <Compile Include="Extensions\PerSessionLifetimeManager.cs" />
     <Compile Include="Extensions\UnityDependencyResolver.cs" />
+    <Compile Include="GameAchievements\AchievementsExecutors\TopRatingAchievementExecutor.cs" />
     <Compile Include="GameAchievements\AchievementsExecutors\IAchievementExecutor.cs" />
     <Compile Include="GameAchievements\AchievementsConstants.cs" />
+    <Compile Include="GameAchievements\AchievementsExecutors\CourseProgressAchievementExecutor.cs" />
+    <Compile Include="GameAchievements\AchievementsExecutors\VirtualWordNumberAchievementExecutor.cs" />
     <Compile Include="GameAchievements\AchievementsManager.cs" />
     <Compile Include="GameAchievements\AchievementsExecutors\VirtualWordAchievementExecutor.cs" />
     <Compile Include="Global.asax.cs">

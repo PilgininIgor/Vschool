@@ -7,7 +7,7 @@
     using Domain;
     using Domain.GameAchievements;
 
-    public class VirtualWordAchievementExecutor : IAchievementExecutor
+    public class VirtualWordNUmberAchievementExecutor : IAchievementExecutor
     {
         /// <summary>
         /// Required parameters: gameAchievementId
@@ -18,13 +18,18 @@
 
             ILSContext context = new ILSContext();
             User user = context.User.First(x => x.Name == HttpContext.Current.User.Identity.Name);
-            if (!context.GameAchievementRuns.Any(x => x.User.Equals(user) && x.GameAchievementId.Equals(achievementId)))
-            {
-                return context.GameAchievementRuns.Add(
-                    new GameAchievementRun { User = user, GameAchievementId = achievementId, Result = 1});
-            }
 
-            return null;
+            var gameAchievementRuns =
+                context.GameAchievementRuns.Where(x => x.User.Equals(user) && x.GameAchievementId.Equals(achievementId));
+
+            if (gameAchievementRuns.Any())
+            {
+                gameAchievementRuns.First().Result++;
+                return gameAchievementRuns.First();
+            }
+            
+            return context.GameAchievementRuns.Add(
+                new GameAchievementRun { User = user, GameAchievementId = achievementId, Result = 1});
         }
     }
 }

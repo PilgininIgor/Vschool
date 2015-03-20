@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace ILS.Web.GameAchievements
+﻿namespace ILS.Web.GameAchievements
 {
     using System;
     using System.Collections.Generic;
