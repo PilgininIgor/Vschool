@@ -33,7 +33,7 @@ public class TimerTheme : MonoBehaviour
     {
         var tr = sp.stat.themesRuns[theme_num];
         var ts = TimeSpan.FromSeconds(tr.timeSpent);
-        TextTime.GetComponent<TextMesh>().text = ts.ToString("hh:mm:ss");
+        TextTime.GetComponent<TextMesh>().text = string.Format("{0:00}:{1:00}:{2:00}", ts.TotalHours, ts.Minutes, ts.Seconds);
     }
 
     void OnTriggerEnter()

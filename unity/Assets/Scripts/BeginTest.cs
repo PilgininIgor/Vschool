@@ -8,13 +8,26 @@ public class BeginTest : MonoBehaviour
 
     void OnMouseDown()
     {
-        BoardStatic.transform.localPosition.z = 17.95; //выдвинуть на вид заголовок вопроса и кнопки переключения
+        var p = BoardStatic.transform.localPosition;
+        p.z = 17.95f;
+        BoardStatic.transform.localPosition = p; //выдвинуть на вид заголовок вопроса и кнопки переключения
         BoardToMove.transform.Find("BoardGroup").animation.Play("BoardAppear"); //запустить вылет стенда
 
-        this.transform.localPosition.z = 0.5;
-        transform.parent.transform.Find("Result").localPosition.z = 0.5;
-        transform.parent.transform.Find("Minimum").localPosition.z = 0.5;
-        transform.parent.transform.Find("Conclusion").localPosition.z = 0.5;
+        p = transform.localPosition;
+        p.z = 0.5f;
+        transform.localPosition = p;
+
+        p = transform.parent.transform.Find("Result").localPosition;
+        p.z = 0.5f;
+        transform.parent.transform.Find("Result").localPosition = p;
+
+        p = transform.parent.transform.Find("Minimum").localPosition;
+        p.z = 0.5f;
+        transform.parent.transform.Find("Minimum").localPosition = p;
+
+        p = transform.parent.transform.Find("Conclusion").localPosition;
+        p.z = 0.5f;
+        transform.parent.transform.Find("Conclusion").localPosition = p;
 
         scr = BoardToMove.transform.Find("BoardGroup").GetComponent<Board>();
         scr.i = 0; scr.initializeArrays(); scr.UpdateBeginning();

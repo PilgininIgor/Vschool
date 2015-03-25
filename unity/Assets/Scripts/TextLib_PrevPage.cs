@@ -2,7 +2,7 @@
 
 public class TextLib_PrevPage : MonoBehaviour
 {
-    private GameObject background;
+    public GameObject background;
     void OnMouseDown()
     {
         var scr = background.GetComponent<TextLib>();

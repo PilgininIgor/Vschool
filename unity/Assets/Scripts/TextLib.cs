@@ -77,7 +77,7 @@ public class TextLib : MonoBehaviour
     //собственно алгоритм выравнивания по ширине
     //на вход получает абзац текста единой строкой, на выход дает абзац текста так же единой строкой
     //с добавленными переносами "\n" и нужным количеством пробелов после каждого слова
-    string justifyParagraph(string line, float width, int indent, int list_indent, string list_mark, GameObject t)
+    string justifyParagraph(string line, double width, int indent, int list_indent, string list_mark, GameObject t)
     {
 
         var s = line.Split(" "[0]); //превращаем входную строку в массив слов, разбивая ее по пробелам
@@ -203,7 +203,7 @@ public class TextLib : MonoBehaviour
         //определяем высоту одной строки, а через нее - сколько строк уместится на одной странице
         t.GetComponent<TextMesh>().text = "1";
         int lines_per_page;
-        lines_per_page = Mathf.FloorToInt(height / t.GetComponent<MeshRenderer>().bounds.size.y);
+        lines_per_page = Mathf.FloorToInt((float) (height / t.GetComponent<MeshRenderer>().bounds.size.y));
 
         var l = txt_formatted.Split("\n"[0]); //дробим отформатированный текст в массив строк	
         pages_number = Mathf.CeilToInt(l.Length / lines_per_page); //считаем число страниц

@@ -6,7 +6,9 @@ public class FinishTest : MonoBehaviour
     private Board board;
     void OnMouseDown()
     {
-        BoardStatic.transform.localPosition.z = 18.5;
+        var p = BoardStatic.transform.localPosition;
+        p.z = 18.5f;
+        BoardStatic.transform.localPosition = p;
         BoardToMove.transform.Find("BoardGroup").animation.Play("BoardDisappear");
 
         //задвинуть кубы, а потом сделать их все неактивными
@@ -51,11 +53,18 @@ public class FinishTest : MonoBehaviour
             "Ваш результат: " + score.ToString() + " из " + tr.answersOverall.ToString();
         transform.parent.transform.parent.transform.Find("Board Begin/Minimum").GetComponent<TextMesh>().text =
             "Требуемый минимум: " + tr.answersMinimum.ToString() + " из " + tr.answersOverall.ToString();
-
-        transform.parent.transform.parent.transform.Find("Board Begin/Minimum").localPosition.z = 0;
-        transform.parent.transform.parent.transform.Find("Board Begin/Result").localPosition.z = 0;
-        transform.parent.transform.parent.transform.Find("Board Begin/Repeat").localPosition.z = 0;
-        transform.parent.transform.parent.transform.Find("Board Begin/Conclusion").localPosition.z = 0;
+        var p = transform.parent.transform.parent.transform.Find("Board Begin/Minimum").localPosition;
+        p.z = 0;
+        transform.parent.transform.parent.transform.Find("Board Begin/Minimum").localPosition = p;
+        p = transform.parent.transform.parent.transform.Find("Board Begin/Result").localPosition;
+        p.z = 0;
+        transform.parent.transform.parent.transform.Find("Board Begin/Result").localPosition = p;
+        p = transform.parent.transform.parent.transform.Find("Board Begin/Repeat").localPosition;
+        p.z = 0;
+        transform.parent.transform.parent.transform.Find("Board Begin/Repeat").localPosition = p;
+        p = transform.parent.transform.parent.transform.Find("Board Begin/Conclusion").localPosition;
+        p.z = 0;
+        transform.parent.transform.parent.transform.Find("Board Begin/Conclusion").localPosition = p;
 
         if (score >= tr.answersMinimum)
         {

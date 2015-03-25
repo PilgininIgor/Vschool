@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 
 public class TimerCourse : MonoBehaviour
 {
@@ -30,6 +29,6 @@ public class TimerCourse : MonoBehaviour
     private void UpdateClock()
     {
         var ts = TimeSpan.FromSeconds(sp.stat.timeSpent);
-        TextTime.GetComponent<TextMesh>().text = ts.ToString("hh:mm:ss");
+        TextTime.GetComponent<TextMesh>().text = string.Format("{0:00}:{1:00}:{2:00}", ts.TotalHours, ts.Minutes, ts.Seconds);
     }
 }

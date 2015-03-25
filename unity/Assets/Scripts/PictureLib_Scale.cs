@@ -3,8 +3,7 @@ using System.Collections;
 
 public class PictureLib_Scale : MonoBehaviour
 {
-
-    private GameObject Wall;
+    public GameObject Wall;
     void OnMouseDown()
     {
         transform.parent.transform.Find("Zoom").gameObject.SetActive(true);

@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 class StatisticParser : MonoBehaviour
 {
-    string JSONTestString = "{" +
+    const string JSONTestString = "{" +
     "\"id\":\"00000000-0000-0000-000000000000\",\"mode\":\"registered\"," +
     "\"name\":\"Информатика\",\"progress\":0.0,\"timeSpent\":0.0," +
     "\"visited\":false,\"completeAll\":false," +
@@ -64,8 +65,8 @@ class StatisticParser : MonoBehaviour
     "]" +
 "}";
 
-    string LBL1 = "Курс";
-    string LBL2 = "Тема";
+    private const string LBL1 = "Курс";
+    private const string LBL2 = "Тема";
 
     public DataStructures.CourseRun stat;
     private BootstrapParser bsParser;
@@ -82,7 +83,7 @@ class StatisticParser : MonoBehaviour
 
     public void UpdateThemeStat(int index)
     {
-        bsParser.statDisplays[index].transform.Find("TextTheme").GetComponent<TextMesh>().text = string.Format("{0} \"{1}\"", LBL2, stat.themesRuns[index-1].name);
+        bsParser.statDisplays[index].transform.Find("TextTheme").GetComponent<TextMesh>().text = string.Format("{0} \"{1}\"", LBL2, stat.themesRuns[index - 1].name);
         bsParser.statDisplays[index].transform.Find("TextTests").GetComponent<TextMesh>().text = string.Format("{0}/{1}", stat.themesRuns[index - 1].testsComplete, stat.themesRuns[index - 1].testsOverall);
 
         if ((!stat.themesRuns[index - 1].allTests) &&
@@ -95,56 +96,60 @@ class StatisticParser : MonoBehaviour
 
         //суммирование верных ответов и общего количества ответов по всей теме
         int aac = 0, aao = 0;
-        for (var i = 0; i < stat.themesRuns[index - 1].testsRuns.Count; i++)
+        foreach (var t in stat.themesRuns[index - 1].testsRuns)
         {
-            aac += stat.themesRuns[index - 1].testsRuns[i].answersCorrect;
-            aao += stat.themesRuns[index - 1].testsRuns[i].answersOverall;
+            aac += t.answersCorrect;
+            aao += t.answersOverall;
         }
         bsParser.statDisplays[index].transform.Find("TextAnswers").GetComponent<TextMesh>().text = string.Format("{0}/{1}", aac, aao);
-        if ((!stat.themesRuns[index-1].allTestsMax) && (aac == aao) && (aao != 0)) {
+        if ((!stat.themesRuns[index - 1].allTestsMax) && (aac == aao) && (aao != 0))
+        {
             GetComponent<RPGParser>().Achievement("Все тесты в теме пройдены идеально!\n+150 очков!", 150);
             stat.themesRuns[index - 1].allTestsMax = true;
         }
 
         //суммирование просмотренных параграфов и их общего количества по всей теме
         int aps = 0, apo = 0;
-	for (int i=0; i<stat.themesRuns[index-1].lecturesRuns.Count; i++) {
-		for (var j=0; j<stat.themesRuns[index-1].lecturesRuns[i].paragraphsRuns.Count; j++)
-			if (stat.themesRuns[index-1].lecturesRuns[i].paragraphsRuns[j].haveSeen) aps++;
-		apo += stat.themesRuns[index-1].lecturesRuns[i].paragraphsRuns.Count;
-	}	
-	bsParser.statDisplays[index].transform.Find("TextParagraphs").GetComponent<TextMesh>().text =
-		string.Format("{0}/{1}", aps,apo);
-		
-	if ((!stat.themesRuns[index-1].allLectures) && (aps == apo) && (apo != 0)) {
-		GetComponent<RPGParser>().Achievement("Изучены все лекции по теме!\n+100 очков!", 100);
-		stat.themesRuns[index-1].allLectures = true;
-    }
+        foreach (var lectureRun in stat.themesRuns[index - 1].lecturesRuns)
+        {
+            aps += lectureRun.paragraphsRuns.Count(x => x.haveSeen);
+            apo += lectureRun.paragraphsRuns.Count;
+        }
+        bsParser.statDisplays[index].transform.Find("TextParagraphs").GetComponent<TextMesh>().text =
+        string.Format("{0}/{1}", aps, apo);
+
+        if ((!stat.themesRuns[index - 1].allLectures) && (aps == apo) && (apo != 0))
+        {
+            GetComponent<RPGParser>().Achievement("Изучены все лекции по теме!\n+100 очков!", 100);
+            stat.themesRuns[index - 1].allLectures = true;
+        }
 
         //обновление прогресса
-	if ((aao != 0) && (apo != 0)) stat.themesRuns[index-1].progress = (float) ((aac + aps) * 100.0 / (aao + apo));
-	else if (aao != 0) stat.themesRuns[index-1].progress = (float) (aac * 100.0 / aao);
-    else if (apo != 0) stat.themesRuns[index - 1].progress = (float) (aps * 100.0 / apo);
-	bsParser.statDisplays[index].transform.Find("TextProgress").GetComponent<TextMesh>().text =
-		Mathf.RoundToInt(stat.themesRuns[index-1].progress)+"%";
+        if ((aao != 0) && (apo != 0)) stat.themesRuns[index - 1].progress = (float)((aac + aps) * 100.0 / (aao + apo));
+        else if (aao != 0) stat.themesRuns[index - 1].progress = (float)(aac * 100.0 / aao);
+        else if (apo != 0) stat.themesRuns[index - 1].progress = (float)(aps * 100.0 / apo);
+        bsParser.statDisplays[index].transform.Find("TextProgress").GetComponent<TextMesh>().text =
+            Mathf.RoundToInt(stat.themesRuns[index - 1].progress) + "%";
 
-    if ((!stat.themesRuns[index - 1].completeAll) && (Mathf.RoundToInt(stat.themesRuns[index - 1].progress) == 100))
-    {
-		GetComponent<RPGParser>().Achievement("Тема пройдена на 100%!\n+250 очков!", 250);
-        stat.themesRuns[index - 1].completeAll = true;
-	}
+        if ((!stat.themesRuns[index - 1].completeAll) && (Mathf.RoundToInt(stat.themesRuns[index - 1].progress) == 100))
+        {
+            GetComponent<RPGParser>().Achievement("Тема пройдена на 100%!\n+250 очков!", 250);
+            stat.themesRuns[index - 1].completeAll = true;
+        }
 
         //обновление прогресса всего курса
-	stat.progress = 0;
-    for (int i = 0; i < stat.themesRuns.Count; i++) stat.progress += stat.themesRuns[i].progress;
-    stat.progress /= stat.themesRuns.Count;
-	bsParser.statDisplays[0].transform.Find("TextProgress").GetComponent<TextMesh>().text =
-        Mathf.RoundToInt(stat.progress) + "%";
-		
-	if ((!stat.completeAll) && (Mathf.RoundToInt(stat.progress) == 100)) {
-		GetComponent<RPGParser>().Achievement("Курс пройден на 100%!\n+1000 очков!", 1000);
-		stat.completeAll = true;	
-	}
+        stat.progress = 0;
+        foreach (var t in stat.themesRuns)
+            stat.progress += t.progress;
+        stat.progress /= stat.themesRuns.Count;
+        bsParser.statDisplays[0].transform.Find("TextProgress").GetComponent<TextMesh>().text =
+            Mathf.RoundToInt(stat.progress) + "%";
+
+        if ((!stat.completeAll) && (Mathf.RoundToInt(stat.progress) == 100))
+        {
+            GetComponent<RPGParser>().Achievement("Курс пройден на 100%!\n+1000 очков!", 1000);
+            stat.completeAll = true;
+        }
     }
 
     public void Save()
@@ -153,7 +158,7 @@ class StatisticParser : MonoBehaviour
         {
             var s = JsonFx.Json.JsonWriter.Serialize(stat);
             var httpConnector = new HttpConnector();
-            httpConnector.SaveStatistic(s); 
+            httpConnector.SaveStatistic(s);
         }
     }
 }

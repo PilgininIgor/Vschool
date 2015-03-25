@@ -45,8 +45,10 @@ public class PictureLib : MonoBehaviour
 
         back.transform.localScale = scale; pic.transform.localScale = scale;
         back.renderer.material = bckg; pic.renderer.material = bckg;
-        txt.transform.localPosition.y -= back.transform.localScale.z / 2 * 10 - 0.3;
-        txt.transform.localPosition.z -= back.transform.localScale.x / 2 * 10 - 0.2;
+        var t = txt.transform.localPosition;
+        t.y -= (float)(back.transform.localScale.z / 2 * 10 - 0.3);
+        t.z -= (float)(back.transform.localScale.x / 2 * 10 - 0.2);
+        txt.transform.localPosition = t;
 
         obj.AddComponent<BoxCollider>();
         obj.GetComponent<BoxCollider>().size = new Vector3(0.1f, scale.z * 10, scale.x * 10);
@@ -63,16 +65,19 @@ public class PictureLib : MonoBehaviour
         obj.renderer.material.mainTexture = texture;
         var w = texture.width;
         var h = texture.height;
+        var t = obj.transform.localScale;
         if ((w / w_max) >= (h / h_max))
         {
-            obj.transform.localScale.x = w_max;
-            obj.transform.localScale.z = w_max / w * h;
+            
+            t.x = w_max;
+            t.z = w_max / w * h;
         }
         else
         {
-            obj.transform.localScale.x = h_max / h * w;
-            obj.transform.localScale.z = h_max;
+            t.x = h_max / h * w;
+            t.z = h_max;
         }
+        obj.transform.localScale = t;
     }
 
     //создать компоновку x на y стендов
