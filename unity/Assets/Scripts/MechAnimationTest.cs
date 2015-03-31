@@ -75,7 +75,7 @@ public class MechAnimationTest : MonoBehaviour
         }
 
         GUILayout.Label("Offset to turning anims (-0.5 to 0.5): " + turnOffset.ToString("0.00"));
-        turnOffset = GUILayout.HorizontalSlider(turnOffset, -0.5, 0.5, GUILayout.Width(100));
+        turnOffset = GUILayout.HorizontalSlider(turnOffset, -0.5f, 0.5f, GUILayout.Width(100));
         if (Mathf.Abs(turnOffset) < 0.05)
             turnOffset = 0;
     }

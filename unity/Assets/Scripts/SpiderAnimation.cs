@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SpiderAnimation : MonoBehaviour
 {
@@ -101,10 +100,10 @@ public class SpiderAnimation : MonoBehaviour
 
         if (skiddingSounds)
         {
-            if (walkWeight > 0.2 && !audioSource.isPlaying)
-                audioSource.Play();
-            else if (walkWeight < 0.2 && audioSource.isPlaying)
-                audioSource.Pause();
+            if (walkWeight > 0.2 && !animation.isPlaying)
+                animation.Play();
+            else if (walkWeight < 0.2 && animation.isPlaying)
+                animation.Stop();
         }
 
         if (footstepSounds && walkWeight > 0.2)
