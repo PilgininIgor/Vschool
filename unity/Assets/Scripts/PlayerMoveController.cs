@@ -181,7 +181,7 @@ public class PlayerMoveController : MonoBehaviour
 			posRel.y /= maxHalf;
 						
 			cameraAdjustmentVector = posRel.x * screenMovementRight + posRel.y * screenMovementForward;
-			cameraAdjustmentVector.y = 0.0;	
+			cameraAdjustmentVector.y = (float) 0.0;	
 									
 			// The facing direction is the direction from the character to the cursor world position
 			motor.facingDirection = (cursorWorldPosition - character.position);

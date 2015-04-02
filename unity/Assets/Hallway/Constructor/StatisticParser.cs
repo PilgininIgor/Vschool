@@ -71,7 +71,7 @@ class StatisticParser : MonoBehaviour
     public DataStructures.CourseRun stat;
     private BootstrapParser bsParser;
 
-    void StatisticDisplay(string json)
+    public void StatisticDisplay(string json)
     {
         stat = JsonFx.Json.JsonReader.Deserialize<DataStructures.CourseRun>(json);
         bsParser = GetComponent<BootstrapParser>();
