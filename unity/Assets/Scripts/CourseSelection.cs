@@ -75,7 +75,7 @@ public class CourseSelection : MonoBehaviour
         }
     }
 
-    void CourseDisplay(string JSONStringFromServer)
+    public void CourseDisplay(string JSONStringFromServer)
     {
         CoursesNamesList res = JsonFx.Json.JsonReader.Deserialize<CoursesNamesList>(JSONStringFromServer);
         cl = res.coursesNames;
@@ -148,6 +148,7 @@ public class CourseSelection : MonoBehaviour
     {
         var httpConnector = new HttpConnector();
         httpConnector.LoadCourseData(id);
+        httpConnector.LoadStat(id);
     }
 
     void Update()

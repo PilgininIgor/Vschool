@@ -865,17 +865,17 @@ public class AuthenticationValues
     public string Secret;   // { get { return s; } set { s = value; UnityEngine.Debug.LogWarning("Secret set: " + value + " server: " + PhotonNetwork.ServerAddress); } }
     //private string s;
 
-    /// <summary>Data to be passed-on to the auth service via POST. Default: null (not sent). Either string or byte[] (see setters).</summary>
+    /// <summary>Data to be passed-on to the auth service via Post. Default: null (not sent). Either string or byte[] (see setters).</summary>
     public object AuthPostData { get; private set; }
 
-    /// <summary>Sets the data to be passed-on to the auth service via POST.</summary>
+    /// <summary>Sets the data to be passed-on to the auth service via Post.</summary>
     /// <param name="byteData">Binary token / auth-data to pass on. Empty string will set AuthPostData to null.</param>
     public virtual void SetAuthPostData(string stringData)
     {
         this.AuthPostData = (string.IsNullOrEmpty(stringData)) ? null : stringData;
     }
 
-    /// <summary>Sets the data to be passed-on to the auth service via POST.</summary>
+    /// <summary>Sets the data to be passed-on to the auth service via Post.</summary>
     /// <param name="byteData">Binary token / auth-data to pass on.</param>
     public virtual void SetAuthPostData(byte[] byteData)
     {

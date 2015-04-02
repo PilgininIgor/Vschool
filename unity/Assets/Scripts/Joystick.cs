@@ -35,7 +35,7 @@ public class Joystick : MonoBehaviour
 
 #if !UNITY_IPHONE && !UNITY_ANDROID
 
-function Awake () {
+void Awake () {
 	gameObject.active = false;	
 }
 
