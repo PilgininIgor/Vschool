@@ -176,7 +176,7 @@ public class PlayerMoveController : MonoBehaviour
 			float maxHalf = Mathf.Max (halfWidth, halfHeight);
 			
 			// Acquire the relative screen position			
-			var posRel = cursorScreenPosition - Vector3 (halfWidth, halfHeight, cursorScreenPosition.z);		
+			var posRel = cursorScreenPosition - new Vector3 (halfWidth, halfHeight, cursorScreenPosition.z);		
 			posRel.x /= maxHalf; 
 			posRel.y /= maxHalf;
 						
