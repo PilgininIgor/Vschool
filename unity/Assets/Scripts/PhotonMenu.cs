@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 public class PhotonMenu : MonoBehaviour
 {
 
-    private string roomName = "Информатика";
+    private string roomName = "Room";
 
     private Vector2 scrollPos = Vector2.zero;
 
@@ -25,7 +25,7 @@ public class PhotonMenu : MonoBehaviour
 
     public void Awake()
     {
-        Application.ExternalCall("GetUserFromServer");
+        userName = new HttpConnector().GetUserName();
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
         PhotonNetwork.automaticallySyncScene = true;
 
@@ -39,7 +39,7 @@ public class PhotonMenu : MonoBehaviour
         // generate a name for this player, if none is assigned yet
         if (String.IsNullOrEmpty(PhotonNetwork.playerName))
         {
-			PhotonNetwork.playerName = userName + Random.Range(1, 9999);
+			PhotonNetwork.playerName = userName + " " + Random.Range(1, 9999);
         }
 
         // if you wanted more debug out, turn this on:

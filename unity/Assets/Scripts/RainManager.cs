@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RainManager : MonoBehaviour
 {
@@ -27,9 +26,9 @@ public class RainManager : MonoBehaviour
             var m1 = CreateMesh();
             var m2 = CreateMesh();
             var m3 = CreateMesh();
-            AssetDatabase.CreateAsset(m1, "Assets/Objects/RainFx/" + gameObject.name + "_LQ0.asset");
-            AssetDatabase.CreateAsset(m2, "Assets/Objects/RainFx/" + gameObject.name + "_LQ1.asset");
-            AssetDatabase.CreateAsset(m3, "Assets/Objects/RainFx/" + gameObject.name + "_LQ2.asset");
+            UnityEditor.AssetDatabase.CreateAsset(m1, "Assets/Objects/RainFx/" + gameObject.name + "_LQ0.asset");
+            UnityEditor.AssetDatabase.CreateAsset(m2, "Assets/Objects/RainFx/" + gameObject.name + "_LQ1.asset");
+            UnityEditor.AssetDatabase.CreateAsset(m3, "Assets/Objects/RainFx/" + gameObject.name + "_LQ2.asset");
             Debug.Log("Created new rain meshes in Assets/Objects/RainFx/");
         }
 #endif

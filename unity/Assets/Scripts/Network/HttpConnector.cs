@@ -89,5 +89,10 @@ public class HttpConnector : MonoBehaviour
         CourseSelection courseSelection = GameObject.Find("Hallway/Course Selection/CS_Screen").GetComponent<CourseSelection>();
         courseSelection.CourseDisplay(www.text);
     }
+
+    public String GetUserName()
+    {
+        return "Student";
+    }
 }
 

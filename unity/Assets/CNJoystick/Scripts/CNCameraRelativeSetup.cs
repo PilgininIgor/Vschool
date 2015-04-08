@@ -56,7 +56,7 @@ public class CNCameraRelativeSetup : MonoBehaviour
         }
 		if (totalMove != Vector3.zero)
 		{
-			anim.SetFloat("Speed", Mathf.Abs(totalMove.x));
+			anim.SetFloat("Speed", runSpeed);
 			anim.speed = 1.5f;
 		}
         //characterController.Move(totalMove * Time.deltaTime);
