@@ -1,0 +1,9 @@
+﻿<?xml version="1.0"?>
+<connectionStrings>
+  <add name="default"
+       connectionString="Data Source=.\sqlexpress;Initial Catalog=ils;Integrated Security=True;MultipleActiveResultSets=True"
+       providerName="System.Data.SqlClient" />
+  <add name="prod"
+       connectionString="Data Source=u273630.mssql.masterhost.ru;Integrated Security=False;User ID=u273630;Password=anitylante2t;MultipleActiveResultSets=True;Database=u273630;Trusted_Connection=False;Persist Security Info=True"
+       providerName="System.Data.SqlClient"/>
+</connectionStrings>

@@ -1,0 +1,276 @@
+.profileFrame {
+	width: 1024px; 
+	height: 640px;
+	top: 50%;
+	margin-top: -320px;
+	position: absolute;
+	left: 50%;
+	margin-left: -512px;
+}
+.profileHeader {
+	width: 1024px; 
+	height: 210px;
+	top: 0px;
+	position: absolute;
+	overflow: hidden;
+	left: 0px;
+}
+.profileInfo {
+	width: 300px; 
+	height: 150px;
+	top: 36px;
+	position: absolute;
+	left: 45px;
+}
+.profileAvatar {
+	width: 130px; 
+	height: 150px;
+	top: 0px;
+	position: absolute;
+	overflow: hidden;
+	background: url(sprites/profile/avatar.jpg);
+	left: 0px;
+}
+.profileName {
+	width: 200px; 
+	height: 20px;
+	top: 0px;
+	position: absolute;
+	left: 153px;
+	font-size: 20px; 
+	color: #eeeeee; 
+	letter-spacing: 0.8px; 
+	line-height: 20px; 
+	font-family: Futurica; 
+	text-shadow:-1px -1px 1px #0ed5da,1px -1px 1px #0ed5da,-1px 1px 1px #0ed5da,1px 1px 1px #0ed5da;
+}
+.profileEmail {
+	width: 200px; 
+	height: 20px;
+	top: 30px;
+	position: absolute;
+	left: 153px;
+	font-size: 18px; 
+	color: #0ed5da; 
+	letter-spacing: 0.8px; 
+	line-height: 18px; 
+	font-family: Futurica; 
+}
+.profileMoney {
+	width: 200px; 
+	height: 40px;
+	top: 110px;
+	position: absolute;
+	background: url(sprites/profile/money.png) no-repeat;
+	left: 153px;
+}
+.profileMoneyValue{
+	width: 140px; 
+	height: 40px;
+	top: 0px;
+	position: absolute;
+	left: 60px;
+	font-size: 20px; 
+	color: #eeeeee; 
+	letter-spacing: 0.8px; 
+	line-height: 20px; 
+	font-family: Futurica; 
+	text-shadow:-1px -1px 1px #0ed5da,1px -1px 1px #0ed5da,-1px 1px 1px #0ed5da,1px 1px 1px #0ed5da;
+}
+.profileProgress {
+	width: 130px; 
+	height: 130px;
+	top: 56px;
+	position: absolute;
+	background: url(sprites/profile/progress.png) no-repeat;
+	left: 382px;
+}
+.profileProgressValue{
+	width: 130px; 
+	height: 40px;
+	position: absolute;
+	font-size: 40px; 
+	color: #eeeeee; 
+	text-align: center;
+	font-family: Futurica; 
+	text-shadow:-1px -1px 1px #0ed5da,1px -1px 1px #0ed5da,-1px 1px 1px #0ed5da,1px 1px 1px #0ed5da;
+}
+.profileRating {
+	width: 130px; 
+	height: 130px;
+	top: 56px;
+	position: absolute;
+	background: url(sprites/profile/rating.png) no-repeat;
+	left: 550px;
+}
+.profileRatingValue{
+	width: 130px; 
+	height: 60px;
+	top: -45px;
+	position: absolute;
+	font-size: 60px; 
+	color: #eeeeee; 
+	text-align: center;
+	font-family: Futurica; 
+	text-shadow:-1px -1px 1px #0ed5da,1px -1px 1px #0ed5da,-1px 1px 1px #0ed5da,1px 1px 1px #0ed5da;
+}
+.profileAchievements {
+	width: 130px; 
+	height: 130px;
+	top: 56px;
+	position: absolute;
+	background: url(sprites/profile/achievements.png) no-repeat;
+	left: 719px;
+}
+.profileMinimize {
+	width: 50px; 
+	height: 50px;
+	top: 17px;
+	position: absolute;
+	background: url(sprites/profile/minimize.png) no-repeat;
+	left: 954px;
+}
+.profileSeparator{
+	width: 1024px; 
+	height: 2px;
+	top: 210px;
+	position: absolute;
+	overflow: hidden;
+	background: #0ed5da;
+	left: 0px;
+}
+.profileContent {
+	width: 1024px; 
+	height: 428px;
+	top: 212px;
+	position: absolute;
+	overflow: hidden;
+	left: 0px;
+}
+.profileBackLeft {
+	width: 430px; 
+	height: 260px;
+	top: 435px;
+	position: absolute;
+	overflow: hidden;
+	background: url(sprites/profile/hexes.png) no-repeat;
+	left: -45px;
+}
+.profileBackRight {
+	width: 430px; 
+	height: 260px;
+	top: 435px;
+	position: absolute;
+	overflow: hidden;
+	background: url(sprites/profile/hexes.png) no-repeat;
+	right: -45px;
+	-moz-transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
+}
+.profileAchievementsContent {
+	width: 1040px; 
+	height: 408px;
+	top: 20px;
+	position: absolute;
+	overflow: hidden;
+	left: 50%;
+	margin-left: -520px;
+}
+.profileRatingContent {
+	width: 1040px; 
+	height: 408px;
+	top: 20px;
+	position: absolute;
+	overflow: hidden;
+	left: 50%;
+	margin-left: -520px;
+}
+.profileProgressContent {
+	width: 1040px; 
+	height: 408px;
+	top: 20px;
+	position: absolute;
+	overflow: hidden;
+	left: 50%;
+	margin-left: -520px;
+}
+table {
+	border-collapse: collapse;
+	width: 438px; 
+	position: absolute;
+	overflow: hidden;
+	left: 50%;
+	margin-left: -219px;
+	border: 1px solid #0ed5da;
+}
+table td, table th {
+    border: 1px solid #0ed5da;
+}
+a {
+	color: #0ed5da;
+}
+.profileRatingSelectedRow {
+	background: rgba(14, 213, 218, 0.3);
+}
+.profileText{
+	font-size: 18px; 
+	color: #0ed5da; 
+	letter-spacing: 0.8px; 
+	text-align: center;
+	line-height: 16px; 
+	font-family: Futurica; 
+}
+.profileAchievementsRows {
+	width: 1040px; 
+	height: 260px;
+	position: absolute;
+	overflow: hidden;
+}
+.profileAchievementsShortRow {
+	width: 520px; 
+	height: 130px;
+	position: absolute;
+	top: 260px;
+	left: 50%;
+	margin-left: -260px;
+	overflow: hidden;
+}
+.profileAchievement {
+	width: 130px; 
+	height: 130px;
+	position: relative;
+	float: left;
+}
+.profileAchievementImage {
+	width: 90px; 
+	height: 90px;
+	position: absolute;
+	top: 5px;
+	left: 20px;
+	background: url(sprites/profile/achievement1.png) no-repeat;
+}
+.profileAchievementValue {
+	width: 130px; 
+	height: 35px;
+	position: absolute;
+	top: 80px;
+	font-size: 16px; 
+	color: #0ed5da; 
+	letter-spacing: 0.8px; 
+	text-align: center;
+	line-height: 16px; 
+	font-family: Futurica; 
+}
+.profileTablePane {
+	width: 450px; 
+	height: 360px;
+	top: 20px;
+	position: absolute;
+	overflow: hidden;
+	left: 50%;
+	margin-left: -225px;
+	}

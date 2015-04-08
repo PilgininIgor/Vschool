@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Авторы";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script type="text/javascript">
+
+        Ext.ns('ils', 'ils.aboutadmin.authors');
+        ils.aboutadmin.authors.readEDucationAuthor = '@Url.Action("ReadEDucationAuthor", "AboutAdmin")';
+        ils.aboutadmin.authors.updateEDucationAuthor = '@Url.Action("UpdateEDucationAuthor", "AboutAdmin")';
+        ils.aboutadmin.authors.deleteEDucationAuthor = '@Url.Action("DeleteEDucationAuthor", "AboutAdmin")';
+        ils.aboutadmin.authors.createEDucationAuthor = '@Url.Action("CreateEDucationAuthor", "AboutAdmin")';
+
+        Ext.ns('ils', 'ils.aboutadmin.screens');
+        ils.aboutadmin.screens.readScreen = '@Url.Action("ReadScreen", "AboutAdmin")';
+        ils.aboutadmin.screens.deleteScreen = '@Url.Action("DeleteScreen", "AboutAdmin")';
+
+        Ext.ns('ils', 'ils.aboutadmin.awards.images');
+        ils.aboutadmin.awards.images.deleteAwardImage = '@Url.Action("DeleteAwardImage", "AboutAdmin")';
+        Ext.ns('ils', 'ils.aboutadmin.awards');
+
+        ils.aboutadmin.awards.readAward = '@Url.Action("ReadAward", "AboutAdmin")';
+        ils.aboutadmin.awards.updateAward = '@Url.Action("UpdateAward", "AboutAdmin")';
+        ils.aboutadmin.awards.deleteAward = '@Url.Action("DeleteAward", "AboutAdmin")';
+        ils.aboutadmin.awards.createAward = '@Url.Action("CreateAward", "AboutAdmin")';
+
+        Ext.ns('ils', 'ils.aboutadmin.achievements.images');
+        ils.aboutadmin.achievements.images.deleteAchievementImage = '@Url.Action("DeleteAchievementImage", "AboutAdmin")';
+        Ext.ns('ils', 'ils.aboutadmin.achievements');
+
+        ils.aboutadmin.achievements.readAchievement = '@Url.Action("ReadAchievement", "AboutAdmin")';
+        ils.aboutadmin.achievements.updateAchievement = '@Url.Action("UpdateAchievement", "AboutAdmin")';
+        ils.aboutadmin.achievements.deleteAchievement = '@Url.Action("DeleteAchievement", "AboutAdmin")';
+        ils.aboutadmin.achievements.createAchievement = '@Url.Action("CreateAchievement", "AboutAdmin")';
+
+    </script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.aboutadmin.authors.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.aboutadmin.screens.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.aboutadmin.awards.images.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.aboutadmin.awards.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.aboutadmin.achievements.images.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.aboutadmin.achievements.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ils.aboutadmin.js")"></script>
+}

@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "3Ducation | Генератор тестов";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script type="text/javascript">
+        var titleOfPage = '@ViewBag.Title';
+        var urlGetData = '@Url.Action("GetData", new { controller = "TestGenerator" })';
+        var urlGetAvailableFunctions = '@Url.Action("GetAvailableFunctions", new { controller = "TestGenerator" })';
+
+        var urlPersonNewList = '@Url.Content("~/TestGenerator/PersonNewList")';
+        var urlPersonCreate = '@Url.Content("~/TestGenerator/CreatePerson")';
+        var urlPersonEdit = '@Url.Content("~/TestGenerator/EditPerson")';
+        var urlPersonDelete = '@Url.Content("~/TestGenerator/DeletePerson")';
+
+        link_data = '@Url.Action("ReadTree", "TestGenerator")';
+
+        link_readCTTC = '@Url.Action("ReadCTTC", "Struct")';
+        link_saveCTTC = '@Url.Action("SaveCTTC", "Struct")';
+        link_readParagraph = '@Url.Action("ReadParagraph", "Struct")';
+        link_saveParagraph = '@Url.Action("SaveParagraph", "Struct")';
+        link_readQuestion = '@Url.Action("ReadQuestion", "Struct")';
+        link_saveQuestion = '@Url.Action("SaveQuestion", "Struct")';
+
+        link_addCourse = '@Url.Action("AddCourse", "Struct")';
+        link_removeCourse = '@Url.Action("RemoveCourse", "Struct")';
+        link_addTheme = '@Url.Action("AddTheme", "Struct")';
+        link_removeTheme = '@Url.Action("RemoveTheme", "Struct")';
+        link_addLecture = '@Url.Action("AddLecture", "Struct")';
+        link_addTest = '@Url.Action("AddTest", "Struct")';
+        link_removeContent = '@Url.Action("RemoveContent", "Struct")';
+        link_addParagraph = '@Url.Action("AddParagraph", "Struct")';
+        link_removeParagraph = '@Url.Action("RemoveParagraph", "Struct")';
+        link_addQuestion = '@Url.Action("AddQuestion", "Struct")';
+        link_removeQuestion = '@Url.Action("RemoveQuestion", "Struct")';
+
+        link_addDoc = '@Url.Action("AddDoc", "Struct")';
+
+        link_moveUp = '@Url.Action("MoveUp", "Struct")';
+        link_moveDown = '@Url.Action("MoveDown", "Struct")';
+
+        link_addMoodle = '@Url.Action("AddMoodle", "Struct")';
+        link_moodleListUpdate = '@Url.Action("MoodleListUpdate", "Struct")';
+        link_getListFromMoodle = '@Url.Action("GetListFromMoodle", "Struct")';
+        link_listDownloadedContentFromMoodle = '@Url.Action("ListDownloadedContentFromMoodle", "Struct")';
+
+    </script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/testgenerator.main.tree.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/testgenerator.main.forms.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/testgenerator.main.toolbar.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/testgenerator.main.js")"></script>
+}

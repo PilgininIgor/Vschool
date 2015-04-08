@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/ext/resources/css/ext-theme-neptune-all.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/icons.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/mycss.css")">
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ext/bootstrap.js")"></script>
+
+    <script type="text/javascript">
+        link_ideology = '@Url.Action("Index", "Ideology")';
+        link_render = '@Url.Action("Index", "Render")';
+        link_struct = '@Url.Action("Index", "Struct")';
+        link_flowchart = '@Url.Action("Index", "Workflow")';
+        link_linkeditor = '@Url.Action("Index", "LinkEditor")'
+        link_users = '@Url.Action("Index", "Admin")';
+        link_about_admin = '@Url.Action("Index", "AboutAdmin")';
+        link_login = '@Url.Action("LogOn", "Account")';
+        link_logoff = '@Url.Action("LogOff", "Account")';
+        link_openid = '@Url.Action("Index", "OpenID")';
+        link_register = '@Url.Action("Register", "Account")';
+        link_testgenerator = '@Url.Action("Index", "TestGenerator")';
+
+        ifLogged = '@User.Identity.IsAuthenticated';
+        ifAdmin = '@User.IsInRole("Admin")';
+        ifTeacher = '@User.IsInRole("Teacher")';
+        ifStudent = '@User.IsInRole("Student")';
+        username = '@HttpContext.Current.User.Identity.Name';
+
+        if (('@HttpContext.Current.Request.UserLanguages.Count()' != '0') && (('@HttpContext.Current.Request.UserLanguages[0]' == "ru") ||
+           ('@HttpContext.Current.Request.UserLanguages[0]' == "ru-ru") || ('@HttpContext.Current.Request.UserLanguages[0]' == "ru-RU")))
+            lang_pref = "Russian"; else lang_pref = "English";
+    </script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/main.js")"></script>
+
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/ext/resources/css/ext-theme-neptune-all.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/icons.css")" />
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ext/bootstrap.js")"></script>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/user-common.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/mycss.css")">
+    <link href="/Content/Sprites/logofavicon.png" rel="shortcut icon" type="image/x-icon" />
+
+    <link type="text/css" href="http://jscrollpane.kelvinluck.com/style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://jscrollpane.kelvinluck.com/script/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="http://jscrollpane.kelvinluck.com/script/jquery.jscrollpane.min.js"></script>
+
+    @RenderSection("additionalCSS", required: false)
+
+
+
+    <script type="text/javascript">
+
+
+
+        var sdoorl = true;
+        var sdoorr = true;
+
+        var sdoorlTimer;
+        var sdoorlLeft = 0;
+        var sdoorrTimer;
+        var sdoorrLeft = 0;
+
+        function sdoor_open_l() {
+            clearInterval(sdoorlTimer);
+            function move() {
+                sdoorlLeft -= 3;
+                document.getElementById('sdoorll').style.left = sdoorlLeft + 'px';
+                document.getElementById('sdoorlr').style.left = 43 - sdoorlLeft + 'px';
+                if (sdoorlLeft <= -102) {
+                    clearInterval(sdoorlTimer);
+                }
+            }
+            sdoorlTimer = setInterval(move, 1)
+        }
+
+        function sdoor_open_r() {
+            clearInterval(sdoorrTimer);
+            function move() {
+                sdoorrLeft -= 3;
+                document.getElementById('sdoorrl').style.left = sdoorrLeft + 'px';
+                document.getElementById('sdoorrr').style.left = 43 - sdoorrLeft + 'px';
+                if (sdoorrLeft <= -102) {
+                    clearInterval(sdoorrTimer);
+                }
+            }
+            sdoorrTimer = setInterval(move, 1)
+        }
+
+        function sdoor_close_l() {
+            clearInterval(sdoorlTimer);
+            function move() {
+                sdoorlLeft += 3;
+                document.getElementById('sdoorll').style.left = sdoorlLeft + 'px';
+                document.getElementById('sdoorlr').style.left = 43 - sdoorlLeft + 'px';
+                if (sdoorlLeft >= 0) {
+                    clearInterval(sdoorlTimer);
+                }
+            }
+            sdoorlTimer = setInterval(move, 1);
+        }
+
+
+        function sdoor_close_r() {
+            clearInterval(sdoorrTimer);
+            function move() {
+                sdoorrLeft += 3;
+                document.getElementById('sdoorrl').style.left = sdoorrLeft + 'px';
+                document.getElementById('sdoorrr').style.left = 43 - sdoorrLeft + 'px';
+                if (sdoorrLeft >= 0) {
+                    clearInterval(sdoorrTimer);
+                }
+            }
+            sdoorrTimer = setInterval(move, 1);
+        }
+
+        function sdoor_force_l() {
+            sdoor_close_l();
+        }
+        function sdoor_force_r() {
+            sdoor_close_r();
+        }
+
+        var frameLeftIndex = 0;
+        var frameLeftTimer;
+        var framesLeftScreens;
+        function changeLeftScreens() {
+            switch (frameLeftIndex) {
+                case 8:
+                    framesLeftScreens[0].style.opacity = 0.9;
+                    framesLeftScreens[1].style.opacity = 0.3;
+                    break;
+                case 9:
+                    framesLeftScreens[0].style.opacity = 0.3;
+                    framesLeftScreens[1].style.opacity = 0.9;
+                    break;
+                case 10:
+                    framesLeftScreens[0].style.opacity = 0;
+                    framesLeftScreens[1].style.opacity = 1;
+                    break;
+                case 18:
+                    framesLeftScreens[1].style.opacity = 0.9;
+                    framesLeftScreens[2].style.opacity = 0.3;
+                    break;
+                case 19:
+                    framesLeftScreens[1].style.opacity = 0.3;
+                    framesLeftScreens[2].style.opacity = 0.9;
+                    break;
+                case 20:
+                    framesLeftScreens[1].style.opacity = 0;
+                    framesLeftScreens[2].style.opacity = 1;
+                    break;
+                case 28:
+                    framesLeftScreens[2].style.opacity = 0.9;
+                    framesLeftScreens[3].style.opacity = 0.3;
+                    break;
+                case 29:
+                    framesLeftScreens[2].style.opacity = 0.3;
+                    framesLeftScreens[3].style.opacity = 0.9;
+                    break;
+                case 30:
+                    framesLeftScreens[2].style.opacity = 0;
+                    framesLeftScreens[3].style.opacity = 1;
+                    break;
+                case 38:
+                    framesLeftScreens[3].style.opacity = 0.9;
+                    framesLeftScreens[0].style.opacity = 0.3;
+                    break;
+                case 39:
+                    framesLeftScreens[3].style.opacity = 0.3;
+                    framesLeftScreens[0].style.opacity = 0.9;
+                    break;
+                case 40:
+                    framesLeftScreens[3].style.opacity = 0;
+                    framesLeftScreens[0].style.opacity = 1;
+                    frameLeftIndex = 0;
+                    break;
+            }
+            frameLeftIndex++;
+        }
+
+        var frameRightIndex = 0;
+        var frameRightTimer;
+        var framesRightScreens;
+        function changeRightScreens() {
+            switch (frameRightIndex) {
+                case 8:
+                    framesRightScreens[0].style.opacity = 0.9;
+                    framesRightScreens[1].style.opacity = 0.3;
+                    break;
+                case 9:
+                    framesRightScreens[0].style.opacity = 0.3;
+                    framesRightScreens[1].style.opacity = 0.9;
+                    break;
+                case 10:
+                    framesRightScreens[0].style.opacity = 0;
+                    framesRightScreens[1].style.opacity = 1;
+                    break;
+                case 18:
+                    framesRightScreens[1].style.opacity = 0.9;
+                    framesRightScreens[2].style.opacity = 0.3;
+                    break;
+                case 19:
+                    framesRightScreens[1].style.opacity = 0.3;
+                    framesRightScreens[2].style.opacity = 0.9;
+                    break;
+                case 20:
+                    framesRightScreens[1].style.opacity = 0;
+                    framesRightScreens[2].style.opacity = 1;
+                    break;
+                case 28:
+                    framesRightScreens[2].style.opacity = 0.9;
+                    framesRightScreens[3].style.opacity = 0.3;
+                    break;
+                case 29:
+                    framesRightScreens[2].style.opacity = 0.3;
+                    framesRightScreens[3].style.opacity = 0.9;
+                    break;
+                case 30:
+                    framesRightScreens[2].style.opacity = 0;
+                    framesRightScreens[3].style.opacity = 1;
+                    break;
+                case 38:
+                    framesRightScreens[3].style.opacity = 0.9;
+                    framesRightScreens[0].style.opacity = 0.3;
+                    break;
+                case 39:
+                    framesRightScreens[3].style.opacity = 0.3;
+                    framesRightScreens[0].style.opacity = 0.9;
+                    break;
+                case 40:
+                    framesRightScreens[3].style.opacity = 0;
+                    framesRightScreens[0].style.opacity = 1;
+                    frameRightIndex = 0;
+                    break;
+            }
+            frameRightIndex++;
+        }
+
+        var framel = 0;
+
+        var demolTimer;
+
+        function demol_animate() {
+            clearInterval(demolTimer);
+            var frames = document.getElementById("demolcontainer").children;
+            function move() {
+                frames[framel].style.display = "none";
+                framel++;
+                if (framel == 24) {
+                    clearInterval(demolTimer);
+                    framel = 23;
+
+                }
+                frames[framel].style.display = "block";
+
+            }
+            demolTimer = setInterval(move, 40);
+            framesLeftScreens = document.getElementById("demolScreenshots").children;
+            document.getElementById("demolScreenshots").style.display = "block";
+            frameLeftTimer = setInterval(changeLeftScreens, 100);
+        }
+
+        function demol_stop() {
+            clearInterval(demolTimer);
+            var frames = document.getElementById("demolcontainer").children;
+            function move() {
+                if (framel < 1) {
+                    clearInterval(demolTimer);
+                    document.getElementById("demolScreenshots").style.display = "none";
+                    clearInterval(frameLeftTimer);
+                    framel = 1;
+                }
+                frames[framel].style.display = "none";
+                framel--;
+                frames[framel].style.display = "block";
+
+            }
+            demolTimer = setInterval(move, 40);
+        }
+
+
+
+
+        var framer = 0;
+
+        var demorTimer;
+
+        function demor_animate() {
+            clearInterval(demorTimer);
+            var frames = document.getElementById("demorcontainer").children;
+            function move() {
+                frames[framer].style.display = "none";
+                framer++;
+                if (framer == 24) {
+                    clearInterval(demorTimer);
+                    framer = 23;
+                }
+                frames[framer].style.display = "block";
+
+            }
+            demorTimer = setInterval(move, 40);
+            framesRightScreens = document.getElementById("demorScreenshots").children;
+            document.getElementById("demorScreenshots").style.display = "block";
+            frameRightTimer = setInterval(changeRightScreens, 100);
+        }
+
+        function demor_stop() {
+            clearInterval(demorTimer);
+            var frames = document.getElementById("demorcontainer").children;
+            function move() {
+                if (framer < 1) {
+                    clearInterval(demorTimer);
+                    document.getElementById("demorScreenshots").style.display = "none";
+                    clearInterval(frameRightTimer);
+                    framer = 1;
+                }
+                frames[framer].style.display = "none";
+                framer--;
+                frames[framer].style.display = "block";
+
+            }
+            demorTimer = setInterval(move, 40);
+        }
+
+    </script>
+
+
+
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div>
+        <div class="background_pic">
+
+
+            <div class="leftshade">
+            </div>
+            <div class="rightshade">
+            </div>
+            <div class="topshade">
+
+            </div>
+            <div class="bottomshade">
+            </div>
+            <div id="mainFrame" class="main">
+                <div id="helloInactive" class="hello_ia">
+                </div>
+                <div id="helloPanel" class="hello">
+                    <div style="width: 130px;height: 159px; top: 8px; left: 26px; position:absolute">
+                        <p id="credentials" align="center" style="position: absolute;width:130px;font-size: 5ox;color: #eeeeee;letter-spacing:0.8px;line-height:15px;font-family: Futurica">
+                        </p>
+                        <div id="adminLink" class="adminLink">
+                            <a href="/struct"><img src="/Content/sprites/admin.png"></a>
+                        </div>
+                        <div id="profileLink" class="adminLink" style="display:block">
+                            <a href="javascript:maximizeProfile()"><img src="/Content/sprites/admin.png"></a>
+                        </div>
+                    </div>
+                </div>
+                <img src="/Content/Sprites/main3.png" style="position:absolute;">
+                <p>
+                    <map name="DemoButton">
+                        <area shape="circle" coords="62,62,62" href="/render" alt="Demo">
+                    </map>
+                </p>
+
+                @RenderSection("renderArea", required: true)
+
+                @RenderSection("topPanel", required: true)
+                <div class="visors" id="visorsContainer">
+                    <img src="/Content/Sprites/visors/visors_1.png" style="display:block">
+                    <img src="/Content/Sprites/visors/visors_2.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_3.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_4.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_5.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_6.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_7.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_8.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_9.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_10.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_11.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_12.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_13.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_14.png" style="display:none">
+                    <img src="/Content/Sprites/visors/visors_15.png" style="display:none">
+                </div>
+                <a href="/render">
+                    <div class="logoLink"></div>
+                </a>
+                <div class="demoleft" id="demolScreenshots" style="display:none">
+                    <img src="/Content/Sprites/demo_screenshots/demo_1.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:1">
+                    <img src="/Content/Sprites/demo_screenshots/demo_2.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:0">
+                    <img src="/Content/Sprites/demo_screenshots/demo_3.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:0">
+                    <img src="/Content/Sprites/demo_screenshots/demo_4.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:0">
+                </div>
+                <div class="demoleft" id="demolcontainer">
+                    <img src="/Content/Sprites/slider/slider_1.png" usemap="#DemoButton" style="display:block">
+                    <img src="/Content/Sprites/slider/slider_2.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_3.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_4.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_5.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_6.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_7.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_8.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_9.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_10.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_11.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_12.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_13.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_14.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_15.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_16.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_17.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_18.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_19.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_20.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_21.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_22.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_23.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_24.png" usemap="#DemoButton" style="display:none">
+                </div>
+                <div class="demoleft" onmouseover="javascript:demol_animate()" onmouseout="javascript:demol_stop()" style="cursor: pointer;" onclick="javascript:demo_game()">
+                </div>
+                <div class="buttonleft" id="leftPartnersButton">
+                    <div class="sdoorll" id="sdoorll">
+                        <img src="/Content/Sprites/door_s_left.jpg">
+                    </div>
+                    <div class="sdoorlr" id="sdoorlr">
+                        <img src="/Content/Sprites/door_s_right.jpg">
+                    </div>
+                </div>
+                <a href="http://itschool.ssau.ru" target="_blank">
+                    <div class="invisiblebuttonleft" onmouseover="javascript:sdoor_open_l()" onmouseout="javascript:sdoor_close_l()">
+                    </div>
+                </a>
+                <div class="buttonright" id="rightPartnersButton">
+                    <div class="sdoorll" id="sdoorrl">
+                        <img src="/Content/Sprites/door_s_left.jpg">
+                    </div>
+                    <div class="sdoorlr" id="sdoorrr">
+                        <img src="/Content/Sprites/door_s_right.jpg">
+                    </div>
+                </div>
+                <a href="http://distance.itschool.ssau.ru" target="_blank">
+                    <div class="invisiblebuttonright" onmouseover="javascript:sdoor_open_r()" onmouseout="javascript:sdoor_close_r()">
+                    </div>
+                </a>
+                <div class="demoright" id="demorScreenshots" style="display:none">
+                    <img src="/Content/Sprites/video_screenshots/video_1.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:1">
+                    <img src="/Content/Sprites/video_screenshots/video_2.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:0">
+                    <img src="/Content/Sprites/video_screenshots/video_3.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:0">
+                    <img src="/Content/Sprites/video_screenshots/video_4.png" usemap="#DemoButton" style="position:absolute;left:14px;top:20px;display:block;opacity:0">
+                </div>
+                <div class="demoright" id="demorcontainer">
+                    <img src="/Content/Sprites/slider/slider_1.png" usemap="#DemoButton" style="display:block">
+                    <img src="/Content/Sprites/slider/slider_2.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_3.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_4.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_5.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_6.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_7.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_8.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_9.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_10.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_11.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_12.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_13.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_14.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_15.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_16.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_17.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_18.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_19.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_20.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_21.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_22.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_23.png" usemap="#DemoButton" style="display:none">
+                    <img src="/Content/Sprites/slider/slider_24.png" usemap="#DemoButton" style="display:none">
+                </div>
+                <div class="demoright" onmouseover="javascript:demor_animate()" onmouseout="javascript:demor_stop()" style="cursor: pointer;" onclick="javascript:demo_video()">
+                </div>
+                <div class="copyright">
+                    <p align="center" style="letter-spacing:0.8px;color: #ffffff;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;font-size: 15px;font-family: Britannic">&copy; 2012—2014 3D Education</p>
+                </div>
+            </div>
+            @RenderBody()
+            @RenderSection("end", required: false)
+        </div>
+
+
+    </div>
+
+</body>
+</html>
