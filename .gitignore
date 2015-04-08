@@ -51,5 +51,8 @@ unity/*.booproj
 *.xcuserstate
 project.xcworkspace/
 xcuserdata/
-web/packages/
 unity/test_Data/
+
+# nuget packages
+web/packages/*
+!web/packages/repositories.config
