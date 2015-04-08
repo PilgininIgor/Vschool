@@ -1,0 +1,104 @@
+﻿@model ILS.Models.LogOnModel
+
+@{
+    ViewBag.Title = "Log On";
+    Layout = "~/Views/Shared/NotLoggedInLayout.cshtml";
+}
+@section scripts{
+    <script type="text/javascript">
+        var submitLogin = function () {
+            login.getForm().submit({
+                params: {ReturnUrl: '@Request.QueryString["ReturnUrl"]' }
+            });
+        };
+
+        var login = new Ext.FormPanel({
+            url: '@Url.Action("LogOn", "Account")',
+            cls: 'white-form-panel',
+            frame: false,
+            border: false,
+            defaultType: 'textfield',
+            monitorValid: true,
+            standardSubmit : true,
+            fieldDefaults: {
+                labelWidth: 150,
+                msgTarget: 'side'
+            },
+            items: [{
+                fieldLabel: 'Имя пользователя',
+                name: 'UserName',
+                itemId: 'username',
+                padding: '5 10 5 10',
+                allowBlank: false,
+                listeners: {
+                    specialkey: function(field, e) {
+                        if (e.getKey() == e.ENTER) {
+                            submitLogin();
+                        }
+                    }
+                }
+            }, {
+                fieldLabel: 'Пароль',
+                name: 'Password',
+                padding: '5 10 5 10',
+                inputType: 'password',
+                allowBlank: false,
+                listeners: {
+                    specialkey: function(field, e) {
+                        if (e.getKey() == e.ENTER) {
+                            submitLogin();
+                        }
+                    }
+                }
+            }, {
+                xtype: 'checkbox',
+                name: 'RememberMe',
+                padding: '5 10 5 10',
+                fieldLabel: 'Запомнить?',
+                inputValue: 'true'
+            }],
+
+            buttons: [{
+                text: 'Вход',
+                formBind: true,
+                // Function that fires when user clicks the button
+                handler: submitLogin
+            }]
+        });
+
+        // Окно для ввода данных для входа (логин/пароль)
+        var win = new Ext.Window({
+            layout: 'fit',
+            closable: false,
+            resizable: false,
+            draggable: false,
+            width: 380,
+            plain: true,
+            border: false,
+            title: 'Авторизация',
+            items: [login]
+        });
+
+        Ext.onReady(function () {
+            Ext.QuickTips.init();
+
+            win.show();
+
+            document.getElementsByClassName('white-form-panel')[0].childNodes[0].style['background-color'] = 'white';
+            login.getComponent('username').focus();
+
+            var showError = @{WriteLiteral((Model != null && Model.Failed).ToString().ToLowerInvariant());};
+
+            if (showError){
+                Ext.Msg.show({
+                    title:'Ошибка',
+                    msg:'Попытка авторизации не удалась',
+                    resizable: true,
+                    modal:true,
+                    icon:Ext.Msg.ERROR,
+                    buttons:Ext.Msg.OK
+                });
+            }
+        });
+    </script>
+}

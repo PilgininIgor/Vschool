@@ -1,0 +1,96 @@
+#sourceCodeEditor-inputEl {
+    line-height: 20px;
+}
+
+#topToolbarPanel-body {
+    background-color: transparent;
+}
+
+.x-panel-body-default {
+    border-color: #3892d3;
+}
+
+.x-panel-header-title-default, .x-window-header-title-default {
+    font-family: "wf_SegoeUILight";
+    font-weight: normal;
+    font-size: 16px;
+    height: 20px;
+}
+
+.x-panel-header-default-horizontal.x-header-noborder {
+    padding: 5px;
+    padding-left: 15px;
+}
+
+.x-fieldset-default {
+    padding: 10px;
+}
+
+.x-btn-inner-default-small, .x-form-item-label, .x-fieldset-header-default > .x-fieldset-header-text {
+    font-family: "wf_SegoeUILight";
+    font-weight: normal;
+    font-size: 14px;
+    padding-top: 2px;
+    height: 20px;
+}
+
+.x-form-display-field-default, .x-form-text-default {
+    font-family: "wf_SegoeUILight";
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.tool-button {
+    background-color: transparent;
+    background-image: none;
+    border-color: transparent;
+    border: none;
+}
+
+.main_testgenerator {
+    background-image: url('images/testgenerator.png');
+}
+
+/* Стиль для больших кнопок "Виртуальный мир", "Редактор курсов", "Пользователи", "Редактор связей" */
+
+.my-toolbar-panel {
+    /*background: red;*/
+}
+
+.x-btn-text.x-btn-icon-top > .x-btn-icon-el-default-large {
+    margin-bottom: 0px;
+}
+
+.x-btn-inner-default-large {
+    font-family: "wf_SegoeUILight";
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.x-btn-default-large {
+    border: none;
+    border-radius: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.x-btn-default-large, .x-btn-over.x-btn-default-large, .x-btn-pressed.x-btn-default-large {
+    background-image: none;
+}
+
+
+.x-panel-body.x-panel-body-default.x-panel-body-default.x-docked-noborder-top.x-docked-noborder-right.x-docked-noborder-bottom.x-docked-noborder-left:not(.aaa) {
+    background: #3892d3;
+}
+
+/* КОНЕЦ: Стиль для больших кнопок "Виртуальный мир", "Редактор курсов", "Пользователи", "Редактор связей" */
+
+/* Определение шрифтов */
+
+@font-face {
+    font-family: 'wf_SegoeUILight';
+    src: url('latest.eot');
+    src: url('latest.eot?#iefix') format('embedded-opentype'), url('latest.woff') format('woff'), url('latest.ttf') format('truetype'), url('latest.svg#web') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -1,0 +1,90 @@
+﻿@model ILS.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/NotLoggedInLayout.cshtml";
+}
+
+@section scripts{
+    <script type="text/javascript">
+
+        var register = new Ext.FormPanel({            
+            frame: true,
+            defaultType: 'textfield',
+            monitorValid: true,
+            //standardSubmit: true,
+            fieldDefaults: {
+                labelWidth: 180,
+                msgTarget: 'side'
+            },
+
+            items: [{
+                fieldLabel: 'Логин',
+                name: 'username',
+                allowBlank: false
+            }, {
+                fieldLabel: 'Пароль',
+                name: 'password',
+                inputType: 'password',
+                allowBlank: false
+            }, {
+                fieldLabel: 'Подтвердите пароль',
+                name: 'confirmpassword',
+                inputType: 'password',
+                allowBlank: false,
+                validator: function (value) {
+                    if (value != register.down('[name=password]').value) return "Confirmation doesn't match";
+                    else return true;
+                }
+            }, {
+                fieldLabel: 'Имя',
+                name: 'firstname'
+            }, {
+                fieldLabel: 'Фамилия',
+                name: 'lastname'
+            }, {
+                fieldLabel: 'Email',
+                name: 'email'
+            }],
+
+            buttons: [{
+                text: 'Зарегистрироваться',
+                formBind: true,
+                handler: function () {
+                    register.getForm().submit({
+                        url: '@Url.Action("Register", "Account")',                        
+                        success: function () {
+                            Ext.Msg.show({
+                                title: 'Готово', msg: 'Регистрация прошла успешно!',
+                                modal: true, icon: Ext.Msg.INFO, buttons: Ext.Msg.OK
+                            });
+                            window.location.href = '@Url.Action("Index", "Home")';
+                        },
+                        failure: function () {                            
+                            Ext.Msg.show({
+                                title: 'Ошибка', msg: 'Логин занят, выберите другой',
+                                modal: true, icon: Ext.Msg.ERROR, buttons: Ext.Msg.OK
+                            });
+                        }
+                    });
+                }
+            }]
+        });
+
+    var win = new Ext.Window({
+        layout: 'fit',        
+        closable: false,
+        resizable: false,
+        draggable: false,
+        plain: true,
+        border: false,
+        title: 'Регистрация',
+        items: [register]
+    });
+
+    Ext.onReady(function () {        
+        win.show();       
+    });
+
+    </script>
+}

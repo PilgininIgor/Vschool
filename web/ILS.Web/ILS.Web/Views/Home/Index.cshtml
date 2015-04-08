@@ -1,0 +1,1185 @@
+﻿@{
+    ViewBag.Title = "3Ducation | Виртуальный мир";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+@section additionalCSS {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/user.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/about.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/profile.css")" />
+}
+@section scripts{
+    <script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
+    <script type="text/javascript" src="Scripts/jwp/jwplayer.js"></script>
+    <script type="text/javascript" src="Scripts/ils.about.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/render.js")"></script>
+    <script type="text/javascript">
+        getUnityImage = '@Url.Content("~/Content/pics_service/UnitySetup.png")';
+        link_unityfile = '@Url.Content("~/UnityDeploy/Main.unity3d")';
+        link_unityRPG = '@Url.Action("UnityRPG", "Render")';
+        link_unitylist = '@Url.Action("UnityList", "Render")';
+        link_unitydata = '@Url.Action("UnityData", "Render")';
+        link_unitystat = '@Url.Action("UnityStat", "Render")';
+        link_unitysave = '@Url.Action("UnitySave", "Render")';
+        link_unitysaveRPG = '@Url.Action("UnitySaveRPG", "Render")';
+        link_unitytest = '@Url.Action("UnityTest", "Render")';
+
+        var virtual_world = new Ext.panel.Panel({
+        });
+        var embedded = false;
+        var width; var height;
+
+        function startUnityPlayer() {
+            if (!embedded && typeof unityObject != "undefined") {
+                width = 809;
+                height = 400;
+                if (width < 200 || height < 200) return;
+                embedded = true;
+
+                var params = { disableContextMenu: true };
+                unityObject.embedUnity("unityPlayer", link_unityfile, width, height, params);
+                if (document.getElementById("unityPlayer").childNodes[0].tagName == "DIV") {
+                    document.getElementById("unityPlayer").childNodes[0].style.width = "500px";
+                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.height = "125px";
+                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.top = "0px";
+                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.left = "50%";
+                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.marginLeft = "-96px";
+                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].title = "";
+                }
+                document.getElementById("unityPlayer").style.height = "1px";
+                document.getElementById("unityPlayer").style.width = "1px";
+                setTimeout(UnityLoaded, 10000);
+            }
+        }
+
+        var img;
+        var canvas;
+        var frame = 0;
+        var ITHASBEGUN = false;
+
+        var reinitialized = false;
+
+        window.onload = function () {
+
+            jwplayer("videoPlayer").setup({
+                flashplayer: "@Url.Content("~/Scripts/jwp/player.swf")",
+                file: "Content/demo.flv",
+                height: 400,
+                width: 809
+            });
+
+            var index = frame + 1;
+            image = document.getElementById("enter" + index);
+            img = new Image();
+            img.src = image.src;
+            canvas = document.getElementById("rotate");
+            canvas.width = image.width;
+            canvas.height = image.height;
+            img.context = canvas.getContext("2d");
+            img.canvas = canvas;
+            img.radians = Math.PI / 180;
+            canvas_rotate.call(img, 0);
+
+            var frameLoading = 0;
+            var timerLoading;
+            var framesLoading = document.getElementById("loadingContainer").children;
+            function loading() {
+                framesLoading[frameLoading].style.display = "none";
+                frameLoading++;
+                if (frameLoading == 50) {
+                    frameLoading = 0;
+                }
+                framesLoading[frameLoading].style.display = "block";
+            }
+            timerLoading = setInterval(loading, 40);
+
+            var updaterTop = -400;
+            var updaterTimer;
+            var updater = document.getElementById("updater");
+            function update() {
+                updater.style.top = updaterTop + 'px';
+                updaterTop += 3;
+                if (updaterTop > 800)
+                    updaterTop = -400;
+            }
+            updaterTimer = setInterval(update, 10);
+
+            var frameVisors = 0;
+            var timerVisors;
+            var framesVisors = document.getElementById("visorsContainer").children;
+            function visors() {
+                framesVisors[frameVisors].style.display = "none";
+                frameVisors++;
+                if (frameVisors == 15) {
+                    frameVisors = 0;
+                }
+                framesVisors[frameVisors].style.display = "block";
+            }
+            timerVisors = setInterval(visors, 40);
+
+            var index = document.location.href.indexOf("?action=");
+            if (index != -1) {
+                var action = document.location.href.slice(index + 8);
+                if (action == "video")
+                    demo_video();
+                else if (action == "game")
+                    demo_game();
+            }
+
+            //stuff from contacts
+            var framePointer = 1;
+            var pointer = document.getElementById("pointer");
+            function point() {
+                pointer.style.opacity = framePointer;
+                framePointer -= 0.05;
+                if (framePointer < 0.3)
+                    framePointer = 1;
+            }
+            var timerPointer = setInterval(point, 100);
+
+            var frameDots = 0;
+            var timerDots;
+            var framesDots = document.getElementById("dotsContainer").children;
+            function Dots() {
+                framesDots[frameDots].style.display = "none";
+                frameDots++;
+                if (frameDots == 15) {
+                    frameDots = 0;
+                }
+                framesDots[frameDots].style.display = "block";
+            }
+            timerDots = setInterval(Dots, 120);
+
+        }
+
+        function canvas_rotate(rotate) {
+            img.context.clearRect(0, 0, img.width, img.height);
+            this.context.save();
+            this.context.translate(this.width / 2, this.height / 2);
+            this.context.rotate(rotate * this.radians);
+            this.context.drawImage(this, -(this.width / 2), -(this.height / 2));
+            this.context.restore();
+        }
+
+        var animationInProgress = false;
+
+        var authorisationComplete = false;
+        var authorisationSucceed = false;
+        var authorisationNotStarted = true;
+        var contentType = 0; //0 - authorise & play, 1 - demo play, 2 - demo video
+        var timer;
+
+        window.addEventListener("message", receiveMessage, false);
+
+        function receiveMessage(event) {
+            var message = JSON.parse(event.data);
+            if (message.header == 'authorise')
+                this.authorise(message.success, message.firstName, message.admin);
+        }
+
+        authorise = function (success, firstName, admin) {
+            authorisationComplete = true;
+            if (success) {
+                authorisationSucceed = true;
+                document.getElementById('helloPanel').style.display = "block";
+                document.getElementById('helloInactive').style.display = "none";
+                document.getElementById('credentials').innerHTML = firstName;
+                document.getElementById('adminLink').style.display = admin ? "block" : "none";
+                document.getElementById('profileLink').style.display = admin ? "none" : "block";
+            } else {
+                authorisationSucceed = false;
+                document.getElementById('helloPanel').style.display = "none";
+                document.getElementById('helloInactive').style.display = "block";
+            }
+        }
+
+        function enter_click(animate) {
+            animationInProgress = true;
+            var needSlice = (document.location.href.indexOf("http://") != -1);
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1);
+            url = "http://workstation.itschool.ssau.ru/account/logon/?extUrl=" + (needSlice ? url.slice(7) : url) + "openid";
+            ITHASBEGUN = true;
+            var left = 0;
+            var angle = 0;
+            var eleft = -176;
+            var authorisationWindow;
+            clearInterval(enterTimer);
+            function waitForAuthorisation() {
+                if (authorisationWindow == null || authorisationWindow.closed) {
+                    clearInterval(timer);
+                    document.getElementById('awaitingAuthorisation').style.display = 'none';
+                    document.getElementById('awaitingLoading').style.display = 'none';
+                    document.getElementById('error').style.display = 'block';
+                }
+                document.getElementById('mainDoors').style.display = 'none';
+                if (authorisationComplete) {
+                    clearInterval(timer);
+                    if (authorisationSucceed) {
+                        document.getElementById('awaitingAuthorisation').style.display = 'none';
+                        document.getElementById('awaitingLoading').style.display = 'block';
+                        document.getElementById('error').style.display = 'none';
+                        document.getElementById("videoPlayer").style.display = 'none';
+                        startUnityPlayer();
+                    } else {
+                        document.getElementById('awaitingAuthorisation').style.display = 'none';
+                        document.getElementById('awaitingLoading').style.display = 'none';
+                        document.getElementById('error').style.display = 'block';
+                    }
+                }
+            }
+            function move() {
+                if (reinitialized) {
+                    clearInterval(timer);
+                    reinitialized = false;
+                    return;
+                }
+                if (angle <= 90 && animate) {
+                    canvas_rotate.call(img, angle);
+                    angle += 10;
+                }
+                else {
+                    if (left > -700 && animate) {
+                        left -= 30;
+                        eleft -= 30;
+                        document.getElementById('doorl').style.left = left + 'px';
+                        document.getElementById('doorr').style.left = 406 - left + 'px';
+                        document.getElementById('container').style.marginLeft = eleft + 'px';
+                    } else {
+                        if (contentType == 0) {
+                            var offsetLeft = window.screenX + (window.outerWidth - window.innerWidth) / 2;
+                            var offsetTop = window.screenY + (window.outerHeight - window.innerHeight) - 5;
+                            var obj = document.getElementById('mainDoors');
+                            do {
+                                offsetLeft += obj.offsetLeft;
+                                offsetTop += obj.offsetTop;
+                            } while (obj = obj.offsetParent)
+                            var awLeft = offsetLeft;
+                            var awTop = offsetTop;
+                            clearInterval(timer);
+                            //var authorisationWindow = window.open(url, '_blank', 'height=399, width=809, top=' + awTop + ', left=' + awLeft + ', scrollable=no, menubar=no, resizable=no, location=no');
+                            if (authorisationWindow == null) {
+                                authorisationWindow = window.open(url, '_blank', 'fullscreen=yes, scrollable=no, menubar=no, resizable=no, location=no');
+                                authorisationWindow.focus();
+                                authorisationWindow.onload = new function () {
+                                    var awWidth = authorisationWindow.window.outerWidth;
+                                    var awHeight = authorisationWindow.window.outerHeight;
+                                    var awInnerWidth = authorisationWindow.window.innerWidth;
+                                    var awInnerHeight = authorisationWindow.window.innerHeight;
+                                    //alert(awWidth + " " + awHeight);
+                                    awWidth = awInnerWidth - awWidth;
+                                    awHeight = awInnerHeight - awHeight;
+                                    //alert(awWidth + " " + awHeight);
+                                    //authorisationWindow.window.resizeBy(awWidth, awHeight);
+                                }
+                            }
+                            animationInProgress = false;
+                            timer = setInterval(waitForAuthorisation, 50);
+                        } else if (contentType == 1) {
+                            clearInterval(timer);
+                            animationInProgress = false;
+                            document.getElementById('awaitingAuthorisation').style.display = 'none';
+                            document.getElementById('awaitingLoading').style.display = 'block';
+                            document.getElementById('error').style.display = 'none';
+                            document.getElementById('mainDoors').style.display = 'none';
+                            document.getElementById("videoPlayer").style.display = 'none';
+                            startUnityPlayer();
+                        } else if (contentType == 2) {
+                            clearInterval(timer);
+                            animationInProgress = false;
+                            document.getElementById('loadingContainer').style.display = 'none';
+                            document.getElementById('mainDoors').style.display = 'none';
+                            document.getElementById("unityPlayer").style.display = 'none';
+                            document.getElementById("videoPlayer").style.display = 'block';
+                        } else if (contentType == 3) {
+                            clearInterval(timer);
+                            animationInProgress = false;
+                            document.getElementById('aboutContainer').style.display = 'block';
+                            document.getElementById('loadingContainer').style.display = 'none';
+                            document.getElementById('mainDoors').style.display = 'none';
+                            document.getElementById("unityPlayer").style.display = 'none';
+                            document.getElementById("videoPlayer").style.display = 'none';
+                            document.getElementById('dotsContainer').style.display = 'block';
+                        } else if (contentType == 4) {
+                            clearInterval(timer);
+                            animationInProgress = false;
+                            document.getElementById('contactsContainer').style.display = 'block';
+                            document.getElementById('loadingContainer').style.display = 'none';
+                            document.getElementById('mainDoors').style.display = 'none';
+                            document.getElementById("unityPlayer").style.display = 'none';
+                            document.getElementById("videoPlayer").style.display = 'none';
+                            document.getElementById('dotsContainer').style.display = 'block';
+                        }
+                    }
+                }
+            }
+            timer = setInterval(move, 50)
+        }
+
+        function close_doors(reopen) {
+            animationInProgress = true;
+            var left = -720;
+            var angle = 90;
+            var eleft = -896;
+            canvas_rotate.call(img, angle);
+            function move() {
+                if (left < 0) {
+                    left += 30;
+                    eleft += 30;
+                    document.getElementById('doorl').style.left = left + 'px';
+                    document.getElementById('doorr').style.left = 406 - left + 'px';
+                    document.getElementById('container').style.marginLeft = eleft + 'px';
+                } else {
+                    if (angle >= 0) {
+                        canvas_rotate.call(img, angle);
+                        angle -= 10;
+                    } else {
+                        clearInterval(timer);
+                        if (reopen)
+                            enter_click(true);
+                        else
+                            animationInProgress = false;
+                    }
+                }
+            }
+            timer = setInterval(move, 50)
+        }
+
+        function openAuthWindow() {
+            document.getElementById('awaitingAuthorisation').style.display = 'block';
+            document.getElementById('awaitingLoading').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            authorisationComplete = false;
+            authorisationNotStarted = true;
+            authorisationSucceed = false;
+            contentType = 0;
+            enter_click(false);
+        }
+
+
+        var enterTimer;
+
+        function enter_animate() {
+            if (ITHASBEGUN) {
+                return;
+            }
+            clearInterval(enterTimer);
+            var frames = document.getElementById("container").children;
+            function move() {
+                if (animationInProgress || ITHASBEGUN) {
+                    return;
+                }
+                frame++;
+                if (frame == 13) {
+                    frame = 7;
+                }
+                img.src = frames[frame].src;
+                canvas_rotate.call(img, 0);
+            }
+            enterTimer = setInterval(move, 70);
+        }
+
+        function enter_stop() {
+            if (ITHASBEGUN) {
+                return;
+            }
+            clearInterval(enterTimer);
+            var frames = document.getElementById("container").children;
+            function move() {
+                if (animationInProgress || ITHASBEGUN) {
+                    return;
+                }
+                if (frame < 1) {
+                    clearInterval(enterTimer);
+                    frame = 1;
+                }
+                frame--;
+                img.src = frames[frame].src;
+                canvas_rotate.call(img, 0);
+
+            }
+            enterTimer = setInterval(move, 70);
+        }
+
+        function main_page() {
+            if (animationInProgress)
+                return;
+            document.getElementById("buttonMain").src = "/Content/Sprites/button_main_a.png";
+            document.getElementById("buttonAbout").src = "/Content/Sprites/button_about_ia.png";
+            document.getElementById("buttonContacts").src = "/Content/Sprites/button_contact_ia.png";
+            reinit();
+            if (ITHASBEGUN) {
+                ITHASBEGUN = false;
+                close_doors(false);
+            }
+        }
+
+        function enter_main() {
+            if (animationInProgress)
+                return;
+            document.getElementById("buttonMain").src = "/Content/Sprites/button_main_a.png";
+            document.getElementById("buttonAbout").src = "/Content/Sprites/button_about_ia.png";
+            document.getElementById("buttonContacts").src = "/Content/Sprites/button_contact_ia.png";
+            reinit();
+            contentType = 0;
+            if (ITHASBEGUN) {
+                ITHASBEGUN = false;
+                close_doors(true);
+                return;
+            } else {
+                ITHASBEGUN = false;
+                enter_click(true);
+            }
+        }
+
+
+
+        function demo_video() {
+            if (animationInProgress)
+                return;
+            document.getElementById("buttonMain").src = "/Content/Sprites/button_main_a.png";
+            document.getElementById("buttonAbout").src = "/Content/Sprites/button_about_ia.png";
+            document.getElementById("buttonContacts").src = "/Content/Sprites/button_contact_ia.png";
+            reinit();
+            document.getElementById("awaitingAuthorisation").style.display = "none";
+            document.getElementById("awaitingLoading").style.display = "block";
+            contentType = 2;
+            if (ITHASBEGUN) {
+                ITHASBEGUN = false;
+                close_doors(true);
+                return;
+            } else {
+                ITHASBEGUN = false;
+                enter_click(true);
+            }
+        }
+
+        function demo_game() {
+            if (animationInProgress)
+                return;
+            document.getElementById("buttonMain").src = "/Content/Sprites/button_main_a.png";
+            document.getElementById("buttonAbout").src = "/Content/Sprites/button_about_ia.png";
+            document.getElementById("buttonContacts").src = "/Content/Sprites/button_contact_ia.png";
+            reinit();
+            document.getElementById("awaitingAuthorisation").style.display = "none";
+            document.getElementById("awaitingLoading").style.display = "block";
+            contentType = 1;
+            if (ITHASBEGUN) {
+                ITHASBEGUN = false;
+                close_doors(true);
+                return;
+            } else {
+                ITHASBEGUN = false;
+                enter_click(true);
+            }
+        }
+
+        function contacts() {
+            if (animationInProgress)
+                return;
+            document.getElementById("buttonMain").src = "/Content/Sprites/button_main_ia.png";
+            document.getElementById("buttonAbout").src = "/Content/Sprites/button_about_ia.png";
+            document.getElementById("buttonContacts").src = "/Content/Sprites/button_contact_a.png";
+            reinit();
+            document.getElementById("awaitingAuthorisation").style.display = "none";
+            document.getElementById("awaitingLoading").style.display = "block";
+            contentType = 4;
+            if (ITHASBEGUN) {
+                ITHASBEGUN = false;
+                close_doors(true);
+                return;
+            } else {
+                ITHASBEGUN = false;
+                enter_click(true);
+            }
+        }
+
+        function about() {
+            if (animationInProgress)
+                return;
+            sliderAuthorsInit();
+            initContents();
+            document.getElementById("buttonMain").src = "/Content/Sprites/button_main_ia.png";
+            document.getElementById("buttonAbout").src = "/Content/Sprites/button_about_a.png";
+            document.getElementById("buttonContacts").src = "/Content/Sprites/button_contact_ia.png";
+            reinit();
+            document.getElementById("awaitingAuthorisation").style.display = "none";
+            document.getElementById("awaitingLoading").style.display = "block";
+            contentType = 3;
+            if (ITHASBEGUN) {
+                ITHASBEGUN = false;
+                close_doors(true);
+                return;
+            } else {
+                ITHASBEGUN = false;
+                enter_click(true);
+            }
+        }
+
+        function reinit() {
+
+            clearInterval(timer);
+            reinitialized = true;
+
+            embedded = false;
+
+            index = 1;
+
+            image = document.getElementById("enter" + index);
+            img = new Image();
+            img.src = image.src;
+            canvas = document.getElementById("rotate");
+            canvas.width = image.width;
+            canvas.height = image.height;
+            img.context = canvas.getContext("2d");
+            img.canvas = canvas;
+            img.radians = Math.PI / 180;
+            canvas_rotate.call(img, 0);
+
+            authorisationComplete = false;
+            authorisationSucceed = false;
+            authorisationNotStarted = true;
+            contentType = 0;
+            timer = null;
+
+            //document.getElementById('doorl').style.left = 0 + 'px';
+            //document.getElementById('doorr').style.left = 406 + 'px';
+            //document.getElementById('container').style.marginLeft = -176 + 'px';
+            authorisationWindow = null;
+            enterTimer = null;
+
+            document.getElementById('loadingContainer').style.display = 'block';
+            document.getElementById('awaitingAuthorisation').style.display = 'block';
+            document.getElementById('awaitingLoading').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('mainDoors').style.display = 'block';
+            document.getElementById('contactsContainer').style.display = 'none';
+            document.getElementById('aboutContainer').style.display = 'none';
+            document.getElementById('dotsContainer').style.display = 'none';
+            document.getElementById('updater').style.display = 'block';
+
+            if (document.getElementById('videoPlayer_wrapper') != null) {
+                document.getElementById('videoPlayer_wrapper').innerHTML = '';
+                document.getElementById('videoPlayer_wrapper').id = 'videoPlayer';
+                jwplayer("videoPlayer").setup({
+                    flashplayer: "@Url.Content("~/Scripts/jwp/player.swf")",
+                    file: "Content/demo.flv",
+                    height: 400,
+                    width: 809
+                });
+
+            }
+            document.getElementById('unityPlayer').innerHTML = '';
+            document.getElementById("videoPlayer").style.display = 'none';
+            reinitialized = false;
+        }
+
+        var profileLoaded = false;
+        var achievementsLoaded = false;
+        var ratingLoaded = false;
+
+        function minimizeProfile() {
+            document.getElementById('blackout').style.display = 'none';
+            document.getElementById('profile').style.display = 'none';
+            document.getElementById('mainFrame').className = 'main';
+        }
+
+        function maximizeProfile() {
+            reinit();
+            if (ITHASBEGUN) {
+                ITHASBEGUN = false;
+                close_doors(false);
+            }
+            document.getElementById('blackout').style.display = 'block';
+            document.getElementById('mainFrame').className = 'main blurred';
+            loadAchievements();
+        }
+
+        function loadAchievements() {
+            if (!achievementsLoaded) {
+                var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getGameAchievements";
+                Ext.Ajax.request({
+                    url: url,
+                    success: function (response, opts) {
+                        var a = eval('(' + response.responseText + ')');
+                        var container = document.getElementById('profileAchievementsContent');
+                        var index = 0;
+                        for (var prop in a.achievements) {
+                            if (index < 16) {
+                                container.children[0].innerHTML += '<div class="profileAchievement"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
+                            } else {
+                                container.children[1].innerHTML += '<div class="profileAchievement"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
+                            }
+                            index++;
+                        }
+                        achievementsLoaded = true;
+                        parseProfile();
+                    },
+                    failure: function (response, opts) {
+                        //alert('fail');
+                    }
+                });
+            } else {
+                parseProfile();
+            }
+        }
+
+        function loadRating() {
+            if (!ratingLoaded) {
+                var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getGameRating";
+                Ext.Ajax.request({
+                    url: url,
+                    success: function (response, opts) {
+                        var a = eval('(' + response.responseText + ')');
+                        var container = document.getElementById('profileRatingContent');
+                        var index = 0;
+                        var string = '<div class="profileTablePane"><table>';
+                        for (var prop in a.rating) {
+                            string += document.getElementById('profileRatingValue').innerHTML == index + 1 ? '<tr class="profileRatingSelectedRow">' : '<tr>';
+                            string += '<td><p class="profileText">' + (index + 1) + '</p></td>';
+                            string += '<td><p class="profileText">' + a.rating[prop].name + '</p></td>';
+                            string += '<td><p class="profileText">' + a.rating[prop].exp + '</p></td>';
+                            string += '</tr>';
+                            index++;
+                        }
+                        string += '</table></div>';
+                        container.innerHTML = string;
+                        ratingLoaded = true;
+                        $('.profileTablePane').jScrollPane();
+                        showGameRating();
+
+                    },
+                    failure: function (response, opts) {
+                        //alert('fail');
+                    }
+                });
+            } else {
+                showGameRating();
+            }
+        }
+
+        function loadProgressCourses() {
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getCoursesProgress";
+            Ext.Ajax.request({
+                url: url,
+                success: function (response, opts) {
+                    var a = eval('(' + response.responseText + ')');
+                    var container = document.getElementById('profileProgressContent');
+                    var string = '<div><table>';
+                    for (i = 0; i < a.length; i++) {
+                        string += '<tr>';
+                        string += '<td><p class="profileText"><a href="javascript:loadProgressCourse(' + "'" + a[i].id + "'" + ')">' + a[i].name + '</a></p></td>';
+                        string += '<td><p class="profileText">' + a[i].progress + '</p></td>';
+                        string += '</tr>';
+                    }
+                    string += '</table></div>';
+                    container.innerHTML = string;
+                    $('.profileTablePane').jScrollPane();
+                    showGameProgress();
+                },
+                failure: function (response, opts) {
+                    //alert('fail');
+                },
+                jsonData: {
+                    name: 'TODO: username'
+                }
+            });
+        }
+
+        function loadProgressCourse(id) {
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getCourseProgress";
+            Ext.Ajax.request({
+                url: url,
+                success: function (response, opts) {
+                    var a = eval('(' + response.responseText + ')');
+                    var container = document.getElementById('profileProgressContent');
+                    var string = '<div><table>';
+                    for (i = 0; i < a.length; i++) {
+                        string += '<tr>';
+                        string += '<td><p class="profileText"><a href="javascript:loadProgressTheme(' + "'" + a[i].id + "'" + ')">' + a[i].name + '</a></p></td>';
+                        string += '<td><p class="profileText">' + a[i].progress + '</p></td>';
+                        string += '</tr>';
+                    }
+                    string += '</table></div>';
+                    container.innerHTML = string;
+                    $('.profileTablePane').jScrollPane();
+                },
+                failure: function (response, opts) {
+                    //alert('fail');
+                },
+                jsonData: {
+                    name: 'TODO: username',
+                    courseId: id
+                }
+            });
+        }
+
+        function loadProgressTheme(id) {
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getThemeProgress";
+            Ext.Ajax.request({
+                url: url,
+                success: function (response, opts) {
+                    var a = eval('(' + response.responseText + ')');
+                    var container = document.getElementById('profileProgressContent');
+                    var string = '<div><table>';
+                    string += '<tr><td colcount="2"><p class="profileText">Лекции</p></td></tr>';
+                    for (i = 0; i < a.lectures.length; i++) {
+                        string += '<tr>';
+                        string += '<td><p class="profileText">' + a.lectures[i].name + '</p></td>';
+                        string += '<td><p class="profileText">' + a.lectures[i].progress + '</p></td>';
+                        string += '</tr>';
+                    }
+                    string += '<tr><td colcount="2"><p class="profileText">Тесты</p></td></tr>';
+                    for (i = 0; i < a.tests.length; i++) {
+                        string += '<tr>';
+                        string += '<td><p class="profileText"><a href="javascript:loadProgressTest(' + "'" + a.tests[i].id + "'" + ')">' + a.tests[i].name + '</a></p></td>';
+                        string += '<td><p class="profileText">' + a.tests[i].progress + '</p></td>';
+                        string += '</tr>';
+                    }
+                    string += '</table></div>';
+                    container.innerHTML = string;
+                    $('.profileTablePane').jScrollPane();
+                },
+                failure: function (response, opts) {
+                    //alert('fail');
+                },
+                jsonData: {
+                    name: 'TODO: username',
+                    themeId: id
+                }
+            });
+        }
+
+        function loadProgressTest(id) {
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getTestProgress";
+            Ext.Ajax.request({
+                url: url,
+                success: function (response, opts) {
+                    var a = eval('(' + response.responseText + ')');
+                    var container = document.getElementById('profileProgressContent');
+                    var container = document.getElementById('profileProgressContent');
+                    var string = '<div><table>';
+                    for (i = 0; i < a.length; i++) {
+                        string += '<tr>';
+                        string += '<td><p class="profileText"><a href="javascript:loadProgressTestRun(' + "'" + a[i].id + "'" + ')">' + a[i].date + '</a></p></td>';
+                        string += '<td><p class="profileText">' + a[i].progress + '</p></td>';
+                        string += '</tr>';
+                    }
+                    string += '</table></div>';
+                    container.innerHTML = string;
+                    $('.profileTablePane').jScrollPane();
+                },
+                failure: function (response, opts) {
+                    //alert('fail');
+                },
+                jsonData: {
+                    name: 'TODO: username',
+                    testId: id
+                }
+            });
+        }
+
+        function loadProgressTestRun(id) {
+            var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getTestRunProgress";
+            Ext.Ajax.request({
+                url: url,
+                success: function (response, opts) {
+                    var a = eval('(' + response.responseText + ')');
+                    var container = document.getElementById('profileProgressContent');
+                    var string = '<div><table>';
+                    for (i = 0; i < a.length; i++) {
+                        string += '<tr>';
+                        string += '<td><p class="profileText">' + a[i].text.substring(0, 100) + '</p></td>';
+                        string += '</tr>';
+                    }
+                    string += '</table></div>';
+                    container.innerHTML = string;
+                    $('.profileTablePane').jScrollPane();
+                },
+                failure: function (response, opts) {
+                    //alert('fail');
+                },
+                jsonData: {
+                    name: 'TODO: username',
+                    testRunId: id
+                }
+            });
+        }
+
+        function parseProfile() {
+            if (!profileLoaded) {
+                var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getProfile";
+                Ext.Ajax.request({
+                    url: url,
+                    success: function (response, opts) {
+                        var a = eval('(' + response.responseText + ')');
+                        document.getElementById('profileName').innerHTML = a.model.Name;
+                        document.getElementById('profileEmail').innerHTML = a.model.Email;
+                        if (a.model.Money <= 9999) {
+                            document.getElementById('profileMoneyValue').innerHTML = a.model.Money;
+                        } else {
+                            document.getElementById('profileMoneyValue').innerHTML = '9999+';
+                        }
+                        document.getElementById('profileProgressValue').innerHTML = a.model.Progress + '%';
+                        document.getElementById('profileRatingValue').innerHTML = a.model.Rating + 1;
+                        var container = document.getElementById('profileAchievementsContent');
+                        for (var prop in a.model.Achievements) {
+                            if (a.model.Achievements.hasOwnProperty(prop)) {
+                                if (prop < 16) {
+                                    container.children[0].children[prop].children[0].style = "background: url(content/sprites/profile/achievement/" + a.model.Achievements[prop] + ")";
+                                } else {
+                                    container.children[1].children[prop - 16].children[0].style = "background: url(content/sprites/profile/achievement/" + a.model.Achievements[prop] + ")";
+                                }
+                            }
+                        }
+                        profileLoaded = true;
+                        document.getElementById('profile').style.display = 'block';
+                        showGameAchievements();
+                    },
+                    failure: function (response, opts) {
+                        //alert('fail');
+                        document.getElementById('profile').style.display = 'block';
+                    },
+                    jsondata: {
+                        'name': 'name'
+                    }
+                });
+            } else {
+                document.getElementById('profile').style.display = 'block';
+            }
+        }
+
+        function showGameAchievements() {
+            document.getElementById('profileAchievementsTab').style.display = 'block';
+            document.getElementById('profileRatingTab').style.display = 'none';
+            document.getElementById('profileProgressTab').style.display = 'none';
+        }
+
+        function showGameRating() {
+            document.getElementById('profileAchievementsTab').style.display = 'none';
+            document.getElementById('profileRatingTab').style.display = 'block';
+            document.getElementById('profileProgressTab').style.display = 'none';
+        }
+
+        function showGameProgress() {
+            document.getElementById('profileAchievementsTab').style.display = 'none';
+            document.getElementById('profileRatingTab').style.display = 'none';
+            document.getElementById('profileProgressTab').style.display = 'block';
+        }
+    </script>
+}
+@section topPanel{
+
+    <div class="toppanel">
+        <div class="toppanelleft">
+            <a href="javascript:main_page()">
+                <img id="buttonMain" src="/Content/Sprites/button_main_a.png">
+                <p align="center" style="position:absolute;top:-6px;left:13px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Главная</p>
+            </a>
+        </div>
+        <div class="toppanelcenter">
+            <a href="javascript:about()">
+                <img id="buttonAbout" src="/Content/Sprites/button_about_ia.png">
+                <p align="center" style="position:absolute;top:-6px;left:5px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">О проекте</p>
+            </a>
+        </div>
+        <div class="toppanelright">
+            <a href="javascript:contacts()">
+                <img id="buttonContacts" src="/Content/Sprites/button_contact_ia.png">
+                <p align="center" style="position:absolute;top:-6px;left:9px;display:block;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica">Контакты</p>
+            </a>
+        </div>
+    </div>
+}
+
+@section renderArea{
+
+    <div class="unityarea">
+        <img id="updater" src="/Content/Sprites/black_back.png" style="display:block; position:absolute;top:0px;left:0px;">
+        <div class="loading" id="loadingContainer" style="overflow:visible">
+            <img src="/Content/Sprites/loading/loading_1.png" style="display:block">
+            <img src="/Content/Sprites/loading/loading_2.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_3.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_4.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_5.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_6.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_7.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_8.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_9.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_10.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_11.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_12.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_13.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_14.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_15.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_16.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_17.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_18.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_19.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_20.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_21.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_22.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_23.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_24.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_25.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_26.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_27.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_28.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_29.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_30.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_31.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_32.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_33.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_34.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_35.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_36.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_37.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_38.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_39.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_40.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_41.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_42.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_43.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_44.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_45.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_46.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_47.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_48.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_49.png" style="display:none">
+            <img src="/Content/Sprites/loading/loading_50.png" style="display:none">
+            <p align="center" id="awaitingAuthorisation" style="position: absolute; top: 50px; display: block; font-size: 20px; color: #eeeeee; letter-spacing: 0.8px; line-height: 30px; font-family: Futurica; ">Ожидается авторизация пользователя</p>
+            <p align="center" id="awaitingLoading" style="position: absolute; top: 80px; left: 65px; display: none; font-size: 20px; color: #eeeeee; letter-spacing: 0.8px; line-height: 30px; font-family: Futurica">Загрузка</p>
+            <div id="error" style="display:none">
+                <p align="center" style="cursor: pointer;position:absolute;top:60px;left:70px;font-size: 20px;color: #eeeeee;letter-spacing:0.8px;line-height:30px;font-family: Futurica" onclick="javascript:openAuthWindow()">Ошибка</p>
+                <p align="center" style="cursor: pointer;position:absolute;top:100px;left:40px;font-size: 14px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica" onclick="javascript:openAuthWindow()">попробуйте еще раз</p>
+                <img src="/Content/Sprites/refresh.png" style="cursor: pointer; position:absolute; top: 145px; left: 102px;" onclick="javascript:openAuthWindow()">
+            </div>
+        </div>
+        <div id="unityPlayer" style="width: 809px; height: 400px; position: static">
+        </div>
+        <div id="videoPlayer" style="width: 809px; height: 400px; position: static">
+        </div>
+        <div class="dots" id="dotsContainer">
+            <img src="/Content/Sprites/dots/dots_1.png" style="display:block">
+            <img src="/Content/Sprites/dots/dots_2.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_3.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_4.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_5.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_6.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_7.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_8.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_9.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_10.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_11.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_12.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_13.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_14.png" style="display:none">
+            <img src="/Content/Sprites/dots/dots_15.png" style="display:none">
+        </div>
+        <div id="contactsContainer" style="width: 809px; height: 400px; position: static; display:none">
+            <img src="/Content/Sprites/contacts_back.png" style="display:block; position:absolute;top:0px;left:0px;">
+            <img id="pointer" src="/Content/Sprites/contacts_pointer.jpg" style="display:block; position:absolute;top:200px;left:460px;">
+            <img src="/Content/Sprites/logo.png" class="logo">
+
+            <div class="headerareaContacts">
+                <p style="font-size: 24px;color: #eeeeee;letter-spacing:0.8px;line-height:10px;font-family: Futurica">Школа информатики СГАУ</p>
+                <p style="font-size: 14px;color: #eeeeee;letter-spacing:0.8px;line-height:10px;font-family: Futurica">Кафедра программных систем</p>
+            </div>
+            <div class="textareaContacts">
+                <p align="center" style="font-size: 15px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">
+                    ул. Гая, д. 43
+                    <br>
+                    ком. 515 (14 корпус)
+                    <br>
+                    телефон 8(846) 267-46-73
+                </p>
+            </div>
+            <p align="center" style="position:absolute;top:121px;left:520px;font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">
+                ул. Гая
+            </p>
+            <p align="center" style="position:absolute;top:153px;left:468px;font-size: 15px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">
+                43
+            </p>
+            <p align="center" style="position:absolute;top:270px;left:315px;-webkit-transform: rotate(270deg);-moz-transform: rotate(270deg);-ms-transform: rotate(270deg);-o-transform: rotate(270deg);transform: rotate(270deg);font-size: 13px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica">
+                ул. Лукачева
+            </p>
+        </div>
+        <div id="aboutContainer">
+            <img id="back" src="/Content/Sprites/back.png" style="display:block; position:absolute;top:0px;left:0px;">
+            <img id="backScreens" src="/Content/Sprites/back_screens.png" style="display:none; position:absolute;top:0px;left:0px;">
+            <img src="/Content/Sprites/logo.png" class="logo">
+            <div class="textareaAbout">
+                <br>
+                <div id="headers" class="headersAbout">
+                    <a href="javascript:selectAuthors()"><img src="/Content/Sprites/about/authorsSel.png" id="authorsButton"></a>
+                    <a href="javascript:selectScreens()"><img src="/Content/Sprites/about/screens.png" id="screensButton"></a>
+                    <a href="javascript:selectAwards()"><img src="/Content/Sprites/about/awards.png" id="awardsButton"></a>
+                    <a href="javascript:selectAchievements()"><img src="/Content/Sprites/about/achievements.png" id="achievementsButton"></a>
+                </div>
+                <br>
+                <div id="authorsContainer" style="display:block">
+                    <div class="slider_authors" id="slider_authors">
+                        <div class="slider_authors_frame"></div>
+                        <div class="slider_authors_content" id="sliderAuthorsContainer"></div>
+                    </div>
+                    <div class="arrows_container" id="authorsArrowsContainer">
+                        <div class="arrow" style="background: url(content/sprites/arrow_left_ia.png) no-repeat;" onclick="javascript:sliderAuthorsDecr()"></div>
+                        <div id="authorsPointContainer">
+                        </div>
+                        <div class="arrow" style="background: url(content/sprites/arrow_right_ia.png) no-repeat;" onclick="javascript:sliderAuthorsIncr()"></div>
+                        <p id="authorsNumber" style="position:absolute; margin-top: 5px; margin-left: 320px; display:block;font-size: 14px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica"></p>
+                    </div>
+                    <div id="textAuthorsContainer">
+                    </div>
+                </div>
+                <div id="screensContainer" style="display:none">
+                    <div class="slider_screen_content" id="sliderScreensContainer">
+
+                    </div>
+                    <div class="arrows_container" id="screensArrowsContainer" style="display:none">
+                        <div class="arrow" style="background: url(content/sprites/arrow_left_ia.png) no-repeat;" onclick="javascript:sliderScreensDecr()"></div>
+                        <div id="screensPointContainer">
+                        </div>
+                        <div class="arrow" style="background: url(content/sprites/arrow_right_ia.png) no-repeat;" onclick="javascript:sliderScreensIncr()"></div>
+                    </div>
+                    <div class="big_arrow_left" onclick="javascript:sliderScreensDecr()" style="cursor: pointer;"></div>
+                    <div class="big_arrow_right" onclick="javascript:sliderScreensIncr()" style="cursor: pointer;"></div>
+                </div>
+                <div id="awardsContainer" style="display:none">
+                    <div class="slider_awards" id="slider_awards">
+                        <div class="slider_awards_frame"></div>
+                        <div class="slider_awards_left" onclick="javascript:sliderAwardsImgDecr()"></div>
+                        <div class="slider_awards_right" onclick="javascript:sliderAwardsImgIncr()"></div>
+                        <div class="slider_awards_content" id="sliderAwardsContainer">
+                        </div>
+                    </div>
+                    <div class="arrows_container" id="awardsArrowsContainer">
+                        <div class="arrow" style="background: url(content/sprites/arrow_left_ia.png) no-repeat;" onclick="javascript:sliderAwardsDecr()"></div>
+                        <div id="awardsPointContainer"></div>
+                        <div class="arrow" style="background: url(content/sprites/arrow_right_ia.png) no-repeat;" onclick="javascript:sliderAwardsIncr()"></div>
+                        <p id="awardsNumber" style="position:absolute; margin-top: 5px; margin-left: 320px; display:block;font-size: 14px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica"></p>
+                    </div>
+                    <div id="textAwardsContainer">
+                    </div>
+                </div>
+                <div id="achievementsContainer" style="display:none">
+                    <div class="slider_awards" id="slider_achievements">
+                        <div class="slider_awards_frame"></div>
+                        <div class="slider_awards_left" onclick="javascript:sliderAchievementsImgDecr()"></div>
+                        <div class="slider_awards_right" onclick="javascript:sliderAchievementsImgIncr()"></div>
+                        <div class="slider_awards_content" id="sliderAchievementsContainer">
+                        </div>
+                    </div>
+                    <div class="arrows_container" id="achievementsArrowsContainer">
+                        <div class="arrow" style="background: url(content/sprites/arrow_left_ia.png) no-repeat;" onclick="javascript:sliderAchievementsDecr()"></div>
+                        <div id="achievementsPointContainer"></div>
+                        <div class="arrow" style="background: url(content/sprites/arrow_right_ia.png) no-repeat;" onclick="javascript:sliderAchievementsIncr()"></div>
+                        <p id="achievementsNumber" style="position:absolute; margin-top: 5px; margin-left: 320px; display:block;font-size: 14px;color: #eeeeee;letter-spacing:0.8px;line-height:20px;font-family: Futurica"></p>
+                    </div>
+                    <div id="textAchievementsContainer">
+                    </div>
+                </div>
+            </div>
+            <div id="screenshots" style="position:absolute;background: #000000;width:809px;height:400px;display:none;overflow:hidden;cursor: pointer; margin-left:-404px;top:10px;left:50%">
+
+                <div class="screens_left" onclick="javascript:screensDecr()" style="cursor:ponter;"></div>
+                <div class="screens_right" onclick="javascript:screensIncr()" style="cursor:ponter;"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="renderarea" id="mainDoors">
+        <div class="doorleft" id="doorl">
+            <img src="/Content/Sprites/door_left.jpg">
+        </div>
+        <div class="doorright" id="doorr">
+            <img src="/Content/Sprites/door_right.jpg">
+        </div>
+        <div class="enter" id="container">
+            <img src="/Content/Sprites//enter//enter1.png" id="enter1" style="display: none">
+            <img src="/Content/Sprites//enter//enter2.png" id="enter2" style="display: none">
+            <img src="/Content/Sprites//enter//enter3.png" id="enter3" style="display: none">
+            <img src="/Content/Sprites//enter//enter4.png" id="enter4" style="display: none">
+            <img src="/Content/Sprites//enter//enter5.png" id="enter5" style="display: none">
+            <img src="/Content/Sprites//enter//enter6.png" id="enter6" style="display: none">
+            <img src="/Content/Sprites//enter//enter7.png" id="enter7" style="display: none">
+            <img src="/Content/Sprites//enter//enter8.png" id="enter8" style="display: none">
+            <img src="/Content/Sprites//enter//enter9.png" id="enter9" style="display: none">
+            <img src="/Content/Sprites//enter//enter10.png" id="enter10" style="display: none">
+            <img src="/Content/Sprites//enter//enter11.png" id="enter11" style="display: none">
+            <img src="/Content/Sprites//enter//enter12.png" id="enter12" style="display: none">
+            <img src="/Content/Sprites//enter//enter13.png" id="enter13" style="display: none">
+            <canvas id="rotate"></canvas>
+        </div>
+        <div class="enter" id="container" onclick="javascript:enter_main()" onmouseover="    javascript: enter_animate()"
+             onmouseout="javascript:enter_stop()" style="cursor: pointer;">
+        </div>
+        <div class="renderOverlayT">
+        </div>
+        <div class="renderOverlayL">
+        </div>
+        <div class="renderOverlayR">
+        </div>
+        <div class="renderOverlayB">
+        </div>
+    </div>
+
+}
+@section end {
+    <div id="blackout" style="background: #000000;opacity:0.8;display:none;width:100%;height:100%;position:absolute">
+    </div>
+    <img id="fullsize" align="middle" style="position:absolute;display:none;cursor: pointer;max-width: 1300px; max-height:700px;" onclick="javascript:hideImage()">
+    <div id="profile" style="display:none;width:100%;height:100%;position:absolute">
+        <div id="profileFrame" class="profileFrame">
+            <div id="profileBackLeft" class="profileBackLeft">
+            </div>
+            <div id="profileBackRight" class="profileBackRight">
+            </div>
+            <div id="profileHeader" class="profileHeader">
+                <div id="profileInfo" class="profileInfo">
+                    <div id="profileAvatar" class="profileAvatar">
+                    </div>
+                    <p id="profileName" class="profileName"></p>
+                    <p id="profileEmail" class="profileEmail"></p>
+                    <div id="profileMoney" class="profileMoney">
+                        <p id="profileMoneyValue" class="profileMoneyValue"></p>
+                    </div>
+                </div>
+                <div id="profileProgress" class="profileProgress" onclick="javascript:loadProgressCourses()">
+                    <p id="profileProgressValue" class="profileProgressValue"></p>
+                </div>
+                <div id="profileRating" class="profileRating" onclick="javascript:loadRating()">
+                    <p id="profileRatingValue" class="profileRatingValue"></p>
+                </div>
+                <div id="profileAchievements" class="profileAchievements" onclick="javascript:showGameAchievements()">
+                </div>
+                <div id="profileMinimize" class="profileMinimize" onclick="javascript:minimizeProfile()">
+                </div>
+            </div>
+            <div id="profileSeparator" class="profileSeparator">
+            </div>
+            <div id="profileContent" class="profileContent">
+                <div id="profileAchievementsTab">
+                    <div id="profileAchievementsContent" class="profileAchievementsContent">
+                        <div class="profileAchievementsRows">
+                        </div>
+                        <div class="profileAchievementsShortRow">
+                        </div>
+                    </div>
+                </div>
+                <div id="profileRatingTab">
+                    <div id="profileRatingContent" class="profileRatingContent">
+
+                    </div>
+                </div>
+                <div id="profileProgressTab">
+                    <div id="profileProgressContent" class="profileProgressContent">
+
+                    </div>
+                </div>
+                <div id="profileSlider" class="profileSlider">
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+

@@ -1,63 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{83356230-0D5C-4DA7-AB9A-67B30786123C}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILS.Web", "ILS.Web\ILS.Web\ILS.Web.csproj", "{1E8B987C-A305-4882-8FA7-981289BD7B77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILS.Web", "ILS.Web\ILS.Web.csproj", "{00E15B0F-3AC4-407E-86BD-D473E520CB37}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILS.Domain", "ILS.Domain\ILS.Domain.csproj", "{5E9A5D1D-25AC-4C84-AF14-ACB823BB5823}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PhotonServer", "PhotonServer", "{62357428-C5B1-48B8-9D84-3C645FAA94DA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILS.PhotonServer", "ILS.PhotonServer\ILS.PhotonServer.csproj", "{BDF1BFEA-472B-4C1F-822E-C310F0342CA3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lite", "Lite\Lite.csproj", "{E1F918F4-F581-4280-9D91-3CF77B24C290}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILS.Domain", "ILS.Domain\ILS.Domain\ILS.Domain.csproj", "{22D7210B-2CBC-4DBE-BDD3-E8BFCFD508EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Photon|Any CPU = Photon|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{00E15B0F-3AC4-407E-86BD-D473E520CB37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00E15B0F-3AC4-407E-86BD-D473E520CB37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00E15B0F-3AC4-407E-86BD-D473E520CB37}.Photon|Any CPU.ActiveCfg = Photon|Any CPU
-		{00E15B0F-3AC4-407E-86BD-D473E520CB37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00E15B0F-3AC4-407E-86BD-D473E520CB37}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E9A5D1D-25AC-4C84-AF14-ACB823BB5823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E9A5D1D-25AC-4C84-AF14-ACB823BB5823}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E9A5D1D-25AC-4C84-AF14-ACB823BB5823}.Photon|Any CPU.ActiveCfg = Photon|Any CPU
-		{5E9A5D1D-25AC-4C84-AF14-ACB823BB5823}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E9A5D1D-25AC-4C84-AF14-ACB823BB5823}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BDF1BFEA-472B-4C1F-822E-C310F0342CA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BDF1BFEA-472B-4C1F-822E-C310F0342CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BDF1BFEA-472B-4C1F-822E-C310F0342CA3}.Photon|Any CPU.ActiveCfg = Photon|Any CPU
-		{BDF1BFEA-472B-4C1F-822E-C310F0342CA3}.Photon|Any CPU.Build.0 = Photon|Any CPU
-		{BDF1BFEA-472B-4C1F-822E-C310F0342CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BDF1BFEA-472B-4C1F-822E-C310F0342CA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Photon|Any CPU.ActiveCfg = Photon|Any CPU
-		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Photon|Any CPU.Build.0 = Photon|Any CPU
-		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E8B987C-A305-4882-8FA7-981289BD7B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E8B987C-A305-4882-8FA7-981289BD7B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E8B987C-A305-4882-8FA7-981289BD7B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E8B987C-A305-4882-8FA7-981289BD7B77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22D7210B-2CBC-4DBE-BDD3-E8BFCFD508EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22D7210B-2CBC-4DBE-BDD3-E8BFCFD508EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22D7210B-2CBC-4DBE-BDD3-E8BFCFD508EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22D7210B-2CBC-4DBE-BDD3-E8BFCFD508EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{BDF1BFEA-472B-4C1F-822E-C310F0342CA3} = {62357428-C5B1-48B8-9D84-3C645FAA94DA}
-		{E1F918F4-F581-4280-9D91-3CF77B24C290} = {62357428-C5B1-48B8-9D84-3C645FAA94DA}
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
