@@ -13,5 +13,6 @@ namespace ILS.Domain.GameAchievements
 
         public virtual User User { get; set; }
         public virtual GameAchievement GameAchievement { get; set; }
+        public int Result;
     }
 }

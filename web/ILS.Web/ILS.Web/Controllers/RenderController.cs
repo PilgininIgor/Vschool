@@ -1,19 +1,14 @@
-﻿using ILS.Domain;
-using ILS.Domain.GameAchievements;
-using ILS.Web.GameAchievements;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Script.Serialization;
-using ILS.Domain;
-using ILS.Domain.GameAchievements;
-using ILS.Web.GameAchievements;
-
-
-namespace ILS.Web.Controllers
+﻿namespace ILS.Web.Controllers
 {
+    using Domain;
+    using Domain.GameAchievements;
+    using GameAchievements;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Mvc;
+    using System.Web.Script.Serialization;
+
     public class RenderController : Controller
     {
         private readonly ILSContext context;
@@ -100,9 +95,9 @@ namespace ILS.Web.Controllers
             ProfileModel model = new ProfileModel();
             model.Name = u.FirstName + " " + u.LastName;
             model.Email = u.Email;
-            model.Money = u.EXP;
+            model.Money = u.Coins;
             model.Progress = 23; //TODO: load progress
-            List<User> users = context.User.OrderByDescending(x => x.EXP).ToList();
+            List<User> users = context.User.OrderByDescending(x => x.Coins).ToList();
             int rating = users.IndexOf(u);
             model.Rating = rating;
             Dictionary<string, string> achievements = new Dictionary<string, string>();
@@ -133,10 +128,10 @@ namespace ILS.Web.Controllers
         {
             return Json(new
             {
-                rating = context.User.OrderByDescending(x => x.EXP).Select(y => new
+                rating = context.User.OrderByDescending(x => x.Coins).Select(y => new
                 {
                     name = y.Name,
-                    exp = y.EXP
+                    exp = y.Coins
                 })
             }, JsonRequestBehavior.AllowGet);
         }
@@ -261,7 +256,7 @@ namespace ILS.Web.Controllers
                     id = x.Id,
                     name = x.Name
                 })
-            });
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult UnityData(Guid id)
@@ -378,7 +373,7 @@ namespace ILS.Web.Controllers
                 {
                     ifGuest = ifGuest,
                     username = (ifGuest) ? "" : u.Name,
-                    EXP = (ifGuest) ? 0 : u.EXP,
+                    EXP = (ifGuest) ? 0 : u.Coins,
                     facultyStands_Seen = (ifGuest) ? false : u.FacultyStands_Seen,
                     facultyStands_Finish = (ifGuest) ? false : u.FacultyStands_Finish,
                     historyStand_Seen = (ifGuest) ? false : u.HistoryStand_Seen,
@@ -540,7 +535,7 @@ namespace ILS.Web.Controllers
                 JavaScriptSerializer jss = new JavaScriptSerializer();
                 var obj = jss.Deserialize<dynamic>(s);
 
-                u.EXP = obj["EXP"];
+                u.Coins = obj["EXP"];
                 u.FacultyStands_Seen = obj["facultyStands_Seen"];
                 u.FacultyStands_Finish = obj["facultyStands_Finish"];
                 u.HistoryStand_Seen = obj["historyStand_Seen"];
@@ -565,14 +560,40 @@ namespace ILS.Web.Controllers
                 u.TestsFinished = obj["testsFinished"];
 
                 context.SaveChanges();
-
-                achievementsManager.ExecuteAchievement(AchievementTrigger.Game, new Dictionary<string, object> { { AchievementsConstants.GameAchievementParamName, s } });
             }
             catch (Exception e)
             {
                 // TODO: log this!
             }
             return 1;
+        }
+
+        public ActionResult SaveGameAchievement(String achievementId)
+        {
+            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game,
+                new Dictionary<string, object> { { AchievementsConstants.GameAchievementIdParamName, achievementId } });
+            return Json(changedAchievementRuns.Select(a => new { id = a.Id, GameAchievement = a.GameAchievementId }));
+        }
+
+        public ActionResult GetGameAchievementsForUnity()
+        {
+            return Json(context.GameAchievements.OrderBy(x => x.Name).Select(x => new
+            {
+                id = x.Id,
+                name = x.Name,
+                message = x.Message
+            }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetGameAchievementRuns()
+        {
+            var user = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+
+            return Json(context.GameAchievementRuns.Where(a => a.UserId.Equals(user.Id)).Select(x => new
+            {
+                id = x.Id,
+                name = x.Result
+            }), JsonRequestBehavior.AllowGet);
         }
 
         public int UnitySave(string s)
@@ -646,68 +667,87 @@ namespace ILS.Web.Controllers
             return 1;
         }
 
-        public int UnityTest(string mode, Guid? theme_run_id, Guid test_id)
+        public int UnityTest(string mode, Guid? themeRunId, Guid testId)
         {
             var s = HttpContext.Request.Params["answers"];
-            string[] f = HttpContext.Request.Params["time"].Split(',');
+            var f = HttpContext.Request.Params["time"].Split(',');
 
-            Test test = (Test)context.ThemeContent.Find(test_id);
+            var test = (Test)context.ThemeContent.Find(testId);
 
             if (mode != "guest")
             {
-                TestRun TR = new TestRun { Result = 0 };
-                ThemeRun theme_run = context.ThemeRun.Find(theme_run_id);
+                var testRun = new TestRun { Result = 0 };
+                var themeRun = context.ThemeRun.Find(themeRunId);
 
-                theme_run.TestsRuns.Add(TR); test.TestRuns.Add(TR);
+                themeRun.TestsRuns.Add(testRun); test.TestRuns.Add(testRun);
 
-                int i = 0; bool correct = true;
+                var i = 0;
                 //список айди тем, из которых есть ответы с ошибками - нужно для составных тестов 
-                List<Guid> themeErrorsList = new List<Guid>();
-                foreach (var q in test.Questions.OrderBy(x => x.OrderNumber))
+                var themeErrorsList = new List<Guid>();
+                foreach (var question in test.Questions.OrderBy(x => x.OrderNumber))
                 {
-                    correct = true;
-
-                    TR.QuestionsRuns.Add(new QuestionRun { Question = q, TimeSpent = Convert.ToDouble(f[q.OrderNumber - 1], System.Globalization.CultureInfo.InvariantCulture) });
-                    foreach (var a in q.AnswerVariants.OrderBy(x => x.OrderNumber))
+                    var correct = true;
+                    var questionRun = new QuestionRun
                     {
-                        if (s[i] == '1') TR.Answers.Add(new Answer { AnswerVariant = a });
-                        if (((s[i] == '1') && !a.IfCorrect) || ((s[i] == '0') && a.IfCorrect))
+                        Question = question,
+                        TimeSpent = Convert.ToDouble(f[question.OrderNumber - 1], System.Globalization.CultureInfo.InvariantCulture)
+                    };
+                    testRun.QuestionsRuns.Add(questionRun);
+                    foreach (var answerVariant in question.AnswerVariants.OrderBy(x => x.OrderNumber))
+                    {
+                        if (s[i] == '1')
+                        {
+                            questionRun.Answers.Add(new Answer { AnswerVariant = answerVariant });
+                        }
+                        if (((s[i] == '1') && !answerVariant.IfCorrect) || ((s[i] == '0') && answerVariant.IfCorrect))
                         {
                             correct = false;
                             if (test.IsComposite)
                             {
                                 //тут некорректное сравнение, из-за связи 1 ко многим между тестом и вопросом
                                 //по-сути вопросы дулблируются, поэтому ищем одинаковые тексты вопроса 
-                                themeErrorsList.Add(context.Question.Where(x => ((x.Text == q.Text) && (!x.Test.IsComposite))).OrderBy(x => x.Test.Theme_Id).Select(x => x.Test.Theme_Id).ToArray()[0]);
+                                themeErrorsList.Add(context.Question.Where(x => ((x.Text == question.Text)
+                                    && (!x.Test.IsComposite))).OrderBy(x => x.Test.Theme_Id).Select(x => x.Test.Theme_Id).ToArray()[0]);
                             }
                         }
                         i += 2;
                     }
-                    if (correct) TR.Result++;
+                    if (correct)
+                    {
+                        testRun.Result++;
+                    }
                 }
                 //при верном прохождении теста открываем индивидуальные связи между содержимым темы
-                if (TR.Result >= test.MinResult)
+                if (testRun.Result >= test.MinResult)
                 {
-                    foreach (ThemeContentLink tc_link in test.OutputThemeContentLinks)
+                    foreach (var tcLink in test.OutputThemeContentLinks)
                     {
-                        ICollection<PersonalThemeContentLink> ptc_links = tc_link.PersonalThemeContentLinks;
-                        if (ptc_links.Count() == 0)
+                        var ptcLinks = tcLink.PersonalThemeContentLinks;
+                        if (!ptcLinks.Any())
                         {
-                            PersonalThemeContentLink ptc_link = context.PersonalThemeContentLink.Add(new PersonalThemeContentLink() { ThemeContentLink = tc_link, ThemeRun = theme_run, Status = "open" });
-                            tc_link.PersonalThemeContentLinks.Add(ptc_link);
+                            var ptcLink =
+                                context.PersonalThemeContentLink.Add(new PersonalThemeContentLink
+                                {
+                                    ThemeContentLink = tcLink,
+                                    ThemeRun = themeRun,
+                                    Status = "open"
+                                });
+                            tcLink.PersonalThemeContentLinks.Add(ptcLink);
                         }
                         else
-                            ptc_links.ElementAt(0).Status = "open";
+                        {
+                            ptcLinks.ElementAt(0).Status = "open";
+                        }
                     }
                 }
                 //если тест - составной и не пройден - находим худшую тему и замораживаем связи 
                 else if (test.IsComposite)
                 {
-                    if (themeErrorsList.Count == 0) return TR.Result;
+                    if (themeErrorsList.Count == 0) return testRun.Result;
                     themeErrorsList.Sort();
                     int maxIndex = 0, curStreak = 1, maxStreak = 1;
-                    Guid curGuid = themeErrorsList[0];
-                    for (int j = 1; j < themeErrorsList.Count(); j++)
+                    var curGuid = themeErrorsList[0];
+                    for (var j = 1; j < themeErrorsList.Count(); j++)
                     {
                         if (curGuid != themeErrorsList[j])
                         {
@@ -724,25 +764,27 @@ namespace ILS.Web.Controllers
                     if (curStreak > maxStreak)
                     {
                         maxIndex = themeErrorsList.Count() - 1;
-                        maxStreak = curStreak;
                     }
 
                     FreezeOutputLinks(context.Theme.Find(themeErrorsList[maxIndex]));
                 }
 
                 context.SaveChanges();
-                return TR.Result;
-
+                return testRun.Result;
             }
             else
             {
-                int res = 0; int i = 0; bool correct = true;
+                var res = 0;
+                var i = 0;
                 foreach (var q in test.Questions.OrderBy(x => x.OrderNumber))
                 {
-                    correct = true;
+                    var correct = true;
                     foreach (var a in q.AnswerVariants.OrderBy(x => x.OrderNumber))
                     {
-                        if (((s[i] == '1') && !a.IfCorrect) || ((s[i] == '0') && a.IfCorrect)) correct = false;
+                        if (((s[i] == '1') && !a.IfCorrect) || ((s[i] == '0') && a.IfCorrect))
+                        {
+                            correct = false;
+                        }
                         i += 2;
                     }
                     if (correct) res++;
@@ -755,16 +797,16 @@ namespace ILS.Web.Controllers
         private void FreezeOutputLinks(Theme theme)
         {
             var u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            foreach (ThemeLink t_link in theme.OutputThemeLinks)
+            foreach (var tLink in theme.OutputThemeLinks)
             {
-                foreach (PersonalThemeLink pt_link in t_link.PersonalThemeLinks.Where<PersonalThemeLink>((y => ((y.CourseRun.User_Id == u.Id) && (y.Status == "open")))))
+                foreach (var ptLink in tLink.PersonalThemeLinks.Where((y => ((y.CourseRun.User_Id == u.Id)
+                    && (y.Status == "open")))))
                 {
-                    pt_link.Status = "frozen";
+                    ptLink.Status = "frozen";
                     context.SaveChanges();
-                    FreezeOutputLinks(pt_link.ThemeLink.LinkedTheme);
+                    FreezeOutputLinks(ptLink.ThemeLink.LinkedTheme);
                 }
             }
-            return;
         }
 
     }

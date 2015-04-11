@@ -50,6 +50,7 @@
     <Compile Include="Answer.cs" />
     <Compile Include="AnswerVariant.cs" />
     <Compile Include="Award.cs" />
+    <Compile Include="GameAchievements\AchievementAwardType.cs" />
     <Compile Include="GameAchievements\AchievementTrigger.cs" />
     <Compile Include="GameAchievements\GameAchievement.cs" />
     <Compile Include="GameAchievements\GameAchievementRun.cs" />
