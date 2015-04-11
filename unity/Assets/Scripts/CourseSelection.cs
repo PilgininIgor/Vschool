@@ -9,7 +9,7 @@ public class CourseSelection : MonoBehaviour
         public List<CourseName> coursesNames;
     }
 
-    class CourseName
+    public class CourseName
     {
         public string id;
         public string name;
@@ -22,20 +22,21 @@ public class CourseSelection : MonoBehaviour
         //"{\"id\":\"47942238-8168-404c-965e-222222222222\", \"name\":\"Больше физики\"}"+
     "]}";
 
-    const string LBL1 = "Загрузка...";
-    const string LBL2 = "A / стрелка влево - предыдущий курс";
-    const string LBL3 = "D / стрелка вправо - следующий курс";
-    const string LBL4 = "Enter - загрузка";
+    public const string LBL1 = "Загрузка...";
+    public const string LBL2 = "A / стрелка влево - предыдущий курс";
+    public const string LBL3 = "D / стрелка вправо - следующий курс";
+    public const string LBL4 = "Enter - загрузка";
 
-    Camera GuiCam, MainCam, StandCam;
-    GameObject Player;
-    Texture magnifier, arrow, select;
-    Font helvetica;
+    public Camera GuiCam, MainCam, StandCam;
+    public GameObject Player;
+    public Texture magnifier, arrow, select;
+    public Font helvetica;
 
-    Material NewPipe, NewScreen;
-    SignalSender dieSignals;
+    public Material NewPipe, NewScreen;
+    public SignalSender dieSignals;
 
-    List<CourseName> cl; int i;
+    public List<CourseName> cl;
+    public int i;
     private bool hint_visible = false;
     private bool escape_visible = false;
     private bool data_loaded = false;

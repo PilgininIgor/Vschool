@@ -8,19 +8,18 @@ using UnityEngine;
 public class CameraChange : MonoBehaviour
 {
 
-    Camera MainCam, StandCam;
-    GameObject Player, HallwayGroup;
-    Texture magnifier, arrow;
+    public Camera MainCam, StandCam;
+    public GameObject Player, HallwayGroup;
+    public Texture magnifier, arrow;
 
-    string addInfo = "";
+    public string addInfo = "";
 
-    bool hint_visible = false, escape_visible = false;
+    public bool hint_visible = false, escape_visible = false;
 
     // Use this for initialization
     void Start()
     {
         StandCam.enabled = false;
-        StandCam.GetComponent<AudioListener>().enabled = false;
     }
 
     void setIsBound(bool isBound)

@@ -1,4 +1,4 @@
-private var show = true;
+var show = true;
 private var chat;
 
 var LBL1 = "Управление";
