@@ -2,7 +2,7 @@
 
 public class firstVisitCourse : MonoBehaviour
 {
-    GameObject Bootstrap;
+    public GameObject Bootstrap;
     void OnTriggerEnter()
     {
         StatisticParser stParser = Bootstrap.GetComponent<StatisticParser>();

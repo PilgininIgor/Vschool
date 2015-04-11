@@ -6,9 +6,9 @@ using System.Collections.Generic;
 public class HallwayAchievements : MonoBehaviour
 {
     private const int facultyStandsSize = 10, laddersSize = 8;
-    GameObject Bootstrap;
-    bool[] facultyStands = new bool[facultyStandsSize], ladders = new bool[laddersSize];
-    bool light1 = false, light2 = false, light3 = false;
+    public GameObject Bootstrap;
+    public bool[] facultyStands = new bool[facultyStandsSize], ladders = new bool[laddersSize];
+    public bool light1 = false, light2 = false, light3 = false;
     // Use this for initialization
     void Start()
     {

@@ -2,7 +2,7 @@
 
 public class tableJump : MonoBehaviour
 {
-    GameObject Bootstrap;
+    public GameObject Bootstrap;
 
     void OnTriggerEnter()
     {

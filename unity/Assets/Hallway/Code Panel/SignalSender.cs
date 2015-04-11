@@ -1,12 +1,20 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
+[System.Serializable]
 public class ReceiverItem {
 	public GameObject receiver;
 	public string action = "OnSignal";
     public float delay;
+
+    public IEnumerator Wait(float s)
+    {
+        yield return new WaitForSeconds(s);
+    }
 	
-	public void SendWithDelay (MonoBehaviour sender) {
-		//var t = new WaitForSeconds(delay);
+	public void SendWithDelay (MonoBehaviour sender)
+	{
+        sender.StartCoroutine(Wait(delay));
 		if (receiver)
 			receiver.SendMessage (action);
 		else
@@ -14,7 +22,9 @@ public class ReceiverItem {
 	}
 }
 
-public class SignalSender : MonoBehaviour {
+[System.Serializable]
+public class SignalSender
+{
 	public bool onlyOnce;
 	public ReceiverItem[] receivers;
 	

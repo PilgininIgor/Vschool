@@ -3,7 +3,7 @@
 public class barrelJump : MonoBehaviour
 {
 
-    GameObject Bootstrap;
+    public GameObject Bootstrap;
     private void OnTriggerEnter()
     {
         RPGParser rpgParser = Bootstrap.GetComponent<RPGParser>();

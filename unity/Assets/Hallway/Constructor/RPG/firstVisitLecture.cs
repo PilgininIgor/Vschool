@@ -4,7 +4,7 @@ using System.Collections;
 public class firstVisitLecture : MonoBehaviour
 {
 
-    GameObject Bootstrap;
+    public GameObject Bootstrap;
 
     void OnTriggerEnter()
     {

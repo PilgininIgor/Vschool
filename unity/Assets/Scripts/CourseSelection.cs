@@ -9,6 +9,7 @@ public class CourseSelection : MonoBehaviour
         public List<CourseName> coursesNames;
     }
 
+    [System.Serializable]
     public class CourseName
     {
         public string id;

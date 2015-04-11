@@ -2,7 +2,7 @@
 
 public class secretLight : MonoBehaviour
 {
-    GameObject HallwayGroup;
+    public GameObject HallwayGroup;
 
     void OnTriggerEnter()
     {

@@ -2,7 +2,7 @@
 
 public class terminalJump : MonoBehaviour
 {
-    GameObject Bootstrap;
+    public GameObject Bootstrap;
 
     void OnTriggerEnter()
     {

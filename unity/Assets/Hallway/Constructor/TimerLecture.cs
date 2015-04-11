@@ -6,7 +6,7 @@ public class TimerLecture : MonoBehaviour
     public int lec_num;
     private StatisticParser sp;
     private bool flag;
-    GameObject Bootstrap;
+    public GameObject Bootstrap;
 
     // Use this for initialization
     void Start()

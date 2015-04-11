@@ -7,8 +7,8 @@ public class TimerTheme : MonoBehaviour
 
     private StatisticParser sp;
     private bool flag = false;
-    GameObject TextTime;
-    GameObject Bootstrap;
+    public GameObject TextTime;
+    public GameObject Bootstrap;
     // Use this for initialization
     void Start()
     {

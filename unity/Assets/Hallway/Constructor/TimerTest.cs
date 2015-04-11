@@ -7,7 +7,7 @@ public class TimerTest : MonoBehaviour
     public int test_num;
     private StatisticParser sp;
     private bool flag;
-    GameObject Bootstrap;
+    public GameObject Bootstrap;
     // Use this for initialization
     void Start()
     {

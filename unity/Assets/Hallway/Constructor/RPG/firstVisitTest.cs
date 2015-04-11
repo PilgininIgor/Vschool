@@ -2,7 +2,7 @@
 
 public class firstVisitTest : MonoBehaviour
 {
-    GameObject Bootstrap;
+    public GameObject Bootstrap;
     void OnTriggerEnter()
     {
         RPGParser rpgParser = Bootstrap.GetComponent<RPGParser>();

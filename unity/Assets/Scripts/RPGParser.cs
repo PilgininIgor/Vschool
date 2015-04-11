@@ -20,7 +20,7 @@ public class RPGParser : MonoBehaviour
 
     public DataStructures.OverallRPG RPG;
 
-    Font helvetica;
+    public Font helvetica;
     private bool displayHUD = false;
     private bool SkinSet = false;
     private bool UNwidthCalculated = false;

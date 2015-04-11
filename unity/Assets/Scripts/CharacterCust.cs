@@ -139,10 +139,9 @@ public class CharacterCust : MonoBehaviour
 	
 	void ChangeEffects(int curEffect)
 	{
-		for(int i = 0; i < effects.Length; i++)
-				effects[i].SetActive(false);
-		effects[curEffect].SetActive(true);
+	    foreach (GameObject t in effects)
+	        t.SetActive(false);
+        if (curEffect < effects.Length)
+            effects[curEffect].SetActive(true);
 	}
-	
-
 }

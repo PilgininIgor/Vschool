@@ -36,9 +36,9 @@ using System.Collections.Generic;
 using JsonFx;
 
 public class BootstrapParser : MonoBehaviour {
-	static GameObject MainCorridorStart, MainCorridorMiddle, MainCorridorEnd;
-	static GameObject ThemeCorridorStart, ThemeCorridorMiddle, ThemeCorridorEnd;
-	static GameObject LectureRoom, QuizRoomA;
+    public static GameObject MainCorridorStart, MainCorridorMiddle, MainCorridorEnd;
+    public static GameObject ThemeCorridorStart, ThemeCorridorMiddle, ThemeCorridorEnd;
+    public static GameObject LectureRoom, QuizRoomA;
 
 	static string JSONTestString = 
 		"{"+

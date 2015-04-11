@@ -6,7 +6,7 @@ public class TimerCourse : MonoBehaviour
     private StatisticParser sp;
     private bool flag = false;
     public GameObject TextTime;
-    GameObject Bootstrap;
+    public GameObject Bootstrap;
 
     // Use this for initialization
     void Start()

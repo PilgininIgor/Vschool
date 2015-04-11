@@ -3,7 +3,7 @@
 public class ladderJump : MonoBehaviour
 {
 
-    GameObject Bootstrap, HallwayGroup;
+    public GameObject Bootstrap, HallwayGroup;
 
     void OnTriggerEnter()
     {

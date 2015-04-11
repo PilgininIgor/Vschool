@@ -2,8 +2,8 @@
 
 public class plantJump : MonoBehaviour
 {
-    GameObject Bootstrap;
-    bool triggered;
+    public GameObject Bootstrap;
+    public bool triggered;
 
     void OnTriggerEnter()
     {
