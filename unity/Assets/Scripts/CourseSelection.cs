@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class CourseSelection : MonoBehaviour
 {
-
     class CoursesNamesList
     {
         public List<CourseName> coursesNames;
@@ -43,9 +42,12 @@ public class CourseSelection : MonoBehaviour
     private bool data_loaded = false;
     private int ButtonSize = 100;
 
+    private HttpConnector httpConnector;
+
     void Start()
     {
         StandCam.enabled = false; StandCam.GetComponent<AudioListener>().enabled = false;
+        httpConnector = GameObject.Find("Bootstrap").AddComponent<HttpConnector>();
     }
 
     void ZoomIn()
@@ -65,22 +67,20 @@ public class CourseSelection : MonoBehaviour
             transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "";
 
             //БОЛЬШОЙ РУБИЛЬНИК
-            //CourseDisplay(JSONTestString);
-            //var httpConnector = new HttpConnector();
-            //httpConnector.LoadCoursesList();
-            //Application.ExternalCall("LoadCoursesList");
-
-            var httpConnector = GameObject.Find("MainCamera").AddComponent<HttpConnector>();
-            httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.UnityListUrl, www =>
-            {
-                BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
-                bootstrapParser.CourseConstructor(www.text);
-            });
+            LoadCoursesList();
         }
         else
         {
             escape_visible = true;
         }
+    }
+
+    public void LoadCoursesList()
+    {
+        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.UnityListUrl, www =>
+        {
+            CourseDisplay(www.text);
+        });
     }
 
     public void CourseDisplay(string JSONStringFromServer)
@@ -154,9 +154,19 @@ public class CourseSelection : MonoBehaviour
 
     void LoadCourseData(string id)
     {
-        var httpConnector = new HttpConnector();
-        httpConnector.LoadCourseData(id);
-        httpConnector.LoadStat(id);
+        var parameters = new Dictionary<string, string>();
+        parameters["id"] = id;
+        httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CourseDataUrl, parameters, www =>
+        {
+            BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
+            bootstrapParser.CourseConstructor(www.text);
+        });
+
+        httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.StatUrl, parameters, www =>
+        {
+            StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
+            statisticParser.StatisticDisplay(www.text); 
+        });
     }
 
     void Update()

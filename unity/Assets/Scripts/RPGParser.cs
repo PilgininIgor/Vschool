@@ -147,8 +147,10 @@ public class RPGParser : MonoBehaviour
         if (!RPG.ifGuest)
         {
             var s = JsonWriter.Serialize(RPG);
-            var httpConnector = new HttpConnector();
-            httpConnector.SaveRPG(s);
+            var parameters = new Dictionary<string, string>();
+            parameters["s"] = s;
+            var httpConnector = GameObject.Find("Bootstrap").AddComponent<HttpConnector>();
+            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.UnitySaveRpgUrl, parameters, www => { });
         }
     }
 }

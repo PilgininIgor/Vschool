@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 class StatisticParser : MonoBehaviour
@@ -157,8 +158,10 @@ class StatisticParser : MonoBehaviour
         if (stat.mode != "guest")
         {
             var s = JsonFx.Json.JsonWriter.Serialize(stat);
-            var httpConnector = new HttpConnector();
-            httpConnector.SaveStatistic(s);
+            var parameters = new Dictionary<string, string>();
+            parameters["s"] = s;
+            var httpConnector = GameObject.Find("Bootstrap").AddComponent<HttpConnector>();
+            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveStatisticUrl, parameters, www => {});
         }
     }
 }

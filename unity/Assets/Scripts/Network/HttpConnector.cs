@@ -6,16 +6,16 @@ using System.Collections.Generic;
 public class HttpConnector : MonoBehaviour
 {
     //TODO move to config file
-    public static readonly String ServerUrl = "http://localhost:63866";
-    //private const readonly String ServerUrl = "http://virtual.itschool.ssau.ru";
+    public const string ServerUrl = "http://localhost:63866";
+    //private const string ServerUrl = "http://virtual.itschool.ssau.ru";
 
-    public static readonly String CourseDataUrl = "/Render/UnityData";
-    public static readonly String StatUrl = "/Render/UnityStat";
-    public static readonly String SaveStatisticUrl = "/Render/UnitySave";
-    public static readonly String UnityListUrl = "/Render/UnityList";
-    public static readonly String UnitySaveRpgUrl = "/Render/UnitySaveRPG";
-    public static readonly String SaveGameAchievementUrl = "/Render/SaveGameAchievement";
-    public static readonly String GetGameAchievementsUrl = "/Render/GetGameAchievements";
+    public const string CourseDataUrl = "/Render/UnityData";
+    public const string StatUrl = "/Render/UnityStat";
+    public const string SaveStatisticUrl = "/Render/UnitySave";
+    public const string UnityListUrl = "/Render/UnityList";
+    public const string UnitySaveRpgUrl = "/Render/UnitySaveRPG";
+    public const string SaveGameAchievementUrl = "/Render/SaveGameAchievement";
+    public const string GetGameAchievementsUrl = "/Render/GetGameAchievementsForUnity";
 
     public void Get(string url, System.Action<WWW> onSuccess)
     {
@@ -47,50 +47,6 @@ public class HttpConnector : MonoBehaviour
         {
             Debug.Log("WWW Error: " + www.error);
         }
-    }
-
-    public void SaveStatistic(string s)
-    {
-//       	var parameters = new Dictionary<string, string>();
-//        parameters["s"] = s;
-//        var www = Post(ServerUrl + SaveStatisticUrl, parameters);
-    }
-
-    public void SaveRPG(string s)
-    {
-//        var parameters = new Dictionary<string, string>();
-//        parameters["s"] = s;
-//        var www = Post(ServerUrl + UnitySaveRpgUrl, parameters);
-    }
-
-    public void LoadCoursesList()
-    {
-//        var www = Get(ServerUrl + UnityListUrl);
-//        BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
-//	    bootstrapParser.CourseConstructor(www.text);
-    }
-
-    public void LoadStat(string id)
-    {
-//        var parameters = new Dictionary<string, string>();
-//        parameters["id"] = id;
-//        var www = Post(ServerUrl + StatUrl, parameters);
-//        StatisticParser statisticParser  = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
-//	    statisticParser.StatisticDisplay(www.text); 
-    }
-
-    public void LoadCourseData(string id)
-    {
-//        var parameters = new Dictionary<string, string>();
-//        parameters["id"] = id;
-//        var www = Post(ServerUrl + CourseDataUrl,parameters);
-//        CourseSelection courseSelection = GameObject.Find("Hallway/Course Selection/CS_Screen").GetComponent<CourseSelection>();
-//        courseSelection.CourseDisplay(www.text);
-    }
-
-    public String GetUserName()
-    {
-        return "Student";
     }
 }
 
