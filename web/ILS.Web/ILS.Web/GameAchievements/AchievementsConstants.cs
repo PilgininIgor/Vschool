@@ -2,6 +2,8 @@
 {
     public static class AchievementsConstants
     {
-        public const string GameAchievementParamName = "gameAchievementParamName";
+        public const string GameAchievementIdParamName = "gameAchievementId";
+        public const string CourseIdParamName = "courseId";
+        public const string CourseProgressPercentsParamName = "courseProgress";
     }
 }

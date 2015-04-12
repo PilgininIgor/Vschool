@@ -66,10 +66,16 @@ public class CourseSelection : MonoBehaviour
 
             //БОЛЬШОЙ РУБИЛЬНИК
             //CourseDisplay(JSONTestString);
-            var httpConnector = new HttpConnector();
-            httpConnector.LoadCoursesList();
+            //var httpConnector = new HttpConnector();
+            //httpConnector.LoadCoursesList();
             //Application.ExternalCall("LoadCoursesList");
 
+            var httpConnector = GameObject.Find("MainCamera").AddComponent<HttpConnector>();
+            httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.UnityListUrl, www =>
+            {
+                BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
+                bootstrapParser.CourseConstructor(www.text);
+            });
         }
         else
         {

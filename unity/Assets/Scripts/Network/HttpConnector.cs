@@ -6,25 +6,24 @@ using System.Collections.Generic;
 public class HttpConnector : MonoBehaviour
 {
     //TODO move to config file
-    //private const String SERVER_URL = "http://localhost:25565/ils2";
-    private const String ServerUrl = "http://virtual.itschool.ssau.ru/";
+    public static readonly String ServerUrl = "http://localhost:63866";
+    //private const readonly String ServerUrl = "http://virtual.itschool.ssau.ru";
 
-    private const String CourseDataUrl = "/Render/UnityData";
-    private const String StatUrl = "/Render/UnityStat";
-    private const String SaveStatisticUrl = "/Render/UnitySave";
-    private const String UnityListUrl = "/Render/UnityList";
-    private const String UnitySaveRpgUrl = "/Render/UnitySaveRPG";
-    private const String SaveGameAchievementUrl = "/Render/SaveGameAchievement";
-    private const String GetGameAchievementsUrl = "/Render/GetGameAchievements";
+    public static readonly String CourseDataUrl = "/Render/UnityData";
+    public static readonly String StatUrl = "/Render/UnityStat";
+    public static readonly String SaveStatisticUrl = "/Render/UnitySave";
+    public static readonly String UnityListUrl = "/Render/UnityList";
+    public static readonly String UnitySaveRpgUrl = "/Render/UnitySaveRPG";
+    public static readonly String SaveGameAchievementUrl = "/Render/SaveGameAchievement";
+    public static readonly String GetGameAchievementsUrl = "/Render/GetGameAchievements";
 
-    public WWW Get(string url)
+    public void Get(string url, System.Action<WWW> onSuccess)
     {
         WWW www = new WWW(url);
-        StartCoroutine(WaitForRequest(www));
-        return www;
+        StartCoroutine(WaitForRequest(www, onSuccess));
     }
 
-    public WWW Post(string url, Dictionary<string, string> post)
+    public void Post(string url, Dictionary<string, string> post, System.Action<WWW> onSuccess)
     {
         WWWForm form = new WWWForm();
         foreach (KeyValuePair<String, String> postArg in post)
@@ -33,17 +32,16 @@ public class HttpConnector : MonoBehaviour
         }
         WWW www = new WWW(url, form);
 
-        StartCoroutine(WaitForRequest(www));
-        return www;
+        StartCoroutine(WaitForRequest(www, onSuccess));
     }
 
-    private IEnumerator WaitForRequest(WWW www)
+    private IEnumerator WaitForRequest(WWW www, System.Action<WWW> onSuccess)
     {
         yield return www;
 
-        if (www.error == null)
+        if (string.IsNullOrEmpty(www.error))
         {
-            Debug.Log("WWW Ok!: " + www.text);
+            onSuccess(www);
         }
         else
         {
@@ -53,41 +51,41 @@ public class HttpConnector : MonoBehaviour
 
     public void SaveStatistic(string s)
     {
-       	var parameters = new Dictionary<string, string>();
-        parameters["s"] = s;
-        var www = Post(ServerUrl + SaveStatisticUrl, parameters);
+//       	var parameters = new Dictionary<string, string>();
+//        parameters["s"] = s;
+//        var www = Post(ServerUrl + SaveStatisticUrl, parameters);
     }
 
     public void SaveRPG(string s)
     {
-        var parameters = new Dictionary<string, string>();
-        parameters["s"] = s;
-        var www = Post(ServerUrl + UnitySaveRpgUrl, parameters);
+//        var parameters = new Dictionary<string, string>();
+//        parameters["s"] = s;
+//        var www = Post(ServerUrl + UnitySaveRpgUrl, parameters);
     }
 
     public void LoadCoursesList()
     {
-        var www = Get(ServerUrl + UnityListUrl);
-        BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
-	    bootstrapParser.CourseConstructor(www.text);
+//        var www = Get(ServerUrl + UnityListUrl);
+//        BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
+//	    bootstrapParser.CourseConstructor(www.text);
     }
 
     public void LoadStat(string id)
     {
-        var parameters = new Dictionary<string, string>();
-        parameters["id"] = id;
-        var www = Post(ServerUrl + StatUrl, parameters);
-        StatisticParser statisticParser  = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
-	    statisticParser.StatisticDisplay(www.text); 
+//        var parameters = new Dictionary<string, string>();
+//        parameters["id"] = id;
+//        var www = Post(ServerUrl + StatUrl, parameters);
+//        StatisticParser statisticParser  = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
+//	    statisticParser.StatisticDisplay(www.text); 
     }
 
     public void LoadCourseData(string id)
     {
-        var parameters = new Dictionary<string, string>();
-        parameters["id"] = id;
-        var www = Post(ServerUrl + CourseDataUrl,parameters);
-        CourseSelection courseSelection = GameObject.Find("Hallway/Course Selection/CS_Screen").GetComponent<CourseSelection>();
-        courseSelection.CourseDisplay(www.text);
+//        var parameters = new Dictionary<string, string>();
+//        parameters["id"] = id;
+//        var www = Post(ServerUrl + CourseDataUrl,parameters);
+//        CourseSelection courseSelection = GameObject.Find("Hallway/Course Selection/CS_Screen").GetComponent<CourseSelection>();
+//        courseSelection.CourseDisplay(www.text);
     }
 
     public String GetUserName()

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace ILS.Domain
+﻿namespace ILS.Domain
 {
+    using System.Collections.Generic;
+
     public class User : EntityBase
     {
         public string Name { get; set; }
@@ -11,7 +11,9 @@ namespace ILS.Domain
         public string Email { get; set; }
         public bool IsApproved { get; set; }
 
-        public int EXP { get; set; }
+        public int Coins { get; set; }
+        public int Rating { get; set; }
+
         public bool FacultyStands_Seen { get; set; }
         public bool FacultyStands_Finish { get; set; }
         public bool HistoryStand_Seen { get; set; }

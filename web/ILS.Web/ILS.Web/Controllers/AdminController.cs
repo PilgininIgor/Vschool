@@ -52,7 +52,7 @@ namespace ILS.Web.Controllers
                 }
                 if (count == 0)
                 {
-                    user.EXP = 0;
+                    user.Coins = 0;
                     user.Roles = new HashSet<Role>();
                     user.IsApproved = false;
                 }
@@ -97,7 +97,7 @@ namespace ILS.Web.Controllers
                 temp.FirstName = user.FirstName;
                 temp.LastName = user.LastName;
                 temp.Email = user.Email;
-                temp.EXP = user.EXP;
+                temp.EXP = user.Coins;
                 temp.IsApproved = user.IsApproved;
                 jsonList.Add(temp);
             }
@@ -121,7 +121,7 @@ namespace ILS.Web.Controllers
                             IsAdmin = Enumerable.Count<Role>(user.Roles, x => x.Name == "Admin") > 0 ? true : false,
                             IsTeacher = Enumerable.Count<Role>(user.Roles, x => x.Name == "Teacher") > 0 ? true : false,
                             IsStudent = Enumerable.Count<Role>(user.Roles, x => x.Name == "Student") > 0 ? true : false,
-                            EXP = user.EXP
+                            EXP = user.Coins
                         };
 
             JsonResult jr = new JsonResult();
