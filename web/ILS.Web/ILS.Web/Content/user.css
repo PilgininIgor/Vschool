@@ -54,6 +54,55 @@
     margin-left: -115px;
 }
 
+.updater {
+display:block; 
+position:absolute;
+top:-400px;
+left:0px;	
+animation-duration: 4s;
+animation-iteration-count: infinite;
+animation-name: updaterAnimation;
+animation-timing-function: linear;
+}
+
+@keyframes updaterAnimation {
+	0%  	{top: -400px;}
+	100% 	{top: 800px}
+}
+
+.loadingIndicator {
+width: 230px;
+height: 230px;
+position: absolute;
+animation-duration: 2s;
+animation-iteration-count: infinite;
+animation-name: loadingIndicatorAnimation;
+animation-timing-function: linear;
+}
+
+.loadingRing {
+	width: 230px;
+	height: 230px;
+	position: absolute;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+	animation-name: loadingRingAnimation;
+	animation-timing-function: linear;
+}
+
+@keyframes loadingIndicatorAnimation {
+	0%  	{opacity: 1; transform: rotate(0deg);}
+	50% 	{opacity: 0.7;}
+	100% 	{opacity: 0.2; transform: rotate(720deg);}
+}
+
+@keyframes loadingRingAnimation {
+	0%  	{opacity: 1;}
+	90% 	{opacity: 0.1;}
+	95% 	{opacity: 0;}
+	100% 	{opacity: 0;}
+}
+
 .textareaContacts {
     width: 250px;
     height: 200px;

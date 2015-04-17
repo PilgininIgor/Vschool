@@ -191,12 +191,20 @@
 }
 .profileProgressContent {
 	width: 1040px; 
-	height: 408px;
-	top: 20px;
+	height: 358px;
+	top: 70px;
 	position: absolute;
 	overflow: hidden;
 	left: 50%;
 	margin-left: -520px;
+}
+.profileProgressNavigation {
+	width: 1000px; 
+	height: 50px;
+	top: 10px;
+	left: 40px;
+	position: absolute;
+	overflow: hidden;
 }
 table {
 	border-collapse: collapse;
@@ -217,6 +225,15 @@ a {
 	background: rgba(14, 213, 218, 0.3);
 }
 .profileText{
+	font-size: 18px; 
+	color: #0ed5da; 
+	letter-spacing: 0.8px; 
+	text-align: left;
+	margin-left: 60px;
+	line-height: 16px; 
+	font-family: Futurica; 
+}
+.profileIndexText{
 	font-size: 18px; 
 	color: #0ed5da; 
 	letter-spacing: 0.8px; 
@@ -273,4 +290,7 @@ a {
 	overflow: hidden;
 	left: 50%;
 	margin-left: -225px;
-	}
+}
+.progressColumn {
+	width: 50px;
+}

@@ -207,31 +207,12 @@
             {
                 id = y.Key.Id,
                 date = "TODO: date here",
-                progress = y.First()
+                progress = y.Max()
             });
             var c = w.OrderByDescending(d => d.date);
             return Json(c, JsonRequestBehavior.AllowGet);
         }
 
-        /*
-        public JsonResult GetTestProgress(String name, String testId)
-        {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            Guid id = Guid.Parse(testId);
-            var t = context.TestRun.Where(z => z.Test_Id.Equals(id)
-                    && z.ThemeRun.CourseRun.User.Name.Equals(u.Name))
-                .Select(y => new
-                {
-                    id = y.Id,
-                    date = "TODO: date here",
-                    progress = y.Result,
-                    count = y.QuestionsRuns.Count()
-                });
-            var c = t.OrderByDescending(v => v.date);
-            return Json(c, JsonRequestBehavior.AllowGet);
-        }*/
 
         public JsonResult GetTestRunProgress(String name, String testRunId)
         {

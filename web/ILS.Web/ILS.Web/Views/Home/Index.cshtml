@@ -51,6 +51,9 @@
             }
         }
 
+
+    </script>
+    <script type="text/javascript">
         var img;
         var canvas;
         var frame = 0;
@@ -78,30 +81,6 @@
             img.canvas = canvas;
             img.radians = Math.PI / 180;
             canvas_rotate.call(img, 0);
-
-            var frameLoading = 0;
-            var timerLoading;
-            var framesLoading = document.getElementById("loadingContainer").children;
-            function loading() {
-                framesLoading[frameLoading].style.display = "none";
-                frameLoading++;
-                if (frameLoading == 50) {
-                    frameLoading = 0;
-                }
-                framesLoading[frameLoading].style.display = "block";
-            }
-            timerLoading = setInterval(loading, 40);
-
-            var updaterTop = -400;
-            var updaterTimer;
-            var updater = document.getElementById("updater");
-            function update() {
-                updater.style.top = updaterTop + 'px';
-                updaterTop += 3;
-                if (updaterTop > 800)
-                    updaterTop = -400;
-            }
-            updaterTimer = setInterval(update, 10);
 
             var frameVisors = 0;
             var timerVisors;
@@ -634,9 +613,9 @@
                         var string = '<div class="profileTablePane"><table>';
                         for (var prop in a.rating) {
                             string += document.getElementById('profileRatingValue').innerHTML == index + 1 ? '<tr class="profileRatingSelectedRow">' : '<tr>';
-                            string += '<td><p class="profileText">' + (index + 1) + '</p></td>';
+							string += '<td class="progressColumn"><p class="profileIndexText">' + (index + 1) + '</p></td>';
                             string += '<td><p class="profileText">' + a.rating[prop].name + '</p></td>';
-                            string += '<td><p class="profileText">' + a.rating[prop].exp + '</p></td>';
+							string += '<td class="progressColumn"><p class="profileIndexText">' + a.rating[prop].exp + '</p></td>';
                             string += '</tr>';
                             index++;
                         }
@@ -656,18 +635,27 @@
             }
         }
 
+		var coursesString;
+		var courseString;
+		var themeString;
+		var testString;
+		var testRunString;
+		
         function loadProgressCourses() {
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getCoursesProgress";
             Ext.Ajax.request({
                 url: url,
                 success: function (response, opts) {
                     var a = eval('(' + response.responseText + ')');
+					var navigation = document.getElementById('profileProgressNavigation');
+					coursesString = '<a href="javascript:loadProgressCourses()">Курсы</a>';
+					navigation.innerHTML = coursesString;
                     var container = document.getElementById('profileProgressContent');
                     var string = '<div><table>';
                     for (i = 0; i < a.length; i++) {
                         string += '<tr>';
                         string += '<td><p class="profileText"><a href="javascript:loadProgressCourse(' + "'" + a[i].id + "'" + ')">' + a[i].name + '</a></p></td>';
-                        string += '<td><p class="profileText">' + a[i].progress + '</p></td>';
+						string += '<td class="progressColumn"><p class="profileIndexText">' + a[i].progress + '</p></td>';
                         string += '</tr>';
                     }
                     string += '</table></div>';
@@ -690,12 +678,15 @@
                 url: url,
                 success: function (response, opts) {
                     var a = eval('(' + response.responseText + ')');
+					var navigation = document.getElementById('profileProgressNavigation');
+					courseString = ' -> <a href="javascript:loadProgressCourse(' + "'" + id + "'" + ')">Курс</a>';
+					navigation.innerHTML = coursesString + courseString;
                     var container = document.getElementById('profileProgressContent');
                     var string = '<div><table>';
                     for (i = 0; i < a.length; i++) {
                         string += '<tr>';
                         string += '<td><p class="profileText"><a href="javascript:loadProgressTheme(' + "'" + a[i].id + "'" + ')">' + a[i].name + '</a></p></td>';
-                        string += '<td><p class="profileText">' + a[i].progress + '</p></td>';
+						string += '<td class="progressColumn"><p class="profileIndexText">' + a[i].progress + '</p></td>';
                         string += '</tr>';
                     }
                     string += '</table></div>';
@@ -718,20 +709,23 @@
                 url: url,
                 success: function (response, opts) {
                     var a = eval('(' + response.responseText + ')');
+					var navigation = document.getElementById('profileProgressNavigation');
+					themeString = ' -> <a href="javascript:loadProgressTheme(' + "'" + id + "'" + ')">Тема</a>';
+					navigation.innerHTML = coursesString + courseString + themeString;
                     var container = document.getElementById('profileProgressContent');
                     var string = '<div><table>';
-                    string += '<tr><td colcount="2"><p class="profileText">Лекции</p></td></tr>';
+					string += '<tr><td colcount="2"><p style="margin-left: 30px;" class="profileText">Лекции</p></td></tr>';
                     for (i = 0; i < a.lectures.length; i++) {
                         string += '<tr>';
                         string += '<td><p class="profileText">' + a.lectures[i].name + '</p></td>';
-                        string += '<td><p class="profileText">' + a.lectures[i].progress + '</p></td>';
+						string += '<td class="progressColumn"><p class="profileIndexText">' + a.lectures[i].progress + '</p></td>';
                         string += '</tr>';
                     }
-                    string += '<tr><td colcount="2"><p class="profileText">Тесты</p></td></tr>';
+					string += '<tr><td colcount="2"><p style="margin-left: 30px;" class="profileText">Тесты</p></td></tr>';
                     for (i = 0; i < a.tests.length; i++) {
                         string += '<tr>';
                         string += '<td><p class="profileText"><a href="javascript:loadProgressTest(' + "'" + a.tests[i].id + "'" + ')">' + a.tests[i].name + '</a></p></td>';
-                        string += '<td><p class="profileText">' + a.tests[i].progress + '</p></td>';
+						string += '<td class="progressColumn"><p class="profileIndexText">' + a.tests[i].progress + '</p></td>';
                         string += '</tr>';
                     }
                     string += '</table></div>';
@@ -755,12 +749,14 @@
                 success: function (response, opts) {
                     var a = eval('(' + response.responseText + ')');
                     var container = document.getElementById('profileProgressContent');
-                    var container = document.getElementById('profileProgressContent');
+					var navigation = document.getElementById('profileProgressNavigation');
+					testString = ' -> <a href="javascript:loadProgressTest(' + "'" + id + "'" + ')">Тест</a>';
+					navigation.innerHTML = coursesString + courseString + themeString + testString;
                     var string = '<div><table>';
                     for (i = 0; i < a.length; i++) {
                         string += '<tr>';
                         string += '<td><p class="profileText"><a href="javascript:loadProgressTestRun(' + "'" + a[i].id + "'" + ')">' + a[i].date + '</a></p></td>';
-                        string += '<td><p class="profileText">' + a[i].progress + '</p></td>';
+						string += '<td class="progressColumn"><p class="profileIndexText">' + a[i].progress + '</p></td>';
                         string += '</tr>';
                     }
                     string += '</table></div>';
@@ -784,10 +780,13 @@
                 success: function (response, opts) {
                     var a = eval('(' + response.responseText + ')');
                     var container = document.getElementById('profileProgressContent');
+					var navigation = document.getElementById('profileProgressNavigation');
+					testRunString = ' -> <a href="javascript:loadProgressTestRun(' + "'" + id + "'" + ')">Прохождение</a>';
+					navigation.innerHTML = coursesString + courseString + themeString + testString + testRunString;
                     var string = '<div><table>';
                     for (i = 0; i < a.length; i++) {
                         string += '<tr>';
-                        string += '<td><p class="profileText">' + a[i].text.substring(0, 100) + '</p></td>';
+						string += '<td><p class="profileText">' + a[i].text.substring(0, 28) + '...</p></td>';
                         string += '</tr>';
                     }
                     string += '</table></div>';
@@ -895,56 +894,8 @@
     <div class="unityarea">
         <img id="updater" src="/Content/Sprites/black_back.png" style="display:block; position:absolute;top:0px;left:0px;">
         <div class="loading" id="loadingContainer" style="overflow:visible">
-            <img src="/Content/Sprites/loading/loading_1.png" style="display:block">
-            <img src="/Content/Sprites/loading/loading_2.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_3.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_4.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_5.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_6.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_7.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_8.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_9.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_10.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_11.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_12.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_13.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_14.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_15.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_16.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_17.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_18.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_19.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_20.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_21.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_22.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_23.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_24.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_25.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_26.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_27.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_28.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_29.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_30.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_31.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_32.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_33.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_34.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_35.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_36.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_37.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_38.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_39.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_40.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_41.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_42.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_43.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_44.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_45.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_46.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_47.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_48.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_49.png" style="display:none">
-            <img src="/Content/Sprites/loading/loading_50.png" style="display:none">
+            <img src="/ils2/Content/Sprites/loading/loading.png" class="loadingRing">
+            <img src="/ils2/Content/Sprites/loading/indicator.png" class="loadingIndicator">
             <p align="center" id="awaitingAuthorisation" style="position: absolute; top: 50px; display: block; font-size: 20px; color: #eeeeee; letter-spacing: 0.8px; line-height: 30px; font-family: Futurica; ">Ожидается авторизация пользователя</p>
             <p align="center" id="awaitingLoading" style="position: absolute; top: 80px; left: 65px; display: none; font-size: 20px; color: #eeeeee; letter-spacing: 0.8px; line-height: 30px; font-family: Futurica">Загрузка</p>
             <div id="error" style="display:none">
@@ -1157,20 +1108,21 @@
             <div id="profileSeparator" class="profileSeparator">
             </div>
             <div id="profileContent" class="profileContent">
-                <div id="profileAchievementsTab">
-                    <div id="profileAchievementsContent" class="profileAchievementsContent">
-                        <div class="profileAchievementsRows">
-                        </div>
-                        <div class="profileAchievementsShortRow">
-                        </div>
-                    </div>
-                </div>
-                <div id="profileRatingTab">
-                    <div id="profileRatingContent" class="profileRatingContent">
-
-                    </div>
-                </div>
-                <div id="profileProgressTab">
+				<div id="profileAchievementsTab">
+					<div id="profileAchievementsContent" class="profileAchievementsContent">
+						<div class="profileAchievementsRows">							
+						</div>
+						<div class="profileAchievementsShortRow">							
+						</div>
+					</div>
+				</div>
+				<div id="profileRatingTab" >
+					<div id="profileRatingContent" class="profileRatingContent">
+						
+					</div>
+				</div>
+				<div id="profileProgressTab" >
+					<div class="profileProgressNavigation"><p id="profileProgressNavigation" style="text-align:left" class="profileText"></p></div>
                     <div id="profileProgressContent" class="profileProgressContent">
 
                     </div>
