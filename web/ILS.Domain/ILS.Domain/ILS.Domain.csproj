@@ -61,6 +61,10 @@
     <Compile Include="Migrations\201503251257373_Initial.Designer.cs">
       <DependentUpon>201503251257373_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504170744333_EditAchievements.cs" />
+    <Compile Include="Migrations\201504170744333_EditAchievements.Designer.cs">
+      <DependentUpon>201504170744333_EditAchievements.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="TestGenerator\TGCountOfTaskMode.cs" />
     <Compile Include="Course.cs" />
@@ -104,6 +108,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201503251257373_Initial.resx">
       <DependentUpon>201503251257373_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504170744333_EditAchievements.resx">
+      <DependentUpon>201504170744333_EditAchievements.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
