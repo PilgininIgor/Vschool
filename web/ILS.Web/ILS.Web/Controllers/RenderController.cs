@@ -41,7 +41,7 @@
             Paragraph paragraph = context.Paragraph.First(x => x.Lecture_Id.Equals(lecture.Id));
             Question question = context.Question.First(x => x.Test_Id.Equals(test.Id));
 
-            context.CourseRun.Remove(context.CourseRun.First(x => x.User.Name.Equals(u.Name)));
+            //context.CourseRun.Remove(context.CourseRun.First(x => x.User.Name.Equals(u.Name)));
 
             CourseRun courseRun = new CourseRun();
             courseRun.Progress = 50;
