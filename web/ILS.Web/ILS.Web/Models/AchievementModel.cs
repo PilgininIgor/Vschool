@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-public class AchievementModel
+﻿public class AchievementModel
 {
     public string Name { get; set; }
     public string Description { get; set; }
