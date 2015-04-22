@@ -152,9 +152,9 @@
     <Compile Include="Controllers\AboutAdminController.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\GameAchievementsController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\AchievementsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IdeologyController.cs" />
     <Compile Include="Controllers\LinkEditorController.cs" />
@@ -1164,7 +1164,7 @@
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="Properties\PublishProfiles\ssau.ru.pubxml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\GameAchievements\Index.cshtml" />
+    <Content Include="Views\Achievements\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

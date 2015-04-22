@@ -1,17 +1,19 @@
-﻿namespace ILS.Web.Controllers
-{
-    using System;
-    using System.Linq;
-    using System.Web.Mvc;
-    using Domain;
-    using Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using ILS.Domain;
+using ILS.Web.Models;
 
+namespace ILS.Web.Controllers
+{
     [Authorize(Roles = "Admin")]
-    public class GameAchievementsController : Controller
+    public class AchievementsController : Controller
     {
         readonly ILSContext context;
 
-        public GameAchievementsController(ILSContext context)
+        public AchievementsController(ILSContext context)
         {
             this.context = context;
         }
@@ -50,20 +52,20 @@
         {
             var gameAchievementsList = context.GameAchievements.Select(achievement => new GameAchievementModel
             {
-                Name = achievement.Name, 
-                AchievementExecutor = achievement.AchievementExecutor, 
-                AdditionalParameters = achievement.AdditionalParameters, 
-                ImagePath = achievement.ImagePath, 
-                Index = achievement.Priority, 
-                Message = achievement.Message, 
-                Priority = achievement.Priority, 
+                Name = achievement.Name,
+                AchievementExecutor = achievement.AchievementExecutor,
+                AdditionalParameters = achievement.AdditionalParameters,
+                ImagePath = achievement.ImagePath,
+                Index = achievement.Priority,
+                Message = achievement.Message,
+                Priority = achievement.Priority,
                 Score = achievement.Score
             }).ToList();
-            
+
             return Json(new
             {
                 data = gameAchievementsList
-            });
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }
