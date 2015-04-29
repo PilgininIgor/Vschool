@@ -25,11 +25,18 @@ ils.gameachievements.textAdd = 'Добавить достижение';
 ils.gameachievements.alert = 'Информация';
 ils.gameachievements.alertText = 'Не выбрана ни одна строка';
 ils.gameachievements.promptRemove = 'Удаление достижения';
-ils.gameachievements.promptRemoveText = 'Вы уверены?';
+ils.gameachievements.promptRemoveText = 'Вы уверены, что хотите удалить достижение?';
+ils.gameachievements.ok = 'OK';
+ils.gameachievements.cancel = 'Отмена';
+ils.gameachievements.achievemntCreation = 'Создание достижения';
+ils.gameachievements.achievemntEdition = 'Изменение достижения';
 
 Ext.define('GameAchievementModel', {
     extend: 'Ext.data.Model',
     fields: [{
+        name: 'GameAchievementId',
+        type: 'string'
+    }, {
         name: 'Name',
         type: 'string'
     }, {
@@ -56,19 +63,18 @@ Ext.define('GameAchievementModel', {
     }]
 });
 
-ils.gameachievements.store = new Ext.data.Store({
+window.ils.gameachievements.store = new Ext.data.Store({
     extend: 'Ext.data.Store',
     autoLoad: true,
-    autoSync: true,
     model: GameAchievementModel,
     proxy: {
         type: 'ajax',
-        url: ils.gameachievements.getAchievements,
+        url: window.ils.gameachievements.getAchievements,
         api: {
-            read: ils.gameachievements.readAchievement,
-            create: ils.gameachievements.createAchievement,
-            update: ils.gameachievements.updateAchievement,
-            destroy: ils.gameachievements.deleteAchievement
+            read: window.ils.gameachievements.getAchievements,
+            create: window.ils.gameachievements.createAchievement,
+            update: window.ils.gameachievements.updateAchievement,
+            destroy: window.ils.gameachievements.deleteAchievement
         },
         reader: new Ext.data.JsonReader({
             totalProperty: 'total',
@@ -86,102 +92,132 @@ ils.gameachievements.store = new Ext.data.Store({
     }
 });
 
-ils.gameachievements.achievementProfile = new Ext.Window({
-    title: ils.gameachievements.textProfile,
-    layout: 'fit',
-//    width: 300,
-//    height: 270,
-    y: 150,
-    draggable: false,
-    plain: true,
-    border: false,
-    items: new Ext.FormPanel({
-        frame: false,
-        border: false,
-        cls: 'white-form-panel',
-        defaultType: 'textfield',
-        padding: "10 0 0 0",
-        fieldDefaults: {
-            padding: "0 10 2 10",
-            labelWidth: 100,
-            msgTarget: 'side',
-            width: 600
-        },
-        bodyStyle: { "background-color": "#FFFFFF" },
-        items: [{
-            fieldLabel: ils.gameachievements.textName,
-            xtype: 'textfield',
-            name: 'Name',
-            id: 'Name',
-            y: 5,
-            x: 5
-        }, {
-            fieldLabel: ils.gameachievements.textImagePath,
-            xtype: 'textfield',
-            name: 'ImagePath',
-            id: 'ImagePath',
-            y: 5,
-            x: 5
-        }, {
-            fieldLabel: ils.gameachievements.textMessage,
-            xtype: 'textfield',
-            name: 'Message',
-            id: 'Message',
-            y: 5,
-            x: 5
-        }, {
-            fieldLabel: ils.gameachievements.textIndex,
-            xtype: 'textfield',
-            name: 'Index',
-            id: 'Index',
-            y: 5,
-            x: 5
-        }, {
-            fieldLabel: ils.gameachievements.textPriority,
-            xtype: 'textfield',
-            name: 'Priority',
-            id: 'Priority',
-            y: 5,
-            x: 5
-        }, {
-            fieldLabel: ils.gameachievements.textScore,
-            xtype: 'textfield',
-            name: 'Score',
-            id: 'Score',
-            y: 5,
-            x: 5
-        }, {
-            fieldLabel: ils.gameachievements.textAdditionalParameters,
-            xtype: 'textfield',
-            name: 'AdditionalParameters',
-            id: 'AdditionalParameters',
-            y: 5,
-            x: 5
-        }, {
-            fieldLabel: ils.gameachievements.textAchievementExecutor,
-            xtype: 'textfield',
-            name: 'AchievementExecutor',
-            id: 'AchievementExecutor',
-            y: 5,
-            x: 5
-        }, {
-            fieldLabel: 'OK',
-            name: 'update',
-            xtype: 'button',
-            y: 5,
-            x: 235,
-            width: 45,
-            value: 'OK',
-            text: 'OK'
-        }]
-    })
-});
+function createAchievementProfileWindow(isCreate) {
+    var title, buttons;
+    if (isCreate) {
+        title = window.ils.gameachievements.achievemntCreation;
+        buttons = [
+            {
+                text: window.ils.gameachievements.ok,
+                formBind: false,
+                handler: function() {
+                    var profileItem = achievementProfile.items.items[0];
+                    var newItem =
+					{
+					    Name: profileItem.getComponent('Name').getValue(),
+					    ImagePath: profileItem.getComponent('ImagePath').getValue(),
+					    Message: profileItem.getComponent('Message').getValue()
+					};
 
-ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
-    store: ils.gameachievements.store,
+                    window.ils.gameachievements.store.add(newItem);
+                    window.ils.gameachievements.store.sync();
+                    window.ils.gameachievements.store.reload();
+                    achievementProfile.close();
+                }
+
+            }, {
+                text: window.ils.gameachievements.cancel,
+                formBind: false,
+                handler: function() {
+                    achievementProfile.close();
+                }
+            }
+        ];
+    } else {
+        title = window.ils.gameachievements.achievemntEdition;
+        buttons = [
+            {
+                text: window.ils.gameachievements.ok,
+                formBind: false,
+                handler: function () {
+                    achievementProfile.close();
+                }
+            }, {
+                text: window.ils.gameachievements.cancel,
+                formBind: false,
+                handler: function () {
+                    achievementProfile.close();
+                }
+            }
+        ];
+    }
+
+    var achievementProfile = new Ext.Window({
+        title: title,
+        layout: 'fit',
+        width: 440,
+        height: 360,
+        y: 150,
+        modal: true,
+        dragable: true,
+        plain: true,
+        resizable: false,
+        border: false,
+        items: new Ext.FormPanel({
+            frame: false,
+            border: false,
+            cls: 'white-form-panel',
+            defaultType: 'textfield',
+            padding: "10 0 0 0",
+            fieldDefaults: {
+                padding: "0 10 2 10",
+                labelWidth: 100,
+                msgTarget: 'side',
+                width: 430
+            },
+            bodyStyle: { "background-color": "#FFFFFF" },
+            items: [{
+                fieldLabel: window.ils.gameachievements.textName,
+                xtype: 'textfield',
+                name: 'Name',
+                id: 'Name'
+            }, {
+                fieldLabel: window.ils.gameachievements.textImagePath,
+                xtype: 'textfield',
+                name: 'ImagePath',
+                id: 'ImagePath'
+            }, {
+                fieldLabel: window.ils.gameachievements.textMessage,
+                xtype: 'textfield',
+                name: 'Message',
+                id: 'Message'
+            }, {
+                fieldLabel: window.ils.gameachievements.textIndex,
+                xtype: 'textfield',
+                name: 'Index',
+                id: 'Index'
+            }, {
+                fieldLabel: window.ils.gameachievements.textPriority,
+                xtype: 'textfield',
+                name: 'Priority',
+                id: 'Priority'
+            }, {
+                fieldLabel: window.ils.gameachievements.textScore,
+                xtype: 'textfield',
+                name: 'Score',
+                id: 'Score'
+            }, {
+                fieldLabel: window.ils.gameachievements.textAdditionalParameters,
+                xtype: 'textfield',
+                name: 'AdditionalParameters',
+                id: 'AdditionalParameters'
+            }, {
+                fieldLabel: window.ils.gameachievements.textAchievementExecutor,
+                xtype: 'textfield',
+                name: 'AchievementExecutor',
+                id: 'AchievementExecutor'
+            }],
+            buttons: buttons
+        })
+    });
+
+    achievementProfile.show();
+}
+window.ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
+    store: window.ils.gameachievements.store,
     columns: [
     {
-        header: ils.gameachievements.textName,
+        header: window.ils.gameachievements.textName,
         dataIndex: 'Name',
         width: 150,
         sortable: true,
@@ -190,7 +226,7 @@ ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             allowBlank: false
         }
     }, {
-        header: ils.gameachievements.textImagePath,
+        header: window.ils.gameachievements.textImagePath,
         dataIndex: 'ImagePath',
         width: 150,
         sortable: true,
@@ -199,7 +235,7 @@ ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             allowBlank: false
         }
     }, {
-        header: ils.gameachievements.textMessage,
+        header: window.ils.gameachievements.textMessage,
         dataIndex: 'Message',
         width: 150,
         sortable: true,
@@ -208,7 +244,7 @@ ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             allowBlank: false
         }
     }, {
-        header: ils.gameachievements.textIndex,
+        header: window.ils.gameachievements.textIndex,
         dataIndex: 'Index',
         width: 250,
         sortable: true,
@@ -217,7 +253,7 @@ ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             allowBlank: false
         }
     }, {
-        header: ils.gameachievements.textPriority,
+        header: window.ils.gameachievements.textPriority,
         dataIndex: 'Priority',
         width: 250,
         sortable: true,
@@ -226,7 +262,7 @@ ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             allowBlank: false
         }
     }, {
-        header: ils.gameachievements.textScore,
+        header: window.ils.gameachievements.textScore,
         dataIndex: 'Score',
         width: 250,
         sortable: true,
@@ -235,7 +271,7 @@ ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             allowBlank: false
         }
     }, {
-        header: ils.gameachievements.textAdditionalParameters,
+        header: window.ils.gameachievements.textAdditionalParameters,
         dataIndex: 'AdditionalParameters',
         width: 250,
         sortable: true,
@@ -244,7 +280,7 @@ ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             allowBlank: false
         }
     }, {
-        header: ils.gameachievements.textAchievementExecutor,
+        header: window.ils.gameachievements.textAchievementExecutor,
         dataIndex: 'AchievementExecutor',
         width: 250,
         sortable: true,
@@ -258,19 +294,18 @@ ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             var grid = this;
             var s = grid.getSelectionModel().getSelection();
             if (!s.length) {
-                Ext.Msg.alert(ils.gameachievements.alert, ils.gameachievements.alertText);
+                Ext.Msg.alert(window.ils.gameachievements.alert, window.ils.gameachievements.alertText);
                 return;
             }
             var index = grid.store.indexOf(s[0]);
             Ext.Ajax.request({
-                url: document.location.href + '/ReadAchievement',
+                url: window.ils.gameachievements.getAchievements,
                 success: function (response, opts) {
                     var a = eval('(' + response.responseText + ')');
-                    ils.gameachievements.achievementProfile.show();
+                    createAchievementProfileWindow();
                 },
                 jsonData: {
-                    'login': ils.gameachievements.store.data.items[index].data.Name
-
+                    'login': window.ils.gameachievements.store.data.items[index].data.Name
                 }
             });
 
@@ -279,15 +314,13 @@ ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
 });
 
 Ext.onReady(function () {
-    ils.gameachievements.layout = new Ext.Panel({
-        title: ils.gameachievements.gridName,
+    window.ils.gameachievements.layout = new Ext.Panel({
+        title: window.ils.gameachievements.gridName,
         layout: 'fit',
         layoutConfig: {
             columns: 1
         },
-        width: 600,
-        height: 600,
-        items: [ils.gameachievements.achievementGrid],
+        items: [window.ils.gameachievements.achievementGrid],
         dockedItems: [
             new Ext.panel.Panel({
                 bodyStyle: { "background-color": "#157fcc" },
@@ -297,26 +330,27 @@ Ext.onReady(function () {
                 },
                 items: [{
                     xtype: 'button',
-                    iconCls: 'add',
-                    text: ils.gameachievements.textAdd,
-                    handler: function () {
-                        ils.gameachievements.achievementProfile.show();
-                    }                            
+                        iconCls: 'add',
+                        text: window.ils.gameachievements.textAdd,
+                        handler: function () {
+                            createAchievementProfileWindow(true);
+                        }                            
                     }, {
                         xtype: 'button',
                         ref: '../removeBtn',
                         iconCls: 'remove',
-                        text: ils.gameachievements.textRemove,
+                        text: window.ils.gameachievements.textRemove,
                         handler: function () {
-                            var grid = this.up('grid');
-                            var s = grid.getSelectionModel().getSelection();
-                            if (!s.length) {
-                                Ext.Msg.alert(ils.gameachievements.alert, ils.gameachievements.alertText);
+                            var selection = window.ils.gameachievements.achievementGrid.getSelectionModel().getSelection();
+                            if (!selection.length) {
+                                Ext.Msg.alert(window.ils.gameachievements.alert, window.ils.gameachievements.alertText);
                                 return;
                             }
-                            Ext.Msg.confirm(ils.gameachievements.promptRemove, ils.gameachievements.promptRemoveText, function (button) {
+                            Ext.Msg.confirm(window.ils.gameachievements.promptRemove, window.ils.gameachievements.promptRemoveText, function (button) {
                                 if (button == 'yes') {
-                                    ils.gameachievements.store.remove(s[0]);
+                                    window.ils.gameachievements.store.remove(selection[0]);
+                                    window.ils.gameachievements.store.sync();
+                                    window.ils.gameachievements.store.reload();
                                 }
                             });
                         }
@@ -325,6 +359,6 @@ Ext.onReady(function () {
         ]
     });
 
-    renderToMainArea(ils.gameachievements.layout);
+    renderToMainArea(window.ils.gameachievements.layout);
 
 });

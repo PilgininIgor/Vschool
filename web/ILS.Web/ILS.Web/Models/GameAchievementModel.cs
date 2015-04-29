@@ -1,7 +1,10 @@
 ﻿namespace ILS.Web.Models
 {
+    using System;
+
     public class GameAchievementModel
     {
+        public Guid GameAchievementId { get; set; }
         public string Name { get; set; }
         public string ImagePath { get; set; }
         public string Message { get; set; }

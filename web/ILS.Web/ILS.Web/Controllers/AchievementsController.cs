@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ILS.Domain;
+using ILS.Domain.GameAchievements;
 using ILS.Web.Models;
 
 namespace ILS.Web.Controllers
@@ -30,21 +31,36 @@ namespace ILS.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult CreateGameAchievement()
+        public void CreateGameAchievement(GameAchievementModel gameAchievementModel)
+        {
+            context.GameAchievements.Add(new GameAchievement
+            {
+//               AchievementAwardType = gameAchievementModel.AchievementAwardType,
+                AchievementExecutor = gameAchievementModel.AchievementExecutor,
+//               AchievementTrigger = gameAchievementModel.AchievementTrigger,
+                AdditionalParameters = gameAchievementModel.AdditionalParameters,
+                ImagePath = gameAchievementModel.ImagePath,
+                Index = gameAchievementModel.Index,
+                Message = gameAchievementModel.Message,
+                Name = gameAchievementModel.Name,
+                Priority = gameAchievementModel.Priority,
+                Score = gameAchievementModel.Score,
+            });
+            context.SaveChanges();
+        }
+
+        [HttpPost]
+        public JsonResult UpdateGameAchievement(GameAchievementModel gameAchievementModel)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost]
-        public JsonResult UpdateGameAchievement()
+        public void DeleteGameAchievement(GameAchievementModel gameAchievementModel)
         {
-            throw new NotImplementedException();
-        }
-
-        [HttpPost]
-        public JsonResult DeleteGameAchievement()
-        {
-            throw new NotImplementedException();
+            GameAchievement achievementToDelete = context.GameAchievements.Find(gameAchievementModel.GameAchievementId);
+            context.GameAchievements.Remove(achievementToDelete);
+            context.SaveChanges();
         }
 
         [HttpGet]
@@ -52,6 +68,7 @@ namespace ILS.Web.Controllers
         {
             var gameAchievementsList = context.GameAchievements.Select(achievement => new GameAchievementModel
             {
+                GameAchievementId = achievement.Id,  
                 Name = achievement.Name,
                 AchievementExecutor = achievement.AchievementExecutor,
                 AdditionalParameters = achievement.AdditionalParameters,
