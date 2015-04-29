@@ -104,17 +104,6 @@
                     demo_game();
             }
 
-            //stuff from contacts
-            var framePointer = 1;
-            var pointer = document.getElementById("pointer");
-            function point() {
-                pointer.style.opacity = framePointer;
-                framePointer -= 0.05;
-                if (framePointer < 0.3)
-                    framePointer = 1;
-            }
-            var timerPointer = setInterval(point, 100);
-
             var frameDots = 0;
             var timerDots;
             var framesDots = document.getElementById("dotsContainer").children;
@@ -820,6 +809,27 @@
                         document.getElementById('profileProgressValue').innerHTML = a.model.Progress + '%';
                         document.getElementById('profileRatingValue').innerHTML = a.model.Rating + 1;
                         var container = document.getElementById('profileAchievementsContent');
+						if (a.model.Achievements.length == a.model.AchievementsCount) {
+							alert('ag');
+							document.getElementById('profileAchievements').style.backgroundImage = 'url(content/sprites/profile/achievements_gold.png)';
+						}
+						if (a.model.Progress == 100) {
+							alert('pg');
+							document.getElementById('profileProgress').style.backgroundImage = 'url(content/sprites/profile/progress_gold.png)';
+						} else if (a.model.Progress >= 75) {
+							alert('ps');
+							document.getElementById('profileProgress').style.backgroundImage = 'url(content/sprites/profile/progress_silver.png)';
+						} else if (a.model.Progress >= 50) {
+							alert('pc');
+							document.getElementById('profileProgress').style.backgroundImage = 'url(content/sprites/profile/progress_copper.png)';
+						}
+						if (a.model.Rating < 5) {
+							alert('rg');
+							document.getElementById('profileRating').style.backgroundImage = 'url(content/sprites/profile/rating_gold.png)';
+						} else if (a.model.Rating < 10) {
+							alert('rs');
+							document.getElementById('profileRating').style.backgroundImage = 'url(content/sprites/profile/rating_silver.png)';
+						}
                         for (var prop in a.model.Achievements) {
                             if (a.model.Achievements.hasOwnProperty(prop)) {
                                 if (prop < 16) {
@@ -892,7 +902,7 @@
 @section renderArea{
 
     <div class="unityarea">
-        <img id="updater" src="/Content/Sprites/black_back.png" style="display:block; position:absolute;top:0px;left:0px;">
+        <img id="updater" src="/Content/Sprites/black_back.png" class="updater">
         <div class="loading" id="loadingContainer" style="overflow:visible">
             <img src="/Content/Sprites/loading/loading.png" class="loadingRing">
             <img src="/Content/Sprites/loading/indicator.png" class="loadingIndicator">
@@ -927,7 +937,7 @@
         </div>
         <div id="contactsContainer" style="width: 809px; height: 400px; position: static; display:none">
             <img src="/Content/Sprites/contacts_back.png" style="display:block; position:absolute;top:0px;left:0px;">
-            <img id="pointer" src="/Content/Sprites/contacts_pointer.jpg" style="display:block; position:absolute;top:200px;left:460px;">
+            <img id="pointer" class="pointer" src="/Content/Sprites/contacts_pointer.jpg">
             <img src="/Content/Sprites/logo.png" class="logo">
 
             <div class="headerareaContacts">

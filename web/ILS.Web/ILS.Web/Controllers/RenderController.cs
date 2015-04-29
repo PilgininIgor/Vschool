@@ -96,7 +96,17 @@
             model.Name = u.FirstName + " " + u.LastName;
             model.Email = u.Email;
             model.Money = u.Coins;
-            model.Progress = 23; //TODO: load progress
+            double progress = 0;
+            List<CourseRun> courses = context.CourseRun.Where(z => z.User.Name.Equals(u.Name)).ToList();
+            foreach (CourseRun run in courses)
+            {
+                progress += run.Progress;
+            }
+            if (courses.Count != 0)
+            {
+                progress /= courses.Count;
+            }
+            model.Progress = (int) progress; 
             List<User> users = context.User.OrderByDescending(x => x.Coins).ToList();
             int rating = users.IndexOf(u);
             model.Rating = rating;
@@ -107,6 +117,7 @@
                 achievements.Add(run.GameAchievement.Index.ToString(), run.GameAchievement.ImagePath);
             }
             model.Achievements = achievements;
+            model.AnchevementsCount = context.GameAchievements.Count();
             return Json(new
             {
                 model
