@@ -84,6 +84,7 @@
 	position: absolute;
 	background: url(sprites/profile/progress.png) no-repeat;
 	left: 382px;
+	cursor: pointer;
 }
 .profileProgressValue{
 	width: 130px; 
@@ -103,6 +104,7 @@
 	position: absolute;
 	background: url(sprites/profile/rating.png) no-repeat;
 	left: 550px;
+	cursor: pointer;
 }
 .profileRatingValue{
 	width: 130px; 
@@ -122,6 +124,7 @@
 	position: absolute;
 	background: url(sprites/profile/achievements.png) no-repeat;
 	left: 719px;
+	cursor: pointer;
 }
 .profileMinimize {
 	width: 50px; 

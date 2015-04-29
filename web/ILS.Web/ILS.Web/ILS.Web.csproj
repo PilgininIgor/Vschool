@@ -330,19 +330,6 @@
     <Content Include="Content\Sprites\credentials - копия.png" />
     <Content Include="Content\Sprites\credentials.png" />
     <Content Include="Content\Sprites\credentials_ia.png" />
-    <Content Include="Content\Sprites\demo\demo_1.png" />
-    <Content Include="Content\Sprites\demo\demo_10.png" />
-    <Content Include="Content\Sprites\demo\demo_11.png" />
-    <Content Include="Content\Sprites\demo\demo_12.png" />
-    <Content Include="Content\Sprites\demo\demo_2.png" />
-    <Content Include="Content\Sprites\demo\demo_3.png" />
-    <Content Include="Content\Sprites\demo\demo_4.png" />
-    <Content Include="Content\Sprites\demo\demo_5.png" />
-    <Content Include="Content\Sprites\demo\demo_6.png" />
-    <Content Include="Content\Sprites\demo\demo_7.png" />
-    <Content Include="Content\Sprites\demo\demo_8.png" />
-    <Content Include="Content\Sprites\demo\demo_9.png" />
-    <Content Include="Content\Sprites\demo\temp.png" />
     <Content Include="Content\Sprites\demo_screenshots\demo_1.png" />
     <Content Include="Content\Sprites\demo_screenshots\demo_2.png" />
     <Content Include="Content\Sprites\demo_screenshots\demo_3.png" />
@@ -438,30 +425,6 @@
     <Content Include="Content\Sprites\moodle.jpg" />
     <Content Include="Content\Sprites\page_main.png" />
     <Content Include="Content\Sprites\play.png" />
-    <Content Include="Content\Sprites\play\noblink\play_1.png" />
-    <Content Include="Content\Sprites\play\noblink\play_10.png" />
-    <Content Include="Content\Sprites\play\noblink\play_11.png" />
-    <Content Include="Content\Sprites\play\noblink\play_12.png" />
-    <Content Include="Content\Sprites\play\noblink\play_2.png" />
-    <Content Include="Content\Sprites\play\noblink\play_3.png" />
-    <Content Include="Content\Sprites\play\noblink\play_4.png" />
-    <Content Include="Content\Sprites\play\noblink\play_5.png" />
-    <Content Include="Content\Sprites\play\noblink\play_6.png" />
-    <Content Include="Content\Sprites\play\noblink\play_7.png" />
-    <Content Include="Content\Sprites\play\noblink\play_8.png" />
-    <Content Include="Content\Sprites\play\noblink\play_9.png" />
-    <Content Include="Content\Sprites\play\play_1.png" />
-    <Content Include="Content\Sprites\play\play_10.png" />
-    <Content Include="Content\Sprites\play\play_11.png" />
-    <Content Include="Content\Sprites\play\play_12.png" />
-    <Content Include="Content\Sprites\play\play_2.png" />
-    <Content Include="Content\Sprites\play\play_3.png" />
-    <Content Include="Content\Sprites\play\play_4.png" />
-    <Content Include="Content\Sprites\play\play_5.png" />
-    <Content Include="Content\Sprites\play\play_6.png" />
-    <Content Include="Content\Sprites\play\play_7.png" />
-    <Content Include="Content\Sprites\play\play_8.png" />
-    <Content Include="Content\Sprites\play\play_9.png" />
     <Content Include="Content\Sprites\point_a.png" />
     <Content Include="Content\Sprites\point_ia.png" />
     <Content Include="Content\Sprites\profile\achievement1.png" />
@@ -560,19 +523,6 @@
     <Content Include="Content\Sprites\slider_right_a.png" />
     <Content Include="Content\Sprites\slider_right_ia.png" />
     <Content Include="Content\Sprites\slider_screen_frame.png" />
-    <Content Include="Content\Sprites\video\demo_1.png" />
-    <Content Include="Content\Sprites\video\demo_10.png" />
-    <Content Include="Content\Sprites\video\demo_11.png" />
-    <Content Include="Content\Sprites\video\demo_12.png" />
-    <Content Include="Content\Sprites\video\demo_2.png" />
-    <Content Include="Content\Sprites\video\demo_3.png" />
-    <Content Include="Content\Sprites\video\demo_4.png" />
-    <Content Include="Content\Sprites\video\demo_5.png" />
-    <Content Include="Content\Sprites\video\demo_6.png" />
-    <Content Include="Content\Sprites\video\demo_7.png" />
-    <Content Include="Content\Sprites\video\demo_8.png" />
-    <Content Include="Content\Sprites\video\demo_9.png" />
-    <Content Include="Content\Sprites\video\temp.png" />
     <Content Include="Content\Sprites\video_screenshots\video_1.png" />
     <Content Include="Content\Sprites\video_screenshots\video_2.png" />
     <Content Include="Content\Sprites\video_screenshots\video_3.png" />
@@ -1094,7 +1044,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Sprites\logo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

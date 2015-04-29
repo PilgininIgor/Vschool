@@ -55,43 +55,42 @@
 }
 
 .updater {
-display:block; 
-position:absolute;
-top:-400px;
-left:0px;	
-animation-duration: 4s;
-animation-iteration-count: infinite;
-animation-name: updaterAnimation;
-animation-timing-function: linear;
--webkit-animation-duration: 4s;
--webkit-animation-iteration-count: infinite;
--webkit-animation-name: updaterAnimation;
--webkit-animation-timing-function: linear;
+	display:block; 
+	position:absolute;
+	top:-400px;
+	left:0px;	
+	animation-duration: 4s;
+	animation-iteration-count: infinite;
+	animation-name: updaterAnimation;
+	animation-timing-function: linear;
+	-webkit-animation-duration: 4s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-name: updaterAnimation;
+	-webkit-animation-timing-function: linear;
 }
 
 @keyframes updaterAnimation {
 	0%  	{top: -400px;}
-	100% 	{top: 800px}
+	100% 	{top: 800px;}
 }
 
 @-webkit-keyframes updaterAnimation {
 	0%  	{top: -400px;}
-	100% 	{top: 800px}
+	100% 	{top: 800px;}
 }
 
 .loadingIndicator {
-width: 230px;
-height: 230px;
-position: absolute;
-animation-duration: 2s;
-animation-iteration-count: infinite;
-animation-name: loadingIndicatorAnimation;
-animation-timing-function: linear;
--webkit-animation-duration: 2s;
--webkit-animation-iteration-count: infinite;
--webkit-animation-name: loadingIndicatorAnimation;
--webkit-animation-timing-function: linear;
-
+	width: 230px;
+	height: 230px;
+	position: absolute;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+	animation-name: loadingIndicatorAnimation;
+	animation-timing-function: linear;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-name: loadingIndicatorAnimation;
+	-webkit-animation-timing-function: linear;
 }
 
 .loadingRing {
@@ -146,4 +145,29 @@ animation-timing-function: linear;
     top: 25px;
     position: absolute;
     left: 155px;
+}
+
+.pointer {
+	display:block; 
+	position:absolute;
+	top:200px;
+	left:460px;
+	animation-duration: 1.4s;
+	animation-iteration-count: infinite;
+	animation-name: pointerAnimation;
+	animation-timing-function: linear;
+    -webkit-animation-duration: 0.7s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-name: pointerAnimation;
+	-webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes pointerAnimation {
+	0%  	{opacity: 1;}
+	100% 	{opacity: 0.3;}
+}
+
+@keyframes pointerAnimation {
+	0%  	{opacity: 1;}
+	100% 	{opacity: 0.3;}
 }
