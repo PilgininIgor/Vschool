@@ -10,8 +10,8 @@
         public string Message { get; set; }
         public int Index { get; set; }
         public int Priority { get; set; }
-//    public int AchievementTrigger { get; set; }
-//    public int AchievementAwardType { get; set; }
+        public string AchievementTrigger { get; set; }
+        public string AchievementAwardType { get; set; }
         public int Score { get; set; }
         public string AdditionalParameters { get; set; }
         public string AchievementExecutor { get; set; }
@@ -31,6 +31,17 @@
 
         public GameAchievementModel()
         {
+            //Nothing to do here
+        }
+
+        public Domain.GameAchievements.AchievementTrigger GetAchievementTriggerAsEnum()
+        {
+            return Domain.GameAchievements.AchievementTrigger.Game;
+        }
+
+        public Domain.GameAchievements.AchievementAwardType GetAchievementAwardTypeAsEnum()
+        {
+            return Domain.GameAchievements.AchievementAwardType.Coins;
         }
     }
 }

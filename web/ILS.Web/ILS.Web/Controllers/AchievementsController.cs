@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using ILS.Domain;
 using ILS.Domain.GameAchievements;
 using ILS.Web.Models;
@@ -50,15 +51,24 @@ namespace ILS.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateGameAchievement(GameAchievementModel gameAchievementModel)
+        public void UpdateGameAchievement(GameAchievementModel gameAchievementModel)
         {
-            throw new NotImplementedException();
+            var achievementToUpdate = context.GameAchievements.Find(gameAchievementModel.GameAchievementId);
+            achievementToUpdate.Name = gameAchievementModel.Name;
+            achievementToUpdate.AchievementExecutor = gameAchievementModel.AchievementExecutor;
+            achievementToUpdate.AdditionalParameters = gameAchievementModel.AdditionalParameters;
+            achievementToUpdate.ImagePath = gameAchievementModel.ImagePath;
+            achievementToUpdate.Index = gameAchievementModel.Priority;
+            achievementToUpdate.Message = gameAchievementModel.Message;
+            achievementToUpdate.Priority = gameAchievementModel.Priority;
+            achievementToUpdate.Score = gameAchievementModel.Score;
+            context.SaveChanges();
         }
 
         [HttpPost]
         public void DeleteGameAchievement(GameAchievementModel gameAchievementModel)
         {
-            GameAchievement achievementToDelete = context.GameAchievements.Find(gameAchievementModel.GameAchievementId);
+            var achievementToDelete = context.GameAchievements.Find(gameAchievementModel.GameAchievementId);
             context.GameAchievements.Remove(achievementToDelete);
             context.SaveChanges();
         }
