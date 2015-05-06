@@ -10,7 +10,7 @@ public class TeleportScript : MonoBehaviour
     //ссылка на будку-соседа (ее для всех будок задаст конструктор BootstrapParser.cs)
     public GameObject Destination;
 
-    GameObject //ссылка на персонажа
+    public GameObject //ссылка на персонажа
     Player;
 
     //телепортация начинается по заходу персонажа в триггер - вот только и в будке-получателе есть такой же триггер,

@@ -23,6 +23,8 @@ public class PhotonGame : Photon.MonoBehaviour
 
     public Transform SpawnPlace;
 
+    public Transform HubLoadingScreen;
+
     public string nameOfAvatar;
 
     public void Awake()
@@ -59,6 +61,13 @@ public class PhotonGame : Photon.MonoBehaviour
         Camera.main.GetComponent<OrbitCam>().player = instantiatedPlayer;
 
 		Camera.main.GetComponent<CNCameraFollow>().targetObject = instantiatedPlayer.transform;
+
+    }
+
+    public void onStart()
+    {
+        string id = PlayerPrefs.GetString(PhotonMenu.CourseID);
+        HubLoadingScreen.GetComponent<CourseSelection>().LoadCourseData(id);
     }
 
     public void OnGUI()

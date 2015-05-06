@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using JsonFx.Json;
 
 public class CourseSelection : MonoBehaviour
 {
-    class CoursesNamesList
+    public class CoursesNamesList
     {
         public List<CourseName> coursesNames;
     }
@@ -47,7 +48,7 @@ public class CourseSelection : MonoBehaviour
     void Start()
     {
         StandCam.enabled = false; StandCam.GetComponent<AudioListener>().enabled = false;
-        httpConnector = GameObject.Find("Bootstrap").AddComponent<HttpConnector>();
+        httpConnector = GameObject.Find("Bootstrap").GetComponent<HttpConnector>();
     }
 
     void ZoomIn()
@@ -85,7 +86,7 @@ public class CourseSelection : MonoBehaviour
 
     public void CourseDisplay(string JSONStringFromServer)
     {
-        CoursesNamesList res = JsonFx.Json.JsonReader.Deserialize<CoursesNamesList>(JSONStringFromServer);
+        CoursesNamesList res = JsonReader.Deserialize<CoursesNamesList>(JSONStringFromServer);
         cl = res.coursesNames;
         i = 1;
         transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
@@ -120,11 +121,6 @@ public class CourseSelection : MonoBehaviour
                 //БОЛЬШОЙ РУБИЛЬНИК
                 //Application.ExternalCall("LoadCourseData", cl[i-1].id);			
                 LoadCourseData(cl[i - 1].id);
-
-                dieSignals.SendSignals(this);
-                this.renderer.material = NewScreen;
-                transform.parent.transform.Find("UnlockPipe").renderer.material = NewPipe;
-                escape_visible = false; data_loaded = false; //ZoomOut();
             }
             var hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
             var wUnit = Mathf.RoundToInt(Screen.width * DefaultSkin.LayoutScale);
@@ -152,21 +148,27 @@ public class CourseSelection : MonoBehaviour
     void OnTriggerEnter(Collider other) { hint_visible = true; }
     void OnTriggerExit(Collider other) { hint_visible = false; }
 
-    void LoadCourseData(string id)
+    public void LoadCourseData(string id)
     {
         var parameters = new Dictionary<string, string>();
         parameters["id"] = id;
+        if (httpConnector == null)
+            httpConnector = GameObject.Find("Bootstrap").GetComponent<HttpConnector>();
         httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CourseDataUrl, parameters, www =>
         {
             BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
             bootstrapParser.CourseConstructor(www.text);
+			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.StatUrl, parameters, w =>
+			{
+				StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
+				statisticParser.StatisticDisplay(w.text);
+				ZoomOut();
+			});
         });
-
-        httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.StatUrl, parameters, www =>
-        {
-            StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
-            statisticParser.StatisticDisplay(www.text); 
-        });
+        dieSignals.SendSignals(this);
+        this.renderer.material = NewScreen;
+        transform.parent.transform.Find("UnlockPipe").renderer.material = NewPipe;
+        escape_visible = false; data_loaded = false; //ZoomOut();
     }
 
     void Update()
@@ -193,11 +195,6 @@ public class CourseSelection : MonoBehaviour
             //БОЛЬШОЙ РУБИЛЬНИК
             //Application.ExternalCall("LoadCourseData", cl[i-1].id);
             LoadCourseData(cl[i - 1].id);
-
-            dieSignals.SendSignals(this);
-            this.renderer.material = NewScreen;
-            transform.parent.transform.Find("UnlockPipe").renderer.material = NewPipe;
-            escape_visible = false; data_loaded = false; //ZoomOut();
         }
     }
 }

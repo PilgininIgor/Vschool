@@ -5,6 +5,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using JsonFx.Json;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,12 +24,28 @@ public class PhotonMenu : MonoBehaviour
 
     public static readonly string SceneNameGame = "world";
 
+    public const string PlayerName = "playerName";
+    public const string CourseID = "courseID";
+
     private string userName = Strings.Get("Guest");
+
+    private const int dlgWidth = 450, dlgheight = 300, dlgPadding = 5;
+
+    private HttpConnector httpConnector;
+
+    private List<CourseSelection.CourseName> coursesNames;
+    private bool isDataLoaded;
+    private GUIContent[] comboBoxList;
+    private ComboBox comboBoxControl = new ComboBox();
+    public GUIStyle listStyle;
 
     public void Awake()
     {
+        httpConnector = GameObject.Find("_Customization").GetComponent<HttpConnector>();
         //TODO get name from server
         userName = "Student";
+        GetUserFromServer();
+        LoadCoursesList();
 
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
         PhotonNetwork.automaticallySyncScene = true;
@@ -41,133 +60,149 @@ public class PhotonMenu : MonoBehaviour
         // generate a name for this player, if none is assigned yet
         if (String.IsNullOrEmpty(PhotonNetwork.playerName))
         {
-			PhotonNetwork.playerName = userName + " " + Random.Range(1, 9999);
+            PhotonNetwork.playerName = userName + " " + Random.Range(1, 9999);
         }
 
         // if you wanted more debug out, turn this on:
         // PhotonNetwork.logLevel = NetworkLogLevel.Full;
     }
 
-    void GetUserFromServer(string JSONStringFromServer)
+    void GetUserFromServer()
     {
-        Debug.Log("JSON UserName " + JSONStringFromServer);
-        userName = JsonFx.Json.JsonReader.Deserialize<String>(JSONStringFromServer);
+        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUsernameUrl, www =>
+        {
+            PhotonNetwork.playerName = JsonReader.Deserialize<String>(www.text);
+        });
+    }
+
+    public void LoadCoursesList()
+    {
+        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.UnityListUrl, www =>
+        {
+            var res = JsonReader.Deserialize<CourseSelection.CoursesNamesList>(www.text);
+            coursesNames = res.coursesNames;
+            comboBoxList = coursesNames.Select(c => new GUIContent(c.name)).ToArray();
+            isDataLoaded = true;
+        });
     }
 
     public void OnGUI()
     {
+        GUI.skin.box.fontStyle = FontStyle.Bold;
+        GUI.Box(new Rect((Screen.width - dlgWidth) / 2 - dlgPadding, (Screen.height - dlgheight) / 2 - dlgPadding, dlgWidth + dlgPadding, dlgheight + dlgPadding), Strings.Get("Join or Create a Course"));
+        GUILayout.BeginArea(new Rect((Screen.width - dlgWidth) / 2, (Screen.height - dlgheight) / 2, dlgWidth, dlgheight));
+
+        GUILayout.FlexibleSpace();
+
         if (!PhotonNetwork.connected)
         {
+            GUILayout.BeginHorizontal();
             if (PhotonNetwork.connecting)
             {
-                GUILayout.Label("Connecting to: " + PhotonNetwork.ServerAddress);
+                GUILayout.Label("Connecting to: " + PhotonNetwork.ServerAddress, GUILayout.Width(dlgWidth * 3 / 4));
             }
             else
             {
-                GUILayout.Label("Not connected. Check console output. Detailed connection state: " + PhotonNetwork.connectionStateDetailed + " Server: " + PhotonNetwork.ServerAddress);
+                GUILayout.Label("Not connected. Check console output. Detailed connection state: " + PhotonNetwork.connectionStateDetailed + " Server: " + PhotonNetwork.ServerAddress, GUILayout.Width(dlgWidth * 3 / 4));
             }
-            
-            if (this.connectFailed)
+
+            if (connectFailed)
             {
-                GUILayout.Label("Connection failed. Check setup and use Setup Wizard to fix configuration.");
-                GUILayout.Label(String.Format("Server: {0}", new object[] {PhotonNetwork.ServerAddress}));
-                GUILayout.Label("AppId: " + PhotonNetwork.PhotonServerSettings.AppID);
-                
-                if (GUILayout.Button(Strings.Get("Try Again"), GUILayout.Width(100)))
+                GUILayout.Label("Connection failed. Check setup and use Setup Wizard to fix configuration.", GUILayout.Width(dlgWidth * 3 / 4));
+                GUILayout.Label(String.Format("Server: {0}", new object[] { PhotonNetwork.ServerAddress }), GUILayout.Width(dlgWidth * 3 / 4));
+                GUILayout.Label("AppId: " + PhotonNetwork.PhotonServerSettings.AppID, GUILayout.Width(dlgWidth * 3 / 4));
+
+                if (GUILayout.Button(Strings.Get("Try Again"), GUILayout.Width(dlgWidth / 4)))
                 {
-                    this.connectFailed = false;
+                    connectFailed = false;
                     PhotonNetwork.ConnectUsingSettings("1.0");
                 }
             }
-
-            return;
-        }
-
-
-        GUI.skin.box.fontStyle = FontStyle.Bold;
-        GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 300), Strings.Get("Join or Create a Course"));
-        GUILayout.BeginArea(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 300));
-
-        GUILayout.Space(25);
-
-        // Player name
-        GUILayout.BeginHorizontal();
-        GUILayout.Label(Strings.Get("User name:"), GUILayout.Width(100));
-        PhotonNetwork.playerName = GUILayout.TextField(PhotonNetwork.playerName);
-        GUILayout.Space(105);
-        if (GUI.changed)
-        {
-            // Save name
-            PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
-        }
-        GUILayout.EndHorizontal();
-
-        GUILayout.Space(15);
-
-        // Join room by title
-        GUILayout.BeginHorizontal();
-        GUILayout.Label(Strings.Get("Course name:"), GUILayout.Width(100));
-        this.roomName = GUILayout.TextField(this.roomName);
-        
-        if (GUILayout.Button(Strings.Get("Create Course"), GUILayout.Width(100)))
-        {
-            PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 10 }, null);
-        }
-
-        GUILayout.EndHorizontal();
-
-        // Create a room (fails if exist!)
-        GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        //this.roomName = GUILayout.TextField(this.roomName);
-        if (GUILayout.Button(Strings.Get("Join Course"), GUILayout.Width(100)))
-        {
-            PhotonNetwork.JoinRoom(this.roomName);
-        }
-
-        GUILayout.EndHorizontal();
-
-
-        GUILayout.Space(15);
-
-        // Join random room
-        GUILayout.BeginHorizontal();
-
-        GUILayout.Label(PhotonNetwork.countOfPlayers + Strings.Get(" users are online in ") + PhotonNetwork.countOfRooms + Strings.Get(" courses."));
-        GUILayout.FlexibleSpace();
-        if (GUILayout.Button(Strings.Get("Join Random"), GUILayout.Width(100)))
-        {
-            PhotonNetwork.JoinRandomRoom();
-        }
-        
-
-        GUILayout.EndHorizontal();
-
-        GUILayout.Space(15);
-        if (PhotonNetwork.GetRoomList().Length == 0)
-        {
-            GUILayout.Label(Strings.Get("Currently no games are available."));
-            GUILayout.Label(Strings.Get("Courses will be listed here, when they become available."));
+            GUILayout.EndHorizontal();
         }
         else
         {
-            GUILayout.Label(PhotonNetwork.GetRoomList() + Strings.Get(" currently available. Join either:"));
-
-            // Room listing: simply call GetRoomList: no need to fetch/poll whatever!
-            this.scrollPos = GUILayout.BeginScrollView(this.scrollPos);
-            foreach (RoomInfo roomInfo in PhotonNetwork.GetRoomList())
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(Strings.Get("User name:"), GUILayout.Width(dlgWidth / 4));
+            PhotonNetwork.playerName = GUILayout.TextField(PhotonNetwork.playerName);
+            if (GUI.changed)
             {
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(roomInfo.name + " " + roomInfo.playerCount + "/" + roomInfo.maxPlayers);
-                if (GUILayout.Button(Strings.Get("Join")))
+                // Save name
+                PlayerPrefs.SetString(PlayerName, PhotonNetwork.playerName);
+                roomName = comboBoxList[comboBoxControl.GetSelectedItemIndex()].text;
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.FlexibleSpace();
+
+            // Join room by title
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(Strings.Get("Course name:"), GUILayout.Width(dlgWidth / 4));
+            Rect r = GUILayoutUtility.GetLastRect();
+            if (!isDataLoaded)
+            {
+                GUILayout.Label(Strings.Get("Loading"), GUILayout.Width(dlgWidth / 4));
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.FlexibleSpace();
+            // Create a room (fails if exist!)
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(Strings.Get("Create Course"), GUILayout.Width(dlgWidth / 4)))
+            {
+                PhotonNetwork.CreateRoom(roomName, new RoomOptions { maxPlayers = 10 }, null);
+            }
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(Strings.Get("Join Course"), GUILayout.Width(dlgWidth / 4)))
+            {
+                PhotonNetwork.JoinRoom(roomName);
+            }
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(Strings.Get("Join Random"), GUILayout.Width(dlgWidth / 4)))
+            {
+                PhotonNetwork.JoinRandomRoom();
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            GUILayout.FlexibleSpace();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(PhotonNetwork.countOfPlayers + Strings.Get(" users are online in ") + PhotonNetwork.countOfRooms + Strings.Get(" courses."));
+            GUILayout.EndHorizontal();
+
+            GUILayout.FlexibleSpace();
+            if (PhotonNetwork.GetRoomList().Length == 0)
+            {
+                GUILayout.Label(Strings.Get("Currently no games are available."));
+                GUILayout.Label(Strings.Get("Courses will be listed here, when they become available."));
+            }
+            else
+            {
+                GUILayout.Label(PhotonNetwork.GetRoomList() + Strings.Get(" currently available. Join either:"));
+
+                // Room listing: simply call GetRoomList: no need to fetch/poll whatever!
+                scrollPos = GUILayout.BeginScrollView(scrollPos);
+                foreach (RoomInfo roomInfo in PhotonNetwork.GetRoomList())
                 {
-                    PhotonNetwork.JoinRoom(roomInfo.name);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(roomInfo.name + " " + roomInfo.playerCount + "/" + roomInfo.maxPlayers);
+                    if (GUILayout.Button(Strings.Get("Join")))
+                    {
+                        PhotonNetwork.JoinRoom(roomInfo.name);
+                    }
+
+                    GUILayout.EndHorizontal();
                 }
 
-                GUILayout.EndHorizontal();
+                GUILayout.EndScrollView();
             }
-
-            GUILayout.EndScrollView();
+            if (isDataLoaded)
+            {
+                int selectedItemIndex = comboBoxControl.GetSelectedItemIndex();
+                selectedItemIndex = comboBoxControl.List(new Rect(r.xMax + dlgPadding, r.yMin, dlgWidth / 2, 20), comboBoxList[selectedItemIndex].text, comboBoxList, listStyle);
+            }
         }
 
         GUILayout.EndArea();
@@ -182,6 +217,8 @@ public class PhotonMenu : MonoBehaviour
     public void OnCreatedRoom()
     {
         Debug.Log("OnCreatedRoom");
+        //PhotonNetwork.isMessageQueueRunning = false;
+        PlayerPrefs.SetString(CourseID, coursesNames[comboBoxControl.GetSelectedItemIndex()].id);
         PhotonNetwork.LoadLevel(SceneNameGame);
     }
 

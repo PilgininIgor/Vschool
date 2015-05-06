@@ -33,13 +33,9 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using JsonFx;
+using JsonFx.Json;
 
 public class BootstrapParser : MonoBehaviour {
-    public static GameObject MainCorridorStart, MainCorridorMiddle, MainCorridorEnd;
-    public static GameObject ThemeCorridorStart, ThemeCorridorMiddle, ThemeCorridorEnd;
-    public static GameObject LectureRoom, QuizRoomA;
-
 	static string JSONTestString = 
 		"{"+
 			"\"name\":\"Информатика\","+
@@ -193,7 +189,15 @@ public class BootstrapParser : MonoBehaviour {
 			"]}"+
 			"]"+
 			"}";
-	
+
+	public GameObject MainCorridorStart;
+	public GameObject MainCorridorMiddle;
+	public GameObject MainCorridorEnd;
+	public GameObject ThemeCorridorStart;
+	public GameObject ThemeCorridorMiddle;
+	public GameObject ThemeCorridorEnd;
+	public GameObject LectureRoom;
+	public GameObject QuizRoomA;
 	//здесь будут ссылки на мониторы со статистикой, которой займется скрипт StatisticParser
 	public GameObject[] statDisplays;
     public int sdlng;
@@ -202,7 +206,7 @@ public class BootstrapParser : MonoBehaviour {
 		var collected = GameObject.FindGameObjectsWithTag("Clone");
 		sdlng = 0;
 
-        DataStructures.Course data = JsonFx.Json.JsonReader.Deserialize<DataStructures.Course>(json);
+        DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(json);
 		//строим главный коридор и получаем массив ссылок на его кусочки
 		//c_main[0] - это начало, c_main[c_main.length-1] - конец, а все между - серединки
 		GameObject[] c_main = BuildMainCorridor(data.themes);
@@ -287,13 +291,9 @@ public class BootstrapParser : MonoBehaviour {
 		collected = GameObject.FindGameObjectsWithTag("Anchor");
 		foreach (var z in collected)
 			z.SetActive(false);
-
-		// TODO: call this from CourseSelection
-		/*
-		GameObject.Find("Hallway/Course Selection/CS_Screen").GetComponent.<CourseSelection>().ZoomOut();*/
 	}
 
-	private static GameObject[] BuildMainCorridor(List<DataStructures.Theme> themes)
+	private GameObject[] BuildMainCorridor(List<DataStructures.Theme> themes)
 	{
 		var c = new List<GameObject> ();
 		MainCorridorStart.tag = "Clone";
@@ -333,13 +333,11 @@ public class BootstrapParser : MonoBehaviour {
         s = c[0].transform.Find("Timer").GetComponent<BoxCollider>().center;
         s.z = (k+2)*6/2;
 	    c[0].transform.Find("Timer").GetComponent<BoxCollider>().center = s;
-		c[0].transform.Find("Timer").GetComponent<TimerCourse>().TextTime =
-			c[k+1].transform.Find("StatDisplay/TextTime").gameObject;
 
 		return c.ToArray();
 	}
 
-	private static GameObject[] BuildThemeCorridor(List<DataStructures.ThemeContent> contents, int y)
+	private GameObject[] BuildThemeCorridor(List<DataStructures.ThemeContent> contents, int y)
 	{
 		var c = new List<GameObject> ();
 		ThemeCorridorStart.tag = "Clone";
@@ -368,8 +366,6 @@ public class BootstrapParser : MonoBehaviour {
 		{
             Destroy(c[k].transform.Find("MonitorRight").gameObject);
             Destroy(c[k].transform.Find("TeleportBooth_Right").gameObject);
-		    //c[k].transform.Find("MonitorRight").gameObject = null;
-            //c[k].transform.Find("TeleportBooth_Right").gameObject = null;
 		}
 
 		ThemeCorridorEnd.tag = "Clone";
@@ -382,8 +378,6 @@ public class BootstrapParser : MonoBehaviour {
 	    s = c[0].transform.Find("Timer").GetComponent<BoxCollider>().center;
 		s.z = (k+2)*6/2;
 	    c[0].transform.Find("Timer").GetComponent<BoxCollider>().center = s;
-		c[0].transform.Find("Timer").GetComponent<TimerCourse>().TextTime =
-			c[k+1].transform.Find("StatDisplay/TextTime").gameObject;
 
 		return c.ToArray ();
 	}

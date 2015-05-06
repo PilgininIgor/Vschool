@@ -27,7 +27,7 @@ public class Board : MonoBehaviour
     public int theme_num;
     public int test_num;
 
-    private GameObject Text_Header, CubeGroup1, CubeGroup2, CubeGroup3, CubeGroup4, CubeGroup5;
+	public GameObject Text_Header, CubeGroup1, CubeGroup2, CubeGroup3, CubeGroup4, CubeGroup5;
 
     //это функция инициализации, ее должен предварительно вызвать внешний скрипт
     public void generateTest(DataStructures.ThemeContent test, int theme_num1, int test_num1)
@@ -47,9 +47,12 @@ public class Board : MonoBehaviour
             //да, работать с той же иерархией по ссылкам, а не плодить переменные, было бы лучше,
             //но тестовая комната разрабатывалась заранее, а менять скрипты в надцатный раз ну совсем нехочеццо
             test_id = test.id;
-            qAnsNum = new int[test.questions.Count];
-            qAns = new String[test.questions.Count];
-            qText = new String[test.questions.Count];
+			int count = test.questions.Count;
+            qAnsNum = new int[count];
+			qAns = new string[count];
+			qText = new string[count];
+			qPicPath = new string[count];
+			qType = new int[count];
             for (var l = 0; l < test.questions.Count; l++)
             {
                 qText[l] = DivideText(test.questions[l].text);
