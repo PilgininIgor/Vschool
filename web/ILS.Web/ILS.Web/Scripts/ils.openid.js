@@ -162,6 +162,7 @@ Ext.onReady(function () {
                     //ils.admin.success.show();
                     var message = new Object();
                     message.header = "authorise";
+					message.login = urlParams['login'][0];
                     message.firstName = a.firstName == null ? "Имя" : a.firstName;
                     message.lastName = a.lastName == null ? "Фамилия" : a.lastName;
                     message.admin = a.admin;
