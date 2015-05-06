@@ -801,5 +801,12 @@
             }
         }
 
+        public ActionResult GetUserName()
+        {
+            return Json(context.User.First(x => 
+                x.Name == HttpContext.User.Identity.Name).Name, 
+                JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
