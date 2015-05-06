@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.Services.Description;
 using ILS.Domain;
 using ILS.Domain.GameAchievements;
@@ -36,9 +38,9 @@ namespace ILS.Web.Controllers
         {
             context.GameAchievements.Add(new GameAchievement
             {
-//               AchievementAwardType = gameAchievementModel.AchievementAwardType,
+                AchievementAwardType = (AchievementAwardType)Enum.Parse(typeof(AchievementAwardType), gameAchievementModel.AchievementAwardType),
                 AchievementExecutor = gameAchievementModel.AchievementExecutor,
-//               AchievementTrigger = gameAchievementModel.AchievementTrigger,
+                AchievementTrigger = (AchievementTrigger)Enum.Parse(typeof(AchievementTrigger), gameAchievementModel.AchievementTrigger),
                 AdditionalParameters = gameAchievementModel.AdditionalParameters,
                 ImagePath = gameAchievementModel.ImagePath,
                 Index = gameAchievementModel.Index,
@@ -54,7 +56,11 @@ namespace ILS.Web.Controllers
         public void UpdateGameAchievement(GameAchievementModel gameAchievementModel)
         {
             var achievementToUpdate = context.GameAchievements.Find(gameAchievementModel.GameAchievementId);
+            achievementToUpdate.AchievementAwardType = (AchievementAwardType)
+                    Enum.Parse(typeof (AchievementAwardType), gameAchievementModel.AchievementAwardType);
             achievementToUpdate.Name = gameAchievementModel.Name;
+            achievementToUpdate.AchievementTrigger = (AchievementTrigger)
+                    Enum.Parse(typeof(AchievementTrigger), gameAchievementModel.AchievementTrigger);
             achievementToUpdate.AchievementExecutor = gameAchievementModel.AchievementExecutor;
             achievementToUpdate.AdditionalParameters = gameAchievementModel.AdditionalParameters;
             achievementToUpdate.ImagePath = gameAchievementModel.ImagePath;
@@ -78,10 +84,12 @@ namespace ILS.Web.Controllers
         {
             var gameAchievementsList = context.GameAchievements.Select(achievement => new GameAchievementModel
             {
-                GameAchievementId = achievement.Id,  
+                GameAchievementId = achievement.Id,
+                AchievementAwardType = achievement.AchievementAwardType.ToString(),
                 Name = achievement.Name,
                 AchievementExecutor = achievement.AchievementExecutor,
                 AdditionalParameters = achievement.AdditionalParameters,
+                AchievementTrigger = achievement.AchievementTrigger.ToString(),
                 ImagePath = achievement.ImagePath,
                 Index = achievement.Priority,
                 Message = achievement.Message,
@@ -93,6 +101,27 @@ namespace ILS.Web.Controllers
             {
                 data = gameAchievementsList
             }, JsonRequestBehavior.AllowGet);
+        }
+
+        public void UploadAchievementImage()
+        {
+            var httpContext = System.Web.HttpContext.Current;
+            var fileUpload = httpContext.Request.Files["Image"];
+
+            fileUpload.SaveAs(Server.MapPath(Url.Content("~/Content/Sprites/profile/achievement/")) + fileUpload.FileName);
+
+            Image.GetThumbnailImageAbort myCallback = () => DisableAsyncSupport;
+            var fullBitmap = new Bitmap(fileUpload.InputStream);
+            var thumbnail = fullBitmap.GetThumbnailImage(90, 90, myCallback, IntPtr.Zero);
+
+            thumbnail.Save(Server.MapPath(Url.Content("~/Content/Sprites/profile/achievement/"))
+                + fileUpload.FileName.Substring(0, fileUpload.FileName.IndexOf(".", StringComparison.Ordinal) + 1) + "jpg",
+                System.Drawing.Imaging.ImageFormat.Jpeg);
+
+            httpContext.Response.Write(new JavaScriptSerializer().Serialize(Json(new
+            {
+                success = "true"
+            }, JsonRequestBehavior.AllowGet).Data));
         }
     }
 }

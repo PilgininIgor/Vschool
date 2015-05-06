@@ -33,15 +33,5 @@
         {
             //Nothing to do here
         }
-
-        public Domain.GameAchievements.AchievementTrigger GetAchievementTriggerAsEnum()
-        {
-            return Domain.GameAchievements.AchievementTrigger.Game;
-        }
-
-        public Domain.GameAchievements.AchievementAwardType GetAchievementAwardTypeAsEnum()
-        {
-            return Domain.GameAchievements.AchievementAwardType.Coins;
-        }
     }
 }
