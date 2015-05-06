@@ -88,10 +88,14 @@
 
         public JsonResult GetProfile(String name)
         {
-            //TODO: use name instead of current user to be able to look for other profiles
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
             ProfileModel model = new ProfileModel();
             model.Name = u.FirstName + " " + u.LastName;
             model.Email = u.Email;
@@ -149,9 +153,14 @@
 
         public JsonResult GetCoursesProgress(String name)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
 
             return Json(context.CourseRun.Where(z => z.User.Name.Equals(u.Name)).OrderByDescending(x => x.Progress).Select(y => new
             {
@@ -163,9 +172,14 @@
 
         public JsonResult GetCourseProgress(String name, String courseId)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
             Guid id = Guid.Parse(courseId);
             return Json(context.ThemeRun.Where(z => z.Theme.Course_Id.Equals(id)
                     && z.CourseRun.User.Name.Equals(u.Name))
@@ -179,9 +193,14 @@
 
         public JsonResult GetThemeProgress(String name, String themeId)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
             Guid id = Guid.Parse(themeId);
             return Json(new
             {
@@ -207,9 +226,14 @@
 
         public JsonResult GetTestProgress(String name, String testId)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
             Guid id = Guid.Parse(testId);
             var t = context.QuestionRun.Where(z => z.TestRun.Test_Id.Equals(id));
             var q = t.Where(z => z.TestRun.ThemeRun.CourseRun.User.Name.Equals(u.Name));
@@ -227,9 +251,14 @@
 
         public JsonResult GetTestRunProgress(String name, String testRunId)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
             Guid id = Guid.Parse(testRunId);
             return Json(context.QuestionRun.Where(z => z.TestRun_Id.Equals(id)
                     && z.TestRun.ThemeRun.CourseRun.User.Name.Equals(u.Name))

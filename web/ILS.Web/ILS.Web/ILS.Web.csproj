@@ -446,25 +446,15 @@
     <Content Include="Content\Sprites\profile\hexes.png" />
     <Content Include="Content\Sprites\profile\minimize.png" />
     <Content Include="Content\Sprites\profile\money.png" />
-    <Content Include="Content\Sprites\profile\New design_окно пользователя_настройки.png" />
     <Content Include="Content\Sprites\profile\progress.png" />
+    <Content Include="Content\Sprites\profile\progress_copper.png" />
+    <Content Include="Content\Sprites\profile\progress_gold.png" />
+    <Content Include="Content\Sprites\profile\progress_silver.png" />
     <Content Include="Content\Sprites\profile\rating.png" />
+    <Content Include="Content\Sprites\profile\rating_gold.png" />
+    <Content Include="Content\Sprites\profile\rating_silver.png" />
     <Content Include="Content\Sprites\profile\slider_off.png" />
     <Content Include="Content\Sprites\profile\slider_on.png" />
-    <Content Include="Content\Sprites\profile\Ачивки1_медь.png" />
-    <Content Include="Content\Sprites\profile\Ачивки2_серебро.png" />
-    <Content Include="Content\Sprites\profile\Ачивки3_золото.png" />
-    <Content Include="Content\Sprites\profile\Ачивки_500.png" />
-    <Content Include="Content\Sprites\profile\Назад.swf" />
-    <Content Include="Content\Sprites\profile\Процент прохождения_100.png" />
-    <Content Include="Content\Sprites\profile\Процент прохождения_25.png" />
-    <Content Include="Content\Sprites\profile\Процент прохождения_50.png" />
-    <Content Include="Content\Sprites\profile\Процент прохождения_75.png" />
-    <Content Include="Content\Sprites\profile\Рейтинг1_медь.png" />
-    <Content Include="Content\Sprites\profile\Рейтинг2.png" />
-    <Content Include="Content\Sprites\profile\Рейтинг2_серебро.png" />
-    <Content Include="Content\Sprites\profile\Рейтинг3.png" />
-    <Content Include="Content\Sprites\profile\Рейтинг3_золото.png" />
     <Content Include="Content\Sprites\refresh.png" />
     <Content Include="Content\Sprites\robot.png" />
     <Content Include="Content\Sprites\screens\1.jpg" />
@@ -1104,7 +1094,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Sprites\profile\achievement\Thumbs.db" />
-    <Content Include="Content\Sprites\profile\Thumbs.db" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Masterhost.pubxml" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
