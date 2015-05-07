@@ -218,6 +218,7 @@
     <Content Include="Content\icons\logout1.png" />
     <Content Include="Content\icons\logout2.png" />
     <Content Include="Content\icons\main_aboutadmin.png" />
+    <Content Include="Content\icons\main_achievements.png" />
     <Content Include="Content\icons\main_ideology.png" />
     <Content Include="Content\icons\main_linkeditor.png" />
     <Content Include="Content\icons\main_render.png" />

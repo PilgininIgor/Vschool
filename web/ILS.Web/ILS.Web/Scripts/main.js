@@ -123,7 +123,7 @@ var vpConfig = {
                 scale: 'large',
                 id: 'btn_gameachievements',
                 iconAlign: 'top',
-                iconCls: 'main_gameachievements',
+                iconCls: 'main_achievements',
                 width: 150,
                 paddingBottom: 9,
                 handler: function () {
