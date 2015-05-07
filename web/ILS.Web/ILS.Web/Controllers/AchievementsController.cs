@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Script.Serialization;
-using System.Web.Services.Description;
-using ILS.Domain;
-using ILS.Domain.GameAchievements;
-using ILS.Web.Models;
+﻿using System.Collections.Generic;
 
 namespace ILS.Web.Controllers
 {
+    using System;
+    using System.Drawing;
+    using System.Linq;
+    using System.Web.Mvc;
+    using System.Web.Script.Serialization;
+    using Domain;
+    using Domain.GameAchievements;
+    using Models;
+
     [Authorize(Roles = "Admin")]
     public class AchievementsController : Controller
     {
@@ -25,12 +24,6 @@ namespace ILS.Web.Controllers
         public ActionResult Index()
         {
             return View();
-        }
-
-        [HttpPost]
-        public JsonResult ReadGameAchievement()
-        {
-            throw new NotImplementedException();
         }
 
         [HttpPost]
@@ -64,7 +57,7 @@ namespace ILS.Web.Controllers
             achievementToUpdate.AchievementExecutor = gameAchievementModel.AchievementExecutor;
             achievementToUpdate.AdditionalParameters = gameAchievementModel.AdditionalParameters;
             achievementToUpdate.ImagePath = gameAchievementModel.ImagePath;
-            achievementToUpdate.Index = gameAchievementModel.Priority;
+            achievementToUpdate.Index = gameAchievementModel.Index;
             achievementToUpdate.Message = gameAchievementModel.Message;
             achievementToUpdate.Priority = gameAchievementModel.Priority;
             achievementToUpdate.Score = gameAchievementModel.Score;
@@ -82,24 +75,30 @@ namespace ILS.Web.Controllers
         [HttpGet]
         public JsonResult GetGameAchievementsList()
         {
-            var gameAchievementsList = context.GameAchievements.Select(achievement => new GameAchievementModel
+            var achievements = context.GameAchievements.OrderBy(achievement => achievement.Index);
+            var achievementModelsList = new List<GameAchievementModel>(achievements.Count());
+
+            foreach (var achievement in achievements)
             {
-                GameAchievementId = achievement.Id,
-                AchievementAwardType = achievement.AchievementAwardType.ToString(),
-                Name = achievement.Name,
-                AchievementExecutor = achievement.AchievementExecutor,
-                AdditionalParameters = achievement.AdditionalParameters,
-                AchievementTrigger = achievement.AchievementTrigger.ToString(),
-                ImagePath = achievement.ImagePath,
-                Index = achievement.Priority,
-                Message = achievement.Message,
-                Priority = achievement.Priority,
-                Score = achievement.Score
-            }).ToList();
+                achievementModelsList.Add(new GameAchievementModel
+                {
+                    GameAchievementId = achievement.Id,
+                    AchievementAwardType = GetAchievementAwardTypeName(achievement.AchievementAwardType, true),
+                    Name = achievement.Name,
+                    AchievementExecutor = achievement.AchievementExecutor,
+                    AdditionalParameters = achievement.AdditionalParameters,
+                    AchievementTrigger = GetAchievementTriggerName(achievement.AchievementTrigger, true),
+                    ImagePath = achievement.ImagePath,
+                    Index = achievement.Index,
+                    Message = achievement.Message,
+                    Priority = achievement.Priority,
+                    Score = achievement.Score
+                });
+            }
 
             return Json(new
             {
-                data = gameAchievementsList
+                data = achievementModelsList
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -122,6 +121,38 @@ namespace ILS.Web.Controllers
             {
                 success = "true"
             }, JsonRequestBehavior.AllowGet).Data));
+        }
+
+        private static string GetAchievementTriggerName(AchievementTrigger achievementTrigger, bool isRussian)
+        {
+            switch (achievementTrigger)
+            {
+                case AchievementTrigger.Game:
+                    return "Игра";
+                case AchievementTrigger.Test:
+                    return "Тест";
+                case AchievementTrigger.Lecture:
+                    return "Лекция";
+                case AchievementTrigger.Theme:
+                    return "Тема";
+                case AchievementTrigger.Course:
+                    return "Курс";
+                default:
+                    return "";
+            }
+        }
+
+        private static string GetAchievementAwardTypeName(AchievementAwardType achievementAwardType, bool isRussian)
+        {
+            switch (achievementAwardType)
+            {
+                case AchievementAwardType.Coins:
+                    return "Монеты";
+                case AchievementAwardType.Rating:
+                    return "Рейтинг";
+                default:
+                    return "";
+            }
         }
     }
 }

@@ -72,8 +72,8 @@ Ext.define("GameAchievementModel", {
     }]
 });
 
-ils.gameachievements.triggerStore = Ext.create('Ext.data.Store', {
-    fields: ['id', 'name'],
+ils.gameachievements.triggerStore = Ext.create("Ext.data.Store", {
+    fields: ["id", "name"],
     data: [
         { "id": "0", "name": "Игра" },
         { "id": "1", "name": "Тест" },
@@ -83,15 +83,15 @@ ils.gameachievements.triggerStore = Ext.create('Ext.data.Store', {
     ]
 });
 
-ils.gameachievements.awardTypeStore = Ext.create('Ext.data.Store', {
-    fields: ['id', 'name'],
+ils.gameachievements.awardTypeStore = Ext.create("Ext.data.Store", {
+    fields: ["id", "name"],
     data: [
         { "id": "0", "name": "Монеты" },
         { "id": "1", "name": "Рейтинг" }
     ]
 });
 
-window.ils.gameachievements.store = new Ext.data.Store({
+ils.gameachievements.store = new Ext.data.Store({
     extend: "Ext.data.Store",
     autoLoad: true,
     model: GameAchievementModel,
@@ -99,7 +99,6 @@ window.ils.gameachievements.store = new Ext.data.Store({
         type: "ajax",
         url: window.ils.gameachievements.getAchievements,
         api: {
-            read: window.ils.gameachievements.getAchievements,
             create: window.ils.gameachievements.createAchievement,
             update: window.ils.gameachievements.updateAchievement,
             destroy: window.ils.gameachievements.deleteAchievement
@@ -124,7 +123,7 @@ function createAchievementProfileWindow(achievementModel) {
     var title, buttons;
     var uploaded = false;
     var imageForm = new Ext.form.Panel({
-        defaultType: 'displayfield',
+        defaultType: "displayfield",
         border: false,
         bodyStyle: { "background-color": "#FFFFFF" },
         items: [{
@@ -138,7 +137,7 @@ function createAchievementProfileWindow(achievementModel) {
             }
         }]
     });
-
+    var achievementProfile;
     if (achievementModel) {
         title = window.ils.gameachievements.achievemntEdition;
         buttons = [
@@ -147,25 +146,25 @@ function createAchievementProfileWindow(achievementModel) {
                 formBind: false,
                 handler: function () {
                     var img = imageForm.items.items[0].getValue();
-                    if (uploaded && img != null && img != "") {
+                    if (uploaded && img != null && img !== "") {
                         var form = imageForm.getForm();
                         form.submit({
                             url: window.ils.gameachievements.uploadImage,
                             waitMsg: window.ils.gameachievements.waitMsg,
                             failure: function (f, a) {
-                                Ext.Msg.alert('Ошибка', a.result.msg);
+                                Ext.Msg.alert("Ошибка", a.result.msg);
                             }
                         });
                     }
 
                     var profileItem = achievementProfile.items.items[0];
-                    if (!img || img == "") {
+                    if (!img) {
                         img = achievementModel.ImagePath;
                     }
-                    if (img.indexOf("/") != -1) {
+                    if (img.indexOf("/") !== -1) {
                         img = img.slice(img.lastIndexOf("/") + 1);
                     }
-                    if (img.indexOf("\\") != -1) {
+                    if (img.indexOf("\\") !== -1) {
                         img = img.slice(img.lastIndexOf("\\") + 1);
                     }
 
@@ -181,7 +180,7 @@ function createAchievementProfileWindow(achievementModel) {
 					    AdditionalParameters: profileItem.getComponent("AdditionalParameters").getValue(),
 					    AchievementExecutor: profileItem.getComponent("AchievementExecutor").getValue(),				    
 					    AchievementTrigger: profileItem.getComponent("AchievementTrigger").getValue(),
-                        AchievementAwardType: profileItem.getComponent("AchievementAwardType").getValue()
+					    AchievementAwardType: profileItem.getComponent("AchievementAwardType").getValue()
 					};
 
                     Ext.Ajax.request({
@@ -194,7 +193,7 @@ function createAchievementProfileWindow(achievementModel) {
                             achievementProfile.close();
                         },
                         failure: function (response) {
-                            console.log("Ошибка: " + response);
+                            Ext.Msg.alert("Ошибка", response);
                         }
                     });
                 }
@@ -214,7 +213,8 @@ function createAchievementProfileWindow(achievementModel) {
                 formBind: false,
                 handler: function () {
                     var img = imageForm.items.items[0].getValue();
-                    if (uploaded && img != null && img != "") {
+                    var profileItem = achievementProfile.items.items[0];
+                    if (uploaded && img != null && img !== "") {
                         var form = imageForm.getForm();
                         form.submit({
                             url: window.ils.gameachievements.uploadImage,
@@ -223,15 +223,13 @@ function createAchievementProfileWindow(achievementModel) {
                                 Ext.Msg.alert("Ошибка", a.result.msg);
                             }
                         });
-
-                        var profileItem = achievementProfile.items.items[0];
-                        if (!img || img == "") {
+                        if (!img) {
                             img = profileItem.getComponent("ImagePath").getValue();
                         }
-                        if (img.indexOf("/") != -1) {
+                        if (img.indexOf("/") !== -1) {
                             img = img.slice(img.lastIndexOf("/") + 1);
                         }
-                        if (img.indexOf("\\") != -1) {
+                        if (img.indexOf("\\") !== -1) {
                             img = img.slice(img.lastIndexOf("\\") + 1);
                         }
                     }
@@ -265,8 +263,7 @@ function createAchievementProfileWindow(achievementModel) {
             }
         ];
     }
-
-    var achievementProfile = new Ext.Window({
+    achievementProfile = new Ext.Window({
         title: title,
         layout: "fit",
         width: 440,
@@ -291,93 +288,92 @@ function createAchievementProfileWindow(achievementModel) {
             },
             bodyStyle: { "background-color": "#FFFFFF" },
             items: [{
-                fieldLabel: window.ils.gameachievements.textIndex,
-                xtype: "numberfield",
-                name: "Index",
-                id: "Index",
-                allowBlank: false,
-                value: achievementModel ? achievementModel.Index : ""
-            }, {
-                fieldLabel: window.ils.gameachievements.textName,
-                xtype: "textfield",
-                name: "Name",
-                id: "Name",
-                allowBlank: false,
-                value: achievementModel? achievementModel.Name : ""
-            }, {
-                fieldLabel: window.ils.gameachievements.textAchievementAwardType,
-                xtype: "combo",
-                name: "AchievementAwardType",
-                id: "AchievementAwardType",
-                editable: false,
-                queryMode: 'local',
-                displayField: 'name',
-                valueField: 'id',
-                allowBlank: false,
-                tpl: Ext.create('Ext.XTemplate',
-                    '<tpl for=".">',
-                        '<div class="x-boundlist-item" style="font-family:wf_SegoeUILight;font-weight:normal;font-size:14px;padding-top:4px;padding-bottom:4px;">{name}</div>',
-                    '</tpl>'
-                ),
-                store: window.ils.gameachievements.awardTypeStore,
-                value: achievementModel ? achievementModel.AchievementAwardType : ""
-            }, {
-                fieldLabel: window.ils.gameachievements.textScore,
-                xtype: "numberfield",
-                name: "Score",
-                id: "Score",
-                allowBlank: false,
-                value: achievementModel ? achievementModel.Score : "100"
-            }, {
-                fieldLabel: window.ils.gameachievements.textMessage,
-                xtype: "textarea",
-                name: "Message",
-                id: "Message",
-                value: achievementModel ? achievementModel.Message : ""
-            }, {
-                fieldLabel: window.ils.gameachievements.textPriority,
-                xtype: "numberfield",
-                name: "Priority",
-                id: "Priority",
-                allowBlank: false,
-                value: achievementModel ? achievementModel.Priority : "10"
-            }, {
-                fieldLabel: window.ils.gameachievements.textAchievementTrigger,
-                xtype: "combo",
-                name: "AchievementTrigger",
-                id: "AchievementTrigger",
-                editable: false,
-                queryMode: 'local',
-                displayField: 'name',
-                valueField: 'id',
-                allowBlank: false,
-                store: window.ils.gameachievements.triggerStore,
-                tpl: Ext.create('Ext.XTemplate',
-                    '<tpl for=".">',
-                        '<div class="x-boundlist-item" style="font-family:wf_SegoeUILight;font-weight:normal;font-size:14px;padding-top:4px;padding-bottom:4px;">{name}</div>',
-                    '</tpl>'
-                ),
-                value: achievementModel ? achievementModel.AchievementTrigger : ""
-            }, {
-                fieldLabel: window.ils.gameachievements.textAchievementExecutor,
-                xtype: "textfield",
-                name: "AchievementExecutor",
-                id: "AchievementExecutor",
-                allowBlank: false,
-                value: achievementModel ? achievementModel.AchievementExecutor : ""
-            }, {
-                fieldLabel: window.ils.gameachievements.textAdditionalParameters,
-                xtype: "textfield",
-                name: "AdditionalParameters",
-                id: "AdditionalParameters",
-                value: achievementModel ? achievementModel.AdditionalParameters : ""
-            },
-            imageForm
-        ],
+                    fieldLabel: window.ils.gameachievements.textIndex,
+                    xtype: "numberfield",
+                    name: "Index",
+                    id: "Index",
+                    allowBlank: false,
+                    value: achievementModel ? achievementModel.Index : ""
+                }, {
+                    fieldLabel: window.ils.gameachievements.textName,
+                    xtype: "textfield",
+                    name: "Name",
+                    id: "Name",
+                    allowBlank: false,
+                    value: achievementModel? achievementModel.Name : ""
+                }, {
+                    fieldLabel: window.ils.gameachievements.textAchievementAwardType,
+                    xtype: "combo",
+                    name: "AchievementAwardType",
+                    id: "AchievementAwardType",
+                    editable: false,
+                    queryMode: "local",
+                    displayField: "name",
+                    valueField: "id",
+                    allowBlank: false,
+                    tpl: Ext.create("Ext.XTemplate",
+                        "<tpl for=\".\">",
+                        "<div class=\"x-boundlist-item\" style=\"font-family:wf_SegoeUILight;font-weight:normal;font-size:14px;padding-top:4px;padding-bottom:4px;\">{name}</div>",
+                        "</tpl>"
+                    ),
+                    store: window.ils.gameachievements.awardTypeStore,
+                    value: achievementModel ? window.ils.gameachievements.awardTypeStore.findRecord("name", achievementModel.AchievementAwardType) : ""
+                }, {
+                    fieldLabel: window.ils.gameachievements.textScore,
+                    xtype: "numberfield",
+                    name: "Score",
+                    id: "Score",
+                    allowBlank: false,
+                    value: achievementModel ? achievementModel.Score : "100"
+                }, {
+                    fieldLabel: window.ils.gameachievements.textMessage,
+                    xtype: "textarea",
+                    name: "Message",
+                    id: "Message",
+                    value: achievementModel ? achievementModel.Message : ""
+                }, {
+                    fieldLabel: window.ils.gameachievements.textPriority,
+                    xtype: "numberfield",
+                    name: "Priority",
+                    id: "Priority",
+                    allowBlank: false,
+                    value: achievementModel ? achievementModel.Priority : "10"
+                }, {
+                    fieldLabel: window.ils.gameachievements.textAchievementTrigger,
+                    xtype: "combo",
+                    name: "AchievementTrigger",
+                    id: "AchievementTrigger",
+                    editable: false,
+                    queryMode: "local",
+                    displayField: "name",
+                    valueField: "id",
+                    allowBlank: false,
+                    store: window.ils.gameachievements.triggerStore,
+                    tpl: Ext.create("Ext.XTemplate",
+                        "<tpl for=\".\">",
+                        "<div class=\"x-boundlist-item\" style=\"font-family:wf_SegoeUILight;font-weight:normal;font-size:14px;padding-top:4px;padding-bottom:4px;\">{name}</div>",
+                        "</tpl>"
+                    ),
+                    value: achievementModel ? window.ils.gameachievements.triggerStore.findRecord("name", achievementModel.AchievementTrigger) : ""
+                }, {
+                    fieldLabel: window.ils.gameachievements.textAchievementExecutor,
+                    xtype: "textfield",
+                    name: "AchievementExecutor",
+                    id: "AchievementExecutor",
+                    allowBlank: false,
+                    value: achievementModel ? achievementModel.AchievementExecutor : ""
+                }, {
+                    fieldLabel: window.ils.gameachievements.textAdditionalParameters,
+                    xtype: "textfield",
+                    name: "AdditionalParameters",
+                    id: "AdditionalParameters",
+                    value: achievementModel ? achievementModel.AdditionalParameters : ""
+                },
+                imageForm
+            ],
             buttons: buttons
         })
     });
-
     achievementProfile.show();
 }
 
@@ -399,7 +395,8 @@ window.ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             editor: {
                 xtype: "textfield",
                 allowBlank: false
-            }
+            },
+            width: 150
         }, {
             header: window.ils.gameachievements.textAchievementAwardType,
             dataIndex: "AchievementAwardType",
@@ -407,7 +404,8 @@ window.ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             editor: {
                 xtype: "textfield",
                 allowBlank: false
-            }
+            },
+            width: 125
         }, {
             header: window.ils.gameachievements.textScore,
             dataIndex: "Score",
@@ -447,7 +445,8 @@ window.ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             editor: {
                 xtype: "textfield",
                 allowBlank: false
-            }
+            },
+            width: 150
         }, {
             header: window.ils.gameachievements.textAdditionalParameters,
             dataIndex: "AdditionalParameters",
@@ -455,7 +454,8 @@ window.ils.gameachievements.achievementGrid = new Ext.grid.GridPanel({
             editor: {
                 xtype: "textfield",
                 allowBlank: false
-            }
+            },
+            width: 150
         }, {
             header: window.ils.gameachievements.textImagePath,
             dataIndex: "ImagePath",
