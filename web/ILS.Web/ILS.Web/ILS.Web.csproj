@@ -154,6 +154,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\AchievementsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IdeologyController.cs" />
     <Compile Include="Controllers\LinkEditorController.cs" />
@@ -181,6 +182,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\GameAchievementModel.cs" />
     <Compile Include="Models\AchievementModel.cs" />
     <Compile Include="Models\AwardModel.cs" />
     <Compile Include="Models\EDucationAuthorModel.cs" />
@@ -216,6 +218,7 @@
     <Content Include="Content\icons\logout1.png" />
     <Content Include="Content\icons\logout2.png" />
     <Content Include="Content\icons\main_aboutadmin.png" />
+    <Content Include="Content\icons\main_achievements.png" />
     <Content Include="Content\icons\main_ideology.png" />
     <Content Include="Content\icons\main_linkeditor.png" />
     <Content Include="Content\icons\main_render.png" />
@@ -986,6 +989,7 @@
     <Content Include="Scripts\ils.aboutadmin.awards.js" />
     <Content Include="Scripts\ils.aboutadmin.js" />
     <Content Include="Scripts\ils.aboutadmin.screens.js" />
+    <Content Include="Scripts\ils.gameachievements.js" />
     <Content Include="Scripts\ils.admin.js" />
     <Content Include="Scripts\ils.linkeditor.js" />
     <Content Include="Scripts\ils.openid - копия.js" />
@@ -1099,6 +1103,7 @@
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="Properties\PublishProfiles\ssau.ru.pubxml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Achievements\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
