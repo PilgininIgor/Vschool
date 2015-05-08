@@ -697,7 +697,7 @@
 
             if (mode != "guest")
             {
-                var testRun = new TestRun { Result = 0 };
+                var testRun = new TestRun { Result = 0, TestDateTime = DateTime.Now};
                 var themeRun = context.ThemeRun.Find(themeRunId);
 
                 themeRun.TestsRuns.Add(testRun); test.TestRuns.Add(testRun);
