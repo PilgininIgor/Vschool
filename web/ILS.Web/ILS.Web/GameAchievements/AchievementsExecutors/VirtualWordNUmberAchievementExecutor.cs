@@ -7,7 +7,7 @@
      using Domain;
      using Domain.GameAchievements;
 
-     public class VirtualWordNUmberAchievementExecutor : IAchievementExecutor
+     public class VirtualWordNumberAchievementExecutor : IAchievementExecutor
      {
          /// <summary>
          /// Required parameters: gameAchievementId
