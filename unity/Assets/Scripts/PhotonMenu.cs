@@ -86,6 +86,11 @@ public class PhotonMenu : MonoBehaviour
         });
     }
 
+    private void UpdateRoomName()
+    {
+        roomName = comboBoxList[comboBoxControl.GetSelectedItemIndex()].text;
+    }
+
     public void OnGUI()
     {
         GUI.skin.box.fontStyle = FontStyle.Bold;
@@ -129,7 +134,7 @@ public class PhotonMenu : MonoBehaviour
             {
                 // Save name
                 PlayerPrefs.SetString(PlayerName, PhotonNetwork.playerName);
-                roomName = comboBoxList[comboBoxControl.GetSelectedItemIndex()].text;
+                UpdateRoomName();
             }
             GUILayout.EndHorizontal();
 
@@ -151,11 +156,13 @@ public class PhotonMenu : MonoBehaviour
             GUILayout.FlexibleSpace();
             if (GUILayout.Button(Strings.Get("Create Course"), GUILayout.Width(dlgWidth / 4)))
             {
+                UpdateRoomName();
                 PhotonNetwork.CreateRoom(roomName, new RoomOptions { maxPlayers = 10 }, null);
             }
             GUILayout.FlexibleSpace();
             if (GUILayout.Button(Strings.Get("Join Course"), GUILayout.Width(dlgWidth / 4)))
             {
+                UpdateRoomName();
                 PhotonNetwork.JoinRoom(roomName);
             }
             GUILayout.FlexibleSpace();
@@ -180,7 +187,7 @@ public class PhotonMenu : MonoBehaviour
             }
             else
             {
-                GUILayout.Label(PhotonNetwork.GetRoomList() + Strings.Get(" currently available. Join either:"));
+                GUILayout.Label(PhotonNetwork.GetRoomList().Length + Strings.Get(" currently available. Join either:"));
 
                 // Room listing: simply call GetRoomList: no need to fetch/poll whatever!
                 scrollPos = GUILayout.BeginScrollView(scrollPos);
