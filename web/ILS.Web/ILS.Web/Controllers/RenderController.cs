@@ -25,66 +25,7 @@
             return View();
         }
 
-        //TODO: remove
-        public ActionResult CreateSomeTestRunsForCurrentUser()
-        {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            if (u == null)
-                return View();
-
-            Course course = context.Course.First();
-            Theme theme = context.Theme.First(x => x.Course_Id.Equals(course.Id));
-            Lecture lecture = (Lecture)context.ThemeContent.First(x => x.Theme_Id.Equals(theme.Id) && x is Lecture);
-            Test test = (Test)context.ThemeContent.First(x => x.Theme_Id.Equals(theme.Id) && x is Test);
-            Paragraph paragraph = context.Paragraph.First(x => x.Lecture_Id.Equals(lecture.Id));
-            Question question = context.Question.First(x => x.Test_Id.Equals(test.Id));
-
-            //context.CourseRun.Remove(context.CourseRun.First(x => x.User.Name.Equals(u.Name)));
-
-            CourseRun courseRun = new CourseRun();
-            courseRun.Progress = 50;
-            courseRun.User = u;
-            courseRun.TimeSpent = 100;
-            courseRun.Course = course;
-
-            ThemeRun themeRun = new ThemeRun();
-            themeRun.Progress = 35;
-            themeRun.Theme = theme;
-            themeRun.CourseRun = courseRun;
-
-            LectureRun lectureRun = new LectureRun();
-            lectureRun.Lecture = lecture;
-            lectureRun.TimeSpent = 20;
-            lectureRun.ThemeRun = themeRun;
-
-            TestRun testRun = new TestRun();
-            testRun.Result = 1;
-            testRun.Test = test;
-            testRun.ThemeRun = themeRun;
-
-            QuestionRun questionRun = new QuestionRun();
-            questionRun.Question = question;
-            questionRun.TimeSpent = 10;
-            questionRun.TestRun = testRun;
-
-            ParagraphRun paragraphRun = new ParagraphRun();
-            paragraphRun.HaveSeen = true;
-            paragraphRun.Paragraph = paragraph;
-            paragraphRun.LectureRun = lectureRun;
-
-            context.QuestionRun.Add(questionRun);
-            context.ThemeRun.Add(themeRun);
-            context.TestRun.Add(testRun);
-            context.LectureRun.Add(lectureRun);
-            context.ParagraphRun.Add(paragraphRun);
-            context.CourseRun.Add(courseRun);
-
-            context.SaveChanges();
-            return View();
-        }
-
+        
 
         public JsonResult GetProfile(String name)
         {
@@ -121,7 +62,7 @@
                 achievements.Add(run.GameAchievement.Index.ToString(), run.GameAchievement.ImagePath);
             }
             model.Achievements = achievements;
-            model.AnchevementsCount = context.GameAchievements.Count();
+            model.AchievementsCount = context.GameAchievements.Count();
             return Json(new
             {
                 model

@@ -590,15 +590,19 @@
 							return;
 						}
 						var container = document.getElementById('profileAchievementsContent');
+						var firstRowInnerHTML = "";
+						var secondRowInnerHTML = "";
 						var index = 0;
 						for (var prop in a.achievements) {
 							if (index < 16) {
-								container.children[0].innerHTML += '<div class="profileAchievement"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
+								firstRowInnerHTML += '<div class="profileAchievement"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
 							} else {
-								container.children[1].innerHTML += '<div class="profileAchievement"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
+								secondRowInnerHTML += '<div class="profileAchievement"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
 							}
 							index++;
 						}
+						container.children[0].innerHTML = firstRowInnerHTML;
+						container.children[1].innerHTML = secondRowInnerHTML;
 						showGameAchievements();
 						resume();
 					} finally {

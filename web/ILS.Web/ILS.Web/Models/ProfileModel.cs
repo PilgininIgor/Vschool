@@ -8,6 +8,6 @@ public class ProfileModel
     public int Progress { get; set; }
     public int Rating { get; set; }
     public Dictionary<string, string> Achievements { get; set; }
-    public int AnchevementsCount { get; set; }
+    public int AchievementsCount { get; set; }
     public ProfileModel() { }
 }
