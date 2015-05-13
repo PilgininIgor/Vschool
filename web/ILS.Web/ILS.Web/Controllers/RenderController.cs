@@ -278,8 +278,8 @@
         private string GetThemeLinkStatus(ThemeLink themeLink)
         {
             string status = "open";
-            User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            var ptLinks = themeLink.PersonalThemeLinks.Where(x => x.CourseRun.User_Id == u.Id);
+            User user = GetCurrentUser();
+            var ptLinks = themeLink.PersonalThemeLinks.Where(x => x.CourseRun.User_Id == user.Id);
             var personalThemeLinks = ptLinks as PersonalThemeLink[] ?? ptLinks.ToArray();
             if (!personalThemeLinks.Any())
             {
@@ -303,8 +303,8 @@
         private string GetThemeContentLinkStatus(ThemeContentLink tcLink)
         {
             string status = "open";
-            User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            var ptcLinks = tcLink.PersonalThemeContentLinks.Where(x => x.ThemeRun.CourseRun.User_Id == u.Id);
+            User user = GetCurrentUser();
+            var ptcLinks = tcLink.PersonalThemeContentLinks.Where(x => x.ThemeRun.CourseRun.User_Id == user.Id);
             var personalThemeContentLinks = ptcLinks as PersonalThemeContentLink[] ?? ptcLinks.ToArray();
             if (!personalThemeContentLinks.Any())
             {
@@ -327,37 +327,37 @@
 
         public ActionResult UnityRPG()
         {
-            User u = null;
+            User user = null;
             bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            if (!ifGuest) user = GetCurrentUser();
             {
                 return Json(new
                 {
                     ifGuest = ifGuest,
-                    username = (ifGuest) ? "" : u.Name,
-                    EXP = (ifGuest) ? 0 : u.Coins,
-                    facultyStands_Seen = (ifGuest) ? false : u.FacultyStands_Seen,
-                    facultyStands_Finish = (ifGuest) ? false : u.FacultyStands_Finish,
-                    historyStand_Seen = (ifGuest) ? false : u.HistoryStand_Seen,
-                    historyStand_Finish = (ifGuest) ? false : u.HistoryStand_Finish,
-                    scienceStand_Seen = (ifGuest) ? false : u.ScienceStand_Seen,
-                    scienceStand_Finish = (ifGuest) ? false : u.ScienceStand_Finish,
-                    staffStand_Seen = (ifGuest) ? false : u.StaffStand_Seen,
-                    staffStand_Finish = (ifGuest) ? false : u.StaffStand_Finish,
-                    logotypeJump = (ifGuest) ? false : u.LogotypeJump,
-                    tableJump = (ifGuest) ? false : u.TableJump,
-                    terminalJump = (ifGuest) ? false : u.TerminalJump,
-                    ladderJump_First = (ifGuest) ? false : u.LadderJump_First,
-                    ladderJump_All = (ifGuest) ? false : u.LadderJump_All,
-                    letThereBeLight = (ifGuest) ? false : u.LetThereBeLight,
-                    plantJump_First = (ifGuest) ? false : u.PlantJump_First,
-                    plantJump_Second = (ifGuest) ? false : u.PlantJump_Second,
-                    barrelRoll = (ifGuest) ? false : u.BarrelRoll,
-                    firstVisitLecture = (ifGuest) ? false : u.FirstVisitLecture,
-                    firstVisitTest = (ifGuest) ? false : u.FirstVisitTest,
-                    teleportations = (ifGuest) ? 0 : u.Teleportations,
-                    paragraphsSeen = (ifGuest) ? 0 : u.ParagraphsSeen,
-                    testsFinished = (ifGuest) ? 0 : u.TestsFinished
+                    username = (ifGuest) ? "" : user.Name,
+                    EXP = (ifGuest) ? 0 : user.Coins,
+                    facultyStands_Seen = (ifGuest) ? false : user.FacultyStands_Seen,
+                    facultyStands_Finish = (ifGuest) ? false : user.FacultyStands_Finish,
+                    historyStand_Seen = (ifGuest) ? false : user.HistoryStand_Seen,
+                    historyStand_Finish = (ifGuest) ? false : user.HistoryStand_Finish,
+                    scienceStand_Seen = (ifGuest) ? false : user.ScienceStand_Seen,
+                    scienceStand_Finish = (ifGuest) ? false : user.ScienceStand_Finish,
+                    staffStand_Seen = (ifGuest) ? false : user.StaffStand_Seen,
+                    staffStand_Finish = (ifGuest) ? false : user.StaffStand_Finish,
+                    logotypeJump = (ifGuest) ? false : user.LogotypeJump,
+                    tableJump = (ifGuest) ? false : user.TableJump,
+                    terminalJump = (ifGuest) ? false : user.TerminalJump,
+                    ladderJump_First = (ifGuest) ? false : user.LadderJump_First,
+                    ladderJump_All = (ifGuest) ? false : user.LadderJump_All,
+                    letThereBeLight = (ifGuest) ? false : user.LetThereBeLight,
+                    plantJump_First = (ifGuest) ? false : user.PlantJump_First,
+                    plantJump_Second = (ifGuest) ? false : user.PlantJump_Second,
+                    barrelRoll = (ifGuest) ? false : user.BarrelRoll,
+                    firstVisitLecture = (ifGuest) ? false : user.FirstVisitLecture,
+                    firstVisitTest = (ifGuest) ? false : user.FirstVisitTest,
+                    teleportations = (ifGuest) ? 0 : user.Teleportations,
+                    paragraphsSeen = (ifGuest) ? 0 : user.ParagraphsSeen,
+                    testsFinished = (ifGuest) ? 0 : user.TestsFinished
                 });
             }
         }
@@ -406,19 +406,19 @@
             }
             else
             { //если юзер авторизован, то найти его в базе по имени
-                var u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-                if (context.CourseRun.Count(x => (x.User.Name == u.Name) && (x.Course_Id == c.Id)) == 0) //ищем в базе статистику юзера по этому курсу
+                var user = GetCurrentUser();
+                if (context.CourseRun.Count(x => (x.User.Name == user.Name) && (x.Course_Id == c.Id)) == 0) //ищем в базе статистику юзера по этому курсу
                 { //если нет, то он заходит в него впервые, и надо создать ему "нулевую" статистику
                     CourseRun cr = new CourseRun()
                     {
                         Course = c,
-                        User = u,
+                        User = user,
                         Progress = 0.0,
                         TimeSpent = 0.0,
                         Visisted = false,
                         CompleteAll = false
                     };
-                    u.CoursesRuns.Add(cr);
+                    user.CoursesRuns.Add(cr);
                     foreach (var t in c.Themes.OrderBy(x => x.OrderNumber))
                     {
                         ThemeRun tr = new ThemeRun()
@@ -447,7 +447,7 @@
                     }
                     context.SaveChanges();
                 }
-                var course_run = context.CourseRun.First(x => (x.User.Name == u.Name) && (x.Course_Id == c.Id));
+                var course_run = context.CourseRun.First(x => (x.User.Name == user.Name) && (x.Course_Id == c.Id));
                 return Json(new
                 { //возвращаем статистику юзера - неважно, "нулевая" ли она и только что созданная или же старая и в ней уже есть какой-то прогресс
                     mode = "registered",
@@ -493,33 +493,33 @@
         {
             try
             {
-                User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+                User user = GetCurrentUser();
                 JavaScriptSerializer jss = new JavaScriptSerializer();
                 var obj = jss.Deserialize<dynamic>(s);
 
-                u.Coins = obj["EXP"];
-                u.FacultyStands_Seen = obj["facultyStands_Seen"];
-                u.FacultyStands_Finish = obj["facultyStands_Finish"];
-                u.HistoryStand_Seen = obj["historyStand_Seen"];
-                u.HistoryStand_Finish = obj["historyStand_Finish"];
-                u.ScienceStand_Seen = obj["scienceStand_Seen"];
-                u.ScienceStand_Finish = obj["scienceStand_Finish"];
-                u.StaffStand_Seen = obj["staffStand_Seen"];
-                u.StaffStand_Finish = obj["staffStand_Finish"];
-                u.LogotypeJump = obj["logotypeJump"];
-                u.TableJump = obj["tableJump"];
-                u.TerminalJump = obj["terminalJump"];
-                u.LadderJump_First = obj["ladderJump_First"];
-                u.LadderJump_All = obj["ladderJump_All"];
-                u.LetThereBeLight = obj["letThereBeLight"];
-                u.PlantJump_First = obj["plantJump_First"];
-                u.PlantJump_Second = obj["plantJump_Second"];
-                u.BarrelRoll = obj["barrelRoll"];
-                u.FirstVisitLecture = obj["firstVisitLecture"];
-                u.FirstVisitTest = obj["firstVisitTest"];
-                u.Teleportations = obj["teleportations"];
-                u.ParagraphsSeen = obj["paragraphsSeen"];
-                u.TestsFinished = obj["testsFinished"];
+                user.Coins = obj["EXP"];
+                user.FacultyStands_Seen = obj["facultyStands_Seen"];
+                user.FacultyStands_Finish = obj["facultyStands_Finish"];
+                user.HistoryStand_Seen = obj["historyStand_Seen"];
+                user.HistoryStand_Finish = obj["historyStand_Finish"];
+                user.ScienceStand_Seen = obj["scienceStand_Seen"];
+                user.ScienceStand_Finish = obj["scienceStand_Finish"];
+                user.StaffStand_Seen = obj["staffStand_Seen"];
+                user.StaffStand_Finish = obj["staffStand_Finish"];
+                user.LogotypeJump = obj["logotypeJump"];
+                user.TableJump = obj["tableJump"];
+                user.TerminalJump = obj["terminalJump"];
+                user.LadderJump_First = obj["ladderJump_First"];
+                user.LadderJump_All = obj["ladderJump_All"];
+                user.LetThereBeLight = obj["letThereBeLight"];
+                user.PlantJump_First = obj["plantJump_First"];
+                user.PlantJump_Second = obj["plantJump_Second"];
+                user.BarrelRoll = obj["barrelRoll"];
+                user.FirstVisitLecture = obj["firstVisitLecture"];
+                user.FirstVisitTest = obj["firstVisitTest"];
+                user.Teleportations = obj["teleportations"];
+                user.ParagraphsSeen = obj["paragraphsSeen"];
+                user.TestsFinished = obj["testsFinished"];
 
                 context.SaveChanges();
             }
@@ -542,14 +542,13 @@
             return Json(context.GameAchievements.OrderBy(x => x.Name).Select(x => new
             {
                 id = x.Id,
-                name = x.Name,
-                message = x.Message
+                name = x.Name
             }), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetGameAchievementRuns()
         {
-            var user = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            var user = GetCurrentUser();
 
             return Json(context.GameAchievementRuns.Where(a => a.UserId.Equals(user.Id)).Select(x => new
             {
@@ -758,10 +757,10 @@
 
         private void FreezeOutputLinks(Theme theme)
         {
-            var u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            var user = GetCurrentUser();
             foreach (var tLink in theme.OutputThemeLinks)
             {
-                foreach (var ptLink in tLink.PersonalThemeLinks.Where((y => ((y.CourseRun.User_Id == u.Id)
+                foreach (var ptLink in tLink.PersonalThemeLinks.Where((y => ((y.CourseRun.User_Id == user.Id)
                     && (y.Status == "open")))))
                 {
                     ptLink.Status = "frozen";
@@ -773,8 +772,14 @@
 
         public ActionResult GetUserName()
         {
-            return Json(HttpContext.User.Identity.Name, JsonRequestBehavior.AllowGet);
+            return Json(GetCurrentUser().Name, JsonRequestBehavior.AllowGet);
         }
 
+        private User GetCurrentUser()
+        {
+            //TODO MAKE REAL AUTHORIZATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return String.IsNullOrEmpty(HttpContext.User.Identity.Name) ? context.User.First()
+                : context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+        }
     }
 }
