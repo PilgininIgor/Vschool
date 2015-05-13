@@ -3,7 +3,7 @@
 public class BeginTest : MonoBehaviour
 {
 
-    GameObject BoardStatic, BoardToMove, Cube1, Cube2, Cube3, Cube4, Cube5;
+    public GameObject BoardStatic, BoardToMove, Cube1, Cube2, Cube3, Cube4, Cube5;
     private Board scr;
 
     void OnMouseDown()

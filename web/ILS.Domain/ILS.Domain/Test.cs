@@ -12,6 +12,8 @@ namespace ILS.Domain
 
         public virtual ICollection<TestRun> TestRuns { get; set; }
 
+        public int AttemptsNumber { get; set; }
+
         public Test()
         {
             Questions = new List<Question>();

@@ -26,14 +26,16 @@ public class CNCameraRelativeSetup : MonoBehaviour
 			if (joyObject != null)
 				joystick = joyObject.GetComponent<CNJoystick>();
 		}
-        joystick.JoystickMovedEvent += JoystickMovedEventHandler;
-        joystick.FingerLiftedEvent += StopMoving;
-        characterController = GetComponent<CharacterController>();
-		anim = GetComponent<Animator>();
-        mainCamera = Camera.main;
-        gravity = -Physics.gravity.y;
-        totalMove = Vector3.zero;
-        tweakedLastFrame = false;
+		if (joystick != null) {
+			joystick.JoystickMovedEvent += JoystickMovedEventHandler;
+			joystick.FingerLiftedEvent += StopMoving;
+		}
+		characterController = GetComponent<CharacterController> ();
+		anim = GetComponent<Animator> ();
+		mainCamera = Camera.main;
+		gravity = -Physics.gravity.y;
+		totalMove = Vector3.zero;
+		tweakedLastFrame = false;
     }
 
     /** 

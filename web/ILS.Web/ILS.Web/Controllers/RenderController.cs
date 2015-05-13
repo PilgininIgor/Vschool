@@ -638,7 +638,7 @@
 
             if (mode != "guest")
             {
-                var testRun = new TestRun { Result = 0 };
+                var testRun = new TestRun { Result = 0, TestDateTime = DateTime.Now};
                 var themeRun = context.ThemeRun.Find(themeRunId);
 
                 themeRun.TestsRuns.Add(testRun); test.TestRuns.Add(testRun);
@@ -769,6 +769,13 @@
                     FreezeOutputLinks(ptLink.ThemeLink.LinkedTheme);
                 }
             }
+        }
+
+        public ActionResult GetUserName()
+        {
+            return Json(context.User.First(x => 
+                x.Name == HttpContext.User.Identity.Name).Name, 
+                JsonRequestBehavior.AllowGet);
         }
 
     }
