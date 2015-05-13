@@ -31,6 +31,7 @@
 они размещаются друг над другом, комнаты каждого типа в своей "кучке", все выше и выше
 запустите сцену, нажмите на U и поглядите сами*/
 
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using JsonFx.Json;
@@ -299,19 +300,23 @@ public class BootstrapParser : MonoBehaviour {
 		MainCorridorStart.tag = "Clone";
 		c.Add (MainCorridorStart);
 		int k = 0;
-		for (int i = 0; i < themes.Count; i++)
+		for (var i = 0; i < themes.Count; i++)
 		{
-			if (i % 2 == 0)
+            var status = GetThemeStatus(themes, i);
+		    var header = status == "closed" ? "ЗАКРЫТО" : themes[i].name;
+		    if (i % 2 == 0)
 			{
 				k++;
 				GameObject t = (GameObject) Instantiate(MainCorridorMiddle);
 				t.tag = "Clone";
-				t.transform.Find("MonitorLeft/Text").GetComponent<TextMesh>().text = themes[i].name;
+                t.transform.Find("MonitorLeft/Text").GetComponent<TextMesh>().text = header;
 				t.transform.position = c[k - 1].transform.Find("Anchor_Next").gameObject.transform.position
 					- t.transform.Find("Anchor_Prev").gameObject.transform.localPosition;
 				c.Add(t);
-			} else {
-				c[k].transform.Find("MonitorRight/Text").GetComponent<TextMesh>().text = themes[i].name;
+			} 
+            else 
+            {
+                c[k].transform.Find("MonitorRight/Text").GetComponent<TextMesh>().text = header;
 			}
 		}
 
@@ -381,4 +386,23 @@ public class BootstrapParser : MonoBehaviour {
 
 		return c.ToArray ();
 	}
+
+    private string GetThemeStatus(List<DataStructures.Theme> themes, int index) 
+    {
+        foreach (DataStructures.Theme theme in themes)
+	    {
+	        foreach (DataStructures.ThemeLink themeLink in theme.outputThemeLinks)
+	        {
+	            if (themeLink.linkedThemeId == themes[index].id)
+	            {
+	                var currentStatus = themeLink.status;
+	                if (currentStatus == "closed")
+	                {
+	                    return "closed";
+	                }
+	            }
+	        }
+	    }
+        return "open";
+    }
 }

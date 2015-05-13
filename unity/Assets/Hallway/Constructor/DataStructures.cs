@@ -38,12 +38,29 @@ public class DataStructures : MonoBehaviour
         public string type;
         public List<Question> questions;
         public List<Paragraph> paragraphs;
+        public List<ThemeContentLink> outputThemeContentLinks;
+    }
+
+    public class ThemeContentLink 
+    {
+	    public string parentThemeContentId;
+	    public string linkedThemeContentId;
+	    public string status;
     }
 
     public class Theme
     {
+        public string id;
         public string name;
         public List<ThemeContent> contents;
+        public List<ThemeLink> outputThemeLinks;
+    }
+
+    public class ThemeLink
+    {
+        public string parentThemeId;
+        public string linkedThemeId;
+        public string status;
     }
 
     public class Course
