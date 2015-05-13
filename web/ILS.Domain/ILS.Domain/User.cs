@@ -14,6 +14,9 @@
         public int Coins { get; set; }
         public int Rating { get; set; }
 
+        public string Token { get; set; }
+        public double CurrentTokenMilliseconds { get; set; }
+
         public bool FacultyStands_Seen { get; set; }
         public bool FacultyStands_Finish { get; set; }
         public bool HistoryStand_Seen { get; set; }
