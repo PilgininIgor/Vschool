@@ -1,13 +1,14 @@
 ﻿namespace ILS.Web.Controllers
 {
     using Domain;
-    using Domain.GameAchievements;
-    using GameAchievements;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using System.Web.Script.Serialization;
+using Domain.GameAchievements;
+using GameAchievements;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
     public class RenderController : Controller
     {
@@ -24,11 +25,7 @@
         {
             return View();
         }
-
-            bool isGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!isGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
         
-
         public JsonResult GetProfile(String name)
         {
             User u = context.User.First(x => x.Name == name);

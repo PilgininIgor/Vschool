@@ -30,7 +30,7 @@ namespace ILS.Domain.Migrations
         protected override void Seed(ILS.Domain.ILSContext context)
         {
             context.Database.ExecuteSqlCommand(FillDatabaseHelper.ScriptFillTables);   
-            return;
+            
             #region GameAchievements
             var achievementIndex = 1;
             context.GameAchievements.Add(new GameAchievement
