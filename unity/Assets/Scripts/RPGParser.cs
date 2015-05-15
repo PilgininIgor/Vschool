@@ -19,6 +19,7 @@ public class RPGParser : MonoBehaviour
 "}";
 
     public DataStructures.OverallRPG RPG;
+    public DataStructures.GameAchievement[] Achievements;
 
     public Font helvetica;
     private bool displayHUD = false;
@@ -41,10 +42,22 @@ public class RPGParser : MonoBehaviour
     string LBL = "Очки опыта";
     private string nameOfAvatar;
 
+    private HttpConnector httpConnector;
+
     // Use this for initialization
     void Start()
     {
+        httpConnector = GetComponent<HttpConnector>();
         RoleSystemSet(JSONTestString);
+        LoadGameAchievements();
+    }
+
+    private void LoadGameAchievements()
+    {
+        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetGameAchievementsUrl, www =>
+        {
+            Achievements = JsonReader.Deserialize<DataStructures.GameAchievement[]>(www.text);
+        });
     }
 
     private void RoleSystemSet(string json)
@@ -149,8 +162,16 @@ public class RPGParser : MonoBehaviour
             var s = JsonWriter.Serialize(RPG);
             var parameters = new Dictionary<string, string>();
             parameters["s"] = s;
-            var httpConnector = GameObject.Find("Bootstrap").AddComponent<HttpConnector>();
             httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.UnitySaveRpgUrl, parameters, www => { });
+        }
+    }
+
+    public void SaveAchievemnt(string guid)
+    {
+        if (!RPG.ifGuest)
+        {
+            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveGameAchievementUrl, new Dictionary<string, string> {{"achievementId", guid}},
+                www => { });
         }
     }
 }

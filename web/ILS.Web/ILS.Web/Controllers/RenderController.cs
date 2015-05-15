@@ -534,7 +534,12 @@
         {
             var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game,
                 new Dictionary<string, object> { { AchievementsConstants.GameAchievementIdParamName, achievementId } });
-            return Json(changedAchievementRuns.Select(a => new { id = a.Id, GameAchievement = a.GameAchievementId }));
+            return Json(changedAchievementRuns.Select(run => new
+            {
+                name = run.GameAchievement.Name, 
+                result = run.Result,
+                passed = run.Passed
+            }));
         }
 
         public ActionResult GetGameAchievementsForUnity()
