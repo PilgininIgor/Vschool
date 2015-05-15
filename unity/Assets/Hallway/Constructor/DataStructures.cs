@@ -128,6 +128,15 @@ public class DataStructures : MonoBehaviour
         public string name;
     }
 
+    public class GameAchievementRun
+    {
+        public string name;
+        public int score;
+        public int result;
+        public bool passed;
+        public bool needToShow;
+    }
+
     public class OverallRPG
     {
         public bool ifGuest;

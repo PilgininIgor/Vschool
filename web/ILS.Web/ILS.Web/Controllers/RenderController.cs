@@ -536,8 +536,10 @@ using System.Web.Script.Serialization;
             return Json(changedAchievementRuns.Select(run => new
             {
                 name = run.GameAchievement.Name, 
+                score = run.GameAchievement.Score,
                 result = run.Result,
-                passed = run.Passed
+                passed = run.Passed,
+                needToShow = run.NeedToShow
             }));
         }
 
