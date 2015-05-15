@@ -6,7 +6,12 @@ addEntity = function (link) {
         url: link, method: 'POST',
         params: { parent_id: pid },
         success: function (result) {
-            treestore.load({ callback: function () { tree.selectPath(pth + '/' + result.responseText); } });
+            treestore.load(
+                {
+                    callback: function () {
+                        tree.selectPath(pth + '/' + result.responseText);
+                    }
+                });
         }
     });
 }
@@ -24,7 +29,11 @@ removeEntity = function (link) {
         params: { id: currently_selected.data.id, parent_id: currently_selected.parentNode.data.id },
         method: 'POST',
         success: function () {
-            treestore.load({ callback: function () { tree.selectPath(pth); } });
+            treestore.load({
+                callback: function () {
+                    tree.selectPath(pth);
+                }
+            });
         }
     });
 }
@@ -82,7 +91,11 @@ addDoc = function (link, type_file) {
                                     url: link,
                                     waitMsg: 'Загрузка файла...',
                                     success: function (fp, o) {
-                                        treestore.load({ callback: function () { tree.selectPath(pth); } });
+                                        treestore.load({
+                                            callback: function () {
+                                                tree.selectPath(pth);
+                                            }
+                                        });
                                         Ext.Msg.alert('Сообщение', 'Файл успешно загружен');
                                         ip.destroy();
 
@@ -130,7 +143,11 @@ listDownloadedContentFromMoodle = function (link, listTestsAndLections_checked) 
             list: Ext.encode(list)
         },
         success: function (result) {
-            treestore.load({ callback: function () { tree.selectPath(pth + '/' + result.responseText); } });
+            treestore.load({
+                callback: function () {
+                    tree.selectPath(pth + '/' + result.responseText);
+                }
+            });
             ip.destroy();
             alrt.close();
             Ext.Msg.alert('Сообщение', 'Данные успешно загружены!');
@@ -344,7 +361,11 @@ addMoodle = function (link) {
                                         timeout: 1000,
                                         waitMsg: 'Загрузка данных...',
                                         success: function (result) {
-                                            treestore.load({ callback: function () { tree.selectPath(pth + '/' + result.responseText); } });
+                                            treestore.load({
+                                                callback: function () {
+                                                    tree.selectPath(pth + '/' + result.responseText);
+                                                }
+                                            });
                                             Ext.Msg.alert('Сообщение', 'Данные успешно загружены!');
                                             ip.destroy();
                                         },
@@ -384,7 +405,12 @@ changeOrderNumber = function (link) {
             type: currently_selected.raw.iconCls
         },
         success: function (result) {
-            treestore.load({ callback: function () { tree.selectPath(pth); } });
+            treestore.load({
+                callback: function () {
+                    Ext.getCmp('learnContentTree').getSelectionModel().deselectAll();
+                    tree.selectPath(pth);
+                }
+            });
         }
     });
 }
@@ -399,57 +425,75 @@ var tlbar = new Ext.panel.Panel({
         padding: "2 8 2 8"
     },
     items: [{
+        // 0
         xtype: 'button', text: 'Добавить курс', iconCls: 'course_add',
         handler: function () { addEntity(link_addCourse); }
     }, {
+        // 1
         xtype: 'button', text: 'Удалить курс', iconCls: 'course_remove',
         handler: function () { removeEntity(link_removeCourse); }
     }, {
+        // 2
         xtype: 'button', text: 'Добавить тему', iconCls: 'theme_add', hidden: true,
         handler: function () { addEntity(link_addTheme); }
     }, {
+        // 3
         xtype: 'button', text: 'Удалить тему', iconCls: 'theme_remove', hidden: true,
         handler: function () { removeEntity(link_removeTheme); }
     }, {
+        // 4
         xtype: 'button', text: 'Добавить лекцию', iconCls: 'lecture_add', hidden: true,
         handler: function () { addEntity(link_addLecture); }
     }, {
+        // 5
         xtype: 'button', text: 'Удалить лекцию', iconCls: 'lecture_remove', hidden: true,
         handler: function () { removeEntity(link_removeContent); }
     }, {
+        // 6
         xtype: 'button', text: 'Добавить тест', iconCls: 'add', hidden: true,
-        handler: function () { addEntity(link_addTest); }
+        handler: function () { addEntity(link_addTGTest); }
     }, {
+        // 7
         xtype: 'button', text: 'Удалить тест', iconCls: 'remove', hidden: true,
         handler: function () { removeEntity(link_removeContent); }
     }, {
+        // 8
         xtype: 'button', text: 'Добавить параграф', iconCls: 'paragraph_add', hidden: true,
         handler: function () { addEntity(link_addParagraph); }
     }, {
+        // 9
         xtype: 'button', text: 'Удалить параграф', iconCls: 'paragraph_remove', hidden: true,
         handler: function () { removeEntity(link_removeParagraph); }
     }, {
+        // 10
         xtype: 'button', text: 'Добавить вопрос', iconCls: 'add', hidden: true,
-        handler: function () { addEntity(link_addQuestion); }
+        handler: function () { addEntity(link_addTGTaskTemplate); }
     }, {
+        // 11
         xtype: 'button', text: 'Удалить вопрос', iconCls: 'remove', hidden: true,
-        handler: function () { removeEntity(link_removeQuestion); }
+        handler: function () { removeEntity(link_removeTGTaskTemplate); }
     }, {
+        // 12
         xtype: 'button', text: 'Поднять', iconCls: 'move_up', hidden: true,
         handler: function () { changeOrderNumber(link_moveUp); }
     }, {
+        // 13
         xtype: 'button', text: 'Опустить', iconCls: 'move_down', hidden: true,
         handler: function () { changeOrderNumber(link_moveDown); }
     }, {
+        // 14
         xtype: 'button', text: 'Загрузить файл с лекцией', iconCls: 'paragraph_add', hidden: true,
         handler: function () { addDoc(link_addDoc, 'lecture'); }
     }, {
+        // 15
         xtype: 'button', text: 'Загрузить файл с тестом', iconCls: 'paragraph_add', hidden: true,
         handler: function () { addDoc(link_addDoc, 'test'); }
     }, {
+        // 16
         xtype: 'button', text: 'Загрузить из moodle', iconCls: 'moodle', hidden: true,
         handler: function () { addMoodle(link_addMoodle); }
     }/*, {
+        // 17
         text: 'Обновить список из Moodle', iconCls: 'moodleUpdate', hidden: true,
         handler: function () { updateListMoodle(link_moodleListUpdate); }
     }*/]

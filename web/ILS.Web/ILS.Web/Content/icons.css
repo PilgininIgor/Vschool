@@ -52,3 +52,8 @@
 /* linkEditor */
 .save { background-image:url("icons/save.png") !important}
 .help { background-image:url("icons/help.png") !important}
+
+/* testgenerator */
+.tgtest { background-image:url("icons/tgtest.png") !important}
+.tgtasktemplate { background-image:url("icons/tgtasktemplate.png") !important}
+.loading_gear { background-image:url("icons/loading_gear.png") !important}

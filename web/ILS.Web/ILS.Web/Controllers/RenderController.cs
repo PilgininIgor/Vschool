@@ -25,6 +25,8 @@
             return View();
         }
 
+            bool isGuest = !HttpContext.User.Identity.IsAuthenticated;
+            if (!isGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
         
 
         public JsonResult GetProfile(String name)

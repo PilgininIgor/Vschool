@@ -64,6 +64,9 @@ if (isRussian) {
 Ext.define('UserModel', {
     extend: 'Ext.data.Model',
     fields: [{
+        name: 'RecordId',
+        type: 'string'
+    }, {
         name: 'Name',
         type: 'string'
     }, {
@@ -84,7 +87,7 @@ Ext.define('UserModel', {
 ils.admin.store = new Ext.data.Store({
     extend: 'Ext.data.Store',
     autoLoad: true,
-    autoSync: true,
+    //autoSync: true,
     model: UserModel,
     proxy: {
         type: 'ajax',
@@ -116,7 +119,10 @@ ils.admin.store = new Ext.data.Store({
         writer: new Ext.data.JsonWriter({
             encode: false,
             listful: true,
-            writeAllFields: true
+            writeAllFields: true,
+            getRecordData: function (record) {
+                return { 'data': Ext.JSON.encode(record.data) };
+            }
         }),
         headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         autoSave: true,
@@ -231,7 +237,6 @@ ils.admin.userGrid = new Ext.grid.GridPanel({
                 url: document.location.href + '/UserProfile',
                 success: function (response, opts) {
                     var a = eval('(' + response.responseText + ')');
-
 
                     ils.admin.userProfile = new Ext.Window({
                         title: ils.admin.textProfile,
@@ -409,8 +414,7 @@ Ext.onReady(function () {
                             text: ils.admin.textRemove,
                             handler: function () {
                                 //editor.stopEditing();
-                                var grid = this.up('grid');
-                                var s = grid.getSelectionModel().getSelection();
+                                var s = ils.admin.userGrid.getSelectionModel().getSelection();
                                 if (!s.length) {
                                     Ext.Msg.alert(ils.admin.alert, ils.admin.alertText);
                                     return;
@@ -418,13 +422,12 @@ Ext.onReady(function () {
                                 Ext.Msg.confirm(ils.admin.promptRemove, ils.admin.promptRemoveText, function (button) {
                                     if (button == 'yes') {
                                         ils.admin.store.remove(s[0]);
+                                        ils.admin.store.sync();
+                                        ils.admin.store.reload();
                                     }
                                 });
-                                //for (var i = 0, r; r = s[i]; i++) {
-
-                                //}
                             }
-                        }, {
+                        }/*, { // Кнопка "Утвердить пользователя"
                             xtype: 'button',
                             iconCls: 'add',
                             text: ils.admin.textToggle,
@@ -443,14 +446,14 @@ Ext.onReady(function () {
                                 //s[0].data.IsApproved = !s[0].data.IsApproved;
                                 //ils.admin.store.add(s[0]);
                             }
-                        }, {
+                        }, { // Кнопка "Сохранить изменения"
                             xtype: 'button',
                             iconCls: 'paragraph_add',
                             text: ils.admin.textSaveChanges,
                             handler: function () {
                                 ils.admin.store.save();
                             }
-                        }]
+                        }*/]
             })
         ]
     });

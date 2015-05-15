@@ -65,19 +65,37 @@
     <Compile Include="Migrations\201504170744333_EditAchievements.Designer.cs">
       <DependentUpon>201504170744333_EditAchievements.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504291149556_TestGeneratorModified.cs" />
+    <Compile Include="Migrations\201504291149556_TestGeneratorModified.Designer.cs">
+      <DependentUpon>201504291149556_TestGeneratorModified.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505011027456_RenameColumn.cs" />
+    <Compile Include="Migrations\201505011027456_RenameColumn.Designer.cs">
+      <DependentUpon>201505011027456_RenameColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505011846500_TestGeneratorModified2.cs" />
+    <Compile Include="Migrations\201505011846500_TestGeneratorModified2.Designer.cs">
+      <DependentUpon>201505011846500_TestGeneratorModified2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505021756192_TestGeneratorModified3.cs" />
+    <Compile Include="Migrations\201505021756192_TestGeneratorModified3.Designer.cs">
+      <DependentUpon>201505021756192_TestGeneratorModified3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="TestGenerator\TGCountOfTaskMode.cs" />
+    <Compile Include="Migrations\FillDatabaseHelper.cs" />
+    <Compile Include="TestGenerator\Settings\TGCountOfTaskMode.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="CourseRun.cs" />
     <Compile Include="EDucationAuthor.cs" />
     <Compile Include="EntityBase.cs" />
+    <Compile Include="TestGenerator\TGTaskTemplate.cs" />
     <Compile Include="TestGenerator\TGTest.cs" />
-    <Compile Include="TestGenerator\TGTestSetting.cs" />
+    <Compile Include="TestGenerator\Settings\TGTestSetting.cs" />
     <Compile Include="ILSContext.cs" />
     <Compile Include="Lecture.cs" />
     <Compile Include="LectureRun.cs" />
     <Compile Include="LinkEditorCoordinates.cs" />
-    <Compile Include="TestGenerator\TGMixMode.cs" />
+    <Compile Include="TestGenerator\Settings\TGMixMode.cs" />
     <Compile Include="Paragraph.cs" />
     <Compile Include="ParagraphRun.cs" />
     <Compile Include="PersonalThemeContentLink.cs" />
@@ -86,7 +104,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="QuestionRun.cs" />
-    <Compile Include="TestGenerator\TGRatingCalculationMode.cs" />
+    <Compile Include="TestGenerator\Settings\TGRatingCalculationMode.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TestRun.cs" />
@@ -111,6 +129,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504170744333_EditAchievements.resx">
       <DependentUpon>201504170744333_EditAchievements.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504291149556_TestGeneratorModified.resx">
+      <DependentUpon>201504291149556_TestGeneratorModified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505011027456_RenameColumn.resx">
+      <DependentUpon>201505011027456_RenameColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505011846500_TestGeneratorModified2.resx">
+      <DependentUpon>201505011846500_TestGeneratorModified2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505021756192_TestGeneratorModified3.resx">
+      <DependentUpon>201505021756192_TestGeneratorModified3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

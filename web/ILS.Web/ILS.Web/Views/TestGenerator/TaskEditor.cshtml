@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "3Ducation | Генератор тестов";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script type="text/javascript">
+        var titleOfPage = '@ViewBag.Title';
+
+        // тестовые методы для генератора шаблонов
+        var urlGetData = '@Url.Action("GetData", new { controller = "TestGenerator" })';
+        var urlGetAvailableFunctions = '@Url.Action("GetAvailableFunctions", new { controller = "TestGenerator" })';
+        var urlPersonNewList = '@Url.Content("~/TestGenerator/PersonNewList")';
+        var urlPersonCreate = '@Url.Content("~/TestGenerator/CreatePerson")';
+        var urlPersonEdit = '@Url.Content("~/TestGenerator/EditPerson")';
+        var urlPersonDelete = '@Url.Content("~/TestGenerator/DeletePerson")';
+    </script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/testgenerator.taskeditor.js")"></script>
+}

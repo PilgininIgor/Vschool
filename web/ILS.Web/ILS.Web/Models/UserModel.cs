@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class UserModel
 {
+    public string RecordId { get; set; }
     public bool IsApproved { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
@@ -19,5 +21,6 @@ public class UserModel
         this.Email = pEmail;
     }
 
-    public UserModel() { }
+    public UserModel() { 
+    }
 }

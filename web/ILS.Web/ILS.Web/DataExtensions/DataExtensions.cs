@@ -30,12 +30,12 @@ namespace ILS.Web.DataExtensions
 						var qid = Guid.NewGuid();
 						if (!String.IsNullOrEmpty(form["qid" + qNum]))
 							Guid.TryParse(form["qid" + qNum], out qid);
-						var q = context.ClosedQuestion.FindOrCreate(qid);
-						q.Id = qid;
-						q.Prize = 1;
-						q.Punishment = 1;
-						q.Text = form["question" + qNum];
-						q.RandomizeAnswers = form.AllKeys.Contains("qrnd"+qNum) && bool.Parse(form["qrnd"+qNum]);
+						var taskTemplate = context.ClosedQuestion.FindOrCreate(qid);
+						taskTemplate.Id = qid;
+						taskTemplate.Prize = 1;
+						taskTemplate.Punishment = 1;
+						taskTemplate.Text = form["question" + qNum];
+						taskTemplate.RandomizeAnswers = form.AllKeys.Contains("qrnd"+qNum) && bool.Parse(form["qrnd"+qNum]);
 						for (int i = 1; i <= 5; i++)
 						{
 							var aid = Guid.NewGuid();
@@ -45,10 +45,10 @@ namespace ILS.Web.DataExtensions
 							a.Id = aid;
 							a.Text = form["answer" + qNum + i];
 							a.Weight = form.AllKeys.Contains("correct" + qNum+i) && bool.Parse(form["correct" + qNum+i]) ? 1 : 0;
-							q.Answers.CheckAndAdd(a);
+							taskTemplate.Answers.CheckAndAdd(a);
 						}
 
-						test.Questions.CheckAndAdd(q);
+						test.Questions.CheckAndAdd(taskTemplate);
 					}
 				}
 				return test;

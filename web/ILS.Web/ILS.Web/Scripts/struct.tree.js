@@ -2,7 +2,7 @@
 //крайне понадобится нам, чтобы возвращаться к нужному элементу после перезагрузки дерева
 extractPath = function (node) {
     if (node.getDepth() > 0) {
-        return extractPath(node.parentNode) + '/' + node.internalId;
+        return extractPath(node.parentNode) + '/' + node.id;
     }
     else return '/treeRoot';
 }
@@ -26,6 +26,7 @@ var treestore = new Ext.data.TreeStore({
 
 //левая часть - дерево
 var tree = new Ext.tree.Panel({
+    id: 'learnContentTree',
     region: 'west',
     width: '25%',
     split: true,

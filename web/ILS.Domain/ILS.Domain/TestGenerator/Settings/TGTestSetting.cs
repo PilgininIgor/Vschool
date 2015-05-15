@@ -5,7 +5,7 @@ using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ILS.Domain.TestGenerator
+namespace ILS.Domain.TestGenerator.Settings
 {
     /// <summary>
     /// Настройки генерируемого теста
@@ -15,10 +15,10 @@ namespace ILS.Domain.TestGenerator
         /// <summary>
         /// Количество вопросов в тесте
         /// </summary>
-        [ForeignKey("TGCountOfTaskMode")]
-        public Guid? TGCountOfTaskMode_Id { get; set; }
+        [ForeignKey("CountOfTaskMode")]
+        public Guid? CountOfTaskMode_Id { get; set; }
 
-        public virtual TGCountOfTaskMode TGCountOfTaskMode { get; set; }
+        public virtual TGCountOfTaskMode CountOfTaskMode { get; set; }
 
         /// <summary>
         /// Количество вопросов в режиме "Случайные N вопросов"
@@ -28,10 +28,10 @@ namespace ILS.Domain.TestGenerator
         /// <summary>
         /// Способ оценивания прохождения теста
         /// </summary>
-        [ForeignKey("TGRatingCalculationMode")]
-        public Guid? TGRatingCalculationMode_Id { get; set; }
+        [ForeignKey("RatingCalculationMode")]
+        public Guid? RatingCalculationMode_Id { get; set; }
 
-        public virtual TGRatingCalculationMode TGRatingCalculationMode { get; set; }
+        public virtual TGRatingCalculationMode RatingCalculationMode { get; set; }
 
         /// <summary>
         /// Режим ограничения по времени выполнения теста
@@ -41,12 +41,12 @@ namespace ILS.Domain.TestGenerator
         /// <summary>
         /// Время ограничения, минуты
         /// </summary>
-        public bool TimeLimitMinutes { get; set; }
+        public int TimeLimitMinutes { get; set; }
 
         /// <summary>
         /// Время ограничения, секунды
         /// </summary>
-        public bool TimeLimitSeconds { get; set; }
+        public int TimeLimitSeconds { get; set; }
 
         /// <summary>
         /// Режим перемешивания вариантов ответов

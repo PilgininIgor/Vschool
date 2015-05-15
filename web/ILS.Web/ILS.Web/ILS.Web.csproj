@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocX">
+      <HintPath>..\..\packages\DocX.1.0.0.13\lib\net40\DocX.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -204,6 +207,10 @@
     <Content Include="Content\css\mycss.css" />
     <Content Include="Content\demo.mp4" />
     <Content Include="Content\icons.css" />
+    <Content Include="Content\icons\loading_gear.png" />
+    <Content Include="Content\icons\tgtest.png" />
+    <Content Include="Content\icons\test.png" />
+    <Content Include="Content\icons\tgtasktemplate.png" />
     <Content Include="Content\icons\add.png" />
     <Content Include="Content\icons\browseFiles.png" />
     <Content Include="Content\icons\course.png" />
@@ -235,7 +242,6 @@
     <Content Include="Content\icons\remove.png" />
     <Content Include="Content\icons\russian.png" />
     <Content Include="Content\icons\save.png" />
-    <Content Include="Content\icons\test.png" />
     <Content Include="Content\icons\theme.png" />
     <Content Include="Content\icons\theme_add.png" />
     <Content Include="Content\icons\theme_remove.png" />
@@ -1058,6 +1064,7 @@
     <None Include="Properties\PublishProfiles\ssau.ru.pubxml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Achievements\Index.cshtml" />
+    <Content Include="Views\TestGenerator\TaskEditor.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

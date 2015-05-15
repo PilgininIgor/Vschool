@@ -384,7 +384,12 @@ changeOrderNumber = function (link) {
             type: currently_selected.raw.iconCls
         },
         success: function (result) {
-            treestore.load({ callback: function () { tree.selectPath(pth); } });
+            treestore.load({
+                callback: function () {
+                    Ext.getCmp('learnContentTree').getSelectionModel().deselectAll();
+                    tree.selectPath(pth);
+                }
+            });
         }
     });
 }
