@@ -1318,7 +1318,7 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "screenNumber=1"
+                AdditionalParameters = "number=1"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -1330,7 +1330,7 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "screenNumber=5"
+                AdditionalParameters = "number=5"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -1342,7 +1342,7 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "screenNumber=10"
+                AdditionalParameters = "number=10"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -1354,7 +1354,7 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "teleportNumber=10"
+                AdditionalParameters = "number=10"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -1366,7 +1366,7 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "teleportNumber=50"
+                AdditionalParameters = "number=50"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -1378,7 +1378,7 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "teleportNumber=100"
+                AdditionalParameters = "number=100"
             });
             #endregion
         }

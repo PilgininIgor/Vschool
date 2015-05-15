@@ -12,15 +12,15 @@
     {
         public List<GameAchievementRun> ExecuteAchievement(AchievementTrigger trigger, Dictionary<string, object> parameters)
         {
-            ILSContext context = new ILSContext();
+            var context = new ILSContext();
 
-            List<GameAchievementRun> changedAchievementRuns = new List<GameAchievementRun>();
+            var changedAchievementRuns = new List<GameAchievementRun>();
             
             foreach (var achievement in context.GameAchievements.Where(x => trigger.Equals(x.AchievementTrigger)).OrderBy(x => x.Priority))
             {
-                Type type = Type.GetType(achievement.AchievementExecutor, false, true);
-                ConstructorInfo constructorInfo = type.GetConstructor(new Type[] { });
-                IAchievementExecutor achievementExecutor = (IAchievementExecutor)constructorInfo.Invoke(new object[] { });
+                var type = Type.GetType(achievement.AchievementExecutor, false, true);
+                var constructorInfo = type.GetConstructor(new Type[] { });
+                var achievementExecutor = (IAchievementExecutor)constructorInfo.Invoke(new object[] { });
                 changedAchievementRuns.Add(achievementExecutor.Run(parameters));
             }
 

@@ -13,6 +13,8 @@ namespace ILS.Domain.GameAchievements
 
         public virtual User User { get; set; }
         public virtual GameAchievement GameAchievement { get; set; }
-        public int Result;
+        public int Result { get; set; }
+        public bool Passed { get; set; }
+        public bool NeedToShow { get; set; }
     }
 }

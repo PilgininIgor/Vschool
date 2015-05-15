@@ -120,6 +120,12 @@ public class DataStructures : MonoBehaviour
 
     //--------------
 
+    public class GameAchievement
+    {
+        public string id;
+        public string name;
+    }
+
     public class OverallRPG
     {
         public bool ifGuest;
