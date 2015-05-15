@@ -68,14 +68,12 @@ public class CharacterCust : MonoBehaviour
     void commonButtons(int wRegularButton, int wBigButton, int hUnit)
     {
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("<", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)) && curCharacter > 0)
+        if (GUILayout.Button("<", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
         {
-            ChangeCharecters(--curCharacter);
-            if (curEffect == 0)
-                curEffect = effects.Length - 1;
-            else
-                curEffect--;
-            ChangeEffects(curEffect);
+            curCharacter--;
+            if (curCharacter < 0)
+                curCharacter = characters.Length - 1;
+            ChangeCharecters(curCharacter);
         }
 
         if (GUILayout.Button(Strings.Get("Go"), GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
@@ -86,14 +84,12 @@ public class CharacterCust : MonoBehaviour
             menu.listStyle = guiStyle;
             buttonsIsVisible = false;
         }
-        if (GUILayout.Button(">", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)) && (curCharacter < characters.Length - 1))
+        if (GUILayout.Button(">", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
         {
-            ChangeCharecters(++curCharacter);
-            if (curEffect == effects.Length - 1)
-                curEffect = 0;
-            else
-                curEffect++;
-            ChangeEffects(curEffect);
+            curCharacter++;
+            if (curCharacter >= characters.Length)
+                curCharacter = 0;
+            ChangeCharecters(curCharacter);
         }
         GUILayout.EndHorizontal();
     }

@@ -23,6 +23,8 @@ public class PhotonGame : Photon.MonoBehaviour
 
     public Transform SpawnPlace;
 
+    public Texture gear;
+
     public Transform HubLoadingScreen;
 
     public string nameOfAvatar;
@@ -72,7 +74,7 @@ public class PhotonGame : Photon.MonoBehaviour
 
     public void OnGUI()
     {
-        if (GUILayout.Button(Strings.Get("Return to Lobby")))
+        if (GUI.Button(new Rect(10, 10, 50, 50), gear))
         {
             PhotonNetwork.LeaveRoom();  // we will load the menu level when we successfully left the room
         }

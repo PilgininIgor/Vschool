@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using JsonFx.Json;
+using UnityEngine.UI;
 
 public class RPGParser : MonoBehaviour
 {
     private string JSONTestString = "{" +
     "\"ifGuest\":false,\"username\":\"Student1\"," +
-    "\"EXP\":0," +
+    "\"EXP\":150," +
     "\"facultyStands_Seen\":false," + "\"facultyStands_Finish\":false," +
     "\"historyStand_Seen\":false," + "\"historyStand_Finish\":false," +
     "\"scienceStand_Seen\":false," + "\"scienceStand_Finish\":false," +
@@ -22,7 +23,6 @@ public class RPGParser : MonoBehaviour
     public DataStructures.GameAchievement[] Achievements;
 
     public Font helvetica;
-    private bool displayHUD = false;
     private bool SkinSet = false;
     private bool UNwidthCalculated = false;
     private float UNwidth;
@@ -44,6 +44,8 @@ public class RPGParser : MonoBehaviour
 
     private HttpConnector httpConnector;
 
+    public Text coinsText;
+
     // Use this for initialization
     void Start()
     {
@@ -63,13 +65,13 @@ public class RPGParser : MonoBehaviour
     private void RoleSystemSet(string json)
     {
         RPG = JsonReader.Deserialize<DataStructures.OverallRPG>(json);
-        displayHUD = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I)) displayHUD = !displayHUD;
+        if (RPG != null)
+            coinsText.text = RPG.EXP.ToString();
     }
 
     void OnGui()
@@ -81,22 +83,6 @@ public class RPGParser : MonoBehaviour
             //GUI.skin.label.fontSize = 12; GUI.skin.label.normal.textColor = Color(0.835, 0.929, 1);
             //GUI.skin.label.alignment = TextAnchor.MiddleCenter;
             //SkinSet = true;
-        }
-        if (displayHUD)
-        {
-            if (RPG.ifGuest) GUI.Box(new Rect(10, Screen.height - 50, 200, 40), LBL + ": " + RPG.EXP);
-            else
-            {
-                if (!UNwidthCalculated)
-                {
-                    GUILayout.Box(RPG.username);
-                    UNwidth = GUILayoutUtility.GetLastRect().width;
-                    if (UNwidth > 1) UNwidthCalculated = true;
-                    if (UNwidth < 200) UNwidth = 200;
-                }
-                //GUI.Box(Rect(10, Screen.height - 95, UNwidth, 40), RPG.username);
-                GUI.Box(new Rect(10, Screen.height - 50, UNwidth, 40), LBL + ": " + RPG.EXP);
-            }
         }
         if (displayAchievement)
         {
