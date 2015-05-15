@@ -14,17 +14,19 @@
         /// </summary>
         public GameAchievementRun Run(Dictionary<string, object> parameters)
         {
-            Guid achievementId = new Guid(parameters[AchievementsConstants.GameAchievementIdParamName] as string);
+            var achievementId = new Guid(parameters[AchievementsConstants.GameAchievementIdParamName] as string);
 
-            ILSContext context = new ILSContext();
-            User user = context.User.First(x => x.Name == HttpContext.Current.User.Identity.Name);
+            var context = new ILSContext();
+            var user = context.User.First(x => x.Name == HttpContext.Current.User.Identity.Name);
             if (!context.GameAchievementRuns.Any(x => x.User.Equals(user) && x.GameAchievementId.Equals(achievementId)))
             {
                 return context.GameAchievementRuns.Add(
-                    new GameAchievementRun { User = user, GameAchievementId = achievementId, Result = 1 });
+                    new GameAchievementRun { User = user, GameAchievementId = achievementId, Result = 1, Passed = true, NeedToShow = true});
             }
 
-            return null;
+            var gameAchievementRun = context.GameAchievementRuns.First(x => x.User.Equals(user) && x.GameAchievementId.Equals(achievementId));
+            gameAchievementRun.NeedToShow = false;
+            return gameAchievementRun;
         }
     }
 }
