@@ -346,6 +346,8 @@ var panelDataAndDatatypes = {
     }]
 };
 
+Ext.tip.QuickTipManager.init();  // enable tooltips
+
 // Верхняя область редактора шаблона
 var panelEditorArea = {
     title: 'Редактор шаблона',
@@ -354,14 +356,30 @@ var panelEditorArea = {
     layout: 'fit',
     padding: '0 0 0 3',
     border: 0,
-    items: {
+    items: [
+        new Ext.form.HtmlEditor({
+            id: 'code_editor_area',
+            cls: 'code_editor',
+            xtype: 'htmleditor',
+            border: 0,
+            enableAlignments: false,
+            enableFontSize: false,
+            enableFormat: false,
+            enableLists: false,
+            enableSourceEdit: false,
+            getDocMarkup: function () {
+                // отключить проверку орфографии в контролле
+                return '<html><head><style type="text/css">p{margin:0em !important; font-family:Courier New !important;}</style></head><body spellcheck="false" style="line-height: 1.5 !important; font-family:Courier New !important;"><p></p></body></html>';
+            }
+        })]
+        /*{
         id: 'sourceCodeEditor',
         xtype: 'textarea',
         margins: '-1 0 0 0',
         border: 0,
         value: 'a = ГЕНЕР_ЧИСЛО(мин, макс)\nb = ГЕНЕР_ЧИСЛО(мин, макс)\nчисло_a = ПЕРЕВОД(a, 2)\nчисло_b = ПЕРЕВОД(b, 2)\nсредн_арифм = СРЕДНЕЕ(число_a, число_b)\nОТВЕТ = ПЕРЕВОД(средн_арифм, 8)',
-    }
-};
+    }*/
+    };
 
 var personGrid = Ext.create('Ext.grid.Panel', {
     height: '100%',
@@ -493,10 +511,31 @@ Ext.define('TestGenerator.mainPanel', {
     }
 });
 
+convertToHTML = function (text) {
+    var htmlText = "";
+    var lines = text.split("\n");
+    for (var i = 0; i < lines.length; i++) { htmlText += Ext.String.format('<div>{0}</div>', lines[i]); }
+    return htmlText;
+}
+
+convertFromHTML = function () {
+    var htmlText = Ext.getCmp('code_editor_area').getValue();
+    var result = Ext.util.Format.stripTags(htmlText.replace(new RegExp("<div>", 'g'), "<div>\n")).replace(new RegExp("&lt;", 'g'), "<").replace(new RegExp("&gt;", 'g'), ">").replace(new RegExp("&nbsp;", 'g'), " ");
+    return (htmlText.startsWith("<div>")) ? result.substr(1) : result;
+}
+
 Ext.onReady(function () {
     var mainPanel = Ext.create('TestGenerator.mainPanel');
     mainPanel.getComponent('mainpanel').setTitle("Генератор тестов");
+    Ext.getCmp('code_editor_area').getToolbar().hide();
+    Ext.getCmp("code_editor_area").setValue(" ");
     renderToMainArea(mainPanel);
+
+    var text = 'a = ГЕНЕР_ЧИСЛО(мин, макс);\nb = ГЕНЕР_ЧИСЛО(мин, макс);\nчисло_a = ПЕРЕВОД(a, 2);\nчисло_b = ПЕРЕВОД(b, 2);\nсредн_арифм = СРЕДНЕЕ(число_a, число_b);\nОТВЕТ = ПЕРЕВОД(средн_арифм, 8)';
+    //Ext.getCmp("code_editor_area").setValue(convertToHTML(text));
+
+    // так можно получить plaintext:
+    // Ext.util.Format.stripTags(Ext.getCmp('code_editor_area').getValue().replace(new RegExp("</p><p", 'g'), "</p>\n<p")).replace(new RegExp("&lt;", 'g'), "<").replace(new RegExp("&gt;", 'g'), ">").replace(new RegExp("&nbsp;", 'g'), " ")
 
     //var personGrid = Ext.create('Ext.grid.Panel', {
     //    renderTo: 'personGrid',

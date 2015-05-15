@@ -1,8 +1,13 @@
+#code_editor_area
+{
+    font-family: 'Courier New';
+}
+
 #sourceCodeEditor-inputEl {
     line-height: 20px;
 }
 
-#topToolbarPanel-body {
+#topToolbarPanel-body, .customColorPanel {
     background-color: transparent;
 }
 
@@ -23,7 +28,7 @@
 }
 
 .x-fieldset-default {
-    padding: 10px;
+    padding: 5px 10px 10px 10px;
 }
 
 .x-btn-inner-default-small, .x-form-item-label, .x-fieldset-header-default > .x-fieldset-header-text {
@@ -34,7 +39,7 @@
     height: 20px;
 }
 
-.x-form-display-field-default, .x-form-text-default {
+.x-form-display-field-default, .x-form-text-default, .x-form-cb-label, .x-tree-node-text  {
     font-family: "wf_SegoeUILight";
     font-weight: normal;
     font-size: 14px;

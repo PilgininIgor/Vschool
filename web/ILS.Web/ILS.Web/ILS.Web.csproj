@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocX">
+      <HintPath>..\..\packages\DocX.1.0.0.13\lib\net40\DocX.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -204,6 +207,10 @@
     <Content Include="Content\css\mycss.css" />
     <Content Include="Content\demo.mp4" />
     <Content Include="Content\icons.css" />
+    <Content Include="Content\icons\loading_gear.png" />
+    <Content Include="Content\icons\tgtest.png" />
+    <Content Include="Content\icons\test.png" />
+    <Content Include="Content\icons\tgtasktemplate.png" />
     <Content Include="Content\icons\add.png" />
     <Content Include="Content\icons\browseFiles.png" />
     <Content Include="Content\icons\course.png" />
@@ -235,7 +242,6 @@
     <Content Include="Content\icons\remove.png" />
     <Content Include="Content\icons\russian.png" />
     <Content Include="Content\icons\save.png" />
-    <Content Include="Content\icons\test.png" />
     <Content Include="Content\icons\theme.png" />
     <Content Include="Content\icons\theme_add.png" />
     <Content Include="Content\icons\theme_remove.png" />
@@ -300,7 +306,6 @@
     <Content Include="Content\Sprites\authors\author_2.jpg" />
     <Content Include="Content\Sprites\authors\author_3.jpg" />
     <Content Include="Content\Sprites\authors\author_4.jpg" />
-    <Content Include="Content\Sprites\authors\author_5.jpg" />
     <Content Include="Content\Sprites\authors\author_6.jpg" />
     <Content Include="Content\Sprites\authors\author_7.jpg" />
     <Content Include="Content\Sprites\authors\author_8.jpg" />
@@ -374,56 +379,8 @@
     <Content Include="Content\Sprites\full_logo.png" />
     <Content Include="Content\Sprites\hr.png" />
     <Content Include="Content\Sprites\loading.swf" />
-    <Content Include="Content\Sprites\loading\loading_1.png" />
-    <Content Include="Content\Sprites\loading\loading_10.png" />
-    <Content Include="Content\Sprites\loading\loading_11.png" />
-    <Content Include="Content\Sprites\loading\loading_12.png" />
-    <Content Include="Content\Sprites\loading\loading_13.png" />
-    <Content Include="Content\Sprites\loading\loading_14.png" />
-    <Content Include="Content\Sprites\loading\loading_15.png" />
-    <Content Include="Content\Sprites\loading\loading_16.png" />
-    <Content Include="Content\Sprites\loading\loading_17.png" />
-    <Content Include="Content\Sprites\loading\loading_18.png" />
-    <Content Include="Content\Sprites\loading\loading_19.png" />
-    <Content Include="Content\Sprites\loading\loading_2.png" />
-    <Content Include="Content\Sprites\loading\loading_20.png" />
-    <Content Include="Content\Sprites\loading\loading_21.png" />
-    <Content Include="Content\Sprites\loading\loading_22.png" />
-    <Content Include="Content\Sprites\loading\loading_23.png" />
-    <Content Include="Content\Sprites\loading\loading_24.png" />
-    <Content Include="Content\Sprites\loading\loading_25.png" />
-    <Content Include="Content\Sprites\loading\loading_26.png" />
-    <Content Include="Content\Sprites\loading\loading_27.png" />
-    <Content Include="Content\Sprites\loading\loading_28.png" />
-    <Content Include="Content\Sprites\loading\loading_29.png" />
-    <Content Include="Content\Sprites\loading\loading_3.png" />
-    <Content Include="Content\Sprites\loading\loading_30.png" />
-    <Content Include="Content\Sprites\loading\loading_31.png" />
-    <Content Include="Content\Sprites\loading\loading_32.png" />
-    <Content Include="Content\Sprites\loading\loading_33.png" />
-    <Content Include="Content\Sprites\loading\loading_34.png" />
-    <Content Include="Content\Sprites\loading\loading_35.png" />
-    <Content Include="Content\Sprites\loading\loading_36.png" />
-    <Content Include="Content\Sprites\loading\loading_37.png" />
-    <Content Include="Content\Sprites\loading\loading_38.png" />
-    <Content Include="Content\Sprites\loading\loading_39.png" />
-    <Content Include="Content\Sprites\loading\loading_4.png" />
-    <Content Include="Content\Sprites\loading\loading_40.png" />
-    <Content Include="Content\Sprites\loading\loading_41.png" />
-    <Content Include="Content\Sprites\loading\loading_42.png" />
-    <Content Include="Content\Sprites\loading\loading_43.png" />
-    <Content Include="Content\Sprites\loading\loading_44.png" />
-    <Content Include="Content\Sprites\loading\loading_45.png" />
-    <Content Include="Content\Sprites\loading\loading_46.png" />
-    <Content Include="Content\Sprites\loading\loading_47.png" />
-    <Content Include="Content\Sprites\loading\loading_48.png" />
-    <Content Include="Content\Sprites\loading\loading_49.png" />
-    <Content Include="Content\Sprites\loading\loading_5.png" />
-    <Content Include="Content\Sprites\loading\loading_50.png" />
-    <Content Include="Content\Sprites\loading\loading_6.png" />
-    <Content Include="Content\Sprites\loading\loading_7.png" />
-    <Content Include="Content\Sprites\loading\loading_8.png" />
-    <Content Include="Content\Sprites\loading\loading_9.png" />
+    <Content Include="Content\Sprites\loading\indicator.png" />
+    <Content Include="Content\Sprites\loading\loading.png" />
     <Content Include="Content\Sprites\logo.png" />
     <Content Include="Content\Sprites\Logofavicon.png" />
     <Content Include="Content\Sprites\main3.png" />
@@ -1100,12 +1057,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Sprites\profile\achievement\Thumbs.db" />
+    <None Include="Properties\PublishProfiles\folder.pubxml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Masterhost.pubxml" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="Properties\PublishProfiles\ssau.ru.pubxml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Achievements\Index.cshtml" />
+    <Content Include="Views\TestGenerator\TaskEditor.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

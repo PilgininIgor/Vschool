@@ -53,8 +53,8 @@ namespace ILS.Web.ContentFromMoodle
 
             /*foreach (Lection l in Lections)
                 checkedListBox1.Items.Add(l.nameLection + "(" + l.ListParagraphs.Count.ToString() + ")" + "/L");
-            foreach (Test t in Tests)
-                checkedListBox1.Items.Add(t.name + "(" + t.lQuestion.Count.ToString() + ")" + "/T");
+            foreach (Test theme in Tests)
+                checkedListBox1.Items.Add(theme.name + "(" + theme.lQuestion.Count.ToString() + ")" + "/T");
             */
         }        
 
@@ -73,11 +73,11 @@ namespace ILS.Web.ContentFromMoodle
                 }
                 if (chItem.ToString()[chItem.ToString().Length - 1] == 'T')
                 {
-                    foreach (Test t in Tests)
+                    foreach (Test theme in Tests)
                     {
-                        if (t.name == name)
+                        if (theme.name == name)
                         {
-                            t_download = t;
+                            t_download = theme;
                             //И добавляем тест в виртуальный мир
                             break;
                         }

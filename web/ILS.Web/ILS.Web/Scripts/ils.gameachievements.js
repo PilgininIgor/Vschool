@@ -267,7 +267,7 @@ function createAchievementProfileWindow(achievementModel) {
         title: title,
         layout: "fit",
         width: 440,
-        height: 470,
+        height: 500,
         y: 150,
         modal: true,
         dragable: true,
