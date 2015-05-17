@@ -1,4 +1,11 @@
-﻿var forms = new Ext.Panel({
+﻿if (Ext.util.Cookies.get("language") == null) Ext.util.Cookies.set("language", lang_pref);
+if (Ext.util.Cookies.get("language") == "Russian") isRussian = true; else isRussian = false;
+titleOfSection = 'Test generator';
+if (isRussian) {
+    titleOfSection = 'Генератор тестов';
+}
+
+var forms = new Ext.Panel({
     region: 'center',
     width: '75%',
     border: 0,
@@ -10,6 +17,7 @@
 });
 
 var editor = new Ext.Panel({
+    title: titleOfSection,
     layout: 'border',
     dockedItems: [tlbar],
     items: [tree, forms]

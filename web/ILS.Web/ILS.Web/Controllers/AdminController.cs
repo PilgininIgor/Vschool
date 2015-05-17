@@ -108,7 +108,7 @@ namespace ILS.Web.Controllers
         public JsonResult UsersList()
         {
             List<UserModel> jsonList = new List<UserModel>();
-            IEnumerable<User> activeUsers = Enumerable.Where<User>(context.User, x => x.Roles.Count > 0);
+            IEnumerable<User> activeUsers = context.User.ToList<User>();
             foreach (User user in activeUsers)
             {
                 UserModel temp = new UserModel();

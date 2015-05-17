@@ -83,7 +83,7 @@ namespace ILS.Web.Controllers
 
         public JsonResult EDucationAuthorsList()
         {
-            List<EDucationAuthor> jsonList = Enumerable.ToList<EDucationAuthor>(context.EDucationAuthor);
+            List<EDucationAuthor> jsonList = context.EDucationAuthor.OrderBy(x => x.Priority).ToList();
             return Json(new
             {
                 jsonList
