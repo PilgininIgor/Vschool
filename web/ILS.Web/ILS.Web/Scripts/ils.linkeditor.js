@@ -342,6 +342,7 @@ var selectPanel = new Ext.FormPanel({
         msgTarget: 'side',
         width: 400
     },
+    bodyStyle: { "background-color": "#FFFFFF" },
     items: [{
         id: 'typecmb',
         xtype: 'combobox',
@@ -406,7 +407,6 @@ Ext.onReady(function () {
     //Default type value (course)
     Ext.getCmp('typecmb').setValue(typeStore.getAt('0').get('id'));
     wwin.show();
-    document.getElementsByClassName('white-form-panel')[0].childNodes[0].style['background-color'] = 'white';
 });
 
 
@@ -417,7 +417,7 @@ var wwin = new Ext.Window({
     width: 410,
     height: 200,
     closable: false,
-
+    resizable: false,
     plain: true,
     border: false,
     title: ils.linkEditor.chooseMaterialMessage2,

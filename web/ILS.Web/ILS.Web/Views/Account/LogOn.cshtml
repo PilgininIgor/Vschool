@@ -14,7 +14,6 @@
 
         var login = new Ext.FormPanel({
             url: '@Url.Action("LogOn", "Account")',
-            cls: 'white-form-panel',
             frame: false,
             border: false,
             defaultType: 'textfield',
@@ -24,6 +23,7 @@
                 labelWidth: 150,
                 msgTarget: 'side'
             },
+            bodyStyle: { "background-color": "#FFFFFF" },
             items: [{
                 fieldLabel: 'Имя пользователя',
                 name: 'UserName',
@@ -84,7 +84,6 @@
 
             win.show();
 
-            document.getElementsByClassName('white-form-panel')[0].childNodes[0].style['background-color'] = 'white';
             login.getComponent('username').focus();
 
             var showError = @{WriteLiteral((Model != null && Model.Failed).ToString().ToLowerInvariant());};

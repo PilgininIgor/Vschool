@@ -13,7 +13,6 @@ var vpConfig = {
     items: [{
         id: 'topToolbarPanel',
         border: false,
-        //height: '100%',
         region: 'north',
         xtype: 'panel', //вообще xtype = 'panel' по умолчанию, но для прозрачности решил написать
         cls: 'my-toolbar-panel',
@@ -38,6 +37,7 @@ var vpConfig = {
         }],
         items: [{
             xtype: 'panel',
+            padding: '2 0 0 0',
             border: false,
             style: 'background-color: transparent;',
             items: [/*{
