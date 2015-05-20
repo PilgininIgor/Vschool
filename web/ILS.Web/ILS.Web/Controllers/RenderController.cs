@@ -784,7 +784,7 @@ using System.Web.Script.Serialization;
         private User GetCurrentUser()
         {
             //TODO MAKE REAL AUTHORIZATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            return String.IsNullOrEmpty(HttpContext.User.Identity.Name) ? context.User.First()
+            return String.IsNullOrEmpty(HttpContext.User.Identity.Name) ? context.User.First(x => x.Name == "admin")
                 : context.User.First(x => x.Name == HttpContext.User.Identity.Name);
         }
     }
