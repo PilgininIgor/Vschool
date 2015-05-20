@@ -3,7 +3,6 @@
      using System;
      using System.Collections.Generic;
      using System.Linq;
-     using System.Web;
      using System.Web.Script.Serialization;
      using Domain;
      using Domain.GameAchievements;
@@ -13,7 +12,7 @@
          /// <summary>
          /// Required parameters: gameAchievementId, courseId
          /// </summary>
-         public GameAchievementRun Run(Dictionary<string, object> parameters)
+         public GameAchievementRun Run(User user, Dictionary<string, object> parameters)
          {
              Guid achievementId = new Guid(parameters[AchievementsConstants.GameAchievementIdParamName] as string);
              Guid courseId = new Guid(parameters[AchievementsConstants.CourseIdParamName] as string);
@@ -31,7 +30,6 @@
                  return null;
              }
 
-             User user = context.User.First(x => x.Name == HttpContext.Current.User.Identity.Name);
              if (!context.GameAchievementRuns.Any(x => x.User.Equals(user) && x.GameAchievementId.Equals(achievementId))
                  && context.CourseRun.First(x => x.Course_Id.Equals(courseId)).Progress > courseProgressPercents)
              {

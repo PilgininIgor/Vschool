@@ -7,24 +7,23 @@
     using Domain;
     using Domain.GameAchievements;
 
-    public class VirtualWordAchievementExecutor : IAchievementExecutor
+    public class VirtualWorldAchievementExecutor : IAchievementExecutor
     {
         /// <summary>
         /// Required parameters: gameAchievementId
         /// </summary>
-        public GameAchievementRun Run(Dictionary<string, object> parameters)
+        public GameAchievementRun Run(User user, Dictionary<string, object> parameters)
         {
             var achievementId = new Guid(parameters[AchievementsConstants.GameAchievementIdParamName] as string);
-
             var context = new ILSContext();
-            var user = context.User.First(x => x.Name == HttpContext.Current.User.Identity.Name);
-            if (!context.GameAchievementRuns.Any(x => x.User.Equals(user) && x.GameAchievementId.Equals(achievementId)))
+
+            if (!context.GameAchievementRuns.Any(x => x.UserId == user.Id && x.GameAchievementId == achievementId))
             {
                 return context.GameAchievementRuns.Add(
-                    new GameAchievementRun { User = user, GameAchievementId = achievementId, Result = 1, Passed = true, NeedToShow = true});
+                    new GameAchievementRun { UserId = user.Id, GameAchievementId = achievementId, Result = 1, Passed = true, NeedToShow = true});
             }
 
-            var gameAchievementRun = context.GameAchievementRuns.First(x => x.User.Equals(user) && x.GameAchievementId.Equals(achievementId));
+            var gameAchievementRun = context.GameAchievementRuns.First(x => x.UserId == user.Id && x.GameAchievementId == achievementId);
             gameAchievementRun.NeedToShow = false;
             return gameAchievementRun;
         }

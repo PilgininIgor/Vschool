@@ -183,7 +183,7 @@ namespace ILS.Domain.Migrations
                 Score = 100,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=1"
             });
             context.GameAchievements.Add(new GameAchievement
@@ -195,7 +195,7 @@ namespace ILS.Domain.Migrations
                 Score = 200,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=5"
             });
             context.GameAchievements.Add(new GameAchievement
@@ -207,7 +207,7 @@ namespace ILS.Domain.Migrations
                 Score = 300,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=10"
             });
             context.GameAchievements.Add(new GameAchievement
@@ -219,8 +219,8 @@ namespace ILS.Domain.Migrations
                 Score = 100,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "number=10"
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
+                AdditionalParameters = "number=2"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -231,7 +231,7 @@ namespace ILS.Domain.Migrations
                 Score = 200,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=50"
             });
             context.GameAchievements.Add(new GameAchievement
@@ -243,7 +243,7 @@ namespace ILS.Domain.Migrations
                 Score = 300,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=100"
             });
             #endregion

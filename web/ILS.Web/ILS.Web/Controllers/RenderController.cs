@@ -531,7 +531,7 @@ using System.Web.Script.Serialization;
 
         public ActionResult SaveGameAchievement(String achievementId)
         {
-            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game,
+            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game, GetCurrentUser(),
                 new Dictionary<string, object> { { AchievementsConstants.GameAchievementIdParamName, achievementId } });
             return Json(changedAchievementRuns.Select(run => new
             {

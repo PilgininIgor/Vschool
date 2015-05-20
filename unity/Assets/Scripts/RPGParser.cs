@@ -179,7 +179,19 @@ public class RPGParser : MonoBehaviour
         if (!RPG.ifGuest)
         {
             httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveGameAchievementUrl, new Dictionary<string, string> {{"achievementId", guid}},
-                www => { });
+                www =>
+                {
+                    var achievementRuns = JsonReader.Deserialize<DataStructures.GameAchievementRun[]>(www.text);
+                    foreach (var achievementRun in achievementRuns)
+                    {
+                        if (achievementRun.passed && achievementRun.needToShow)
+                        {
+                            Achievement(
+                                "Достижение " + achievementRun.name + "получено!\n" + "Добавлено " +
+                                achievementRun.score + " монет", achievementRun.score);
+                        }
+                    }
+                });
         }
     }
 }
