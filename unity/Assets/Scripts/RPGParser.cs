@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using System.Collections.Generic;
 using JsonFx.Json;
 using UnityEngine.UI;
@@ -46,12 +47,33 @@ public class RPGParser : MonoBehaviour
 
     public Text coinsText;
 
+    public GameObject awardPopup;
+    public RawImage awardImage;
+    public Text awardText;
+
     // Use this for initialization
     void Start()
     {
         httpConnector = GetComponent<HttpConnector>();
         RoleSystemSet(JSONTestString);
         LoadGameAchievements();
+    }
+
+    private void ShowAchievment(string text, Texture image = null)
+    {
+        awardText.text = text;
+        if (image != null)
+        {
+            awardImage.texture = image;
+        }
+        awardPopup.GetComponent<CanvasGroup>().alpha = 1;
+        StartCoroutine(HideAchievment());
+    }
+
+    private IEnumerator HideAchievment()
+    {
+        yield return new WaitForSeconds(5);
+        awardPopup.GetComponent<CanvasGroup>().alpha = 0;
     }
 
     private void LoadGameAchievements()
