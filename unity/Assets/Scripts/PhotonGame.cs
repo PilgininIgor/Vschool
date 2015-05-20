@@ -50,6 +50,12 @@ public class PhotonGame : Photon.MonoBehaviour
             case "Golem": playerPrefab = Golem; break;
         }
 
+		//TODO remove
+		Application.LoadLevel("Islands");
+		GameObject playerDummy = PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
+		return;
+
+
         // in case we started this demo with the wrong scene being active, simply load the menu scene
         if (!PhotonNetwork.connected)
         {
