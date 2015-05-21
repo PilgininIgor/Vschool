@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class DataStructures : MonoBehaviour
 {
     public const float buttonSize = 50;
+    public const float buttonSpace = 10;
     public class Answer
     {
         public string text;

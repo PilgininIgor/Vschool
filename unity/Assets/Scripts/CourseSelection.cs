@@ -107,12 +107,12 @@ public class CourseSelection : MonoBehaviour
     {
         if (hint_visible)
         {
-            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * 10, 10, DataStructures.buttonSize, DataStructures.buttonSize), magnifier)) ZoomIn();
+            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), magnifier)) ZoomIn();
         }
         if (escape_visible)
         {
-            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * 10, 10, DataStructures.buttonSize, DataStructures.buttonSize), arrow)) ZoomOut();
-            if (GUI.Button(new Rect(Screen.width - DataStructures.buttonSize, 10, DataStructures.buttonSize, DataStructures.buttonSize), select))
+            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow)) ZoomOut();
+            if (GUI.Button(new Rect(Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), select))
             {
                 transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = LBL1;
                 transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "";

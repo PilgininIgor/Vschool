@@ -56,11 +56,11 @@ public class CameraChange : MonoBehaviour
     void OnGUI()
     {
         if (hint_visible)
-            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * 10, 10, DataStructures.buttonSize, DataStructures.buttonSize), magnifier))
+            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), magnifier))
                 ZoomIn();
 
         if (escape_visible)
-            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * 10, 10, DataStructures.buttonSize, DataStructures.buttonSize), arrow))
+            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow))
                 ZoomOut();
     }
 
