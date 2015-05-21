@@ -41,7 +41,6 @@ public class CourseSelection : MonoBehaviour
     private bool hint_visible = false;
     private bool escape_visible = false;
     private bool data_loaded = false;
-    private int ButtonSize = 100;
 
     private HttpConnector httpConnector;
 
@@ -108,12 +107,12 @@ public class CourseSelection : MonoBehaviour
     {
         if (hint_visible)
         {
-            if (GUI.Button(new Rect(10, 10, ButtonSize, ButtonSize), magnifier)) ZoomIn();
+            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * 10, 10, DataStructures.buttonSize, DataStructures.buttonSize), magnifier)) ZoomIn();
         }
         if (escape_visible)
         {
-            if (GUI.Button(new Rect(10, 10, ButtonSize, ButtonSize), arrow)) ZoomOut();
-            if (GUI.Button(new Rect(Screen.width - ButtonSize, 10, ButtonSize, ButtonSize), select))
+            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * 10, 10, DataStructures.buttonSize, DataStructures.buttonSize), arrow)) ZoomOut();
+            if (GUI.Button(new Rect(Screen.width - DataStructures.buttonSize, 10, DataStructures.buttonSize, DataStructures.buttonSize), select))
             {
                 transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = LBL1;
                 transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "";
