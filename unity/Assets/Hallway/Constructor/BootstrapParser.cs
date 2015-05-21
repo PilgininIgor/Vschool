@@ -31,9 +31,9 @@
 они размещаются друг над другом, комнаты каждого типа в своей "кучке", все выше и выше
 запустите сцену, нажмите на U и поглядите сами*/
 
-using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using JsonFx.Json;
 
 public class BootstrapParser : MonoBehaviour {
@@ -387,22 +387,8 @@ public class BootstrapParser : MonoBehaviour {
 		return c.ToArray ();
 	}
 
-    private string GetThemeStatus(List<DataStructures.Theme> themes, int index) 
+    private string GetThemeStatus(List<DataStructures.Theme> themes, int index)
     {
-        foreach (DataStructures.Theme theme in themes)
-	    {
-	        foreach (DataStructures.ThemeLink themeLink in theme.outputThemeLinks)
-	        {
-	            if (themeLink.linkedThemeId == themes[index].id)
-	            {
-	                var currentStatus = themeLink.status;
-	                if (currentStatus == "closed")
-	                {
-	                    return "closed";
-	                }
-	            }
-	        }
-	    }
-        return "open";
+        return themes.Any(theme => (from themeLink in theme.outputThemeLinks where themeLink.linkedThemeId == themes[index].id select themeLink.status).Any(currentStatus => currentStatus == "closed")) ? "closed" : "open";
     }
 }

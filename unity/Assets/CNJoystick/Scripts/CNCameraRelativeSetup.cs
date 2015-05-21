@@ -74,7 +74,7 @@ public class CNCameraRelativeSetup : MonoBehaviour
         // Uncomment this line if you want to normalize speed,
         // to keep the speed at a constant value
         // -- UNCOMMENT THIS ---
-        //movement.Normalize();
+        movement.Normalize();
         // ---------------------
         totalMove.x = movement.x * runSpeed;
         totalMove.z = movement.z * runSpeed;
