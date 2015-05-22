@@ -20,7 +20,7 @@
             if (!context.GameAchievementRuns.Any(x => x.UserId == user.Id && x.GameAchievementId == achievementId))
             {
                 return context.GameAchievementRuns.Add(
-                    new GameAchievementRun { UserId = user.Id, GameAchievementId = achievementId, Result = 1, Passed = true, NeedToShow = true});
+                    new GameAchievementRun { User = user, GameAchievement = context.GameAchievements.Find(achievementId), Result = 1, Passed = true, NeedToShow = true });
             }
 
             var gameAchievementRun = context.GameAchievementRuns.First(x => x.UserId == user.Id && x.GameAchievementId == achievementId);

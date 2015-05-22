@@ -46,10 +46,12 @@ public class RPGParser : MonoBehaviour
     private HttpConnector httpConnector;
 
     public Text coinsText;
+    public Text coinsAddedText;
 
     public GameObject awardPopup;
     public RawImage awardImage;
     public Text awardText;
+    public Texture texture;
 
     // Use this for initialization
     void Start()
@@ -61,12 +63,13 @@ public class RPGParser : MonoBehaviour
 
     private void ShowAchievment(string text, Texture image = null)
     {
+        awardPopup.GetComponent<CanvasGroup>().alpha = 1;
         awardText.text = text;
         if (image != null)
         {
+            awardImage.GetComponent<CanvasGroup>().alpha = 1;
             awardImage.texture = image;
         }
-        awardPopup.GetComponent<CanvasGroup>().alpha = 1;
         StartCoroutine(HideAchievment());
     }
 
@@ -74,6 +77,23 @@ public class RPGParser : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         awardPopup.GetComponent<CanvasGroup>().alpha = 0;
+    }
+
+    private void ShowCoinsAdded(int coins)
+    {
+        coinsAddedText.GetComponent<CanvasGroup>().alpha = 1;
+        coinsAddedText.text = "+" + coins;
+        StartCoroutine(HideCoinsAdded());
+    }
+
+    private IEnumerator HideCoinsAdded()
+    {
+        var canvasGroup = coinsAddedText.GetComponent<CanvasGroup>();
+        while (canvasGroup.alpha >= 0)
+        {
+            canvasGroup.alpha -= 0.2f;
+            yield return null;
+        }
     }
 
     private void LoadGameAchievements()
@@ -178,17 +198,20 @@ public class RPGParser : MonoBehaviour
     {
         if (!RPG.ifGuest)
         {
-            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveGameAchievementUrl, new Dictionary<string, string> {{"achievementId", guid}},
+            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveGameAchievementUrl, new Dictionary<string, string> { { "achievementId", guid } },
                 www =>
                 {
                     var achievementRuns = JsonReader.Deserialize<DataStructures.GameAchievementRun[]>(www.text);
                     foreach (var achievementRun in achievementRuns)
                     {
-                        if (achievementRun.passed && achievementRun.needToShow)
+                        if (/*achievementRun.passed && achievementRun.needToShow*/true)
                         {
-                            Achievement(
-                                "Достижение " + achievementRun.name + "получено!\n" + "Добавлено " +
-                                achievementRun.score + " монет", achievementRun.score);
+                            ShowAchievment("Достижение \"" + achievementRun.name + "\" получено!");
+                            if (achievementRun.score > 0)
+                            {
+                                ShowCoinsAdded(achievementRun.score);
+                                RPG.EXP += achievementRun.score;
+                            }
                         }
                     }
                 });

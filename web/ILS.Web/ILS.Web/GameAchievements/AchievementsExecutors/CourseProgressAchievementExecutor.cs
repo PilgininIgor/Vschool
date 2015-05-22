@@ -14,13 +14,13 @@
          /// </summary>
          public GameAchievementRun Run(User user, Dictionary<string, object> parameters)
          {
-             Guid achievementId = new Guid(parameters[AchievementsConstants.GameAchievementIdParamName] as string);
-             Guid courseId = new Guid(parameters[AchievementsConstants.CourseIdParamName] as string);
+             var achievementId = new Guid(parameters[AchievementsConstants.GameAchievementIdParamName] as string);
+             var courseId = new Guid(parameters[AchievementsConstants.CourseIdParamName] as string);
 
-             ILSContext context = new ILSContext();
-             GameAchievement gameAchievement = context.GameAchievements.Find(achievementId);
+             var context = new ILSContext();
+             var gameAchievement = context.GameAchievements.Find(achievementId);
 
-             JavaScriptSerializer jss = new JavaScriptSerializer();
+             var jss = new JavaScriptSerializer();
              var achievementParameters = jss.Deserialize<dynamic>(gameAchievement.AdditionalParameters);
              var achievementParametersCourseId = achievementParameters[0][AchievementsConstants.CourseIdParamName];
              var courseProgressPercents = achievementParameters[0][AchievementsConstants.CourseProgressPercentsParamName];
@@ -34,7 +34,7 @@
                  && context.CourseRun.First(x => x.Course_Id.Equals(courseId)).Progress > courseProgressPercents)
              {
                  return context.GameAchievementRuns.Add(
-                     new GameAchievementRun { User = user, GameAchievementId = achievementId, Result = 1 });
+                     new GameAchievementRun { User = user, GameAchievement = gameAchievement, Result = 1 });
              }
 
              return null;

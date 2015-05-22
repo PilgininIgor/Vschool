@@ -20,7 +20,8 @@
              var gameAchievementRuns =
                  context.GameAchievementRuns.Where(x => x.User.Id == user.Id && x.GameAchievementId == achievementId);
 
-             var additionalParameters = context.GameAchievements.Find(achievementId).AdditionalParameters;
+             var gameAchievemnt = context.GameAchievements.Find(achievementId);
+             var additionalParameters = gameAchievemnt.AdditionalParameters;
              var necessaryNumber = 1;
              if (!String.IsNullOrEmpty(additionalParameters))
              {
@@ -51,7 +52,7 @@
              var passed = result >= necessaryNumber;
              var needToShow = result == necessaryNumber;
              return context.GameAchievementRuns.Add(
-                 new GameAchievementRun { UserId = user.Id, GameAchievementId = achievementId, Result = result, Passed = passed, NeedToShow = needToShow });
+                 new GameAchievementRun { User = context.User.Find(user.Id), GameAchievement = gameAchievemnt, Result = result, Passed = passed, NeedToShow = needToShow });
          }
      }
  }
