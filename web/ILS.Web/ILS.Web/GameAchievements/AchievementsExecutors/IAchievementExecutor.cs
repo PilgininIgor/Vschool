@@ -1,10 +1,11 @@
-﻿﻿namespace ILS.Web.GameAchievements.AchievementsExecutors
+﻿namespace ILS.Web.GameAchievements.AchievementsExecutors
  {
-     using System.Collections.Generic;
-     using ILS.Domain.GameAchievements;
+    using System.Collections.Generic;
+    using Domain;
+    using Domain.GameAchievements;
 
-     public interface IAchievementExecutor
-     {
-         GameAchievementRun Run(Dictionary<string, object> parameters);
-     }
+    public interface IAchievementExecutor
+    {
+        GameAchievementRun Run(User user, Dictionary<string, object> parameters);
+    }
  }

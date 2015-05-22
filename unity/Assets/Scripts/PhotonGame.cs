@@ -80,7 +80,7 @@ public class PhotonGame : Photon.MonoBehaviour
 
     public void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 50, 50), gear))
+        if (GUI.Button(new Rect(DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), gear))
         {
             PhotonNetwork.LeaveRoom();  // we will load the menu level when we successfully left the room
         }

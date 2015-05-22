@@ -83,11 +83,13 @@ public class TeleportScript : MonoBehaviour
     void SetAchievement()
     {
         RPGParser rpgParser = GameObject.Find("Bootstrap").GetComponent<RPGParser>();
-        rpgParser.RPG.teleportations += 1;
-        if (rpgParser.RPG.teleportations == 1) rpgParser.Achievement("Первая телепортация!\n+10 очков!", 10);
-        else if (rpgParser.RPG.teleportations == 20) rpgParser.Achievement("20 телепортаций!\n+30 очков!", 30);
-        else if (rpgParser.RPG.teleportations == 50) rpgParser.Achievement("50 телепортаций!\n+50 очков!", 50);
-        else if (rpgParser.RPG.teleportations == 100) rpgParser.Achievement("100 телепортаций!\n+80 очков!", 80);
-        else rpgParser.Save();
+//        rpgParser.RPG.teleportations += 1;
+//        if (rpgParser.RPG.teleportations == 1) rpgParser.Achievement("Первая телепортация!\n+10 очков!", 10);
+//        else if (rpgParser.RPG.teleportations == 20) rpgParser.Achievement("20 телепортаций!\n+30 очков!", 30);
+//        else if (rpgParser.RPG.teleportations == 50) rpgParser.Achievement("50 телепортаций!\n+50 очков!", 50);
+//        else if (rpgParser.RPG.teleportations == 100) rpgParser.Achievement("100 телепортаций!\n+80 очков!", 80);
+//        else rpgParser.Save();
+
+        rpgParser.SaveAchievemnt("0946e04d-1009-4f3d-b258-bb87e58d0e00");
     }
 }

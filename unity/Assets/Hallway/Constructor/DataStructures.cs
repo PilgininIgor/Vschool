@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class DataStructures : MonoBehaviour
 {
+    public const float buttonSize = 50;
+    public const float buttonSpace = 10;
     public class Answer
     {
         public string text;
@@ -124,6 +126,15 @@ public class DataStructures : MonoBehaviour
     {
         public string id;
         public string name;
+    }
+
+    public class GameAchievementRun
+    {
+        public string name;
+        public int score;
+        public int result;
+        public bool passed;
+        public bool needToShow;
     }
 
     public class OverallRPG

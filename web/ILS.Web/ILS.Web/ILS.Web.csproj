@@ -180,9 +180,10 @@
     <Compile Include="GameAchievements\AchievementsExecutors\CourseProgressAchievementExecutor.cs" />
     <Compile Include="GameAchievements\AchievementsExecutors\IAchievementExecutor.cs" />
     <Compile Include="GameAchievements\AchievementsExecutors\TopRatingAchievementExecutor.cs" />
-    <Compile Include="GameAchievements\AchievementsExecutors\VirtualWordAchievementExecutor.cs" />
-    <Compile Include="GameAchievements\AchievementsExecutors\VirtualWordNumberAchievementExecutor.cs" />
+    <Compile Include="GameAchievements\AchievementsExecutors\VirtualWorldAchievementExecutor.cs" />
+    <Compile Include="GameAchievements\AchievementsExecutors\VirtualWorldNumberAchievementExecutor.cs" />
     <Compile Include="GameAchievements\AchievementsManager.cs" />
+    <Compile Include="GameAchievements\AwardManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

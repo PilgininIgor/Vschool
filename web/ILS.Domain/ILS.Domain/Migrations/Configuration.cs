@@ -195,7 +195,7 @@ namespace ILS.Domain.Migrations
                 Score = 100,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=1",
                 ImagePath = "dora_the_explorer_1.png"
             });
@@ -208,7 +208,7 @@ namespace ILS.Domain.Migrations
                 Score = 200,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=5",
                 ImagePath = "dora_the_explorer_2.png"
             });
@@ -221,7 +221,7 @@ namespace ILS.Domain.Migrations
                 Score = 300,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=10",
                 ImagePath = "dora_the_explorer_3.png"
             });
@@ -234,8 +234,8 @@ namespace ILS.Domain.Migrations
                 Score = 100,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "number=10",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
+                AdditionalParameters = "number=2",
                 ImagePath = "forward_to_the_past_1.png"
             });
             context.GameAchievements.Add(new GameAchievement
@@ -247,7 +247,7 @@ namespace ILS.Domain.Migrations
                 Score = 200,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=50",
                 ImagePath = "forward_to_the_past_2.png"
             });
@@ -260,7 +260,7 @@ namespace ILS.Domain.Migrations
                 Score = 300,
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
-                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=100",
                 ImagePath = "forward_to_the_past_3.png"
             });
