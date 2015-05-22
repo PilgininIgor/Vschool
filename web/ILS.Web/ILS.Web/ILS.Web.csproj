@@ -183,6 +183,7 @@
     <Compile Include="GameAchievements\AchievementsExecutors\VirtualWorldAchievementExecutor.cs" />
     <Compile Include="GameAchievements\AchievementsExecutors\VirtualWorldNumberAchievementExecutor.cs" />
     <Compile Include="GameAchievements\AchievementsManager.cs" />
+    <Compile Include="GameAchievements\AwardManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
