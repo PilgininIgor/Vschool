@@ -34,27 +34,28 @@ namespace ILS.Web.Controllers
 
         public JsonResult CreateTestRuns(String name)
         {
-            User u = context.User.FirstOrDefault(x => x.Name == name);
-            if (u == null)
-                return Json(new
-                {
-                    success = false,
-                    errorMessage = "User with name " + name + " not found"
-                });
-            return DoCreateTestRuns(u);
-        }
-
-        public JsonResult CreateTestRuns()
-        {
             User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.FirstOrDefault(x => x.Name == HttpContext.User.Identity.Name);
-            if (u == null)
-                return Json(new
-                {
-                    success = false,
-                    errorMessage = "Authenticated user not found not found"
-                });
+            if (name != null)
+            {
+                u = context.User.FirstOrDefault(x => x.Name == name);
+                if (u == null)
+                    return Json(new
+                    {
+                        success = false,
+                        errorMessage = "User with name " + name + " not found"
+                    }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
+                if (!ifGuest) u = context.User.FirstOrDefault(x => x.Name == HttpContext.User.Identity.Name);
+                if (u == null)
+                    return Json(new
+                    {
+                        success = false,
+                        errorMessage = "Authenticated user not found not found"
+                    }, JsonRequestBehavior.AllowGet);
+            }
             return DoCreateTestRuns(u);
         }
 
@@ -67,7 +68,7 @@ namespace ILS.Web.Controllers
                 {
                     success = false,
                     errorMessage = "No courses in DB"
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             Theme theme = context.Theme.FirstOrDefault(x => x.Course_Id.Equals(course.Id));
             if (theme == null)
@@ -76,7 +77,7 @@ namespace ILS.Web.Controllers
                 {
                     success = false,
                     errorMessage = "No themes in course " + course.Name
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             Lecture lecture = (Lecture)context.ThemeContent.FirstOrDefault(x => x.Theme_Id.Equals(theme.Id) && x is Lecture);
             if (lecture == null)
@@ -85,7 +86,7 @@ namespace ILS.Web.Controllers
                 {
                     success = false,
                     errorMessage = "No lectures in theme " + theme.Name
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             Test test = (Test)context.ThemeContent.FirstOrDefault(x => x.Theme_Id.Equals(theme.Id) && x is Test);
             if (test == null)
@@ -94,7 +95,7 @@ namespace ILS.Web.Controllers
                 {
                     success = false,
                     errorMessage = "No tests in theme " + theme.Name
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             Paragraph paragraph = context.Paragraph.First(x => x.Lecture_Id.Equals(lecture.Id));
             if (paragraph == null)
@@ -103,7 +104,7 @@ namespace ILS.Web.Controllers
                 {
                     success = false,
                     errorMessage = "No paragraphs in lecture " + lecture.Name
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
             Question question = context.Question.First(x => x.Test_Id.Equals(test.Id));
             if (question == null)
@@ -112,7 +113,7 @@ namespace ILS.Web.Controllers
                 {
                     success = false,
                     errorMessage = "No questions in test " + test.Name
-                });
+                }, JsonRequestBehavior.AllowGet);
             }
 
             CourseRun courseRun = new CourseRun();
@@ -157,50 +158,47 @@ namespace ILS.Web.Controllers
             return Json(new 
             {
                 success = true
-            });
+            }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult CreateGameAchievements(bool clearTest, bool createRun)
+        public JsonResult ToggleGameAchievement(string user, int index)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.FirstOrDefault(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.FirstOrDefault(x => x.Name == user);
             if (u == null)
                 return Json(new
                 {
                     success = false,
-                    errorMessage = "Authenticated user not found not found"
-                });
+                    errorMessage = "User with name " + user + " not found"
+                }, JsonRequestBehavior.AllowGet);
 
-            int count = context.GameAchievements.Count();
+            GameAchievement achievement = context.GameAchievements.FirstOrDefault(x => x.Index == index);
+            if (achievement == null)
+                return Json(new
+                {
+                    success = false,
+                    errorMessage = "Achievement with index " + index + " not found"
+                }, JsonRequestBehavior.AllowGet);
 
-            if (clearTest && context.GameAchievements.Count(x => x.Name == "Test") > 0)
+            GameAchievementRun run = context.GameAchievementRuns.FirstOrDefault(x => x.UserId == u.Id 
+                && x.GameAchievementId == achievement.Id);
+            if (run == null)
             {
-                context.GameAchievements.RemoveRange(context.GameAchievements.Where(x => x.Name == "Test"));
-            }
-
-            
-            GameAchievement achievement = new GameAchievement();
-            achievement.AchievementExecutor = "VirtualWordAchievementExecutor";
-            achievement.ImagePath = "got500money.png";
-            achievement.Index = count + 1;
-            achievement.Priority = count + 1;
-            achievement.Name = "Test";
-            context.GameAchievements.Add(achievement);
-
-            if (createRun)
-            {
-                GameAchievementRun run = new GameAchievementRun();
+                run = new GameAchievementRun();
                 run.GameAchievement = achievement;
                 run.User = u;
+                run.Passed = true;
                 context.GameAchievementRuns.Add(run);
             }
-
+            else
+            {
+                run.Passed = !run.Passed;
+            }
+            
             context.SaveChanges();
             return Json(new
             {
                 success = true
-            });
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

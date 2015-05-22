@@ -82,14 +82,45 @@
 	height: 130px;
 	top: 56px;
 	position: absolute;
-	background: url(sprites/profile/progress.png) no-repeat;
 	left: 382px;
 	cursor: pointer;
 }
+.profileProgress0 {
+	background: url(sprites/profile/progress_0.png) no-repeat;
+}
+.profileProgress0 :hover{
+	background: url(sprites/profile/progress_0_hover.png) no-repeat;
+}
+.profileProgress25 {
+	background: url(sprites/profile/progress_25.png) no-repeat;
+}
+.profileProgress25 :hover{
+	background: url(sprites/profile/progress_25_hover.png) no-repeat;
+}
+.profileProgress50 {
+	background: url(sprites/profile/progress_50.png) no-repeat;
+}
+.profileProgress50 :hover{
+	background: url(sprites/profile/progress_50_hover.png) no-repeat;
+}
+.profileProgress75 {
+	background: url(sprites/profile/progress_75.png) no-repeat;
+}
+.profileProgress75 :hover{
+	background: url(sprites/profile/progress_75_hover.png) no-repeat;
+}
+.profileProgress100 {
+	background: url(sprites/profile/progress_100.png) no-repeat;
+}
+.profileProgress100 :hover{
+	background: url(sprites/profile/progress_100_hover.png) no-repeat;
+}
 .profileProgressValue{
 	width: 130px; 
-	height: 40px;
-    top: 17px;
+	height: 130px;
+	line-height: 135px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 	position: absolute;
 	font-size: 40px; 
 	color: #eeeeee; 
@@ -102,14 +133,33 @@
 	height: 130px;
 	top: 56px;
 	position: absolute;
-	background: url(sprites/profile/rating.png) no-repeat;
 	left: 550px;
 	cursor: pointer;
 }
+.profileRatingBronze {
+	background: url(sprites/profile/rating.png) no-repeat;
+}
+.profileRatingBronze :hover{
+	background: url(sprites/profile/rating_hover.png) no-repeat;
+}
+.profileRatingSilver {
+	background: url(sprites/profile/rating_silver.png) no-repeat;
+}
+.profileRatingSilver :hover{
+	background: url(sprites/profile/rating_silver_hover.png) no-repeat;
+}
+.profileRatingGold {
+	background: url(sprites/profile/rating_gold.png) no-repeat;
+}
+.profileRatingGold :hover{
+	background: url(sprites/profile/rating_gold_hover.png) no-repeat;
+}
 .profileRatingValue{
 	width: 130px; 
-	height: 60px;
-	top: -15px;
+	height: 130px;
+	line-height: 100px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 	position: absolute;
 	font-size: 60px; 
 	color: #eeeeee; 
@@ -122,9 +172,20 @@
 	height: 130px;
 	top: 56px;
 	position: absolute;
-	background: url(sprites/profile/achievements.png) no-repeat;
 	left: 719px;
 	cursor: pointer;
+}
+.profileAchievementsBronze{
+	background: url(sprites/profile/achievements.png) no-repeat;
+}
+.profileAchievementsBronze:hover{
+	background: url(sprites/profile/achievements_hover.png) no-repeat;
+}
+.profileAchievementsGold{
+	background: url(sprites/profile/achievements_gold.png) no-repeat;
+}
+.profileAchievementsGold:hover{
+	background: url(sprites/profile/achievements_gold_hover.png) no-repeat;
 }
 .profileMinimize {
 	width: 50px; 
@@ -229,21 +290,34 @@ a {
 	background: rgba(14, 213, 218, 0.3);
 }
 .profileText{
-	font-size: 18px; 
+	font-size: 14px; 
 	color: #0ed5da; 
 	letter-spacing: 0.8px; 
 	text-align: left;
 	margin-left: 60px;
-	line-height: 16px; 
-	font-family: Futurica; 
+	line-height: 24px; 
+	font-family: MyriadPro; 
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width: 405px;
+	height: 29px;
+	font-family: MyriadPro; 
+	position: relative;
+	float: left;
 }
 .profileIndexText{
-	font-size: 18px; 
+	font-size: 14px; 
 	color: #0ed5da; 
 	letter-spacing: 0.8px; 
 	text-align: center;
-	line-height: 16px; 
-	font-family: Futurica; 
+	line-height: 24px; 
+	font-family: MyriadPro; 
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width: 28px;
+	height: 29px;
+	position: relative;
+	float: left;
 }
 .profileAchievementsRows {
 	width: 1040px; 
@@ -287,14 +361,40 @@ a {
 	font-family: Futurica; 
 }
 .profileTablePane {
-	width: 450px; 
-	height: 360px;
+	width: 567px; 
+	height: 160px;
 	top: 20px;
 	position: absolute;
 	overflow: hidden;
 	left: 50%;
-	margin-left: -225px;
+	margin-left: -283px;
+}
+.profileTableRow {
+	width: 545px;
+	height: 29px;
+	background: url(sprites/profile/row.png) no-repeat;
+}
+.profileTableCurrentRow {
+	width: 545px;
+	height: 29px;
+	background: url(sprites/profile/row_current.png) no-repeat;
+}
+#profileContent .jspVerticalBar {
+    background: none;
+    width: 2px;
+	right: 0px;
+}
+#profileContent .jspTrack {
+    background: rgba(14, 201, 206, 0.3);
+}
+#profileContent .jspDrag {
+    background: rgba(14, 201, 206, 255);
 }
 .progressColumn {
 	width: 50px;
+}
+
+@font-face {
+    font-family: MyriadPro;
+    src: url(MYRIADPRO-COND.OTF);
 }

@@ -2,7 +2,6 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    overflow: hidden;
     background-image: url(sprites/background_centered.jpg);
     background-position: center center;
     background-color: #000000;
@@ -16,7 +15,6 @@
 .background {
     width: 100%;
     height: 100%;
-    overflow: hidden;
     overflow: hidden;
     background: url(sprites/background.jpg) repeat;
     position: absolute;

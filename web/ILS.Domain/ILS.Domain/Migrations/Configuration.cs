@@ -43,7 +43,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Theme,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.CourseProgressAchievementExecutor",
-                AdditionalParameters = "courseProgress=25"              
+                AdditionalParameters = "courseProgress=25",
+                ImagePath = "just_the_beginning.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -55,7 +56,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Theme,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.CourseProgressAchievementExecutor",
-                AdditionalParameters = "courseProgress=50"
+                AdditionalParameters = "courseProgress=50",
+                ImagePath = "no_way_back.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -67,7 +69,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Theme,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.CourseProgressAchievementExecutor",
-                AdditionalParameters = "courseProgress=100"
+                AdditionalParameters = "courseProgress=100",
+                ImagePath = "remember_you_are_here_forever.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -79,6 +82,7 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Theme,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                ImagePath = "friends_forever.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -90,7 +94,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Test,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TopRatingAchievementExecutor",
-                AdditionalParameters = "ratingThreshold=20"
+                AdditionalParameters = "ratingThreshold=20",
+                ImagePath = "neeerd.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -102,7 +107,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Test,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TopRatingAchievementExecutor",
-                AdditionalParameters = "ratingThreshold=10"
+                AdditionalParameters = "ratingThreshold=10",
+                ImagePath = "best_of_us.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -114,7 +120,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Test,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TopRatingAchievementExecutor",
-                AdditionalParameters = "ratingThreshold=0"
+                AdditionalParameters = "ratingThreshold=0",
+                ImagePath = "special_olympics.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -126,6 +133,7 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                ImagePath = "premature_ejaculator.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -137,7 +145,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Test,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TestWithoutMistakesAchievementExecutor",
-                AdditionalParameters = "testNumber=1"
+                AdditionalParameters = "testNumber=1",
+                ImagePath = "flawless_victory_1.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -149,7 +158,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Test,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TestWithoutMistakesAchievementExecutor",
-                AdditionalParameters = "testNumber=5"
+                AdditionalParameters = "testNumber=5",
+                ImagePath = "flawless_victory_2.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -161,7 +171,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Test,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TestWithoutMistakesAchievementExecutor",
-                AdditionalParameters = "testNumber=10"
+                AdditionalParameters = "testNumber=10",
+                ImagePath = "flawless_victory_3.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -173,6 +184,7 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
+                ImagePath = "my_dreams_make_more_sense_than_this_anyway.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -184,7 +196,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "number=1"
+                AdditionalParameters = "number=1",
+                ImagePath = "dora_the_explorer_1.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -196,7 +209,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "number=5"
+                AdditionalParameters = "number=5",
+                ImagePath = "dora_the_explorer_2.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -208,7 +222,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "number=10"
+                AdditionalParameters = "number=10",
+                ImagePath = "dora_the_explorer_3.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -220,7 +235,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "number=10"
+                AdditionalParameters = "number=10",
+                ImagePath = "forward_to_the_past_1.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -232,7 +248,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "number=50"
+                AdditionalParameters = "number=50",
+                ImagePath = "forward_to_the_past_2.png"
             });
             context.GameAchievements.Add(new GameAchievement
             {
@@ -244,7 +261,8 @@ namespace ILS.Domain.Migrations
                 Priority = 10,
                 AchievementTrigger = AchievementTrigger.Game,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
-                AdditionalParameters = "number=100"
+                AdditionalParameters = "number=100",
+                ImagePath = "forward_to_the_past_3.png"
             });
             #endregion
         }
