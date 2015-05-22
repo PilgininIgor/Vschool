@@ -531,13 +531,15 @@ using System.Web.Script.Serialization;
 
         public ActionResult SaveGameAchievement(String achievementId)
         {
-            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game,
+            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game, GetCurrentUser(),
                 new Dictionary<string, object> { { AchievementsConstants.GameAchievementIdParamName, achievementId } });
             return Json(changedAchievementRuns.Select(run => new
             {
                 name = run.GameAchievement.Name, 
+                score = run.GameAchievement.Score,
                 result = run.Result,
-                passed = run.Passed
+                passed = run.Passed,
+                needToShow = run.NeedToShow
             }));
         }
 
@@ -782,7 +784,7 @@ using System.Web.Script.Serialization;
         private User GetCurrentUser()
         {
             //TODO MAKE REAL AUTHORIZATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            return String.IsNullOrEmpty(HttpContext.User.Identity.Name) ? context.User.First()
+            return String.IsNullOrEmpty(HttpContext.User.Identity.Name) ? context.User.First(x => x.Name == "admin")
                 : context.User.First(x => x.Name == HttpContext.User.Identity.Name);
         }
     }

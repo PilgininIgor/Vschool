@@ -181,7 +181,7 @@ namespace ILS.Web.Controllers
 
             
             GameAchievement achievement = new GameAchievement();
-            achievement.AchievementExecutor = "VirtualWordAchievementExecutor";
+            achievement.AchievementExecutor = "VirtualWorldAchievementExecutor";
             achievement.ImagePath = "got500money.png";
             achievement.Index = count + 1;
             achievement.Priority = count + 1;
