@@ -55,7 +55,7 @@ using System.Web.Script.Serialization;
             int rating = users.IndexOf(u);
             model.Rating = rating;
             Dictionary<string, string> achievements = new Dictionary<string, string>();
-            List<GameAchievementRun> runList = context.GameAchievementRuns.Where(x => x.UserId.Equals(u.Id)).ToList();
+            List<GameAchievementRun> runList = context.GameAchievementRuns.Where(x => x.UserId.Equals(u.Id) && x.Passed).ToList();
             foreach (GameAchievementRun run in runList)
             {
                 achievements.Add(run.GameAchievement.Index.ToString(), run.GameAchievement.ImagePath);
@@ -74,7 +74,8 @@ using System.Web.Script.Serialization;
             {
                 achievements = context.GameAchievements.OrderBy(x => x.Index).Select(y => new
                 {
-                    name = y.Name
+                    name = y.Name,
+                    index = y.Index
                 })
             }, JsonRequestBehavior.AllowGet);
         }
