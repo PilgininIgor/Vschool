@@ -38,7 +38,6 @@ public class RPGParser : MonoBehaviour
     private List<int> achievementPoints = new List<int>();
     private string txt;
     private int pnt;
-    private int count = 0;
     private GameObject Player;
     string LBL = "Очки опыта";
     private string nameOfAvatar;
@@ -116,71 +115,11 @@ public class RPGParser : MonoBehaviour
             coinsText.text = RPG.EXP.ToString();
     }
 
-    void OnGui()
-    {
-        if (!SkinSet)
-        {
-            //GUI.skin.box.font = helvetica; GUI.skin.box.fontSize = 12; GUI.skin.box.fontStyle = FontStyle.BoldAndItalic;
-            //GUI.skin.label.font = helvetica; GUI.skin.label.fontStyle = FontStyle.Bold;
-            //GUI.skin.label.fontSize = 12; GUI.skin.label.normal.textColor = Color(0.835, 0.929, 1);
-            //GUI.skin.label.alignment = TextAnchor.MiddleCenter;
-            //SkinSet = true;
-        }
-        if (displayAchievement)
-        {
-            if (displayAchievement_stage == 0)
-            {
-                txt = achievementText[0]; pnt = achievementPoints[0];
-                displayAchievement_stage = 1;
-            }
-            if (displayAchievement_stage == 1)
-            {
-                GUI.skin.label.fontSize++;
-                GUI.Label(new Rect(0, Screen.height / 4 - 25, Screen.width, 200), txt);
-                if (GUI.skin.label.fontSize >= 42) { displayAchievement_stage++; time_to_show = Time.timeSinceLevelLoad; }
-            }
-            else if (displayAchievement_stage == 2)
-            {
-                GUI.Label(new Rect(0, Screen.height / 4 - 25, Screen.width, 200), txt);
-                if (Time.timeSinceLevelLoad - time_to_show > 3) displayAchievement_stage++;
-            }
-            else if (displayAchievement_stage == 3)
-            {
-                pos_x += Screen.width / 50.0;
-                pos_y += Screen.height * 0.75 / 50;
-                GUI.Label(new Rect(0, (float)(Screen.height / 4 - 25 + pos_y), (float)(Screen.width - pos_x), 200), txt);
-                GUI.skin.label.fontSize--;
-                if (GUI.skin.label.fontSize <= 0)
-                {
-                    RPG.EXP += pnt;
-                    Save();
-                    GUI.skin.label.fontSize = 0; pos_x = 0; pos_y = 0;
-                    count--;
-                    if (count == 0) displayAchievement = false;
-                    else
-                    {
-                        displayAchievement_stage = 0;
-                        for (var i = 0; i < count; i++)
-                        {
-                            achievementText[i] = achievementText[i + 1];
-                            achievementPoints[i] = achievementPoints[i + 1];
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     public void Achievement(string text, int points)
     {
-        count++;
         achievementText.Add(text);
         achievementPoints.Add(points);
-        if (!displayAchievement)
-        {
-            displayAchievement = true;
-            displayAchievement_stage = 0;
-        }
+        ShowAchievment(text);
     }
 
     public void Save()

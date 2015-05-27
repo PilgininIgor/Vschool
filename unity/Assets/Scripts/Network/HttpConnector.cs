@@ -18,13 +18,13 @@ public class HttpConnector : MonoBehaviour
     public const string SaveGameAchievementUrl = "/Render/SaveGameAchievement";
     public const string GetGameAchievementsUrl = "/Render/GetGameAchievementsForUnity";
 
-    public void Get(string url, System.Action<WWW> onSuccess)
+    public void Get(string url, Action<WWW> onSuccess)
     {
         WWW www = new WWW(url);
         StartCoroutine(WaitForRequest(www, onSuccess));
     }
 
-    public void Post(string url, Dictionary<string, string> post, System.Action<WWW> onSuccess)
+    public void Post(string url, Dictionary<string, string> post, Action<WWW> onSuccess)
     {
         WWWForm form = new WWWForm();
         foreach (KeyValuePair<String, String> postArg in post)
@@ -36,7 +36,7 @@ public class HttpConnector : MonoBehaviour
         StartCoroutine(WaitForRequest(www, onSuccess));
     }
 
-    private IEnumerator WaitForRequest(WWW www, System.Action<WWW> onSuccess)
+    private IEnumerator WaitForRequest(WWW www, Action<WWW> onSuccess)
     {
         yield return www;
 
