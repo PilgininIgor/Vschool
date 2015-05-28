@@ -11,6 +11,7 @@ namespace UnitTests
     public class RenderTest : BaseTest
     {
         private readonly User user;
+        private readonly Course course;
         private readonly List<GameAchievement> achievements;
 
         public RenderTest()
@@ -23,7 +24,38 @@ namespace UnitTests
                 Email = "test@test.com",
                 Coins = 50
             };
-            achievements = new List<GameAchievement> {
+            var lecture = new Lecture
+            {
+                Name = "First Lecture",
+                Text = "some text",
+                Paragraphs = new List<Paragraph>
+                {
+                    new Paragraph
+                    {
+                        Header = "header",
+                        OrderNumber = 1,
+                        Text = "some another text"
+                    }
+                }
+            };
+            course = new Course 
+            {
+                Name = "Information",
+                Themes = new List<Theme>
+                {
+                    new Theme
+                    {
+                        Name = "First",
+                        OrderNumber = 1,
+                        ThemeContents = new List<ThemeContent>
+                        {
+                            lecture
+                        }
+                    }
+                }
+            };
+            achievements = new List<GameAchievement>
+            {
                 new GameAchievement
                 {
                     Name = "First",
@@ -43,6 +75,7 @@ namespace UnitTests
         protected override void AddMockData(ILSContext context)
         {
             context.GameAchievements.AddRange(achievements);
+            context.Course.Add(course);
             context.User.Add(user);
         }
 
@@ -66,6 +99,14 @@ namespace UnitTests
             {
                 Assert.AreEqual(achievements[i].Name, data[i].name);
             }
+        }
+
+        [TestMethod]
+        public void TestUnityList()
+        {
+            var controller = CreateController<RenderController>();
+            dynamic data = controller.UnityList().Data;
+            Assert.AreEqual(course.Name, data.coursesNames[0].name);
         }
     }
 }

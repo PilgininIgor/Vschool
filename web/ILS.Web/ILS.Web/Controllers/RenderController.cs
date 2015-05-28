@@ -203,7 +203,7 @@ using System.Web.Script.Serialization;
                 }), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UnityList()
+        public JsonResult UnityList()
         {
             return Json(new
             {
@@ -211,7 +211,7 @@ using System.Web.Script.Serialization;
                 {
                     id = x.Id,
                     name = x.Name
-                })
+                }).ToList()
             }, JsonRequestBehavior.AllowGet);
         }
 
