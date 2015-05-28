@@ -28,9 +28,9 @@ ils.aboutadmin.authors.profileImage = 'Image';
 ils.aboutadmin.authors.profilePriority = 'Priority';
 ils.aboutadmin.authors.authors = 'Authors';
 if (isRussian) {
-    ils.aboutadmin.authors.textProfile = 'Автор';
-    ils.aboutadmin.authors.textAdd = 'Добавить автора';
-    ils.aboutadmin.authors.textRemove = 'Удалить автора';
+    ils.aboutadmin.authors.textProfile = 'Разработчик';
+    ils.aboutadmin.authors.textAdd = 'Добавить разработчика';
+    ils.aboutadmin.authors.textRemove = 'Удалить разработчика';
     ils.aboutadmin.authors.textSaveChanges = 'Сохранить изменения';
     ils.aboutadmin.authors.textToggle = 'Утвердить автора';
     ils.aboutadmin.authors.textName = 'Имя';
@@ -41,16 +41,16 @@ if (isRussian) {
     ils.aboutadmin.authors.promptDescriptionText = 'Пожалуйста, введите описание:';
     ils.aboutadmin.authors.promptName = 'Имя';
     ils.aboutadmin.authors.promptNameText = 'Пожалуйста, введите имя:';
-    ils.aboutadmin.authors.promptRemove = 'Удаление автора';
+    ils.aboutadmin.authors.promptRemove = 'Удаление разработчика';
     ils.aboutadmin.authors.promptRemoveText = 'Вы уверены?';
     ils.aboutadmin.authors.alert = 'Информация';
     ils.aboutadmin.authors.alertText = 'Не выбрана ни одна строка';
-    ils.aboutadmin.authors.gridName = 'Список авторов';
+    ils.aboutadmin.authors.gridName = 'Список разработчиковов';
     ils.aboutadmin.authors.profileName = 'Имя';
     ils.aboutadmin.authors.profileDescription = 'Описание';
     ils.aboutadmin.authors.profileImage = 'Изображение';
     ils.aboutadmin.authors.profilePriority = 'Приоритет';
-    ils.aboutadmin.authors.authors = 'Авторы';
+    ils.aboutadmin.authors.authors = 'Разработчики';
 }
 
 Ext.define('EDucationAuthorModel', {
