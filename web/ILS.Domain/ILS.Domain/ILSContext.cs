@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Data.Common;
+using System.Data.Entity;
 using ILS.Domain.TestGenerator;
 using ILS.Domain.TestGenerator.Settings;
 using ILS.Domain.GameAchievements;
@@ -59,6 +60,10 @@ namespace ILS.Domain
             : base("u273630")
         {
             Database.SetInitializer<ILSContext>(new CreateDatabaseIfNotExists<ILSContext>());
+        }
+
+        public ILSContext(DbConnection connection) : base(connection, true)
+        {
         }
     }
 }

@@ -36,16 +36,14 @@ using System.Web.Script.Serialization;
                     success = false
                 });
             }
-            ProfileModel model = new ProfileModel();
-            model.Name = u.FirstName + " " + u.LastName;
-            model.Email = u.Email;
-            model.Money = u.Coins;
-            double progress = 0;
-            List<CourseRun> courses = context.CourseRun.Where(z => z.User.Name.Equals(u.Name)).ToList();
-            foreach (CourseRun run in courses)
+            ProfileModel model = new ProfileModel
             {
-                progress += run.Progress;
-            }
+                Name = u.FirstName + " " + u.LastName,
+                Email = u.Email,
+                Money = u.Coins
+            };
+            List<CourseRun> courses = context.CourseRun.Where(z => z.User.Name.Equals(u.Name)).ToList();
+            double progress = courses.Sum(run => run.Progress);
             if (courses.Count != 0)
             {
                 progress /= courses.Count;
@@ -54,12 +52,8 @@ using System.Web.Script.Serialization;
             List<User> users = context.User.OrderByDescending(x => x.Coins).ToList();
             int rating = users.IndexOf(u);
             model.Rating = rating;
-            Dictionary<string, string> achievements = new Dictionary<string, string>();
             List<GameAchievementRun> runList = context.GameAchievementRuns.Where(x => x.UserId.Equals(u.Id) && x.Passed).ToList();
-            foreach (GameAchievementRun run in runList)
-            {
-                achievements.Add(run.GameAchievement.Index.ToString(), run.GameAchievement.ImagePath);
-            }
+            Dictionary<string, string> achievements = runList.ToDictionary(run => run.GameAchievement.Index.ToString(), run => run.GameAchievement.ImagePath);
             model.Achievements = achievements;
             model.AchievementsCount = context.GameAchievements.Count();
             return Json(new
@@ -544,13 +538,13 @@ using System.Web.Script.Serialization;
             }));
         }
 
-        public ActionResult GetGameAchievementsForUnity()
+        public JsonResult GetGameAchievementsForUnity()
         {
             return Json(context.GameAchievements.OrderBy(x => x.Name).Select(x => new
             {
                 id = x.Id,
                 name = x.Name
-            }), JsonRequestBehavior.AllowGet);
+            }).ToList(), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetGameAchievementRuns()
