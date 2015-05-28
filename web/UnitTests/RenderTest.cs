@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ILS.Domain;
 using ILS.Domain.GameAchievements;
@@ -40,6 +41,7 @@ namespace UnitTests
             };
             course = new Course 
             {
+                Id = Guid.NewGuid(),
                 Name = "Information",
                 Themes = new List<Theme>
                 {
@@ -107,6 +109,27 @@ namespace UnitTests
             var controller = CreateController<RenderController>();
             dynamic data = controller.UnityList().Data;
             Assert.AreEqual(course.Name, data.coursesNames[0].name);
+        }
+
+        [TestMethod]
+        public void TestUnityStat()
+        {
+            var controller = CreateController<RenderController>();
+            dynamic data = controller.UnityStat(course.Id).Data;
+            Assert.AreEqual(0, data.progress);
+        }
+
+        [TestMethod]
+        public void TestUnityData()
+        {
+            var controller = CreateController<RenderController>();
+            dynamic data = controller.UnityData(course.Id).Data;
+            Assert.AreEqual(course.Name, data.name);
+            var themes = course.Themes.ToList();
+            for (int i = 0; i < themes.Count; i++)
+            {
+                Assert.AreEqual(themes[i].Name, data.themes[i].name);
+            }
         }
     }
 }

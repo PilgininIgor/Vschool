@@ -215,7 +215,7 @@ using System.Web.Script.Serialization;
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UnityData(Guid id)
+        public JsonResult UnityData(Guid id)
         {
             var c = context.Course.Find(id);
             return Json(new
@@ -265,7 +265,7 @@ using System.Web.Script.Serialization;
                         linkedThemeId = y.LinkedTheme_Id,
                         status = GetThemeLinkStatus(y)
                     })
-                })
+                }).ToList()
             });
         }
 
@@ -356,10 +356,10 @@ using System.Web.Script.Serialization;
             }
         }
 
-        public ActionResult UnityStat(Guid id)
+        public JsonResult UnityStat(Guid id)
         {
             var c = context.Course.Find(id);
-            if (!HttpContext.User.Identity.IsAuthenticated)
+            if (HttpContext == null || HttpContext.User == null || !HttpContext.User.Identity.IsAuthenticated)
             { //если юзер - гость, то передать "нулевую" статистику (он начнет с самого начала, и сохранять его прогресс мы в базе не будем)
                 return Json(new
                 {
