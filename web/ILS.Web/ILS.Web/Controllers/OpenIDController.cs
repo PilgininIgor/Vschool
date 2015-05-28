@@ -57,7 +57,8 @@ namespace ILS.Web.Controllers
                 {
                     selectedUser.Email = data[0].Email;
                     context.SaveChanges();
-                    FormsService.SignIn(login, false);
+                    if (FormsService != null)
+                        FormsService.SignIn(login, false);
                     bool isAdmin = selectedUser.Roles.Count(x => x.Name == "Admin" || x.Name == "Teacher") > 0;
                     var token = CalculateSHA1("AZAZAZ" + selectedUser.Name + milliSeconds);
                     selectedUser.Token = token;
@@ -87,7 +88,8 @@ namespace ILS.Web.Controllers
                     Token = token,
                     CurrentTokenMilliseconds = milliSeconds
                 });
-                FormsService.SignIn(login, false);
+                if (FormsService != null)
+                    FormsService.SignIn(login, false);
                 context.SaveChanges();
                 return Json(new
                 {
