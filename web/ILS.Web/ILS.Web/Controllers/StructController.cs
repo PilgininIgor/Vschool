@@ -12,6 +12,7 @@ using System.Web.Script.Serialization;
 
 namespace ILS.Web.Controllers
 {
+    using ILS.Domain.TestGenerator;
     using ILS.Web.ContentFromMoodle;
     using System.Collections.Generic;
     using System.Data.Entity.Core.Objects;
@@ -612,7 +613,18 @@ namespace ILS.Web.Controllers
             path += tc.Id.ToString();
             if (Directory.Exists(path)) Directory.Delete(path, true);
             RemoveThemeContentLinks(tc);
-            context_obj.DeleteObject(tc);
+
+            if (tc is TGTest)
+            {
+                var testSettings = ((TGTest)tc).TestSetting;
+                context_obj.DeleteObject(tc);
+                context_obj.DeleteObject(testSettings);
+            }
+            else
+            {
+                context_obj.DeleteObject(tc);
+            }
+
             context_obj.SaveChanges();
 
             int i = 1;
@@ -761,7 +773,7 @@ namespace ILS.Web.Controllers
                     prev_one.OrderNumber = num;
                 }
             }
-            else
+            else if (type == "question")
             {
                 var this_one = context.Question.Find(id);
                 int num = this_one.OrderNumber;
@@ -769,6 +781,18 @@ namespace ILS.Web.Controllers
                 {
                     var parent = context.ThemeContent.Find(parent_id);
                     var prev_one = ((Test)parent).Questions.Where(x => x.OrderNumber == num - 1).First();
+                    this_one.OrderNumber = num - 1;
+                    prev_one.OrderNumber = num;
+                }
+            }
+            else if (type == "tgtasktemplate")
+            {
+                var this_one = context.TGTaskTemplate.Find(id);
+                int num = this_one.OrderNumber;
+                if (num > 1)
+                {
+                    var parent = context.ThemeContent.Find(parent_id);
+                    var prev_one = ((TGTest)parent).TaskTemplates.Where(x => x.OrderNumber == num - 1).First();
                     this_one.OrderNumber = num - 1;
                     prev_one.OrderNumber = num;
                 }
@@ -818,7 +842,7 @@ namespace ILS.Web.Controllers
                     next_one.OrderNumber = num;
                 }
             }
-            else
+            else if (type == "question")
             {
                 var this_one = context.Question.Find(id);
                 var parent = context.ThemeContent.Find(parent_id);
@@ -827,6 +851,19 @@ namespace ILS.Web.Controllers
                 if (num < num_max)
                 {
                     var next_one = ((Test)parent).Questions.First(x => x.OrderNumber == num + 1);
+                    this_one.OrderNumber = num + 1;
+                    next_one.OrderNumber = num;
+                }
+            }
+            else if (type == "tgtasktemplate")
+            {
+                var this_one = context.TGTaskTemplate.Find(id);
+                var parent = context.ThemeContent.Find(parent_id);
+                int num = this_one.OrderNumber;
+                int num_max = ((TGTest)parent).TaskTemplates.OrderBy(x => x.OrderNumber).Last().OrderNumber;
+                if (num < num_max)
+                {
+                    var next_one = ((TGTest)parent).TaskTemplates.First(x => x.OrderNumber == num + 1);
                     this_one.OrderNumber = num + 1;
                     next_one.OrderNumber = num;
                 }
@@ -847,14 +884,14 @@ namespace ILS.Web.Controllers
             var closedQuestions = test.Questions.OfType<ClosedQuestion>();
             for (int i = 1; i <= closedQuestions.Count(); i++)
             {
-                var q = closedQuestions.ElementAt(i - 1);
+                var taskTemplate = closedQuestions.ElementAt(i - 1);
                 dict["type" + i] = "text";
-                dict["qid" + i] = q.Id.ToString();
-                dict["question" + i] = q.Text;
-                dict["qrnd" + i] = q.RandomizeAnswers.ToString().ToLowerInvariant();
-                for (int j = 1; j <= q.Answers.Count; j++)
+                dict["qid" + i] = taskTemplate.Id.ToString();
+                dict["question" + i] = taskTemplate.Text;
+                dict["qrnd" + i] = taskTemplate.RandomizeAnswers.ToString().ToLowerInvariant();
+                for (int j = 1; j <= taskTemplate.Answers.Count; j++)
                 {
-                    var a = q.Answers.ElementAt(j - 1);
+                    var a = taskTemplate.Answers.ElementAt(j - 1);
                     dict["aid" + i + j] = a.Id.ToString();
                     dict["answer" + i + j] = a.Text;
                     dict["correct" + i + j] = (a.Weight > 0).ToString().ToLowerInvariant();
@@ -1307,7 +1344,7 @@ namespace ILS.Web.Controllers
                 }
 
                 q.PicQ = virtpath;
-                //q.PicA = virtpath;
+                //taskTemplate.PicA = virtpath;
 
                 q.IfPictured = false;
                 while (q.AnswerVariants.Count() > 0) context_obj.DeleteObject(q.AnswerVariants.First());

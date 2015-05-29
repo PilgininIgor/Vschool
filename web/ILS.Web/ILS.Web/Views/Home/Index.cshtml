@@ -58,6 +58,8 @@
         var canvas;
         var frame = 0;
         var ITHASBEGUN = false;
+		var currentUser;
+		var selectedUser;
 
         var reinitialized = false;
 
@@ -116,6 +118,8 @@
                 framesDots[frameDots].style.display = "block";
             }
             timerDots = setInterval(Dots, 120);
+			
+			resume();
 
         }
 
@@ -141,13 +145,14 @@
         function receiveMessage(event) {
             var message = JSON.parse(event.data);
             if (message.header == 'authorise')
-                this.authorise(message.success, message.firstName, message.admin);
+                this.authorise(message.login, message.success, message.firstName, message.admin);
         }
 
-        authorise = function (success, firstName, admin) {
+        authorise = function (login, success, firstName, admin) {
             authorisationComplete = true;
             if (success) {
                 authorisationSucceed = true;
+				currentUser = login;
                 document.getElementById('helloPanel').style.display = "block";
                 document.getElementById('helloInactive').style.display = "none";
                 document.getElementById('credentials').innerHTML = firstName;
@@ -540,10 +545,6 @@
             reinitialized = false;
         }
 
-        var profileLoaded = false;
-        var achievementsLoaded = false;
-        var ratingLoaded = false;
-
         function minimizeProfile() {
             document.getElementById('blackout').style.display = 'none';
             document.getElementById('profile').style.display = 'none';
@@ -558,70 +559,110 @@
             }
             document.getElementById('blackout').style.display = 'block';
             document.getElementById('mainFrame').className = 'main blurred';
-            loadAchievements();
+			selectedUser = null;
+            initProfile();
         }
+		
+		function getUserForProfile() {
+			return selectedUser == null ? currentUser : selectedUser;
+		}
+		
+		function initProfile() {
+			loadAchievements();
+			parseProfile();
+		}
+		
+		function changeSelectedUser(newUser) {
+			selectedUser = newUser;
+			initGameAchievements();
+			parseProfile();
+			loadRating();
+		}
+		
+		var firstRowInnerHTML = "";
+		var secondRowInnerHTML = "";
 
         function loadAchievements() {
-            if (!achievementsLoaded) {
-                var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getGameAchievements";
-                Ext.Ajax.request({
-                    url: url,
-                    success: function (response, opts) {
-                        var a = eval('(' + response.responseText + ')');
-                        var container = document.getElementById('profileAchievementsContent');
-                        var index = 0;
-                        for (var prop in a.achievements) {
-                            if (index < 16) {
-                                container.children[0].innerHTML += '<div class="profileAchievement"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
-                            } else {
-                                container.children[1].innerHTML += '<div class="profileAchievement"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
-                            }
-                            index++;
-                        }
-                        achievementsLoaded = true;
-                        parseProfile();
-                    },
-                    failure: function (response, opts) {
-                        //alert('fail');
-                    }
-                });
-            } else {
-                parseProfile();
-            }
+			var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getGameAchievements";
+			suspend();
+			Ext.Ajax.request({
+				url: url,
+				success: function (response, opts) {
+					try {
+						var a = eval('(' + response.responseText + ')');
+						if (a.success == false) {
+							return;
+						}
+						firstRowInnerHTML = "";
+						secondRowInnerHTML = "";
+						var index = 0;
+						for (var prop in a.achievements) {
+							if (index < 16) {
+								firstRowInnerHTML += '<div class="profileAchievement" id="profileAchievement' + a.achievements[prop].index + '"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
+							} else {
+								secondRowInnerHTML += '<div class="profileAchievement" id="profileAchievement' + a.achievements[prop].index + '"><div class="profileAchievementImage"></div><p class="profileAchievementValue">' + a.achievements[prop].name + '</p></div>';
+							}
+							index++;
+						}
+						initGameAchievements();
+						showGameAchievements();
+						resume();
+					} finally {
+						resume();
+					}
+				},
+				failure: function (response, opts) {
+					resume();
+				},
+                jsonData: {
+                    name: getUserForProfile()
+                }
+			});
         }
+		
+		function initGameAchievements() {
+			var container = document.getElementById('profileAchievementsContent');
+			container.children[0].innerHTML = firstRowInnerHTML;
+			container.children[1].innerHTML = secondRowInnerHTML;
+		}
 
         function loadRating() {
-            if (!ratingLoaded) {
-                var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getGameRating";
-                Ext.Ajax.request({
-                    url: url,
-                    success: function (response, opts) {
-                        var a = eval('(' + response.responseText + ')');
-                        var container = document.getElementById('profileRatingContent');
-                        var index = 0;
-                        var string = '<div class="profileTablePane"><table>';
-                        for (var prop in a.rating) {
-                            string += document.getElementById('profileRatingValue').innerHTML == index + 1 ? '<tr class="profileRatingSelectedRow">' : '<tr>';
-							string += '<td class="progressColumn"><p class="profileIndexText">' + (index + 1) + '</p></td>';
-                            string += '<td><p class="profileText">' + a.rating[prop].name + '</p></td>';
-							string += '<td class="progressColumn"><p class="profileIndexText">' + a.rating[prop].exp + '</p></td>';
-                            string += '</tr>';
-                            index++;
-                        }
-                        string += '</table></div>';
-                        container.innerHTML = string;
-                        ratingLoaded = true;
-                        $('.profileTablePane').jScrollPane();
-                        showGameRating();
-
-                    },
-                    failure: function (response, opts) {
-                        //alert('fail');
-                    }
-                });
-            } else {
-                showGameRating();
-            }
+			var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getGameRating";
+			suspend();
+			Ext.Ajax.request({
+				url: url,
+				success: function (response, opts) {
+					try {
+						var a = eval('(' + response.responseText + ')');
+						if (a.success == false) {
+							return;
+						}
+						var container = document.getElementById('profileRatingContent');
+						var index = 0;
+						var string = '<div class="profileTablePane">';
+						for (var prop in a.rating) {
+							string += getUserForProfile() == a.rating[prop].name ? '<div class="profileTableCurrentRow">' : '<div class="profileTableRow">';
+							string += '<p class="profileIndexText">' + (index + 1) + '</p>';
+							string += '<p class="profileText"><a href="javascript:changeSelectedUser(' + "'" + a.rating[prop].name + "'" + ')">' + a.rating[prop].name + '</a></p>';
+							string += '<p class="profileIndexText">' + a.rating[prop].exp + '</p>';
+							string += '</div>';
+							index++;
+						}
+						string += '</div>';
+						container.innerHTML = string;
+						showGameRating();
+						$('.profileTablePane').jScrollPane();
+					} finally {
+						resume();
+					}
+				},
+				failure: function (response, opts) {
+					resume();
+				},
+                jsonData: {
+                    name: getUserForProfile()
+                }
+			});
         }
 
 		var coursesString;
@@ -632,61 +673,77 @@
 		
         function loadProgressCourses() {
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getCoursesProgress";
+			suspend();
             Ext.Ajax.request({
                 url: url,
                 success: function (response, opts) {
-                    var a = eval('(' + response.responseText + ')');
-					var navigation = document.getElementById('profileProgressNavigation');
-					coursesString = '<a href="javascript:loadProgressCourses()">Курсы</a>';
-					navigation.innerHTML = coursesString;
-                    var container = document.getElementById('profileProgressContent');
-                    var string = '<div><table>';
-                    for (i = 0; i < a.length; i++) {
-                        string += '<tr>';
-                        string += '<td><p class="profileText"><a href="javascript:loadProgressCourse(' + "'" + a[i].id + "'" + ')">' + a[i].name + '</a></p></td>';
-						string += '<td class="progressColumn"><p class="profileIndexText">' + a[i].progress + '</p></td>';
-                        string += '</tr>';
-                    }
-                    string += '</table></div>';
-                    container.innerHTML = string;
-                    $('.profileTablePane').jScrollPane();
-                    showGameProgress();
-                },
+					try {
+						var a = eval('(' + response.responseText + ')');
+						if (a.success == false) {
+							return;
+						}
+						var navigation = document.getElementById('profileProgressNavigation');
+						coursesString = '<a href="javascript:loadProgressCourses()">Курсы</a>';
+						navigation.innerHTML = coursesString;
+						var container = document.getElementById('profileProgressContent');
+						var string = '<div><table>';
+						for (i = 0; i < a.length; i++) {
+							string += '<tr>';
+							string += '<td><p class="profileText"><a href="javascript:loadProgressCourse(' + "'" + a[i].id + "'" + ')">' + a[i].name + '</a></p></td>';
+							string += '<td class="progressColumn"><p class="profileIndexText">' + a[i].progress + '</p></td>';
+							string += '</tr>';
+						}
+						string += '</table></div>';
+						container.innerHTML = string;
+						showGameProgress();
+						$('.profileTablePane').jScrollPane();
+					} finally {
+						resume();
+					}
+                },    
                 failure: function (response, opts) {
-                    //alert('fail');
+                    resume();
                 },
                 jsonData: {
-                    name: 'TODO: username'
+                    name: getUserForProfile()
                 }
             });
         }
 
         function loadProgressCourse(id) {
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getCourseProgress";
+			suspend();
             Ext.Ajax.request({
                 url: url,
                 success: function (response, opts) {
-                    var a = eval('(' + response.responseText + ')');
-					var navigation = document.getElementById('profileProgressNavigation');
-					courseString = ' -> <a href="javascript:loadProgressCourse(' + "'" + id + "'" + ')">Курс</a>';
-					navigation.innerHTML = coursesString + courseString;
-                    var container = document.getElementById('profileProgressContent');
-                    var string = '<div><table>';
-                    for (i = 0; i < a.length; i++) {
-                        string += '<tr>';
-                        string += '<td><p class="profileText"><a href="javascript:loadProgressTheme(' + "'" + a[i].id + "'" + ')">' + a[i].name + '</a></p></td>';
-						string += '<td class="progressColumn"><p class="profileIndexText">' + a[i].progress + '</p></td>';
-                        string += '</tr>';
-                    }
-                    string += '</table></div>';
-                    container.innerHTML = string;
-                    $('.profileTablePane').jScrollPane();
+					try {
+						var a = eval('(' + response.responseText + ')');
+						if (a.success == false) {
+							return;
+						}
+						var navigation = document.getElementById('profileProgressNavigation');
+						courseString = ' -> <a href="javascript:loadProgressCourse(' + "'" + id + "'" + ')">Курс</a>';
+						navigation.innerHTML = coursesString + courseString;
+						var container = document.getElementById('profileProgressContent');
+						var string = '<div><table>';
+						for (i = 0; i < a.length; i++) {
+							string += '<tr>';
+							string += '<td><p class="profileText"><a href="javascript:loadProgressTheme(' + "'" + a[i].id + "'" + ')">' + a[i].name + '</a></p></td>';
+							string += '<td class="progressColumn"><p class="profileIndexText">' + a[i].progress + '</p></td>';
+							string += '</tr>';
+						}
+						string += '</table></div>';
+						container.innerHTML = string;
+						$('.profileTablePane').jScrollPane();
+					} finally {
+						resume();
+					}
                 },
                 failure: function (response, opts) {
-                    //alert('fail');
+                    resume();
                 },
                 jsonData: {
-                    name: 'TODO: username',
+                    name: getUserForProfile(),
                     courseId: id
                 }
             });
@@ -694,38 +751,46 @@
 
         function loadProgressTheme(id) {
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getThemeProgress";
+			suspend();
             Ext.Ajax.request({
                 url: url,
                 success: function (response, opts) {
-                    var a = eval('(' + response.responseText + ')');
-					var navigation = document.getElementById('profileProgressNavigation');
-					themeString = ' -> <a href="javascript:loadProgressTheme(' + "'" + id + "'" + ')">Тема</a>';
-					navigation.innerHTML = coursesString + courseString + themeString;
-                    var container = document.getElementById('profileProgressContent');
-                    var string = '<div><table>';
-					string += '<tr><td colcount="2"><p style="margin-left: 30px;" class="profileText">Лекции</p></td></tr>';
-                    for (i = 0; i < a.lectures.length; i++) {
-                        string += '<tr>';
-                        string += '<td><p class="profileText">' + a.lectures[i].name + '</p></td>';
-						string += '<td class="progressColumn"><p class="profileIndexText">' + a.lectures[i].progress + '</p></td>';
-                        string += '</tr>';
-                    }
-					string += '<tr><td colcount="2"><p style="margin-left: 30px;" class="profileText">Тесты</p></td></tr>';
-                    for (i = 0; i < a.tests.length; i++) {
-                        string += '<tr>';
-                        string += '<td><p class="profileText"><a href="javascript:loadProgressTest(' + "'" + a.tests[i].id + "'" + ')">' + a.tests[i].name + '</a></p></td>';
-						string += '<td class="progressColumn"><p class="profileIndexText">' + a.tests[i].progress + '</p></td>';
-                        string += '</tr>';
-                    }
-                    string += '</table></div>';
-                    container.innerHTML = string;
-                    $('.profileTablePane').jScrollPane();
+					try {
+						var a = eval('(' + response.responseText + ')');
+						if (a.success == false) {
+							return;
+						}
+						var navigation = document.getElementById('profileProgressNavigation');
+						themeString = ' -> <a href="javascript:loadProgressTheme(' + "'" + id + "'" + ')">Тема</a>';
+						navigation.innerHTML = coursesString + courseString + themeString;
+						var container = document.getElementById('profileProgressContent');
+						var string = '<div><table>';
+						string += '<tr><td colcount="2"><p style="margin-left: 30px;" class="profileText">Лекции</p></td></tr>';
+						for (i = 0; i < a.lectures.length; i++) {
+							string += '<tr>';
+							string += '<td><p class="profileText">' + a.lectures[i].name + '</p></td>';
+							string += '<td class="progressColumn"><p class="profileIndexText">' + a.lectures[i].progress + '</p></td>';
+							string += '</tr>';
+						}
+						string += '<tr><td colcount="2"><p style="margin-left: 30px;" class="profileText">Тесты</p></td></tr>';
+						for (i = 0; i < a.tests.length; i++) {
+							string += '<tr>';
+							string += '<td><p class="profileText"><a href="javascript:loadProgressTest(' + "'" + a.tests[i].id + "'" + ')">' + a.tests[i].name + '</a></p></td>';
+							string += '<td class="progressColumn"><p class="profileIndexText">' + a.tests[i].progress + '</p></td>';
+							string += '</tr>';
+						}
+						string += '</table></div>';
+						container.innerHTML = string;
+						$('.profileTablePane').jScrollPane();
+					} finally {
+						resume();
+					}
                 },
                 failure: function (response, opts) {
-                    //alert('fail');
+                    resume();
                 },
                 jsonData: {
-                    name: 'TODO: username',
+                    name: getUserForProfile(),
                     themeId: id
                 }
             });
@@ -733,30 +798,38 @@
 
         function loadProgressTest(id) {
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getTestProgress";
+			suspend();
             Ext.Ajax.request({
                 url: url,
                 success: function (response, opts) {
-                    var a = eval('(' + response.responseText + ')');
-                    var container = document.getElementById('profileProgressContent');
-					var navigation = document.getElementById('profileProgressNavigation');
-					testString = ' -> <a href="javascript:loadProgressTest(' + "'" + id + "'" + ')">Тест</a>';
-					navigation.innerHTML = coursesString + courseString + themeString + testString;
-                    var string = '<div><table>';
-                    for (i = 0; i < a.length; i++) {
-                        string += '<tr>';
-                        string += '<td><p class="profileText"><a href="javascript:loadProgressTestRun(' + "'" + a[i].id + "'" + ')">' + a[i].date + '</a></p></td>';
-						string += '<td class="progressColumn"><p class="profileIndexText">' + a[i].progress + '</p></td>';
-                        string += '</tr>';
-                    }
-                    string += '</table></div>';
-                    container.innerHTML = string;
-                    $('.profileTablePane').jScrollPane();
+					try {
+						var a = eval('(' + response.responseText + ')');
+						if (a.success == false) {
+							return;
+						}
+						var container = document.getElementById('profileProgressContent');
+						var navigation = document.getElementById('profileProgressNavigation');
+						testString = ' -> <a href="javascript:loadProgressTest(' + "'" + id + "'" + ')">Тест</a>';
+						navigation.innerHTML = coursesString + courseString + themeString + testString;
+						var string = '<div><table>';
+						for (i = 0; i < a.length; i++) {
+							string += '<tr>';
+							string += '<td><p class="profileText"><a href="javascript:loadProgressTestRun(' + "'" + a[i].id + "'" + ')">' + a[i].date + '</a></p></td>';
+							string += '<td class="progressColumn"><p class="profileIndexText">' + a[i].progress + '</p></td>';
+							string += '</tr>';
+						}
+						string += '</table></div>';
+						container.innerHTML = string;
+						$('.profileTablePane').jScrollPane();
+					} finally {
+						resume();
+					}
                 },
                 failure: function (response, opts) {
-                    //alert('fail');
+                    resume();
                 },
                 jsonData: {
-                    name: 'TODO: username',
+                    name: getUserForProfile(),
                     testId: id
                 }
             });
@@ -764,96 +837,103 @@
 
         function loadProgressTestRun(id) {
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getTestRunProgress";
+			suspend();
             Ext.Ajax.request({
                 url: url,
                 success: function (response, opts) {
-                    var a = eval('(' + response.responseText + ')');
-                    var container = document.getElementById('profileProgressContent');
-					var navigation = document.getElementById('profileProgressNavigation');
-					testRunString = ' -> <a href="javascript:loadProgressTestRun(' + "'" + id + "'" + ')">Прохождение</a>';
-					navigation.innerHTML = coursesString + courseString + themeString + testString + testRunString;
-                    var string = '<div><table>';
-                    for (i = 0; i < a.length; i++) {
-                        string += '<tr>';
-						string += '<td><p class="profileText">' + a[i].text.substring(0, 28) + '...</p></td>';
-                        string += '</tr>';
-                    }
-                    string += '</table></div>';
-                    container.innerHTML = string;
-                    $('.profileTablePane').jScrollPane();
+					try {
+						var a = eval('(' + response.responseText + ')');
+						if (a.success == false) {
+							return;
+						}
+						var container = document.getElementById('profileProgressContent');
+						var navigation = document.getElementById('profileProgressNavigation');
+						testRunString = ' -> <a href="javascript:loadProgressTestRun(' + "'" + id + "'" + ')">Прохождение</a>';
+						navigation.innerHTML = coursesString + courseString + themeString + testString + testRunString;
+						var string = '<div><table>';
+						for (i = 0; i < a.length; i++) {
+							string += '<tr>';
+							string += '<td><p class="profileText">' + a[i].text.substring(0, 28) + '...</p></td>';
+							string += '</tr>';
+						}
+						string += '</table></div>';
+						container.innerHTML = string;
+						$('.profileTablePane').jScrollPane();
+					} finally {
+						resume();
+					}
                 },
                 failure: function (response, opts) {
-                    //alert('fail');
+                    resume();
                 },
                 jsonData: {
-                    name: 'TODO: username',
+                    name: getUserForProfile(),
                     testRunId: id
                 }
             });
         }
 
         function parseProfile() {
-            if (!profileLoaded) {
-                var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getProfile";
-                Ext.Ajax.request({
-                    url: url,
-                    success: function (response, opts) {
-                        var a = eval('(' + response.responseText + ')');
-                        document.getElementById('profileName').innerHTML = a.model.Name;
-                        document.getElementById('profileEmail').innerHTML = a.model.Email;
-                        if (a.model.Money <= 9999) {
-                            document.getElementById('profileMoneyValue').innerHTML = a.model.Money;
-                        } else {
-                            document.getElementById('profileMoneyValue').innerHTML = '9999+';
-                        }
-                        document.getElementById('profileProgressValue').innerHTML = a.model.Progress + '%';
-                        document.getElementById('profileRatingValue').innerHTML = a.model.Rating + 1;
-                        var container = document.getElementById('profileAchievementsContent');
-						if (a.model.Achievements.length == a.model.AchievementsCount) {
-							alert('ag');
-							document.getElementById('profileAchievements').style.backgroundImage = 'url(content/sprites/profile/achievements_gold.png)';
+			var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getProfile";
+			suspend();
+			Ext.Ajax.request({
+				url: url,
+				success: function (response, opts) {
+					var a = eval('(' + response.responseText + ')');
+					if (a.success == false) {
+						document.getElementById('profile').style.display = 'block';
+						return;
+					}
+					document.getElementById('profileName').innerHTML = a.model.Name;
+					document.getElementById('profileEmail').innerHTML = a.model.Email;
+					if (a.model.Money <= 9999) {
+						document.getElementById('profileMoneyValue').innerHTML = a.model.Money;
+					} else {
+						document.getElementById('profileMoneyValue').innerHTML = '9999+';
+					}
+					document.getElementById('profileProgressValue').innerHTML = a.model.Progress + '%';
+					document.getElementById('profileRatingValue').innerHTML = a.model.Rating + 1;
+					if (a.model.Achievements.length == a.model.AchievementsCount) {
+						document.getElementById('profileAchievements').className = 'profileAchievements profileAchievementsGold';
+					} else {
+						document.getElementById('profileAchievements').className = 'profileAchievements profileAchievementsBronze';
+					}
+					if (a.model.Progress == 100) {
+						document.getElementById('profileProgress').className = 'profileProgress profileProgress100';
+					} else if (a.model.Progress >= 75) {
+						document.getElementById('profileProgress').className = 'profileProgress profileProgress75';
+					} else if (a.model.Progress >= 50) {
+						document.getElementById('profileProgress').className = 'profileProgress profileProgress50';
+					} else if (a.model.Progress >= 25) {
+						document.getElementById('profileProgress').className = 'profileProgress profileProgress25';
+					} else {
+						document.getElementById('profileProgress').className = 'profileProgress profileProgress0';
+					}
+					if (a.model.Rating < 5) {
+						document.getElementById('profileRating').className = 'profileRating profileRatingGold';
+					} else if (a.model.Rating < 10) {
+						document.getElementById('profileRating').className = 'profileRating profileRatingSilver';
+					} else {
+						document.getElementById('profileRating').className = 'profileRating profileRatingBronze';
+					}
+					for (var prop in a.model.Achievements) {
+						if (a.model.Achievements.hasOwnProperty(prop)) {
+							if (prop <= 16) {
+								document.getElementById("profileAchievement" + prop).children[0].style = "background: url(content/sprites/profile/achievement/" + a.model.Achievements[prop] + ")";
+							} else {
+								document.getElementById("profileAchievement" + prop).children[0].style = "background: url(content/sprites/profile/achievement/" + a.model.Achievements[prop] + ")";
+							}
 						}
-						if (a.model.Progress == 100) {
-							alert('pg');
-							document.getElementById('profileProgress').style.backgroundImage = 'url(content/sprites/profile/progress_gold.png)';
-						} else if (a.model.Progress >= 75) {
-							alert('ps');
-							document.getElementById('profileProgress').style.backgroundImage = 'url(content/sprites/profile/progress_silver.png)';
-						} else if (a.model.Progress >= 50) {
-							alert('pc');
-							document.getElementById('profileProgress').style.backgroundImage = 'url(content/sprites/profile/progress_copper.png)';
-						}
-						if (a.model.Rating < 5) {
-							alert('rg');
-							document.getElementById('profileRating').style.backgroundImage = 'url(content/sprites/profile/rating_gold.png)';
-						} else if (a.model.Rating < 10) {
-							alert('rs');
-							document.getElementById('profileRating').style.backgroundImage = 'url(content/sprites/profile/rating_silver.png)';
-						}
-                        for (var prop in a.model.Achievements) {
-                            if (a.model.Achievements.hasOwnProperty(prop)) {
-                                if (prop < 16) {
-                                    container.children[0].children[prop].children[0].style = "background: url(content/sprites/profile/achievement/" + a.model.Achievements[prop] + ")";
-                                } else {
-                                    container.children[1].children[prop - 16].children[0].style = "background: url(content/sprites/profile/achievement/" + a.model.Achievements[prop] + ")";
-                                }
-                            }
-                        }
-                        profileLoaded = true;
-                        document.getElementById('profile').style.display = 'block';
-                        showGameAchievements();
-                    },
-                    failure: function (response, opts) {
-                        //alert('fail');
-                        document.getElementById('profile').style.display = 'block';
-                    },
-                    jsondata: {
-                        'name': 'name'
-                    }
-                });
-            } else {
-                document.getElementById('profile').style.display = 'block';
-            }
+					}
+					document.getElementById('profile').style.display = 'block';
+				},
+				failure: function (response, opts) {
+					document.getElementById('profile').style.display = 'block';
+				},
+				jsonData: {
+					name: getUserForProfile()
+				}
+			});
         }
 
         function showGameAchievements() {

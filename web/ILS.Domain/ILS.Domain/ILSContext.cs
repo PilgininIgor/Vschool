@@ -1,5 +1,7 @@
-﻿using System.Data.Entity;
+﻿using System.Data.Common;
+using System.Data.Entity;
 using ILS.Domain.TestGenerator;
+using ILS.Domain.TestGenerator.Settings;
 using ILS.Domain.GameAchievements;
 
 namespace ILS.Domain
@@ -44,6 +46,7 @@ namespace ILS.Domain
 
         #region ГЕНЕРАТОР ТЕСТОВ
         public DbSet<TGTest> TGTest { get; set; }
+        public DbSet<TGTaskTemplate> TGTaskTemplate { get; set; }
         public DbSet<TGTestSetting> TGTestSetting { get; set; }
         public DbSet<TGCountOfTaskMode> TGCountOfTaskMode { get; set; }
         public DbSet<TGMixMode> TGMixMode { get; set; }
@@ -57,6 +60,10 @@ namespace ILS.Domain
             : base("u273630")
         {
             Database.SetInitializer<ILSContext>(new CreateDatabaseIfNotExists<ILSContext>());
+        }
+
+        public ILSContext(DbConnection connection) : base(connection, true)
+        {
         }
     }
 }

@@ -8,6 +8,7 @@
 .main_flowchart {background-image:url("icons/flowchart.png") !important}
 .main_linkeditor {background-image:url("icons/main_linkeditor.png") !important}
 .main_aboutadmin {background-image:url("icons/main_aboutadmin.png") !important}
+.main_achievements {background-image:url("icons/main_achievements.png") !important}
 .main_users {background-image:url("icons/users.png") !important}
 .login1 { background-image:url("icons/login1.png") !important}
 .logout1 { background-image:url("icons/logout1.png") !important}
@@ -51,3 +52,8 @@
 /* linkEditor */
 .save { background-image:url("icons/save.png") !important}
 .help { background-image:url("icons/help.png") !important}
+
+/* testgenerator */
+.tgtest { background-image:url("icons/tgtest.png") !important}
+.tgtasktemplate { background-image:url("icons/tgtasktemplate.png") !important}
+.loading_gear { background-image:url("icons/loading_gear.png") !important}

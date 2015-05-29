@@ -278,7 +278,8 @@ var form_question = new Ext.form.Panel({
         }, { //ВЕРХНЯЯ ПРАВАЯ ЧЕТВЕРТЬ - картинка-пояснение
             flex: 1, bodyPadding: 10, layout: 'anchor', height: 210,
             items: [{
-                xtype: 'label', name: 'clarification', html: '<center>'+struct_lang_LBL14+':</center>'
+                xtype: 'label', name: 'clarification', html: '<center>' + struct_lang_LBL14 + ':</center>',
+                cls: 'customlabel',
             }, {
                 name: 'picq_preview', xtype: 'image', src: '',
                 anchor: '100%', height: 150, padding: 5,
@@ -353,7 +354,7 @@ var form_question = new Ext.form.Panel({
                 fieldLabel: struct_lang_LBL17, labelAlign: 'right', labelWidth: 110
             }, {
                 name: 'anscount2', xtype: 'numberfield', anchor: '100%', disabled: true,
-                fieldLabel: struct_lang_LBL19, labelAlign: 'right', labelWidth: 110,
+                fieldLabel: struct_lang_LBL19, labelAlign: 'right', labelWidth: 150,
                 minValue: 2, maxValue: 5, value: 5, editable: false, padding: '5 0 5 0',
                 listeners: { change: { fn: function () { question_anscount2_change(this.value); } } }
             }, {

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PictureLib_RightArrow : MonoBehaviour
 {
-    GameObject Wall;
+    public GameObject Wall;
     void OnMouseDown()
     {
         var scr = Wall.GetComponent<PictureLib>();

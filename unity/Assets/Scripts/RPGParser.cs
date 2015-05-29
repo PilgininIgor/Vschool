@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using System.Collections.Generic;
 using JsonFx.Json;
+using UnityEngine.UI;
 
 public class RPGParser : MonoBehaviour
 {
     private string JSONTestString = "{" +
     "\"ifGuest\":false,\"username\":\"Student1\"," +
-    "\"EXP\":0," +
+    "\"EXP\":150," +
     "\"facultyStands_Seen\":false," + "\"facultyStands_Finish\":false," +
     "\"historyStand_Seen\":false," + "\"historyStand_Finish\":false," +
     "\"scienceStand_Seen\":false," + "\"scienceStand_Finish\":false," +
@@ -19,9 +21,9 @@ public class RPGParser : MonoBehaviour
 "}";
 
     public DataStructures.OverallRPG RPG;
+    public DataStructures.GameAchievement[] Achievements;
 
     public Font helvetica;
-    private bool displayHUD = false;
     private bool SkinSet = false;
     private bool UNwidthCalculated = false;
     private float UNwidth;
@@ -36,110 +38,88 @@ public class RPGParser : MonoBehaviour
     private List<int> achievementPoints = new List<int>();
     private string txt;
     private int pnt;
-    private int count = 0;
     private GameObject Player;
     string LBL = "Очки опыта";
     private string nameOfAvatar;
 
+    private HttpConnector httpConnector;
+
+    public Text coinsText;
+    public Text coinsAddedText;
+
+    public GameObject awardPopup;
+    public RawImage awardImage;
+    public Text awardText;
+    public Texture texture;
+
     // Use this for initialization
     void Start()
     {
+        httpConnector = GetComponent<HttpConnector>();
         RoleSystemSet(JSONTestString);
+        LoadGameAchievements();
+    }
+
+    private void ShowAchievment(string text, Texture image = null)
+    {
+        awardPopup.GetComponent<CanvasGroup>().alpha = 1;
+        awardText.text = text;
+        if (image != null)
+        {
+            awardImage.GetComponent<CanvasGroup>().alpha = 1;
+            awardImage.texture = image;
+        }
+        StartCoroutine(HideAchievment());
+    }
+
+    private IEnumerator HideAchievment()
+    {
+        yield return new WaitForSeconds(5);
+        awardPopup.GetComponent<CanvasGroup>().alpha = 0;
+    }
+
+    private void ShowCoinsAdded(int coins)
+    {
+        coinsAddedText.GetComponent<CanvasGroup>().alpha = 1;
+        coinsAddedText.text = "+" + coins;
+        StartCoroutine(HideCoinsAdded());
+    }
+
+    private IEnumerator HideCoinsAdded()
+    {
+        var canvasGroup = coinsAddedText.GetComponent<CanvasGroup>();
+        while (canvasGroup.alpha >= 0)
+        {
+            canvasGroup.alpha -= 0.2f;
+            yield return null;
+        }
+    }
+
+    private void LoadGameAchievements()
+    {
+        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetGameAchievementsUrl, www =>
+        {
+            Achievements = JsonReader.Deserialize<DataStructures.GameAchievement[]>(www.text);
+        });
     }
 
     private void RoleSystemSet(string json)
     {
         RPG = JsonReader.Deserialize<DataStructures.OverallRPG>(json);
-        displayHUD = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I)) displayHUD = !displayHUD;
-    }
-
-    void OnGui()
-    {
-        if (!SkinSet)
-        {
-            //GUI.skin.box.font = helvetica; GUI.skin.box.fontSize = 12; GUI.skin.box.fontStyle = FontStyle.BoldAndItalic;
-            //GUI.skin.label.font = helvetica; GUI.skin.label.fontStyle = FontStyle.Bold;
-            //GUI.skin.label.fontSize = 12; GUI.skin.label.normal.textColor = Color(0.835, 0.929, 1);
-            //GUI.skin.label.alignment = TextAnchor.MiddleCenter;
-            //SkinSet = true;
-        }
-        if (displayHUD)
-        {
-            if (RPG.ifGuest) GUI.Box(new Rect(10, Screen.height - 50, 200, 40), LBL + ": " + RPG.EXP);
-            else
-            {
-                if (!UNwidthCalculated)
-                {
-                    GUILayout.Box(RPG.username);
-                    UNwidth = GUILayoutUtility.GetLastRect().width;
-                    if (UNwidth > 1) UNwidthCalculated = true;
-                    if (UNwidth < 200) UNwidth = 200;
-                }
-                //GUI.Box(Rect(10, Screen.height - 95, UNwidth, 40), RPG.username);
-                GUI.Box(new Rect(10, Screen.height - 50, UNwidth, 40), LBL + ": " + RPG.EXP);
-            }
-        }
-        if (displayAchievement)
-        {
-            if (displayAchievement_stage == 0)
-            {
-                txt = achievementText[0]; pnt = achievementPoints[0];
-                displayAchievement_stage = 1;
-            }
-            if (displayAchievement_stage == 1)
-            {
-                GUI.skin.label.fontSize++;
-                GUI.Label(new Rect(0, Screen.height / 4 - 25, Screen.width, 200), txt);
-                if (GUI.skin.label.fontSize >= 42) { displayAchievement_stage++; time_to_show = Time.timeSinceLevelLoad; }
-            }
-            else if (displayAchievement_stage == 2)
-            {
-                GUI.Label(new Rect(0, Screen.height / 4 - 25, Screen.width, 200), txt);
-                if (Time.timeSinceLevelLoad - time_to_show > 3) displayAchievement_stage++;
-            }
-            else if (displayAchievement_stage == 3)
-            {
-                pos_x += Screen.width / 50.0;
-                pos_y += Screen.height * 0.75 / 50;
-                GUI.Label(new Rect(0, (float)(Screen.height / 4 - 25 + pos_y), (float)(Screen.width - pos_x), 200), txt);
-                GUI.skin.label.fontSize--;
-                if (GUI.skin.label.fontSize <= 0)
-                {
-                    RPG.EXP += pnt;
-                    Save();
-                    GUI.skin.label.fontSize = 0; pos_x = 0; pos_y = 0;
-                    count--;
-                    if (count == 0) displayAchievement = false;
-                    else
-                    {
-                        displayAchievement_stage = 0;
-                        for (var i = 0; i < count; i++)
-                        {
-                            achievementText[i] = achievementText[i + 1];
-                            achievementPoints[i] = achievementPoints[i + 1];
-                        }
-                    }
-                }
-            }
-        }
+        if (RPG != null)
+            coinsText.text = RPG.EXP.ToString();
     }
 
     public void Achievement(string text, int points)
     {
-        count++;
         achievementText.Add(text);
         achievementPoints.Add(points);
-        if (!displayAchievement)
-        {
-            displayAchievement = true;
-            displayAchievement_stage = 0;
-        }
+        ShowAchievment(text);
     }
 
     public void Save()
@@ -149,8 +129,31 @@ public class RPGParser : MonoBehaviour
             var s = JsonWriter.Serialize(RPG);
             var parameters = new Dictionary<string, string>();
             parameters["s"] = s;
-            var httpConnector = GameObject.Find("Bootstrap").AddComponent<HttpConnector>();
             httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.UnitySaveRpgUrl, parameters, www => { });
+        }
+    }
+
+    public void SaveAchievemnt(string guid)
+    {
+        if (!RPG.ifGuest)
+        {
+            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveGameAchievementUrl, new Dictionary<string, string> { { "achievementId", guid } },
+                www =>
+                {
+                    var achievementRuns = JsonReader.Deserialize<DataStructures.GameAchievementRun[]>(www.text);
+                    foreach (var achievementRun in achievementRuns)
+                    {
+                        if (/*achievementRun.passed && achievementRun.needToShow*/true)
+                        {
+                            ShowAchievment("Достижение \"" + achievementRun.name + "\" получено!");
+                            if (achievementRun.score > 0)
+                            {
+                                ShowCoinsAdded(achievementRun.score);
+                                RPG.EXP += achievementRun.score;
+                            }
+                        }
+                    }
+                });
         }
     }
 }

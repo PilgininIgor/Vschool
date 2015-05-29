@@ -61,8 +61,6 @@ public class MeshCombineUtility {
 		Vector4[] tangents = new Vector4[vertexCount] ;
 		Vector2[] uv = new Vector2[vertexCount];
 		Vector2[] uv1 = new Vector2[vertexCount];
-		Color[] colors = new Color[vertexCount];
-		
 		int[] triangles = new int[triangleCount];
 		int[] strip = new int[stripCount];
 		
@@ -109,13 +107,6 @@ public class MeshCombineUtility {
 		{
 			if (combine.mesh)
 				Copy(combine.mesh.vertexCount, combine.mesh.uv1, uv1, ref offset);
-		}
-		
-		offset=0;
-		foreach( MeshInstance combine in combines )
-		{
-			if (combine.mesh)
-				CopyColors(combine.mesh.vertexCount, combine.mesh.colors, colors, ref offset);
 		}
 		
 		int triangleOffset=0;
@@ -169,10 +160,9 @@ public class MeshCombineUtility {
 		mesh.name = "Combined Mesh";
 		mesh.vertices = vertices;
 		mesh.normals = normals;
-		mesh.colors = colors;
+		mesh.tangents = tangents;
 		mesh.uv = uv;
 		mesh.uv1 = uv1;
-		mesh.tangents = tangents;
 		if (generateStrips)
 			mesh.SetTriangleStrip(strip, 0);
 		else
@@ -202,20 +192,13 @@ public class MeshCombineUtility {
 		offset += vertexcount;
 	}
 
-	static void CopyColors (int vertexcount, Color[] src, Color[] dst, ref int offset)
-	{
-		for (int i=0;i<src.Length;i++)
-			dst[i+offset] = src[i];
-		offset += vertexcount;
-	}
-	
 	static void CopyTangents (int vertexcount, Vector4[] src, Vector4[] dst, ref int offset, Matrix4x4 transform)
 	{
 		for (int i=0;i<src.Length;i++)
 		{
 			Vector4 p4 = src[i];
 			Vector3 p = new Vector3(p4.x, p4.y, p4.z);
-			p = transform.MultiplyVector(p).normalized;
+			p = transform.MultiplyVector(p);
 			dst[i+offset] = new Vector4(p.x, p.y, p.z, p4.w);
 		}
 			

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace ILS.Domain
 {
@@ -11,6 +12,10 @@ namespace ILS.Domain
         public bool IsComposite { get; set; }
 
         public virtual ICollection<TestRun> TestRuns { get; set; }
+
+        public int AttemptsNumber { get; set; }
+
+        //public int TestDifficulty { get; set; }
 
         public Test()
         {

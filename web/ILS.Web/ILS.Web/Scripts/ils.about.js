@@ -32,46 +32,67 @@ var sliderScreensFrames;
 var screenshotsCount;
 var screenListsCount;
 
+var authorsLoaded = false;
+var achievementsLoaded = false;
+var awardsLoaded = false;
+var screensLoaded = false;
+
+function resumeOnContentLoad() {
+	if (authorsLoaded && achievementsLoaded && awardsLoaded && screensLoaded) {
+		resume();
+	}
+}
+
 function initContents() {
+	authorsLoaded = false;
+	achievementsLoaded = false;
+	awardsLoaded = false;
+	screensLoaded = false;
     var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "about/getAuthors";
+	suspend();
+
     Ext.Ajax.request({
         url: url,
         success: function (response, opts) {
-            var a = eval('(' + response.responseText + ')');
-            //alert('success');
-            authorsCount = a.authors.length;
-            document.getElementById("sliderAuthorsContainer").innerHTML = "";
-            document.getElementById('textAuthorsContainer').innerHTML = "";
-            document.getElementById('authorsPointContainer').innerHTML = "";
+			try {
+				var a = eval('(' + response.responseText + ')');
+				//alert('success');
+				authorsCount = a.authors.length;
+				document.getElementById("sliderAuthorsContainer").innerHTML = "";
+				document.getElementById('textAuthorsContainer').innerHTML = "";
+				document.getElementById('authorsPointContainer').innerHTML = "";
 
-            for (i = 0; i < authorsCount; i++) {
-                document.getElementById("sliderAuthorsContainer").innerHTML += '<img src="/Content/Sprites/authors/' + a.authors[i].Image + '">';
-                document.getElementById('authorsPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderAuthorsFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAuthorsGoto(' + i + ')"></div>';
-                document.getElementById('textAuthorsContainer').innerHTML += '<div class="text-pane"><p align="center" class="author_name">' + a.authors[i].Name + '</p><div class="scroll-pane"><p align="justify" class="author_description">' + a.authors[i].Description + '</p></div></div>';
-            }
-            sliderAuthorsFrames = document.getElementById("sliderAuthorsContainer").children;
-            textAuthorsFrames = document.getElementById('textAuthorsContainer').children;
-            pointAuthorsFrames = document.getElementById('authorsPointContainer').children;
-            document.getElementById('authorsArrowsContainer').style.marginLeft = 20 + (-(62 + pointAuthorsFrames.length * 31) / 2) + "px";
-            document.getElementById("authorsNumber").style.marginLeft = ((44 + pointAuthorsFrames.length * 22) + 20) + "px";
+				for (i = 0; i < authorsCount; i++) {
+					document.getElementById("sliderAuthorsContainer").innerHTML += '<img src="/Content/Sprites/authors/' + a.authors[i].Image + '">';
+					document.getElementById('authorsPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderAuthorsFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAuthorsGoto(' + i + ')"></div>';
+					document.getElementById('textAuthorsContainer').innerHTML += '<div class="text-pane"><p align="center" class="author_name">' + a.authors[i].Name + '</p><div class="scroll-pane"><p align="justify" class="author_description">' + a.authors[i].Description + '</p></div></div>';
+				}
+				sliderAuthorsFrames = document.getElementById("sliderAuthorsContainer").children;
+				textAuthorsFrames = document.getElementById('textAuthorsContainer').children;
+				pointAuthorsFrames = document.getElementById('authorsPointContainer').children;
+				document.getElementById('authorsArrowsContainer').style.marginLeft = 20 + (-(62 + pointAuthorsFrames.length * 31) / 2) + "px";
+				document.getElementById("authorsNumber").style.marginLeft = ((44 + pointAuthorsFrames.length * 22) + 20) + "px";
 
-            $('.scroll-pane').jScrollPane();
+				$('.scroll-pane').jScrollPane();
 
-            for (i = 0; i < authorsCount; i++) {
-                if (i == sliderAuthorsFrame) {
-                    textAuthorsFrames[i].style.display = "block";
-                    sliderAuthorsFrames[i].style.display = "block";
-                } else {
-                    textAuthorsFrames[i].style.display = "none";
-                    sliderAuthorsFrames[i].style.display = "none";
-                }
-            }
-            document.getElementById("authorsNumber").innerHTML = sliderAuthorsFrame + 1 + "/" + authorsCount;
-
-
+				for (i = 0; i < authorsCount; i++) {
+					if (i == sliderAuthorsFrame) {
+						textAuthorsFrames[i].style.display = "block";
+						sliderAuthorsFrames[i].style.display = "block";
+					} else {
+						textAuthorsFrames[i].style.display = "none";
+						sliderAuthorsFrames[i].style.display = "none";
+					}
+				}
+				document.getElementById("authorsNumber").innerHTML = sliderAuthorsFrame + 1 + "/" + authorsCount;
+			} finally {
+				authorsLoaded = true;
+				resumeOnContentLoad();
+			}
         },
         failure: function (response, opts) {
-            //alert('fail');
+			authorsLoaded = true;
+            resumeOnContentLoad();
         }
     });
 
@@ -79,62 +100,68 @@ function initContents() {
     Ext.Ajax.request({
         url: url,
         success: function (response, opts) {
-            var a = eval('(' + response.responseText + ')');
-            //alert('success');
-            awardsCount = a.awards.length;
-            document.getElementById("sliderAwardsContainer").innerHTML = "";
-            document.getElementById('textAwardsContainer').innerHTML = "";
-            document.getElementById('awardsPointContainer').innerHTML = "";
-            sliderAwardsFrame = 0;
-            for (i = 0; i < awardsCount; i++) {
-                var imgs = a.awards[i].Image.split(";");
-                var imgString = '<div style="display:' + (i == 0 ? 'block' : 'none') + '">';
-                for (j = 0; j < imgs.length; j++) {
-                    if (imgs[j] == "")
-                        continue;
-                    imgString += '<img style="position:absolute;display:' + (j == 0 ? 'block' : 'none') + '" src="/Content/Sprites/awards/' + imgs[j].replace(new RegExp(escapeRegExp('.png'), 'g'), '.jpg') + '"';
-                    imgString += 'onclick="javascript:enlargeImage(';
-                    imgString += "'";
-                    //imgString += [imgs[j].slice(0,imgs[j].lastIndexOf('/')), '/full', imgs[j].slice(imgs[j].lastIndexOf('/'))].join('');
-                    imgString += ['/Content/Sprites/awards/full/', imgs[j]].join('');
-                    imgString += "')";
-                    imgString += '">';
-                }
-                imgString += '</div>';
-                document.getElementById("sliderAwardsContainer").innerHTML += imgString;
-                document.getElementById('awardsPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderAwardsFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAwardsGoto(' + i + ')"></div>';
-                document.getElementById('textAwardsContainer').innerHTML += '<div class="text-pane"><p align="center" class="author_name">' + a.awards[i].Name + '</p><div class="scroll-pane"><p align="justify" class="author_description">' + a.awards[i].Description + '</p></div></div>';
-            }
-            sliderAwardsFrames = document.getElementById("sliderAwardsContainer").children;
-            textAwardsFrames = document.getElementById('textAwardsContainer').children;
-            pointAwardsFrames = document.getElementById('awardsPointContainer').children;
-            document.getElementById('awardsArrowsContainer').style.marginLeft = 20 + (-(62 + pointAwardsFrames.length * 31) / 2) + "px";
-            document.getElementById("awardsNumber").style.marginLeft = ((44 + pointAwardsFrames.length * 22) + 20) + "px";
+			try {
+				var a = eval('(' + response.responseText + ')');
+				//alert('success');
+				awardsCount = a.awards.length;
+				document.getElementById("sliderAwardsContainer").innerHTML = "";
+				document.getElementById('textAwardsContainer').innerHTML = "";
+				document.getElementById('awardsPointContainer').innerHTML = "";
+				sliderAwardsFrame = 0;
+				for (i = 0; i < awardsCount; i++) {
+					var imgs = a.awards[i].Image.split(";");
+					var imgString = '<div style="display:' + (i == 0 ? 'block' : 'none') + '">';
+					for (j = 0; j < imgs.length; j++) {
+						if (imgs[j] == "")
+							continue;
+						imgString += '<img style="position:absolute;display:' + (j == 0 ? 'block' : 'none') + '" src="/Content/Sprites/awards/' + imgs[j].replace(new RegExp(escapeRegExp('.png'), 'g'), '.jpg') + '"';
+						imgString += 'onclick="javascript:enlargeImage(';
+						imgString += "'";
+						//imgString += [imgs[j].slice(0,imgs[j].lastIndexOf('/')), '/full', imgs[j].slice(imgs[j].lastIndexOf('/'))].join('');
+						imgString += ['/Content/Sprites/awards/full/', imgs[j]].join('');
+						imgString += "')";
+						imgString += '">';
+					}
+					imgString += '</div>';
+					document.getElementById("sliderAwardsContainer").innerHTML += imgString;
+					document.getElementById('awardsPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderAwardsFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAwardsGoto(' + i + ')"></div>';
+					document.getElementById('textAwardsContainer').innerHTML += '<div class="text-pane"><p align="center" class="author_name">' + a.awards[i].Name + '</p><div class="scroll-pane"><p align="justify" class="author_description">' + a.awards[i].Description + '</p></div></div>';
+				}
+				sliderAwardsFrames = document.getElementById("sliderAwardsContainer").children;
+				textAwardsFrames = document.getElementById('textAwardsContainer').children;
+				pointAwardsFrames = document.getElementById('awardsPointContainer').children;
+				document.getElementById('awardsArrowsContainer').style.marginLeft = 20 + (-(62 + pointAwardsFrames.length * 31) / 2) + "px";
+				document.getElementById("awardsNumber").style.marginLeft = ((44 + pointAwardsFrames.length * 22) + 20) + "px";
 
 
 
-            if (sliderAwardsFrames.length > 0) {
-                imgAwardsFrames = sliderAwardsFrames[sliderAwardsFrame].children;
-                imgAwardsFrame = 0;
-                for (i = 0; i < awardsCount; i++) {
-                    if (i == sliderAwardsFrame) {
-                        textAwardsFrames[i].style.display = "block";
-                        sliderAwardsFrames[i].style.display = "block";
-                    } else {
-                        textAwardsFrames[i].style.display = "none";
-                        sliderAwardsFrames[i].style.display = "none";
-                    }
-                }
+				if (sliderAwardsFrames.length > 0) {
+					imgAwardsFrames = sliderAwardsFrames[sliderAwardsFrame].children;
+					imgAwardsFrame = 0;
+					for (i = 0; i < awardsCount; i++) {
+						if (i == sliderAwardsFrame) {
+							textAwardsFrames[i].style.display = "block";
+							sliderAwardsFrames[i].style.display = "block";
+						} else {
+							textAwardsFrames[i].style.display = "none";
+							sliderAwardsFrames[i].style.display = "none";
+						}
+					}
 
-                document.getElementById("awardsNumber").innerHTML = sliderAwardsFrame + 1 + "/" + awardsCount;
-            } else {
-                imgAwardsFrames = {};
-                imgAwardsFrame = 0;
-                document.getElementById("awardsNumber").innerHTML = sliderAwardsFrame + 0 + "/" + awardsCount;
-            }
+					document.getElementById("awardsNumber").innerHTML = sliderAwardsFrame + 1 + "/" + awardsCount;
+				} else {
+					imgAwardsFrames = {};
+					imgAwardsFrame = 0;
+					document.getElementById("awardsNumber").innerHTML = sliderAwardsFrame + 0 + "/" + awardsCount;
+				}
+			} finally {
+				awardsLoaded = true;
+				resumeOnContentLoad();
+			}
         },
         failure: function (response, opts) {
-            //alert('fail');
+			awardsLoaded = true;
+            resumeOnContentLoad();
         }
     });
 
@@ -142,64 +169,69 @@ function initContents() {
     Ext.Ajax.request({
         url: url,
         success: function (response, opts) {
-            var a = eval('(' + response.responseText + ')');
-            //alert('success');
-            achievementsCount = a.achievements.length;
-            document.getElementById("sliderAchievementsContainer").innerHTML = "";
-            document.getElementById('textAchievementsContainer').innerHTML = "";
-            document.getElementById('achievementsPointContainer').innerHTML = "";
-            sliderAchievementsFrame = 0;
-            for (i = 0; i < achievementsCount; i++) {
-                var imgs = a.achievements[i].Image.split(";");
-                var imgString = '<div style="display:' + (i == 0 ? 'block' : 'none') + '">';
-                for (j = 0; j < imgs.length; j++) {
-                    if (imgs[j] == "")
-                        continue;
-                    imgString += '<img style="position:absolute;display:' + (j == 0 ? 'block' : 'none') + '" src="/Content/Sprites/achievements/' + imgs[j].replace(new RegExp(escapeRegExp('.png'), 'g'), '.jpg') + '"';
-                    imgString += 'onclick="javascript:enlargeImage(';
-                    imgString += "'";
-                    //imgString += [imgs[j].slice(0,imgs[j].lastIndexOf('/')), '/full', imgs[j].slice(imgs[j].lastIndexOf('/'))].join('');
-                    imgString += ['/Content/Sprites/achievements/full/', imgs[j]].join('');
-                    imgString += "')";
-                    imgString += '">';
-                }
-                imgString += '</div>';
-                document.getElementById("sliderAchievementsContainer").innerHTML += imgString;
-                document.getElementById('achievementsPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderAchievementsFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAchievementsGoto(' + i + ')"></div>';
-                document.getElementById('textAchievementsContainer').innerHTML += '<div class="text-pane"><p align="center" class="author_name">' + a.achievements[i].Name + '</p><div class="scroll-pane"><p align="justify" class="author_description">' + a.achievements[i].Description + '</p></div></div>';
-            }
-            sliderAchievementsFrames = document.getElementById("sliderAchievementsContainer").children;
-            textAchievementsFrames = document.getElementById('textAchievementsContainer').children;
-            pointAchievementsFrames = document.getElementById('achievementsPointContainer').children;
-            document.getElementById('achievementsArrowsContainer').style.marginLeft = 20 + (-(62 + pointAchievementsFrames.length * 31) / 2) + "px";
-            document.getElementById("achievementsNumber").style.marginLeft = ((44 + pointAchievementsFrames.length * 22) + 20) + "px";
+			try {
+				var a = eval('(' + response.responseText + ')');
+				//alert('success');
+				achievementsCount = a.achievements.length;
+				document.getElementById("sliderAchievementsContainer").innerHTML = "";
+				document.getElementById('textAchievementsContainer').innerHTML = "";
+				document.getElementById('achievementsPointContainer').innerHTML = "";
+				sliderAchievementsFrame = 0;
+				for (i = 0; i < achievementsCount; i++) {
+					var imgs = a.achievements[i].Image.split(";");
+					var imgString = '<div style="display:' + (i == 0 ? 'block' : 'none') + '">';
+					for (j = 0; j < imgs.length; j++) {
+						if (imgs[j] == "")
+							continue;
+						imgString += '<img style="position:absolute;display:' + (j == 0 ? 'block' : 'none') + '" src="/Content/Sprites/achievements/' + imgs[j].replace(new RegExp(escapeRegExp('.png'), 'g'), '.jpg') + '"';
+						imgString += 'onclick="javascript:enlargeImage(';
+						imgString += "'";
+						//imgString += [imgs[j].slice(0,imgs[j].lastIndexOf('/')), '/full', imgs[j].slice(imgs[j].lastIndexOf('/'))].join('');
+						imgString += ['/Content/Sprites/achievements/full/', imgs[j]].join('');
+						imgString += "')";
+						imgString += '">';
+					}
+					imgString += '</div>';
+					document.getElementById("sliderAchievementsContainer").innerHTML += imgString;
+					document.getElementById('achievementsPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderAchievementsFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAchievementsGoto(' + i + ')"></div>';
+					document.getElementById('textAchievementsContainer').innerHTML += '<div class="text-pane"><p align="center" class="author_name">' + a.achievements[i].Name + '</p><div class="scroll-pane"><p align="justify" class="author_description">' + a.achievements[i].Description + '</p></div></div>';
+				}
+				sliderAchievementsFrames = document.getElementById("sliderAchievementsContainer").children;
+				textAchievementsFrames = document.getElementById('textAchievementsContainer').children;
+				pointAchievementsFrames = document.getElementById('achievementsPointContainer').children;
+				document.getElementById('achievementsArrowsContainer').style.marginLeft = 20 + (-(62 + pointAchievementsFrames.length * 31) / 2) + "px";
+				document.getElementById("achievementsNumber").style.marginLeft = ((44 + pointAchievementsFrames.length * 22) + 20) + "px";
 
 
 
 
-            if (sliderAchievementsFrames.length > 0) {
-                imgAchievementsFrames = sliderAchievementsFrames[sliderAchievementsFrame].children;
-                imgAchievementsFrame = 0;
-                for (i = 0; i < achievementsCount; i++) {
-                    if (i == sliderAchievementsFrame) {
-                        textAchievementsFrames[i].style.display = "block";
-                        sliderAchievementsFrames[i].style.display = "block";
-                    } else {
-                        textAchievementsFrames[i].style.display = "none";
-                        sliderAchievementsFrames[i].style.display = "none";
-                    }
-                }
+				if (sliderAchievementsFrames.length > 0) {
+					imgAchievementsFrames = sliderAchievementsFrames[sliderAchievementsFrame].children;
+					imgAchievementsFrame = 0;
+					for (i = 0; i < achievementsCount; i++) {
+						if (i == sliderAchievementsFrame) {
+							textAchievementsFrames[i].style.display = "block";
+							sliderAchievementsFrames[i].style.display = "block";
+						} else {
+							textAchievementsFrames[i].style.display = "none";
+							sliderAchievementsFrames[i].style.display = "none";
+						}
+					}
 
-                document.getElementById("achievementsNumber").innerHTML = sliderAchievementsFrame + 1 + "/" + achievementsCount;
-            } else {
-                imgAchievementsFrames = {};
-                imgAchievementsFrame = 0;
-                document.getElementById("achievementsNumber").innerHTML = sliderAchievementsFrame + 0 + "/" + achievementsCount;
-            }
-
+					document.getElementById("achievementsNumber").innerHTML = sliderAchievementsFrame + 1 + "/" + achievementsCount;
+				} else {
+					imgAchievementsFrames = {};
+					imgAchievementsFrame = 0;
+					document.getElementById("achievementsNumber").innerHTML = sliderAchievementsFrame + 0 + "/" + achievementsCount;
+				}
+			} finally {
+				achievementsLoaded = true;
+				resumeOnContentLoad();
+			}
         },
         failure: function (response, opts) {
-            //alert('fail');
+			achievementsLoaded = true;
+            resumeOnContentLoad();
         }
     });
 
@@ -207,69 +239,75 @@ function initContents() {
     Ext.Ajax.request({
         url: url,
         success: function (response, opts) {
-            var a = eval('(' + response.responseText + ')');
-            //alert('success');
-            screenshotsCount = a.screenshots.length;
-            document.getElementById("screenshots").innerHTML = "";
-            document.getElementById('sliderScreensContainer').innerHTML = "";
-            document.getElementById('screensPointContainer').innerHTML = "";
-            sliderScreensFrame = 0;
-            var display = true;
-            var containerString = '';
-            var screenshotsString = '';
-            for (i = 0; i < screenshotsCount; i++) {
+			try {
+				var a = eval('(' + response.responseText + ')');
+				//alert('success');
+				screenshotsCount = a.screenshots.length;
+				document.getElementById("screenshots").innerHTML = "";
+				document.getElementById('sliderScreensContainer').innerHTML = "";
+				document.getElementById('screensPointContainer').innerHTML = "";
+				sliderScreensFrame = 0;
+				var display = true;
+				var containerString = '';
+				var screenshotsString = '';
+				for (i = 0; i < screenshotsCount; i++) {
 
-                switch (i % 6) {
-                    case 0:
-                        containerString += display ? '<div>' : '<div style="display:none">';
-                        containerString += '<img class="screen_lt" ';
-                        break;
-                    case 1:
-                        containerString += '<img class="screen_mt" ';
-                        break;
-                    case 2:
-                        containerString += '<img class="screen_rt" ';
-                        break;
-                    case 3:
-                        containerString += '<img class="screen_lb" ';
-                        break;
-                    case 4:
-                        containerString += '<img class="screen_mb" ';
-                        break;
-                    case 5:
-                        containerString += '<img class="screen_rb" ';
-                        display = false;
-                        break;
-                }
-                containerString += 'src="' + a.screenshots[i] + '" ';
-                containerString += 'onclick="javascript:showScreen(';
-                containerString += "'" + (i + 1) + "'";
-                containerString += ')"';
-                containerString += 'style="cursor: pointer;">';
-                if (i % 6 == 5)
-                    containerString += '</div>';
+					switch (i % 6) {
+						case 0:
+							containerString += display ? '<div>' : '<div style="display:none">';
+							containerString += '<img class="screen_lt" ';
+							break;
+						case 1:
+							containerString += '<img class="screen_mt" ';
+							break;
+						case 2:
+							containerString += '<img class="screen_rt" ';
+							break;
+						case 3:
+							containerString += '<img class="screen_lb" ';
+							break;
+						case 4:
+							containerString += '<img class="screen_mb" ';
+							break;
+						case 5:
+							containerString += '<img class="screen_rb" ';
+							display = false;
+							break;
+					}
+					containerString += 'src="' + a.screenshots[i] + '" ';
+					containerString += 'onclick="javascript:showScreen(';
+					containerString += "'" + (i + 1) + "'";
+					containerString += ')"';
+					containerString += 'style="cursor: pointer;">';
+					if (i % 6 == 5)
+						containerString += '</div>';
 
 
-                screenshotsString += '<div style="position:absolute;top:10px;left:50%;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen(';
-                screenshotsString += "'";
-                screenshotsString += (i + 1);
-                screenshotsString += "')";
-                screenshotsString += '">';
-                screenshotsString += '<img align="middle" src="';
-                screenshotsString += [a.screenshots[i].slice(0, a.screenshots[i].lastIndexOf('/')), '/full', a.screenshots[i].slice(a.screenshots[i].lastIndexOf('/'))].join('');
-                screenshotsString += '" style="max-width: 809px; max-height:400px; left:50%">';
-                screenshotsString += '</div>';
+					screenshotsString += '<div style="position:absolute;top:10px;left:50%;display:none;width:809px;height:400px;margin-left:-404px;cursor:pointer;" onclick="javascript:hideScreen(';
+					screenshotsString += "'";
+					screenshotsString += (i + 1);
+					screenshotsString += "')";
+					screenshotsString += '">';
+					screenshotsString += '<img align="middle" src="';
+					screenshotsString += [a.screenshots[i].slice(0, a.screenshots[i].lastIndexOf('/')), '/full', a.screenshots[i].slice(a.screenshots[i].lastIndexOf('/'))].join('');
+					screenshotsString += '" style="max-width: 809px; max-height:400px; left:50%">';
+					screenshotsString += '</div>';
 
-                document.getElementById('screensPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderScreensFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAchievementsGoto(' + i + ')"></div>';
-            }
-            screenshotsString += '<div class="screens_left" onclick="javascript:screensDecr()" style="cursor:ponter;"></div><div class="screens_right" onclick="javascript:screensIncr()" style="cursor:ponter;"></div>';
-            containerString = containerString.replace(new RegExp(escapeRegExp('.png'), 'g'), '.jpg');
-            screenListsCount = Math.ceil(a.screenshots.length / 6);
-            document.getElementById('sliderScreensContainer').innerHTML = containerString;
-            document.getElementById("screenshots").innerHTML = screenshotsString;
+					document.getElementById('screensPointContainer').innerHTML += '<div class="arrow" style="background: url(content/sprites/point_' + (i == sliderScreensFrame ? '' : 'i') + 'a.png) no-repeat;" onclick="javascript:sliderAchievementsGoto(' + i + ')"></div>';
+				}
+				screenshotsString += '<div class="screens_left" onclick="javascript:screensDecr()" style="cursor:ponter;"></div><div class="screens_right" onclick="javascript:screensIncr()" style="cursor:ponter;"></div>';
+				containerString = containerString.replace(new RegExp(escapeRegExp('.png'), 'g'), '.jpg');
+				screenListsCount = Math.ceil(a.screenshots.length / 6);
+				document.getElementById('sliderScreensContainer').innerHTML = containerString;
+				document.getElementById("screenshots").innerHTML = screenshotsString;
+			} finally {
+				screensLoaded = true;
+				resumeOnContentLoad();
+			}
         },
         failure: function (response, opts) {
-            //alert('fail');
+			screensLoaded = true;
+            resumeOnContentLoad();
         }
     });
 }

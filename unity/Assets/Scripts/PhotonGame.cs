@@ -23,6 +23,10 @@ public class PhotonGame : Photon.MonoBehaviour
 
     public Transform SpawnPlace;
 
+    public Texture gear;
+
+    public Transform HubLoadingScreen;
+
     public string nameOfAvatar;
 
     public void Awake()
@@ -45,6 +49,8 @@ public class PhotonGame : Photon.MonoBehaviour
             case "Carl": playerPrefab = Carl; break;
             case "Golem": playerPrefab = Golem; break;
         }
+	
+
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
         if (!PhotonNetwork.connected)
@@ -59,11 +65,18 @@ public class PhotonGame : Photon.MonoBehaviour
         Camera.main.GetComponent<OrbitCam>().player = instantiatedPlayer;
 
 		Camera.main.GetComponent<CNCameraFollow>().targetObject = instantiatedPlayer.transform;
+
+    }
+
+    public void onStart()
+    {
+        string id = PlayerPrefs.GetString(PhotonMenu.CourseID);
+        HubLoadingScreen.GetComponent<CourseSelection>().LoadCourseData(id);
     }
 
     public void OnGUI()
     {
-        if (GUILayout.Button(Strings.Get("Return to Lobby")))
+        if (GUI.Button(new Rect(DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), gear))
         {
             PhotonNetwork.LeaveRoom();  // we will load the menu level when we successfully left the room
         }

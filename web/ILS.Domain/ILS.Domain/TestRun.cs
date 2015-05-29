@@ -9,6 +9,7 @@
         public int Result { get; set; }
         [ForeignKey("ThemeRun")] public Guid ThemeRun_Id { get; set; }
         [ForeignKey("Test")] public Guid? Test_Id { get; set; }
+        public DateTime TestDateTime { get; set; }
 
         public ThemeRun ThemeRun { get; set; }
         public Test Test { get; set; }

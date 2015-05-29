@@ -1,6 +1,7 @@
 ﻿namespace ILS.Domain
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class User : EntityBase
     {
@@ -13,6 +14,9 @@
 
         public int Coins { get; set; }
         public int Rating { get; set; }
+
+        public string Token { get; set; }
+        public double CurrentTokenMilliseconds { get; set; }
 
         public bool FacultyStands_Seen { get; set; }
         public bool FacultyStands_Finish { get; set; }

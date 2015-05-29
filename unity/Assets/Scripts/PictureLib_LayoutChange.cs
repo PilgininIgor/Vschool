@@ -2,7 +2,7 @@
 
 public class PictureLib_LayoutChange : MonoBehaviour
 {
-    GameObject Wall;
+    public GameObject Wall;
     void OnMouseDown()
     {
         var s = Wall.GetComponent<PictureLib>();

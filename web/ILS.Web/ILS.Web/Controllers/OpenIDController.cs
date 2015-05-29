@@ -14,8 +14,6 @@ namespace ILS.Web.Controllers
 {
     public class OpenIDController : Controller
     {
-        
-
 		ILSContext context;
 		public OpenIDController(ILSContext context)
 		{
@@ -46,22 +44,25 @@ namespace ILS.Web.Controllers
         public ActionResult Index(List<OpenIDModel> data)
         {
             String login = data[0].Login;
-            if (data[0].Login == null || data[0].Login == "")
+            if (string.IsNullOrEmpty(data[0].Login))
             {
                 return Json(new { success = false });
             }
             int count = context.User.Count(x => x.Name == login);
+            var milliSeconds = (DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds;
             if (count > 0)
             {
-                User selectedUser = Enumerable.Single<User>(context.User, x => x.Name == login);
+                User selectedUser = Enumerable.Single(context.User, x => x.Name == login);
                 if (selectedUser.PasswordHash == null  && CalculateSHA1("Something"+data[0].Key) == data[0].Hash)
                 {
                     selectedUser.Email = data[0].Email;
-                    //selectedUser.FirstName = data[0].FirstName;
-                    //selectedUser.LastName = data[0].LastName;
                     context.SaveChanges();
-                    FormsService.SignIn(login, false);
-                    bool isAdmin = selectedUser.Roles.Count<Role>(x => x.Name == "Admin" || x.Name == "Teacher") > 0 ? true : false;
+                    if (FormsService != null)
+                        FormsService.SignIn(login, false);
+                    bool isAdmin = selectedUser.Roles.Count(x => x.Name == "Admin" || x.Name == "Teacher") > 0;
+                    var token = CalculateSHA1("AZAZAZ" + selectedUser.Name + milliSeconds);
+                    selectedUser.Token = token;
+                    selectedUser.CurrentTokenMilliseconds = milliSeconds;
                     return Json(new 
                         { 
                             success = true, 
@@ -76,16 +77,19 @@ namespace ILS.Web.Controllers
             }
             if (CalculateSHA1("Something" + data[0].Key) == data[0].Hash)
             {
-                context.User.Add(new User()
+                var token = CalculateSHA1("AZAZAZ" + data[0].Login + milliSeconds);
+                context.User.Add(new User
                 {
                     Name = data[0].Login,
                     FirstName = data[0].FirstName,
                     LastName = data[0].LastName,
                     Email = data[0].Email,
-                    Roles = new List<Role> { context.Role.Add(new Role() { Name = "Student" }) }
-                    //Roles = new List<Role> { Enumerable.Single<Role>(context.Role, x => x.Name == "Student") }
+                    Roles = new List<Role> { context.Role.Add(new Role() { Name = "Student" }) },
+                    Token = token,
+                    CurrentTokenMilliseconds = milliSeconds
                 });
-                FormsService.SignIn(login, false);
+                if (FormsService != null)
+                    FormsService.SignIn(login, false);
                 context.SaveChanges();
                 return Json(new
                 {
@@ -97,30 +101,6 @@ namespace ILS.Web.Controllers
             }
             return Json(new { success = false });
         }
-
-        /*
-        [HttpPost]
-        public JsonResult AcceptPassword(string key, string login, string password)
-        {
-            if (key != "Jeronimo" || login == null || login == "" || password == null)
-            {
-                return Json(new { success = false });
-            }
-            int count = context.User.Count(x => x.Name == login);
-            if (count > 0)
-            {
-                User selectedUser = Enumerable.Single<User>(context.User, x => x.Name == login);
-                if (selectedUser.PasswordHash == null) 
-                {
-                    selectedUser.OpenIDPassword = password;
-                    context.SaveChanges();
-                    return Json(new { success = true });
-                }
-                return Json(new { success = false });
-            }
-            return Json(new { success = false });
-        }
-        */
 
         static string CalculateSHA1(string text)
         {

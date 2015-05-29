@@ -13,7 +13,6 @@ var vpConfig = {
     items: [{
         id: 'topToolbarPanel',
         border: false,
-        //height: '100%',
         region: 'north',
         xtype: 'panel', //вообще xtype = 'panel' по умолчанию, но для прозрачности решил написать
         cls: 'my-toolbar-panel',
@@ -38,6 +37,7 @@ var vpConfig = {
         }],
         items: [{
             xtype: 'panel',
+            padding: '2 0 0 0',
             border: false,
             style: 'background-color: transparent;',
             items: [/*{
@@ -115,8 +115,19 @@ var vpConfig = {
                 iconCls: 'main_testgenerator',
                 width: 150,
                 paddingBottom: 8,
-                handler: function () {
+                handler: function() {
                     window.location.href = link_testgenerator;
+                }
+            }, {
+                xtype: 'button',
+                scale: 'large',
+                id: 'btn_gameachievements',
+                iconAlign: 'top',
+                iconCls: 'main_achievements',
+                width: 150,
+                paddingBottom: 9,
+                handler: function () {
+                    window.location.href = link_gameachievements;
                 }
             }]
         }]
@@ -156,13 +167,16 @@ Ext.onReady(function () {
             Ext.getCmp('btn3').getEl().hide();
             //Ext.getCmp('btn4').getEl().hide();
             Ext.getCmp('btn6').getEl().hide();
+            Ext.getCmp('btn_gameachievements').getEl().hide();
         }
         if (ifAdmin.toLowerCase() == 'true') {
             Ext.getCmp('btn5').setText('Пользователи');
             Ext.getCmp('btn7').setText('О проекте');
+            Ext.getCmp('btn_gameachievements').setText('Достижения');
         } else {
             Ext.getCmp('btn5').getEl().hide();
             Ext.getCmp('btn7').getEl().hide();
+            Ext.getCmp('btn_gameachievements').getEl().hide();
         }
         Ext.getCmp('regButton').setText('Регистрация');
 
@@ -180,13 +194,16 @@ Ext.onReady(function () {
             Ext.getCmp('btn3').getEl().hide();
             //Ext.getCmp('btn4').getEl().hide();
             Ext.getCmp('btn6').getEl().hide();
+            Ext.getCmp('btn_gameachievements').getEl().hide();
         }
         if (ifAdmin.toLowerCase() == 'true') {
             Ext.getCmp('btn5').setText('Users');
             Ext.getCmp('btn7').setText('About');
+            Ext.getCmp('btn_gameachievements').setText('Achievements');
         } else {
             Ext.getCmp('btn5').getEl().hide();
             Ext.getCmp('btn7').getEl().hide();
+            Ext.getCmp('btn_gameachievements').getEl().hide();
         }
         Ext.getCmp('regButton').setText('Register');
         //Ext.getCmp('profileButton').setText('Profile');

@@ -2,7 +2,7 @@
 
 public class FinishTest : MonoBehaviour
 {
-    GameObject BoardStatic, BoardToMove, Cube1, Cube2, Cube3, Cube4, Cube5;
+    public GameObject BoardStatic, BoardToMove, Cube1, Cube2, Cube3, Cube4, Cube5;
     private Board board;
     void OnMouseDown()
     {

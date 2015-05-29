@@ -26,8 +26,8 @@ public class TextLib : MonoBehaviour
 {
 
     //три ссылки, куда нужно затащить соответствующие ассеты через инспектор
-    Font TextFont; //шрифт
-    Material TextMaterial_Main, //материал основного текста
+    public Font TextFont; //шрифт
+    public Material TextMaterial_Main, //материал основного текста
      TextMaterial_Other; //материал заголовка, числа страниц и нижних кнопок
 
     //переменные, вынесенные за пределы функций, поскольку все (ну, почти все, остальное для

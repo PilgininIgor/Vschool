@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class DataStructures : MonoBehaviour
 {
+    public const float buttonSize = 50;
+    public const float buttonSpace = 10;
     public class Answer
     {
         public string text;
@@ -38,12 +40,29 @@ public class DataStructures : MonoBehaviour
         public string type;
         public List<Question> questions;
         public List<Paragraph> paragraphs;
+        public List<ThemeContentLink> outputThemeContentLinks;
+    }
+
+    public class ThemeContentLink 
+    {
+	    public string parentThemeContentId;
+	    public string linkedThemeContentId;
+	    public string status;
     }
 
     public class Theme
     {
+        public string id;
         public string name;
         public List<ThemeContent> contents;
+        public List<ThemeLink> outputThemeLinks;
+    }
+
+    public class ThemeLink
+    {
+        public string parentThemeId;
+        public string linkedThemeId;
+        public string status;
     }
 
     public class Course
@@ -102,6 +121,21 @@ public class DataStructures : MonoBehaviour
     }
 
     //--------------
+
+    public class GameAchievement
+    {
+        public string id;
+        public string name;
+    }
+
+    public class GameAchievementRun
+    {
+        public string name;
+        public int score;
+        public int result;
+        public bool passed;
+        public bool needToShow;
+    }
 
     public class OverallRPG
     {

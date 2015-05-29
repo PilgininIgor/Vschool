@@ -1,13 +1,14 @@
 ﻿namespace ILS.Web.Controllers
 {
     using Domain;
-    using Domain.GameAchievements;
-    using GameAchievements;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web.Mvc;
-    using System.Web.Script.Serialization;
+using Domain.GameAchievements;
+using GameAchievements;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
     public class RenderController : Controller
     {
@@ -24,84 +25,25 @@
         {
             return View();
         }
-
-        //TODO: remove
-        public ActionResult CreateSomeTestRunsForCurrentUser()
-        {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            if (u == null)
-                return View();
-
-            Course course = context.Course.First();
-            Theme theme = context.Theme.First(x => x.Course_Id.Equals(course.Id));
-            Lecture lecture = (Lecture)context.ThemeContent.First(x => x.Theme_Id.Equals(theme.Id) && x is Lecture);
-            Test test = (Test)context.ThemeContent.First(x => x.Theme_Id.Equals(theme.Id) && x is Test);
-            Paragraph paragraph = context.Paragraph.First(x => x.Lecture_Id.Equals(lecture.Id));
-            Question question = context.Question.First(x => x.Test_Id.Equals(test.Id));
-
-            //context.CourseRun.Remove(context.CourseRun.First(x => x.User.Name.Equals(u.Name)));
-
-            CourseRun courseRun = new CourseRun();
-            courseRun.Progress = 50;
-            courseRun.User = u;
-            courseRun.TimeSpent = 100;
-            courseRun.Course = course;
-
-            ThemeRun themeRun = new ThemeRun();
-            themeRun.Progress = 35;
-            themeRun.Theme = theme;
-            themeRun.CourseRun = courseRun;
-
-            LectureRun lectureRun = new LectureRun();
-            lectureRun.Lecture = lecture;
-            lectureRun.TimeSpent = 20;
-            lectureRun.ThemeRun = themeRun;
-
-            TestRun testRun = new TestRun();
-            testRun.Result = 1;
-            testRun.Test = test;
-            testRun.ThemeRun = themeRun;
-
-            QuestionRun questionRun = new QuestionRun();
-            questionRun.Question = question;
-            questionRun.TimeSpent = 10;
-            questionRun.TestRun = testRun;
-
-            ParagraphRun paragraphRun = new ParagraphRun();
-            paragraphRun.HaveSeen = true;
-            paragraphRun.Paragraph = paragraph;
-            paragraphRun.LectureRun = lectureRun;
-
-            context.QuestionRun.Add(questionRun);
-            context.ThemeRun.Add(themeRun);
-            context.TestRun.Add(testRun);
-            context.LectureRun.Add(lectureRun);
-            context.ParagraphRun.Add(paragraphRun);
-            context.CourseRun.Add(courseRun);
-
-            context.SaveChanges();
-            return View();
-        }
-
-
+        
         public JsonResult GetProfile(String name)
         {
-            //TODO: use name instead of current user to be able to look for other profiles
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            ProfileModel model = new ProfileModel();
-            model.Name = u.FirstName + " " + u.LastName;
-            model.Email = u.Email;
-            model.Money = u.Coins;
-            double progress = 0;
-            List<CourseRun> courses = context.CourseRun.Where(z => z.User.Name.Equals(u.Name)).ToList();
-            foreach (CourseRun run in courses)
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
             {
-                progress += run.Progress;
+                return Json(new
+                {
+                    success = false
+                });
             }
+            ProfileModel model = new ProfileModel
+            {
+                Name = u.FirstName + " " + u.LastName,
+                Email = u.Email,
+                Money = u.Coins
+            };
+            List<CourseRun> courses = context.CourseRun.Where(z => z.User.Name.Equals(u.Name)).ToList();
+            double progress = courses.Sum(run => run.Progress);
             if (courses.Count != 0)
             {
                 progress /= courses.Count;
@@ -110,14 +52,10 @@
             List<User> users = context.User.OrderByDescending(x => x.Coins).ToList();
             int rating = users.IndexOf(u);
             model.Rating = rating;
-            Dictionary<string, string> achievements = new Dictionary<string, string>();
-            List<GameAchievementRun> runList = context.GameAchievementRuns.Where(x => x.UserId.Equals(u.Id)).ToList();
-            foreach (GameAchievementRun run in runList)
-            {
-                achievements.Add(run.GameAchievement.Index.ToString(), run.GameAchievement.ImagePath);
-            }
+            List<GameAchievementRun> runList = context.GameAchievementRuns.Where(x => x.UserId.Equals(u.Id) && x.Passed).ToList();
+            Dictionary<string, string> achievements = runList.ToDictionary(run => run.GameAchievement.Index.ToString(), run => run.GameAchievement.ImagePath);
             model.Achievements = achievements;
-            model.AnchevementsCount = context.GameAchievements.Count();
+            model.AchievementsCount = context.GameAchievements.Count();
             return Json(new
             {
                 model
@@ -130,7 +68,8 @@
             {
                 achievements = context.GameAchievements.OrderBy(x => x.Index).Select(y => new
                 {
-                    name = y.Name
+                    name = y.Name,
+                    index = y.Index
                 })
             }, JsonRequestBehavior.AllowGet);
         }
@@ -149,9 +88,14 @@
 
         public JsonResult GetCoursesProgress(String name)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
 
             return Json(context.CourseRun.Where(z => z.User.Name.Equals(u.Name)).OrderByDescending(x => x.Progress).Select(y => new
             {
@@ -163,9 +107,14 @@
 
         public JsonResult GetCourseProgress(String name, String courseId)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
             Guid id = Guid.Parse(courseId);
             return Json(context.ThemeRun.Where(z => z.Theme.Course_Id.Equals(id)
                     && z.CourseRun.User.Name.Equals(u.Name))
@@ -179,9 +128,14 @@
 
         public JsonResult GetThemeProgress(String name, String themeId)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
             Guid id = Guid.Parse(themeId);
             return Json(new
             {
@@ -207,9 +161,14 @@
 
         public JsonResult GetTestProgress(String name, String testId)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
             Guid id = Guid.Parse(testId);
             var t = context.QuestionRun.Where(z => z.TestRun.Test_Id.Equals(id));
             var q = t.Where(z => z.TestRun.ThemeRun.CourseRun.User.Name.Equals(u.Name));
@@ -227,9 +186,14 @@
 
         public JsonResult GetTestRunProgress(String name, String testRunId)
         {
-            User u = null;
-            bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            User u = context.User.First(x => x.Name == name);
+            if (u == null)
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
             Guid id = Guid.Parse(testRunId);
             return Json(context.QuestionRun.Where(z => z.TestRun_Id.Equals(id)
                     && z.TestRun.ThemeRun.CourseRun.User.Name.Equals(u.Name))
@@ -239,7 +203,7 @@
                 }), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UnityList()
+        public JsonResult UnityList()
         {
             return Json(new
             {
@@ -247,11 +211,11 @@
                 {
                     id = x.Id,
                     name = x.Name
-                })
+                }).ToList()
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UnityData(Guid id)
+        public JsonResult UnityData(Guid id)
         {
             var c = context.Course.Find(id);
             return Json(new
@@ -301,15 +265,15 @@
                         linkedThemeId = y.LinkedTheme_Id,
                         status = GetThemeLinkStatus(y)
                     })
-                })
+                }).ToList()
             });
         }
 
         private string GetThemeLinkStatus(ThemeLink themeLink)
         {
             string status = "open";
-            User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            var ptLinks = themeLink.PersonalThemeLinks.Where(x => x.CourseRun.User_Id == u.Id);
+            User user = GetCurrentUser();
+            var ptLinks = themeLink.PersonalThemeLinks.Where(x => x.CourseRun.User_Id == user.Id);
             var personalThemeLinks = ptLinks as PersonalThemeLink[] ?? ptLinks.ToArray();
             if (!personalThemeLinks.Any())
             {
@@ -333,8 +297,8 @@
         private string GetThemeContentLinkStatus(ThemeContentLink tcLink)
         {
             string status = "open";
-            User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-            var ptcLinks = tcLink.PersonalThemeContentLinks.Where(x => x.ThemeRun.CourseRun.User_Id == u.Id);
+            User user = GetCurrentUser();
+            var ptcLinks = tcLink.PersonalThemeContentLinks.Where(x => x.ThemeRun.CourseRun.User_Id == user.Id);
             var personalThemeContentLinks = ptcLinks as PersonalThemeContentLink[] ?? ptcLinks.ToArray();
             if (!personalThemeContentLinks.Any())
             {
@@ -357,45 +321,45 @@
 
         public ActionResult UnityRPG()
         {
-            User u = null;
+            User user = null;
             bool ifGuest = !HttpContext.User.Identity.IsAuthenticated;
-            if (!ifGuest) u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            if (!ifGuest) user = GetCurrentUser();
             {
                 return Json(new
                 {
                     ifGuest = ifGuest,
-                    username = (ifGuest) ? "" : u.Name,
-                    EXP = (ifGuest) ? 0 : u.Coins,
-                    facultyStands_Seen = (ifGuest) ? false : u.FacultyStands_Seen,
-                    facultyStands_Finish = (ifGuest) ? false : u.FacultyStands_Finish,
-                    historyStand_Seen = (ifGuest) ? false : u.HistoryStand_Seen,
-                    historyStand_Finish = (ifGuest) ? false : u.HistoryStand_Finish,
-                    scienceStand_Seen = (ifGuest) ? false : u.ScienceStand_Seen,
-                    scienceStand_Finish = (ifGuest) ? false : u.ScienceStand_Finish,
-                    staffStand_Seen = (ifGuest) ? false : u.StaffStand_Seen,
-                    staffStand_Finish = (ifGuest) ? false : u.StaffStand_Finish,
-                    logotypeJump = (ifGuest) ? false : u.LogotypeJump,
-                    tableJump = (ifGuest) ? false : u.TableJump,
-                    terminalJump = (ifGuest) ? false : u.TerminalJump,
-                    ladderJump_First = (ifGuest) ? false : u.LadderJump_First,
-                    ladderJump_All = (ifGuest) ? false : u.LadderJump_All,
-                    letThereBeLight = (ifGuest) ? false : u.LetThereBeLight,
-                    plantJump_First = (ifGuest) ? false : u.PlantJump_First,
-                    plantJump_Second = (ifGuest) ? false : u.PlantJump_Second,
-                    barrelRoll = (ifGuest) ? false : u.BarrelRoll,
-                    firstVisitLecture = (ifGuest) ? false : u.FirstVisitLecture,
-                    firstVisitTest = (ifGuest) ? false : u.FirstVisitTest,
-                    teleportations = (ifGuest) ? 0 : u.Teleportations,
-                    paragraphsSeen = (ifGuest) ? 0 : u.ParagraphsSeen,
-                    testsFinished = (ifGuest) ? 0 : u.TestsFinished
+                    username = (ifGuest) ? "" : user.Name,
+                    EXP = (ifGuest) ? 0 : user.Coins,
+                    facultyStands_Seen = (ifGuest) ? false : user.FacultyStands_Seen,
+                    facultyStands_Finish = (ifGuest) ? false : user.FacultyStands_Finish,
+                    historyStand_Seen = (ifGuest) ? false : user.HistoryStand_Seen,
+                    historyStand_Finish = (ifGuest) ? false : user.HistoryStand_Finish,
+                    scienceStand_Seen = (ifGuest) ? false : user.ScienceStand_Seen,
+                    scienceStand_Finish = (ifGuest) ? false : user.ScienceStand_Finish,
+                    staffStand_Seen = (ifGuest) ? false : user.StaffStand_Seen,
+                    staffStand_Finish = (ifGuest) ? false : user.StaffStand_Finish,
+                    logotypeJump = (ifGuest) ? false : user.LogotypeJump,
+                    tableJump = (ifGuest) ? false : user.TableJump,
+                    terminalJump = (ifGuest) ? false : user.TerminalJump,
+                    ladderJump_First = (ifGuest) ? false : user.LadderJump_First,
+                    ladderJump_All = (ifGuest) ? false : user.LadderJump_All,
+                    letThereBeLight = (ifGuest) ? false : user.LetThereBeLight,
+                    plantJump_First = (ifGuest) ? false : user.PlantJump_First,
+                    plantJump_Second = (ifGuest) ? false : user.PlantJump_Second,
+                    barrelRoll = (ifGuest) ? false : user.BarrelRoll,
+                    firstVisitLecture = (ifGuest) ? false : user.FirstVisitLecture,
+                    firstVisitTest = (ifGuest) ? false : user.FirstVisitTest,
+                    teleportations = (ifGuest) ? 0 : user.Teleportations,
+                    paragraphsSeen = (ifGuest) ? 0 : user.ParagraphsSeen,
+                    testsFinished = (ifGuest) ? 0 : user.TestsFinished
                 });
             }
         }
 
-        public ActionResult UnityStat(Guid id)
+        public JsonResult UnityStat(Guid id)
         {
             var c = context.Course.Find(id);
-            if (!HttpContext.User.Identity.IsAuthenticated)
+            if (HttpContext == null || HttpContext.User == null || !HttpContext.User.Identity.IsAuthenticated)
             { //если юзер - гость, то передать "нулевую" статистику (он начнет с самого начала, и сохранять его прогресс мы в базе не будем)
                 return Json(new
                 {
@@ -436,19 +400,19 @@
             }
             else
             { //если юзер авторизован, то найти его в базе по имени
-                var u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
-                if (context.CourseRun.Count(x => (x.User.Name == u.Name) && (x.Course_Id == c.Id)) == 0) //ищем в базе статистику юзера по этому курсу
+                var user = GetCurrentUser();
+                if (context.CourseRun.Count(x => (x.User.Name == user.Name) && (x.Course_Id == c.Id)) == 0) //ищем в базе статистику юзера по этому курсу
                 { //если нет, то он заходит в него впервые, и надо создать ему "нулевую" статистику
                     CourseRun cr = new CourseRun()
                     {
                         Course = c,
-                        User = u,
+                        User = user,
                         Progress = 0.0,
                         TimeSpent = 0.0,
                         Visisted = false,
                         CompleteAll = false
                     };
-                    u.CoursesRuns.Add(cr);
+                    user.CoursesRuns.Add(cr);
                     foreach (var t in c.Themes.OrderBy(x => x.OrderNumber))
                     {
                         ThemeRun tr = new ThemeRun()
@@ -477,7 +441,7 @@
                     }
                     context.SaveChanges();
                 }
-                var course_run = context.CourseRun.First(x => (x.User.Name == u.Name) && (x.Course_Id == c.Id));
+                var course_run = context.CourseRun.First(x => (x.User.Name == user.Name) && (x.Course_Id == c.Id));
                 return Json(new
                 { //возвращаем статистику юзера - неважно, "нулевая" ли она и только что созданная или же старая и в ней уже есть какой-то прогресс
                     mode = "registered",
@@ -523,33 +487,33 @@
         {
             try
             {
-                User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+                User user = GetCurrentUser();
                 JavaScriptSerializer jss = new JavaScriptSerializer();
                 var obj = jss.Deserialize<dynamic>(s);
 
-                u.Coins = obj["EXP"];
-                u.FacultyStands_Seen = obj["facultyStands_Seen"];
-                u.FacultyStands_Finish = obj["facultyStands_Finish"];
-                u.HistoryStand_Seen = obj["historyStand_Seen"];
-                u.HistoryStand_Finish = obj["historyStand_Finish"];
-                u.ScienceStand_Seen = obj["scienceStand_Seen"];
-                u.ScienceStand_Finish = obj["scienceStand_Finish"];
-                u.StaffStand_Seen = obj["staffStand_Seen"];
-                u.StaffStand_Finish = obj["staffStand_Finish"];
-                u.LogotypeJump = obj["logotypeJump"];
-                u.TableJump = obj["tableJump"];
-                u.TerminalJump = obj["terminalJump"];
-                u.LadderJump_First = obj["ladderJump_First"];
-                u.LadderJump_All = obj["ladderJump_All"];
-                u.LetThereBeLight = obj["letThereBeLight"];
-                u.PlantJump_First = obj["plantJump_First"];
-                u.PlantJump_Second = obj["plantJump_Second"];
-                u.BarrelRoll = obj["barrelRoll"];
-                u.FirstVisitLecture = obj["firstVisitLecture"];
-                u.FirstVisitTest = obj["firstVisitTest"];
-                u.Teleportations = obj["teleportations"];
-                u.ParagraphsSeen = obj["paragraphsSeen"];
-                u.TestsFinished = obj["testsFinished"];
+                user.Coins = obj["EXP"];
+                user.FacultyStands_Seen = obj["facultyStands_Seen"];
+                user.FacultyStands_Finish = obj["facultyStands_Finish"];
+                user.HistoryStand_Seen = obj["historyStand_Seen"];
+                user.HistoryStand_Finish = obj["historyStand_Finish"];
+                user.ScienceStand_Seen = obj["scienceStand_Seen"];
+                user.ScienceStand_Finish = obj["scienceStand_Finish"];
+                user.StaffStand_Seen = obj["staffStand_Seen"];
+                user.StaffStand_Finish = obj["staffStand_Finish"];
+                user.LogotypeJump = obj["logotypeJump"];
+                user.TableJump = obj["tableJump"];
+                user.TerminalJump = obj["terminalJump"];
+                user.LadderJump_First = obj["ladderJump_First"];
+                user.LadderJump_All = obj["ladderJump_All"];
+                user.LetThereBeLight = obj["letThereBeLight"];
+                user.PlantJump_First = obj["plantJump_First"];
+                user.PlantJump_Second = obj["plantJump_Second"];
+                user.BarrelRoll = obj["barrelRoll"];
+                user.FirstVisitLecture = obj["firstVisitLecture"];
+                user.FirstVisitTest = obj["firstVisitTest"];
+                user.Teleportations = obj["teleportations"];
+                user.ParagraphsSeen = obj["paragraphsSeen"];
+                user.TestsFinished = obj["testsFinished"];
 
                 context.SaveChanges();
             }
@@ -562,24 +526,30 @@
 
         public ActionResult SaveGameAchievement(String achievementId)
         {
-            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game,
+            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game, GetCurrentUser(),
                 new Dictionary<string, object> { { AchievementsConstants.GameAchievementIdParamName, achievementId } });
-            return Json(changedAchievementRuns.Select(a => new { id = a.Id, GameAchievement = a.GameAchievementId }));
+            return Json(changedAchievementRuns.Select(run => new
+            {
+                name = run.GameAchievement.Name, 
+                score = run.GameAchievement.Score,
+                result = run.Result,
+                passed = run.Passed,
+                needToShow = run.NeedToShow
+            }));
         }
 
-        public ActionResult GetGameAchievementsForUnity()
+        public JsonResult GetGameAchievementsForUnity()
         {
             return Json(context.GameAchievements.OrderBy(x => x.Name).Select(x => new
             {
                 id = x.Id,
-                name = x.Name,
-                message = x.Message
-            }), JsonRequestBehavior.AllowGet);
+                name = x.Name
+            }).ToList(), JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetGameAchievementRuns()
         {
-            var user = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            var user = GetCurrentUser();
 
             return Json(context.GameAchievementRuns.Where(a => a.UserId.Equals(user.Id)).Select(x => new
             {
@@ -668,7 +638,7 @@
 
             if (mode != "guest")
             {
-                var testRun = new TestRun { Result = 0 };
+                var testRun = new TestRun { Result = 0, TestDateTime = DateTime.Now};
                 var themeRun = context.ThemeRun.Find(themeRunId);
 
                 themeRun.TestsRuns.Add(testRun); test.TestRuns.Add(testRun);
@@ -788,10 +758,10 @@
 
         private void FreezeOutputLinks(Theme theme)
         {
-            var u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+            var user = GetCurrentUser();
             foreach (var tLink in theme.OutputThemeLinks)
             {
-                foreach (var ptLink in tLink.PersonalThemeLinks.Where((y => ((y.CourseRun.User_Id == u.Id)
+                foreach (var ptLink in tLink.PersonalThemeLinks.Where((y => ((y.CourseRun.User_Id == user.Id)
                     && (y.Status == "open")))))
                 {
                     ptLink.Status = "frozen";
@@ -801,5 +771,16 @@
             }
         }
 
+        public ActionResult GetUserName()
+        {
+            return Json(GetCurrentUser().Name, JsonRequestBehavior.AllowGet);
+        }
+
+        private User GetCurrentUser()
+        {
+            //TODO MAKE REAL AUTHORIZATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return String.IsNullOrEmpty(HttpContext.User.Identity.Name) ? context.User.First(x => x.Name == "admin")
+                : context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+        }
     }
 }

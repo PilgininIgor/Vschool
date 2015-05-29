@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ILS.Domain;
+using System.Data.Entity.Core.Objects;
 
 namespace ILS.Web.Controllers
 {
@@ -13,9 +14,12 @@ namespace ILS.Web.Controllers
         List<UserModel> contact;
 
         ILSContext context;
+        ObjectContext context_obj;
+
         public AdminController(ILSContext context)
         {
             this.context = context;
+            this.context_obj = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)context).ObjectContext;
         }
 
         public ActionResult Index()
@@ -77,22 +81,38 @@ namespace ILS.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteUser(List<UserModel> data)
+        public JsonResult DeleteUser(UserModel data)
         {
-            contact = data;
+            try
+            {
+                var user = context.User.Find(new Guid(data.RecordId));
+
+                if (user.Name != HttpContext.User.Identity.Name)
+                {
+                    context_obj.DeleteObject(user);
+                    context_obj.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
             return Json(new
             {
-                contact
+                data
             }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult UsersList()
         {
             List<UserModel> jsonList = new List<UserModel>();
-            IEnumerable<User> activeUsers = Enumerable.Where<User>(context.User, x => x.Roles.Count > 0);
+            IEnumerable<User> activeUsers = context.User.ToList<User>();
             foreach (User user in activeUsers)
             {
                 UserModel temp = new UserModel();
+                temp.RecordId = user.Id.ToString();
                 temp.Name = user.Name;
                 temp.FirstName = user.FirstName;
                 temp.LastName = user.LastName;
@@ -149,7 +169,7 @@ namespace ILS.Web.Controllers
             {
                 if (Enumerable.Count<Role>(selectedUser.Roles, x => x.Name == "Teacher") == 0)
                 {
-                    selectedUser.Roles.Add(Enumerable.FirstOrDefault<Role>(context.Role,  x => x.Name == "Teacher"));
+                    selectedUser.Roles.Add(Enumerable.FirstOrDefault<Role>(context.Role, x => x.Name == "Teacher"));
                 }
             }
             else

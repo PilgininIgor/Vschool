@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using JsonFx.Json;
 
 public class CourseSelection : MonoBehaviour
 {
-    class CoursesNamesList
+    public class CoursesNamesList
     {
         public List<CourseName> coursesNames;
     }
@@ -40,14 +41,13 @@ public class CourseSelection : MonoBehaviour
     private bool hint_visible = false;
     private bool escape_visible = false;
     private bool data_loaded = false;
-    private int ButtonSize = 100;
 
     private HttpConnector httpConnector;
 
     void Start()
     {
         StandCam.enabled = false; StandCam.GetComponent<AudioListener>().enabled = false;
-        httpConnector = GameObject.Find("Bootstrap").AddComponent<HttpConnector>();
+        httpConnector = GameObject.Find("Bootstrap").GetComponent<HttpConnector>();
     }
 
     void ZoomIn()
@@ -85,7 +85,7 @@ public class CourseSelection : MonoBehaviour
 
     public void CourseDisplay(string JSONStringFromServer)
     {
-        CoursesNamesList res = JsonFx.Json.JsonReader.Deserialize<CoursesNamesList>(JSONStringFromServer);
+        CoursesNamesList res = JsonReader.Deserialize<CoursesNamesList>(JSONStringFromServer);
         cl = res.coursesNames;
         i = 1;
         transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
@@ -107,12 +107,12 @@ public class CourseSelection : MonoBehaviour
     {
         if (hint_visible)
         {
-            if (GUI.Button(new Rect(10, 10, ButtonSize, ButtonSize), magnifier)) ZoomIn();
+            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), magnifier)) ZoomIn();
         }
         if (escape_visible)
         {
-            if (GUI.Button(new Rect(10, 10, ButtonSize, ButtonSize), arrow)) ZoomOut();
-            if (GUI.Button(new Rect(Screen.width - ButtonSize, 10, ButtonSize, ButtonSize), select))
+            if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow)) ZoomOut();
+            if (GUI.Button(new Rect(Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), select))
             {
                 transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = LBL1;
                 transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "";
@@ -120,11 +120,6 @@ public class CourseSelection : MonoBehaviour
                 //БОЛЬШОЙ РУБИЛЬНИК
                 //Application.ExternalCall("LoadCourseData", cl[i-1].id);			
                 LoadCourseData(cl[i - 1].id);
-
-                dieSignals.SendSignals(this);
-                this.renderer.material = NewScreen;
-                transform.parent.transform.Find("UnlockPipe").renderer.material = NewPipe;
-                escape_visible = false; data_loaded = false; //ZoomOut();
             }
             var hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
             var wUnit = Mathf.RoundToInt(Screen.width * DefaultSkin.LayoutScale);
@@ -152,21 +147,27 @@ public class CourseSelection : MonoBehaviour
     void OnTriggerEnter(Collider other) { hint_visible = true; }
     void OnTriggerExit(Collider other) { hint_visible = false; }
 
-    void LoadCourseData(string id)
+    public void LoadCourseData(string id)
     {
         var parameters = new Dictionary<string, string>();
         parameters["id"] = id;
+        if (httpConnector == null)
+            httpConnector = GameObject.Find("Bootstrap").GetComponent<HttpConnector>();
         httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CourseDataUrl, parameters, www =>
         {
             BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
             bootstrapParser.CourseConstructor(www.text);
+			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.StatUrl, parameters, w =>
+			{
+				StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
+				statisticParser.StatisticDisplay(w.text);
+				ZoomOut();
+			});
         });
-
-        httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.StatUrl, parameters, www =>
-        {
-            StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
-            statisticParser.StatisticDisplay(www.text); 
-        });
+        dieSignals.SendSignals(this);
+        this.renderer.material = NewScreen;
+        transform.parent.transform.Find("UnlockPipe").renderer.material = NewPipe;
+        escape_visible = false; data_loaded = false; //ZoomOut();
     }
 
     void Update()
@@ -193,11 +194,6 @@ public class CourseSelection : MonoBehaviour
             //БОЛЬШОЙ РУБИЛЬНИК
             //Application.ExternalCall("LoadCourseData", cl[i-1].id);
             LoadCourseData(cl[i - 1].id);
-
-            dieSignals.SendSignals(this);
-            this.renderer.material = NewScreen;
-            transform.parent.transform.Find("UnlockPipe").renderer.material = NewPipe;
-            escape_visible = false; data_loaded = false; //ZoomOut();
         }
     }
 }
