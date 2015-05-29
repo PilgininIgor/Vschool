@@ -74,7 +74,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BaseTest.cs" />
+    <Compile Include="AchievementTest.cs" />
     <Compile Include="OpenIDTest.cs" />
+    <Compile Include="LinkEditorTest.cs" />
     <Compile Include="RenderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

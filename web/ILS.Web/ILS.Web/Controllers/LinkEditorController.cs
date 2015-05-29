@@ -21,35 +21,35 @@ namespace ILS.Web.Controllers
             return View();
         }
 
-        public ActionResult ReadCourses(int page, int start, int limit)
+        public JsonResult ReadCourses(int page, int start, int limit)
         {
             return Json(new
             {
                 success = true,
                 courses = context.Course
-                .OrderBy(x => x.Id)
+                .OrderBy(x => x.Name)
                 .Skip(start)
                 .Take(limit)
-                .Select(x => new { name = x.Name, id = x.Id })
+                .Select(x => new { name = x.Name, id = x.Id }).ToList()
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ReadThemes(int page, int start, int limit, string courseId)
+        public JsonResult ReadThemes(int page, int start, int limit, string courseId)
         {
             Guid courseIdGuid = (String.IsNullOrEmpty(courseId))? Guid.Empty : new Guid(courseId);
             return Json(new
             {
                 success = true,
                 courses = context.Theme
-                .OrderBy(x => x.Id)
+                .OrderBy(x => x.OrderNumber)
                 .Skip(start)
                 .Take(limit)
                 .Where(x => courseIdGuid.Equals(Guid.Empty) || x.Course_Id.Equals(courseIdGuid))
-                .Select(x => new { name = x.Name, id = x.Id })
+                .Select(x => new { name = x.Name, id = x.Id }).ToList()
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetCourse(Guid id)
+        public JsonResult GetCourse(Guid id)
         {
             User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
             var c = context.Course.Find(id);
@@ -64,17 +64,17 @@ namespace ILS.Web.Controllers
                     {
                         parentId = y.ParentTheme_Id,
                         linkedId = y.LinkedTheme_Id,
-                    }),
+                    }).ToList(),
                     coordinates = x.LinkEditorCoordinates.Where(y => y.User.Equals(u)).OrderBy(y => x.OrderNumber).Select(y => new
                     {
                         x = y.X,
                         y = y.Y,
-                    })
-                })
+                    }).ToList()
+                }).ToList()
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetTheme(Guid id)
+        public JsonResult GetTheme(Guid id)
         {
             User u = context.User.First(x => x.Name == HttpContext.User.Identity.Name);
             var c = context.Theme.Find(id);
