@@ -5,7 +5,7 @@ namespace ILS.Domain
     public class UserGroup : EntityBase
     {
         public string Name { get; set; }
-        public ICollection<User> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
 
         public UserGroup()
         {

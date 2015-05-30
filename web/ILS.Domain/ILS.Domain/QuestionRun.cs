@@ -11,10 +11,10 @@
         public Guid TestRun_Id { get; set; }
         [ForeignKey("Question")]
         public Guid? Question_Id { get; set; }
-        public ICollection<Answer> Answers { get; set; }
-
-        public TestRun TestRun { get; set; }
-        public Question Question { get; set; }
+       
+        public virtual ICollection<Answer> Answers { get; set; }
+        public virtual TestRun TestRun { get; set; }
+        public virtual Question Question { get; set; }
 
         public QuestionRun()
         {
