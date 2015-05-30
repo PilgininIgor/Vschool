@@ -11,9 +11,9 @@
         [ForeignKey("Test")] public Guid? Test_Id { get; set; }
         public DateTime TestDateTime { get; set; }
 
-        public ThemeRun ThemeRun { get; set; }
-        public Test Test { get; set; }
-        public ICollection<QuestionRun> QuestionsRuns { get; set; }
+        public virtual ThemeRun ThemeRun { get; set; }
+        public virtual Test Test { get; set; }
+        public virtual ICollection<QuestionRun> QuestionsRuns { get; set; }
 
         public TestRun()
         {

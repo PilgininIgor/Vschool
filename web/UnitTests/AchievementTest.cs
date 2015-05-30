@@ -50,6 +50,24 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestGetGameAchievementsList()
+        {
+            var controller = CreateController<AchievementsController>();
+            dynamic data = controller.GetGameAchievementsList();
+            var i = 0;
+            foreach (var achievement in achievements)
+            {
+                Assert.AreEqual(achievement.Name, data.Data.data[i].Name);
+                Assert.AreEqual(achievement.Score, data.Data.data[i].Score);
+                Assert.AreEqual(achievement.Priority, data.Data.data[i].Priority);
+                Assert.AreEqual(achievement.AchievementExecutor, data.Data.data[i].AchievementExecutor);
+                Assert.AreEqual(achievement.AdditionalParameters, data.Data.data[i].AdditionalParameters);
+                Assert.AreEqual(achievement.ImagePath, data.Data.data[i].ImagePath);
+                i++;
+            }
+        }
+
+        [TestMethod]
         public void TestCreateGameAchievement()
         {
             var controller = CreateController<AchievementsController>();
@@ -98,6 +116,18 @@ namespace UnitTests
                 && achievemnt.AchievementExecutor == gameAchievementModel.AchievementExecutor
                 && achievemnt.AdditionalParameters == gameAchievementModel.AdditionalParameters
                 && achievemnt.ImagePath == gameAchievementModel.ImagePath));
+        }
+
+        [TestMethod]
+        public void TestDeleteGameAchievement()
+        {
+            var controller = CreateController<AchievementsController>();
+            var gameAchievementModel = new GameAchievementModel
+            {
+                GameAchievementId = achievements[0].Id
+            };
+            controller.DeleteGameAchievement(gameAchievementModel);
+            Assert.IsFalse(context.GameAchievements.Any(achievement => achievement.Id == gameAchievementModel.GameAchievementId));
         }
     }
 }
