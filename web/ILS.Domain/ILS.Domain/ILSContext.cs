@@ -62,8 +62,8 @@ namespace ILS.Domain
             Database.SetInitializer<ILSContext>(new CreateDatabaseIfNotExists<ILSContext>());
         }
 
-        public ILSContext(DbConnection connection) : base(connection, true)
-        {
-        }
+//        public ILSContext(DbConnection connection) : base(connection, true)
+//        {
+//        }
     }
 }
