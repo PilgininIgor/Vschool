@@ -1,13 +1,8 @@
-﻿using ILS.Domain.GameAchievements;
-
-namespace ILS.Domain.Migrations
+﻿namespace ILS.Domain.Migrations
 {
+    using GameAchievements;
     using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.IO;
-    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -27,7 +22,7 @@ namespace ILS.Domain.Migrations
             return hash;
         }
 
-        protected override void Seed(ILS.Domain.ILSContext context)
+        protected override void Seed(ILSContext context)
         {
             context.Database.ExecuteSqlCommand(FillDatabaseHelper.ScriptFillTables);   
             
@@ -265,6 +260,10 @@ namespace ILS.Domain.Migrations
                 ImagePath = "forward_to_the_past_3.png"
             });
             #endregion
+
+            context.Course.Remove(context.Course.Find(new Guid("61137184-8eda-4d36-9cb5-21aba2c911e0"))); //Математика
+            context.Course.Remove(context.Course.Find(new Guid("3d0f6b8b-7c10-49c3-bdfe-788a73d839b5"))); //Связанная информатика
+            context.Course.Find(new Guid("51b98495-2c83-43d5-aa3f-eb81f8cef8f3")).Name = "Подготовка к ЕГЭ";
         }
     }
 }
