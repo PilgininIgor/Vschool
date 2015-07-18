@@ -8,6 +8,7 @@ using ILS.Domain.GameAchievements;
 using ILS.Models;
 using System.Web.Routing;
 using System.IO;
+using ILS.Web.Rating;
 
 namespace ILS.Web.Controllers
 {
@@ -116,36 +117,49 @@ namespace ILS.Web.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
 
-            CourseRun courseRun = new CourseRun();
-            courseRun.Progress = 50;
-            courseRun.User = u;
-            courseRun.TimeSpent = 100;
-            courseRun.Course = course;
+            CourseRun courseRun = new CourseRun
+            {
+                Progress = 50,
+                User = u,
+                TimeSpent = 100,
+                Course = course
+            };
 
-            ThemeRun themeRun = new ThemeRun();
-            themeRun.Progress = 35;
-            themeRun.Theme = theme;
-            themeRun.CourseRun = courseRun;
+            ThemeRun themeRun = new ThemeRun
+            {
+                Progress = 35,
+                Theme = theme,
+                CourseRun = courseRun
+            };
 
-            LectureRun lectureRun = new LectureRun();
-            lectureRun.Lecture = lecture;
-            lectureRun.TimeSpent = 20;
-            lectureRun.ThemeRun = themeRun;
+            LectureRun lectureRun = new LectureRun
+            {
+                Lecture = lecture,
+                TimeSpent = 20,
+                ThemeRun = themeRun
+            };
 
-            TestRun testRun = new TestRun();
-            testRun.Result = 1;
-            testRun.Test = test;
-            testRun.ThemeRun = themeRun;
+            TestRun testRun = new TestRun
+            {
+                Result = 1,
+                Test = test,
+                ThemeRun = themeRun,
+                TestDateTime = DateTime.Now
+            };
 
-            QuestionRun questionRun = new QuestionRun();
-            questionRun.Question = question;
-            questionRun.TimeSpent = 10;
-            questionRun.TestRun = testRun;
+            QuestionRun questionRun = new QuestionRun
+            {
+                Question = question,
+                TimeSpent = 100,
+                TestRun = testRun
+            };
 
-            ParagraphRun paragraphRun = new ParagraphRun();
-            paragraphRun.HaveSeen = true;
-            paragraphRun.Paragraph = paragraph;
-            paragraphRun.LectureRun = lectureRun;
+            ParagraphRun paragraphRun = new ParagraphRun
+            {
+                HaveSeen = true,
+                Paragraph = paragraph,
+                LectureRun = lectureRun
+            };
 
             context.QuestionRun.Add(questionRun);
             context.ThemeRun.Add(themeRun);
@@ -198,6 +212,15 @@ namespace ILS.Web.Controllers
             return Json(new
             {
                 success = true
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CalculateRatingForUser(string name)
+        {
+            var userRating = new UserRating(context, context.User.First(x => x.Name == name).Id);
+            return Json(new
+            {
+                rating = userRating.CalculateRating()
             }, JsonRequestBehavior.AllowGet);
         }
     }

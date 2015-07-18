@@ -38,6 +38,7 @@ public class DataStructures : MonoBehaviour
         public string id;
         public string name;
         public string type;
+        public int maxMinutes;
         public List<Question> questions;
         public List<Paragraph> paragraphs;
         public List<ThemeContentLink> outputThemeContentLinks;
