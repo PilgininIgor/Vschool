@@ -240,6 +240,7 @@ using System.Web.Script.Serialization;
                                 path = u.Path
                             })
                         }) : null,
+                        maxMinutes = (y is Test) ? ((Test)y).MaxMinutes : 0,
                         questions = (y is Test) ? ((Test)y).Questions.OrderBy(v => v.OrderNumber).Select(v => new
                         {
                             text = v.Text,

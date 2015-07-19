@@ -124,6 +124,9 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     var struct_lang_LBL19 = "Количество вариантов"; var struct_lang_LBL20 = "Вариант ответа"; var struct_lang_LBL21 = "Верный";
     var struct_lang_LBL22 = "Изображение"; var struct_lang_LBL23 = "Верные"; var struct_lang_LBL24 = "";
     var struct_lang_LBL25 = ""; var struct_lang_LBL26 = ""; var struct_lang_LBL27 = "";
+    var struct_lang_LBLMinutes = "Количество минут";
+    var struct_lang_LBLDifficulty = "Сложность";
+    var struct_lang_LBLTest = "Тест";
 } else {
     struct_lang_LBL1 = "General Information"; struct_lang_LBL2 = "Name"; struct_lang_LBL3 = "Number";
     struct_lang_LBL4 = "This field is required"; struct_lang_LBL5 = "Save"; struct_lang_LBL6 = "Saving...";
@@ -134,6 +137,9 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     struct_lang_LBL19 = "Number of variants"; struct_lang_LBL20 = "Answer variant"; struct_lang_LBL21 = "Correct";
     struct_lang_LBL22 = "Picture"; struct_lang_LBL23 = "Correct ones"; struct_lang_LBL24 = "";
     struct_lang_LBL25 = ""; struct_lang_LBL26 = ""; struct_lang_LBL27 = "";
+    struct_lang_LBLMinutes = "Minutes";
+    struct_lang_LBLDifficulty = "Difficulty";
+    struct_lang_LBLTest = "Test";
 }
 
 var form_cttc = new Ext.form.Panel({
@@ -163,6 +169,49 @@ var form_cttc = new Ext.form.Panel({
                 waitMsg: struct_lang_LBL6,
                 success: function () { //получив ответ от сервера, обновить дерево
                     var s = ''; s = extractPath(currently_selected);
+                    treestore.load({ callback: function () { tree.selectPath(s); } });
+                }
+            });
+        }
+    }]
+});
+
+var form_test = new Ext.form.Panel({
+    title: struct_lang_LBLTest,
+    hidden: true, bodyPadding: 10, waitMsgTarget: true,
+    items: [{
+        xtype: 'fieldset', title: struct_lang_LBL1, layout: 'anchor',
+        items: [{
+            xtype: 'textfield', name: 'id', anchor: '100%', hidden: true
+        }, {
+            xtype: 'textfield', name: 'type', anchor: '100%', hidden: true
+        }, {
+            xtype: 'textfield', name: 'ordernumber', anchor: '100%',
+            fieldLabel: struct_lang_LBL3, labelAlign: 'right', labelWidth: 90,
+            readOnly: true, disabled: true
+        }, {
+            xtype: 'textfield', name: 'name', anchor: '100%',
+            fieldLabel: struct_lang_LBL2, labelAlign: 'right', labelWidth: 90,
+            msgTarget: 'side', allowBlank: false, blankText: struct_lang_LBL4
+        }, {
+            xtype: 'numberfield', name: 'difficulty', anchor: '100%',
+            fieldLabel: struct_lang_LBLDifficulty, labelAlign: 'right', labelWidth: 90,
+            msgTarget: 'side', allowBlank: false, blankText: struct_lang_LBL4
+        }, {
+            xtype: 'numberfield', name: 'minutes', anchor: '100%',
+            fieldLabel: struct_lang_LBLMinutes, labelAlign: 'right', labelWidth: 90,
+            msgTarget: 'side', allowBlank: false, blankText: struct_lang_LBL4
+        }]
+    }],
+    buttons: [{
+        text: struct_lang_LBL5, name: 'saver',
+        formBind: true,
+        handler: function () {
+            this.up('form').submit({ //переслать данные из формы на сервер
+                url: link_saveTest,
+                waitMsg: struct_lang_LBL6,
+                success: function () { //получив ответ от сервера, обновить дерево
+                    var s = extractPath(currently_selected);
                     treestore.load({ callback: function () { tree.selectPath(s); } });
                 }
             });

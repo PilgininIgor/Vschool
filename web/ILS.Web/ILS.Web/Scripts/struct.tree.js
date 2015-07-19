@@ -51,24 +51,40 @@ tree.on('selectionchange', function (dataView, selections) {
             //если это курсы, то скрываем поле с порядковым номером, т.к. курсы единственные, где его нет
             if (d == 1) form_cttc.items.items[0].items.items[2].hide();
             else form_cttc.items.items[0].items.items[2].show();
-            form_cttc.getForm().load({ //загрузить данные в форму
-                url: link_readCTTC, //обратиться по этой ссылке, т.е. вызвать метод ReadCTTC из контроллера Struct
-                params: { id: selections[0].data.id, depth: d }, //передать методу ReadCTTC эти параметры
-                success: function () { //после того, как метод вернул результат и данные успешно загружены
-                    if (isRussian) {
-                        if (this.form.getValues().type == "course") form_cttc.setTitle("Курс");
-                        else if (this.form.getValues().type == "theme") form_cttc.setTitle("Тема");
-                        else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Лекция");
-                        else form_cttc.setTitle("Тест");
-                    } else {
-                        if (this.form.getValues().type == "course") form_cttc.setTitle("Course");
-                        else if (this.form.getValues().type == "theme") form_cttc.setTitle("Theme");
-                        else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Lecture");
-                        else form_cttc.setTitle("Test");
+            if (selections[0].raw.iconCls === "test") {
+                form_test.getForm().load({
+//загрузить данные в форму
+                    url: link_readCTTC, //обратиться по этой ссылке, т.е. вызвать метод ReadCTTC из контроллера Struct
+                    params: { id: selections[0].data.id, depth: d } //передать методу ReadCTTC эти параметры
+                });
+                form_cttc.hide();
+                form_test.show();
+                form_paragraph.hide();
+                form_question.hide();
+            } else {
+                form_cttc.getForm().load({
+//загрузить данные в форму
+                    url: link_readCTTC, //обратиться по этой ссылке, т.е. вызвать метод ReadCTTC из контроллера Struct
+                    params: { id: selections[0].data.id, depth: d }, //передать методу ReadCTTC эти параметры
+                    success: function() { //после того, как метод вернул результат и данные успешно загружены
+                        if (isRussian) {
+                            if (this.form.getValues().type == "course") form_cttc.setTitle("Курс");
+                            else if (this.form.getValues().type == "theme") form_cttc.setTitle("Тема");
+                            else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Лекция");
+                            else form_cttc.setTitle("Тест");
+                        } else {
+                            if (this.form.getValues().type == "course") form_cttc.setTitle("Course");
+                            else if (this.form.getValues().type == "theme") form_cttc.setTitle("Theme");
+                            else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Lecture");
+                            else form_cttc.setTitle("Test");
+                        }
                     }
-                }
-            });
-            form_cttc.show(); form_paragraph.hide(); form_question.hide();
+                });
+                form_cttc.show();
+                form_test.hide();
+                form_paragraph.hide();
+                form_question.hide();
+            }
         } else {
             if (selections[0].raw.iconCls == "paragraph") {
                 form_paragraph.getForm().load({
@@ -83,7 +99,8 @@ tree.on('selectionchange', function (dataView, selections) {
                         }
                     }
                 });
-                form_cttc.hide(); form_paragraph.show(); form_question.hide();
+                form_cttc.hide(); form_test.hide();
+                form_paragraph.show(); form_question.hide();
             } else {
                 form_question.getForm().load({
                     params: { id_s: selections[0].data.id },
@@ -97,7 +114,8 @@ tree.on('selectionchange', function (dataView, selections) {
                         form_question.down("[name=pica_preview]").setSrc(s2);
                     }
                 });
-                form_cttc.hide(); form_paragraph.hide(); form_question.show();
+                form_cttc.hide(); form_paragraph.hide();
+                form_test.hide(); form_question.show();
             }
         }
 
