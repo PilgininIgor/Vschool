@@ -123,12 +123,13 @@ namespace ILS.Web.Controllers
             }, JsonRequestBehavior.AllowGet).Data));
         }
 
+        //TODO refactor
         private static string GetAchievementTriggerName(AchievementTrigger achievementTrigger, bool isRussian)
         {
             switch (achievementTrigger)
             {
-                case AchievementTrigger.Game:
-                    return "Игра";
+                case AchievementTrigger.Education:
+                    return "Обучение";
                 case AchievementTrigger.Test:
                     return "Тест";
                 case AchievementTrigger.Lecture:
@@ -137,6 +138,16 @@ namespace ILS.Web.Controllers
                     return "Тема";
                 case AchievementTrigger.Course:
                     return "Курс";
+                case AchievementTrigger.Paragraph:
+                    return "Параграф";
+                case AchievementTrigger.Multiplayer:
+                    return "Мультплеер";
+                case AchievementTrigger.Guide:
+                    return "Гид";
+                case AchievementTrigger.Stend:
+                    return "Стенд";
+                case AchievementTrigger.Teleport:
+                    return "Телепорт";
                 default:
                     return "";
             }

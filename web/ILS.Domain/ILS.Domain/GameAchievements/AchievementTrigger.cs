@@ -2,10 +2,15 @@
 {
     public enum AchievementTrigger
     {
-        Game,
+        Education,
         Test,
         Lecture,
         Theme,
-        Course
+        Course,
+        Paragraph,
+        Multiplayer,
+        Guide,
+        Stend,
+        Teleport
     }
 }

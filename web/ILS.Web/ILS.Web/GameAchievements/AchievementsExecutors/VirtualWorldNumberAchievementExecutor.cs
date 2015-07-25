@@ -3,19 +3,24 @@
      using System;
      using System.Collections.Generic;
      using System.Linq;
-     using System.Web;
      using Domain;
      using Domain.GameAchievements;
 
      public class VirtualWorldNumberAchievementExecutor : IAchievementExecutor
      {
+         private readonly ILSContext context;
+
+         public VirtualWorldNumberAchievementExecutor(ILSContext context)
+         {
+             this.context = context;
+         }
+
          /// <summary>
-         /// Required parameters: gameAchievementId
+         /// Required parameters: gameAchievementId : Guid
          /// </summary>
          public GameAchievementRun Run(User user, Dictionary<string, object> parameters)
          {
-             var achievementId = new Guid(parameters[AchievementsConstants.GameAchievementIdParamName] as string);
-             var context = new ILSContext();
+             var achievementId = (Guid)parameters[AchievementsConstants.GameAchievementIdParamName];
 
              var gameAchievementRuns =
                  context.GameAchievementRuns.Where(x => x.User.Id == user.Id && x.GameAchievementId == achievementId);
@@ -45,14 +50,17 @@
                      gameAchievementRun.Passed = true;
                      gameAchievementRun.NeedToShow = gameAchievementRun.Result == necessaryNumber;
                  }
+                 context.SaveChanges();
                  return gameAchievementRuns.First();
              }
 
              const int result = 1;
              var passed = result >= necessaryNumber;
              var needToShow = result == necessaryNumber;
-             return context.GameAchievementRuns.Add(
+             var addedGameAchievementRun = context.GameAchievementRuns.Add(
                  new GameAchievementRun { User = context.User.Find(user.Id), GameAchievement = gameAchievemnt, Result = result, Passed = passed, NeedToShow = needToShow });
+             context.SaveChanges();
+             return addedGameAchievementRun;
          }
      }
  }

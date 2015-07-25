@@ -36,7 +36,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Theme,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.CourseProgressAchievementExecutor",
                 AdditionalParameters = "courseProgress=25",
                 ImagePath = "just_the_beginning.png"
@@ -49,7 +49,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 200,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Theme,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.CourseProgressAchievementExecutor",
                 AdditionalParameters = "courseProgress=50",
                 ImagePath = "no_way_back.png"
@@ -62,7 +62,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 500,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Theme,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.CourseProgressAchievementExecutor",
                 AdditionalParameters = "courseProgress=100",
                 ImagePath = "remember_you_are_here_forever.png"
@@ -75,7 +75,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Theme,
+                AchievementTrigger = AchievementTrigger.Multiplayer,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
                 ImagePath = "friends_forever.png"
             });
@@ -87,7 +87,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 500,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Test,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TopRatingAchievementExecutor",
                 AdditionalParameters = "ratingThreshold=20",
                 ImagePath = "neeerd.png"
@@ -100,7 +100,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 750,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Test,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TopRatingAchievementExecutor",
                 AdditionalParameters = "ratingThreshold=10",
                 ImagePath = "best_of_us.png"
@@ -113,7 +113,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 1000,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Test,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TopRatingAchievementExecutor",
                 AdditionalParameters = "ratingThreshold=0",
                 ImagePath = "special_olympics.png"
@@ -126,7 +126,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Paragraph,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
                 ImagePath = "premature_ejaculator.png"
             });
@@ -177,7 +177,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Guide,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
                 ImagePath = "my_dreams_make_more_sense_than_this_anyway.png"
             });
@@ -189,7 +189,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Stend,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=1",
                 ImagePath = "dora_the_explorer_1.png"
@@ -202,7 +202,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 200,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Stend,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=5",
                 ImagePath = "dora_the_explorer_2.png"
@@ -215,7 +215,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 300,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Stend,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=10",
                 ImagePath = "dora_the_explorer_3.png"
@@ -228,7 +228,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Teleport,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=2",
                 ImagePath = "forward_to_the_past_1.png"
@@ -241,7 +241,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 200,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Teleport,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=50",
                 ImagePath = "forward_to_the_past_2.png"
@@ -254,7 +254,7 @@
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 300,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Teleport,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=100",
                 ImagePath = "forward_to_the_past_3.png"

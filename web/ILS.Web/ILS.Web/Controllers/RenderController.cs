@@ -13,12 +13,10 @@ using System.Web.Script.Serialization;
     public class RenderController : Controller
     {
         private readonly ILSContext context;
-        private readonly AchievementsManager achievementsManager;
 
         public RenderController(ILSContext context)
         {
             this.context = context;
-            achievementsManager = new AchievementsManager();
         }
 
         public ActionResult Index()
@@ -525,10 +523,11 @@ using System.Web.Script.Serialization;
             return 1;
         }
 
-        public ActionResult SaveGameAchievement(String achievementId)
+        public ActionResult SaveGameAchievement(string triggerValue, string parameters)
         {
-            var changedAchievementRuns = achievementsManager.ExecuteAchievement(AchievementTrigger.Game, GetCurrentUser(),
-                new Dictionary<string, object> { { AchievementsConstants.GameAchievementIdParamName, achievementId } });
+            var achievementsManager = new AchievementsManager(context);
+            var trigger = (AchievementTrigger)Enum.Parse(typeof(AchievementTrigger), triggerValue);
+            var changedAchievementRuns = achievementsManager.ExecuteAchievement(trigger, GetCurrentUser(), new Dictionary<string, object>());
             return Json(changedAchievementRuns.Select(run => new
             {
                 name = run.GameAchievement.Name, 
@@ -537,6 +536,11 @@ using System.Web.Script.Serialization;
                 passed = run.Passed,
                 needToShow = run.NeedToShow
             }));
+        }
+
+        public JsonResult GetUserCoinsUrl()
+        {
+            return Json(GetCurrentUser().Coins, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetGameAchievementsForUnity()

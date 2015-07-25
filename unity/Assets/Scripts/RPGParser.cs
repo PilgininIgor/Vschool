@@ -57,8 +57,17 @@ public class RPGParser : MonoBehaviour
     void Start()
     {
         httpConnector = GetComponent<HttpConnector>();
-        RoleSystemSet(JSONTestString);
-        LoadGameAchievements();
+        //RoleSystemSet(JSONTestString);
+        SetCoinsForUser();
+    }
+
+    private void SetCoinsForUser()
+    {
+        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUserCoinsUrl,
+               www =>
+               {
+                   RPG = new DataStructures.OverallRPG {EXP = int.Parse(www.text)};
+               });
     }
 
     private void ShowAchievment(string text, Texture image = null)
@@ -96,14 +105,6 @@ public class RPGParser : MonoBehaviour
         }
     }
 
-    private void LoadGameAchievements()
-    {
-        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetGameAchievementsUrl, www =>
-        {
-            Achievements = JsonReader.Deserialize<DataStructures.GameAchievement[]>(www.text);
-        });
-    }
-
     private void RoleSystemSet(string json)
     {
         RPG = JsonReader.Deserialize<DataStructures.OverallRPG>(json);
@@ -134,11 +135,16 @@ public class RPGParser : MonoBehaviour
         }
     }
 
-    public void SaveAchievemnt(string guid)
+    public void SaveAchievemnt(DataStructures.AchievementTrigger trigger, Dictionary<string, object> parameters)
     {
         if (!RPG.ifGuest)
         {
-            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveGameAchievementUrl, new Dictionary<string, string> { { "achievementId", guid } },
+            if (parameters == null)
+            {
+                parameters = new Dictionary<string, object>();
+            }
+            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveGameAchievementUrl, 
+                new Dictionary<string, string> { { "triggerValue", trigger.ToString() }, {"parameters", parameters.ToString()} },
                 www =>
                 {
                     var achievementRuns = JsonReader.Deserialize<DataStructures.GameAchievementRun[]>(www.text);
