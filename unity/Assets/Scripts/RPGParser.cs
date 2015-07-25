@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using JsonFx.Json;
 using UnityEngine.UI;
 
@@ -141,17 +142,15 @@ public class RPGParser : MonoBehaviour
                 www =>
                 {
                     var achievementRuns = JsonReader.Deserialize<DataStructures.GameAchievementRun[]>(www.text);
-                    foreach (var achievementRun in achievementRuns)
+                    foreach (var achievementRun in achievementRuns.Where(achievementRun => achievementRun.passed && achievementRun.needToShow))
                     {
-                        if (/*achievementRun.passed && achievementRun.needToShow*/true)
+                        ShowAchievment("Достижение \"" + achievementRun.name + "\" получено!");
+                        if (achievementRun.score <= 0)
                         {
-                            ShowAchievment("Достижение \"" + achievementRun.name + "\" получено!");
-                            if (achievementRun.score > 0)
-                            {
-                                ShowCoinsAdded(achievementRun.score);
-                                RPG.EXP += achievementRun.score;
-                            }
+                            continue;
                         }
+                        ShowCoinsAdded(achievementRun.score);
+                        RPG.EXP += achievementRun.score;
                     }
                 });
         }

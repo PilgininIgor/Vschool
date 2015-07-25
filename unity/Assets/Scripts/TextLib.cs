@@ -304,12 +304,12 @@ public class TextLib : MonoBehaviour
             {
                 pr.haveSeen = true;
                 sp.UpdateThemeStat(inp.theme_num + 1);
-                rpg.RPG.paragraphsSeen += 1;
-                if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
-                else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
-                else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("Просмотрено 50 параграфов!\n+100 очков!", 100);
-                else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("Просмотрено 100 параграфов!\n+200 очков!", 200);
-                else rpg.Save();
+//                rpg.RPG.paragraphsSeen += 1;
+//                if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
+//                else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
+//                else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("Просмотрено 50 параграфов!\n+100 очков!", 100);
+//                else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("Просмотрено 100 параграфов!\n+200 очков!", 200);
+//                else rpg.Save();
             }
             else
             {
@@ -331,12 +331,12 @@ public class TextLib : MonoBehaviour
             {
                 pr.haveSeen = true;
                 sp.UpdateThemeStat(inp.theme_num + 1);
-                rpg.RPG.paragraphsSeen += 1;
-                if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
-                else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
-                else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("Просмотрено 50 параграфов!\n+100 очков!", 100);
-                else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("Просмотрено 100 параграфов!\n+200 очков!", 200);
-                else rpg.Save();
+//                rpg.RPG.paragraphsSeen += 1;
+//                if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
+//                else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
+//                else if (rpg.RPG.paragraphsSeen == 50) rpg.Achievement("Просмотрено 50 параграфов!\n+100 очков!", 100);
+//                else if (rpg.RPG.paragraphsSeen == 100) rpg.Achievement("Просмотрено 100 параграфов!\n+200 очков!", 200);
+//                else rpg.Save();
             }
         }
     }

@@ -25,8 +25,8 @@ public class HallwayAchievements : MonoBehaviour
         {
             if (!rpgParser.RPG.facultyStands_Seen)
             {
-                rpgParser.Achievement("Обнаружены стенды о факультетах!\n+10 очков!", 10);
-                rpgParser.RPG.facultyStands_Seen = true;
+//                rpgParser.Achievement("Обнаружены стенды о факультетах!\n+10 очков!", 10);
+//                rpgParser.RPG.facultyStands_Seen = true;
             }
             if (!rpgParser.RPG.facultyStands_Finish)
             {
@@ -36,8 +36,8 @@ public class HallwayAchievements : MonoBehaviour
                 while ((i < 10) && (facultyStands[i])) i++;
                 if (i == 10)
                 {
-                    rpgParser.Achievement("Изучены все стенды о факультетах!\n+20 очков!", 20);
-                    rpgParser.RPG.facultyStands_Finish = true;
+//                    rpgParser.Achievement("Изучены все стенды о факультетах!\n+20 очков!", 20);
+//                    rpgParser.RPG.facultyStands_Finish = true;
                 }
             }
         }
@@ -46,8 +46,8 @@ public class HallwayAchievements : MonoBehaviour
         {
             if (!rpgParser.RPG.ladderJump_First)
             {
-                rpgParser.Achievement("Прыжок на лесенку!\n+10 очков!", 10);
-                rpgParser.RPG.ladderJump_First = true;
+//                rpgParser.Achievement("Прыжок на лесенку!\n+10 очков!", 10);
+//                rpgParser.RPG.ladderJump_First = true;
             }
             if (!rpgParser.RPG.ladderJump_All)
             {
@@ -57,8 +57,8 @@ public class HallwayAchievements : MonoBehaviour
                 while ((i < 8) && (ladders[i])) i++;
                 if (i == 8)
                 {
-                    rpgParser.Achievement("Посещены все лесенки!\n+30 очков!", 30);
-                    rpgParser.RPG.ladderJump_All = true;
+//                    rpgParser.Achievement("Посещены все лесенки!\n+30 очков!", 30);
+//                    rpgParser.RPG.ladderJump_All = true;
                 }
             }
         }
@@ -70,8 +70,8 @@ public class HallwayAchievements : MonoBehaviour
             else if (objname == "Light3") light3 = true;
             if (light1 && light2 && light3)
             {
-                rpgParser.Achievement("Изучена система освещения!\n+50 очков!", 50);
-                rpgParser.RPG.letThereBeLight = true;
+//                rpgParser.Achievement("Изучена система освещения!\n+50 очков!", 50);
+//                rpgParser.RPG.letThereBeLight = true;
             }
         }
 
@@ -79,39 +79,39 @@ public class HallwayAchievements : MonoBehaviour
         {
             if (!rpgParser.RPG.historyStand_Seen)
             {
-                rpgParser.Achievement("Обнаружен стенд об истории кафедры!\n+10 очков!", 10);
-                rpgParser.RPG.historyStand_Seen = true;
+//                rpgParser.Achievement("Обнаружен стенд об истории кафедры!\n+10 очков!", 10);
+//                rpgParser.RPG.historyStand_Seen = true;
             }
             if ((addInfo == "completed") && (!rpgParser.RPG.historyStand_Finish))
             {
-                rpgParser.Achievement("Изучена история кафедры!\n+20 очков!", 20);
-                rpgParser.RPG.historyStand_Finish = true;
+//                rpgParser.Achievement("Изучена история кафедры!\n+20 очков!", 20);
+//                rpgParser.RPG.historyStand_Finish = true;
             }
         }
         if (objname == "Stand about Science")
         {
             if (!rpgParser.RPG.scienceStand_Seen)
             {
-                rpgParser.Achievement("Обнаружен стенд о научной работе!\n+10 очков!", 10);
-                rpgParser.RPG.scienceStand_Seen = true;
+//                rpgParser.Achievement("Обнаружен стенд о научной работе!\n+10 очков!", 10);
+//                rpgParser.RPG.scienceStand_Seen = true;
             }
             if ((addInfo == "completed") && (!rpgParser.RPG.scienceStand_Finish))
             {
-                rpgParser.Achievement("Изучен стенд о научной работе!\n+20 очков!", 20);
-                rpgParser.RPG.scienceStand_Finish = true;
+//                rpgParser.Achievement("Изучен стенд о научной работе!\n+20 очков!", 20);
+//                rpgParser.RPG.scienceStand_Finish = true;
             }
         }
         if (objname == "Stand about Staff")
         {
             if (!rpgParser.RPG.staffStand_Seen)
             {
-                rpgParser.Achievement("Обнаружен стенд о преподавателях!\n+10 очков!", 10);
-                rpgParser.RPG.staffStand_Seen = true;
+//                rpgParser.Achievement("Обнаружен стенд о преподавателях!\n+10 очков!", 10);
+//                rpgParser.RPG.staffStand_Seen = true;
             }
             if ((addInfo == "completed") && (!rpgParser.RPG.staffStand_Finish))
             {
-                rpgParser.Achievement("Изучен стенд о преподавателях!\n+20 очков!", 20);
-                rpgParser.RPG.staffStand_Finish = true;
+//                rpgParser.Achievement("Изучен стенд о преподавателях!\n+20 очков!", 20);
+//                rpgParser.RPG.staffStand_Finish = true;
             }
         }
     }

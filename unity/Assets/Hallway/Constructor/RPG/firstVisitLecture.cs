@@ -11,8 +11,8 @@ public class firstVisitLecture : MonoBehaviour
         RPGParser rpgParser = Bootstrap.GetComponent<RPGParser>();
         if (!rpgParser.RPG.firstVisitLecture)
         {
-            rpgParser.Achievement("Первое посещение лекционного зала!\n+10 очков!", 10);
-            rpgParser.RPG.firstVisitLecture = true;
+//            rpgParser.Achievement("Первое посещение лекционного зала!\n+10 очков!", 10);
+//            rpgParser.RPG.firstVisitLecture = true;
         }
     }
 }
