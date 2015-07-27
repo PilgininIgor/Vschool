@@ -16,7 +16,7 @@ public class HttpConnector : MonoBehaviour
     public const string UnitySaveRpgUrl = "/Render/UnitySaveRPG";
     public const string GetUsernameUrl = "/Render/GetUserName";
     public const string SaveGameAchievementUrl = "/Render/SaveGameAchievement";
-    public const string GetGameAchievementsUrl = "/Render/GetGameAchievementsForUnity";
+    public const string GetUserCoinsUrl = "/Render/GetUserCoinsUrl";
 
     public void Get(string url, Action<WWW> onSuccess)
     {

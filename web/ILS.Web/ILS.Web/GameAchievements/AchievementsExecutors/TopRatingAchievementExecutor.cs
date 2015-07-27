@@ -7,6 +7,12 @@
 
     public class TopRatingAchievementExecutor : IAchievementExecutor
     {
+        private readonly ILSContext context;
+
+        public TopRatingAchievementExecutor(ILSContext context)
+        {
+             this.context = context;
+        }
         /// <summary>
         /// Required parameters: gameAchievementId, 
         /// </summary>

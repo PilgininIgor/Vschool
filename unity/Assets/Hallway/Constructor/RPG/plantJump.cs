@@ -13,13 +13,13 @@ public class plantJump : MonoBehaviour
             triggered = true;
             if (!rpgParser.RPG.plantJump_First)
             {
-                rpgParser.Achievement("Прыжок на цветы!\n+10 очков!", 10);
-                rpgParser.RPG.plantJump_First = true;
+//                rpgParser.Achievement("Прыжок на цветы!\n+10 очков!", 10);
+//                rpgParser.RPG.plantJump_First = true;
             }
             else if (!rpgParser.RPG.plantJump_Second)
             {
-                rpgParser.Achievement("Еще прыжок на цветы!\n+10 очков!", 10);
-                rpgParser.RPG.plantJump_Second = true;
+//                rpgParser.Achievement("Еще прыжок на цветы!\n+10 очков!", 10);
+//                rpgParser.RPG.plantJump_Second = true;
             }
         }
     }

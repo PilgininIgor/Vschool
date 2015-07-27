@@ -9,8 +9,8 @@ public class tableJump : MonoBehaviour
         RPGParser rpgParser = Bootstrap.GetComponent<RPGParser>();
         if (!rpgParser.RPG.tableJump)
         {
-            rpgParser.Achievement("Прыжок на стол!\n+10 очков!", 10);
-            rpgParser.RPG.tableJump = true;
+//            rpgParser.Achievement("Прыжок на стол!\n+10 очков!", 10);
+//            rpgParser.RPG.tableJump = true;
         }
     }
 }
