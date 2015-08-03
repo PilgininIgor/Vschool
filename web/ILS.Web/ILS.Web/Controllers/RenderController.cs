@@ -1,4 +1,6 @@
-﻿namespace ILS.Web.Controllers
+﻿using ILS.Web.Rating;
+
+namespace ILS.Web.Controllers
 {
     using Domain;
 using Domain.GameAchievements;
@@ -630,6 +632,7 @@ using System.Web.Script.Serialization;
                 }
                 i++;
             }
+            new UserRating(context, GetCurrentUser().Id).CalculateRating();
             context.SaveChanges();
             return 1;
         }
@@ -736,6 +739,7 @@ using System.Web.Script.Serialization;
                     FreezeOutputLinks(context.Theme.Find(themeErrorsList[maxIndex]));
                 }
 
+                new UserRating(context, GetCurrentUser().Id).CalculateRating();
                 context.SaveChanges();
                 return testRun.Result;
             }
