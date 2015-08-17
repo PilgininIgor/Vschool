@@ -255,7 +255,9 @@ namespace ILS.Web.Controllers
                 {
                     iconCls = (x is Lecture) ? "lecture" : "test",
                     id = x.Id.ToString(),
-                    text = x.Name
+                    text = x.Name,
+                    difficulty = (x is Test)? ((Test)x).TestDifficulty : 0,
+                    minutes = (x is Test) ? ((Test)x).MaxMinutes : 0,
                 }), JsonRequestBehavior.AllowGet);
             }
             var tc = context.ThemeContent.Find(guid);
@@ -324,21 +326,20 @@ namespace ILS.Web.Controllers
                     }
                 }, JsonRequestBehavior.AllowGet);
             }
-            else
+            var tc = context.ThemeContent.Find(id);
+            return Json(new
             {
-                var tc = context.ThemeContent.Find(id);
-                return Json(new
+                success = true,
+                data = new
                 {
-                    success = true,
-                    data = new
-                    {
-                        id = tc.Id,
-                        name = tc.Name,
-                        type = (tc is Lecture) ? "lecture" : "test",
-                        ordernumber = tc.OrderNumber
-                    }
-                }, JsonRequestBehavior.AllowGet);
-            }
+                    id = tc.Id,
+                    name = tc.Name,
+                    type = (tc is Lecture) ? "lecture" : "test",
+                    ordernumber = tc.OrderNumber,
+                    difficulty = (tc is Test) ? ((Test)tc).TestDifficulty : 0,
+                    minutes = (tc is Test) ? ((Test)tc).MaxMinutes : 0
+                }
+            }, JsonRequestBehavior.AllowGet);
         }
 
         /*метод, сохраняющий изменения в имени указанного курса / темы / содержимого. Самый простенький*/
@@ -347,6 +348,16 @@ namespace ILS.Web.Controllers
             if (type == "course") { var c = context.Course.Find(id); c.Name = name; }
             else if (type == "theme") { var t = context.Theme.Find(id); t.Name = name; }
             else { var tc = context.ThemeContent.Find(id); tc.Name = name; }
+            context.SaveChanges();
+            return Json(new { success = true });
+        }
+
+        public ActionResult SaveTest(Guid id, string name, int difficulty, int minutes)
+        {
+            var test = context.ThemeContent.Find(id) as Test;
+            test.Name = name;
+            test.TestDifficulty = difficulty;
+            test.MaxMinutes = minutes;
             context.SaveChanges();
             return Json(new { success = true });
         }
@@ -596,7 +607,7 @@ namespace ILS.Web.Controllers
             int num;
             if (t.ThemeContents.Count == 0) num = 1;
             else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
-            var tc = new Test { OrderNumber = num, Name = "Новый тест" };
+            var tc = new Test { OrderNumber = num, Name = "Новый тест", TestDifficulty = 1, MaxMinutes = 60};
             t.ThemeContents.Add(tc);
             context.SaveChanges();
             return tc.Id;

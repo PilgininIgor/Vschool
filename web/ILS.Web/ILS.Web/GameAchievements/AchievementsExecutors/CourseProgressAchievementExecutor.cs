@@ -9,15 +9,21 @@
 
      public class CourseProgressAchievementExecutor : IAchievementExecutor
      {
+         private readonly ILSContext context;
+
+         public CourseProgressAchievementExecutor(ILSContext context)
+         {
+            this.context = context;
+         }
+
          /// <summary>
-         /// Required parameters: gameAchievementId, courseId
+         /// Required parameters: gameAchievementId : Guid, courseId : Guid
          /// </summary>
          public GameAchievementRun Run(User user, Dictionary<string, object> parameters)
          {
-             var achievementId = new Guid(parameters[AchievementsConstants.GameAchievementIdParamName] as string);
-             var courseId = new Guid(parameters[AchievementsConstants.CourseIdParamName] as string);
+             var achievementId = (Guid)parameters[AchievementsConstants.GameAchievementIdParamName];
+             var courseId = (Guid)parameters[AchievementsConstants.CourseIdParamName];
 
-             var context = new ILSContext();
              var gameAchievement = context.GameAchievements.Find(achievementId);
 
              var jss = new JavaScriptSerializer();
@@ -33,8 +39,10 @@
              if (!context.GameAchievementRuns.Any(x => x.User.Equals(user) && x.GameAchievementId.Equals(achievementId))
                  && context.CourseRun.First(x => x.Course_Id.Equals(courseId)).Progress > courseProgressPercents)
              {
-                 return context.GameAchievementRuns.Add(
+                 var addedGameAchievementRun = context.GameAchievementRuns.Add(
                      new GameAchievementRun { User = user, GameAchievement = gameAchievement, Result = 1 });
+                 context.SaveChanges();
+                 return addedGameAchievementRun;
              }
 
              return null;

@@ -91,8 +91,8 @@ class StatisticParser : MonoBehaviour
             (stat.themesRuns[index - 1].testsComplete == stat.themesRuns[index - 1].testsOverall) &&
             (stat.themesRuns[index - 1].testsOverall != 0))
         {
-            GetComponent<RPGParser>().Achievement("Пройдены все тесты в теме!\n+100 очков!", 100);
-            stat.themesRuns[index - 1].allTests = true;
+//            GetComponent<RPGParser>().Achievement("Пройдены все тесты в теме!\n+100 очков!", 100);
+//            stat.themesRuns[index - 1].allTests = true;
         }
 
         //суммирование верных ответов и общего количества ответов по всей теме
@@ -105,8 +105,8 @@ class StatisticParser : MonoBehaviour
         bsParser.statDisplays[index].transform.Find("TextAnswers").GetComponent<TextMesh>().text = string.Format("{0}/{1}", aac, aao);
         if ((!stat.themesRuns[index - 1].allTestsMax) && (aac == aao) && (aao != 0))
         {
-            GetComponent<RPGParser>().Achievement("Все тесты в теме пройдены идеально!\n+150 очков!", 150);
-            stat.themesRuns[index - 1].allTestsMax = true;
+//            GetComponent<RPGParser>().Achievement("Все тесты в теме пройдены идеально!\n+150 очков!", 150);
+//            stat.themesRuns[index - 1].allTestsMax = true;
         }
 
         //суммирование просмотренных параграфов и их общего количества по всей теме
@@ -121,8 +121,8 @@ class StatisticParser : MonoBehaviour
 
         if ((!stat.themesRuns[index - 1].allLectures) && (aps == apo) && (apo != 0))
         {
-            GetComponent<RPGParser>().Achievement("Изучены все лекции по теме!\n+100 очков!", 100);
-            stat.themesRuns[index - 1].allLectures = true;
+//            GetComponent<RPGParser>().Achievement("Изучены все лекции по теме!\n+100 очков!", 100);
+//            stat.themesRuns[index - 1].allLectures = true;
         }
 
         //обновление прогресса
@@ -134,8 +134,8 @@ class StatisticParser : MonoBehaviour
 
         if ((!stat.themesRuns[index - 1].completeAll) && (Mathf.RoundToInt(stat.themesRuns[index - 1].progress) == 100))
         {
-            GetComponent<RPGParser>().Achievement("Тема пройдена на 100%!\n+250 очков!", 250);
-            stat.themesRuns[index - 1].completeAll = true;
+//            GetComponent<RPGParser>().Achievement("Тема пройдена на 100%!\n+250 очков!", 250);
+//            stat.themesRuns[index - 1].completeAll = true;
         }
 
         //обновление прогресса всего курса
@@ -148,8 +148,8 @@ class StatisticParser : MonoBehaviour
 
         if ((!stat.completeAll) && (Mathf.RoundToInt(stat.progress) == 100))
         {
-            GetComponent<RPGParser>().Achievement("Курс пройден на 100%!\n+1000 очков!", 1000);
-            stat.completeAll = true;
+//            GetComponent<RPGParser>().Achievement("Курс пройден на 100%!\n+1000 очков!", 1000);
+//            stat.completeAll = true;
         }
     }
 

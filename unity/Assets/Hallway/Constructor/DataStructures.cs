@@ -38,6 +38,7 @@ public class DataStructures : MonoBehaviour
         public string id;
         public string name;
         public string type;
+        public int maxMinutes;
         public List<Question> questions;
         public List<Paragraph> paragraphs;
         public List<ThemeContentLink> outputThemeContentLinks;
@@ -136,22 +137,24 @@ public class DataStructures : MonoBehaviour
         public bool passed;
         public bool needToShow;
     }
+    public enum AchievementTrigger
+    {
+        Education,
+        Test,
+        Lecture,
+        Theme,
+        Course,
+        Paragraph,
+        Multiplayer,
+        Guide,
+        Stend,
+        Teleport
+    }
 
     public class OverallRPG
     {
         public bool ifGuest;
-        public string username;
         public int EXP;
-
-        //стартовые ачивменты - холл - стенды
-        public bool facultyStands_Seen;
-        public bool facultyStands_Finish;
-        public bool historyStand_Seen;
-        public bool historyStand_Finish;
-        public bool scienceStand_Seen;
-        public bool scienceStand_Finish;
-        public bool staffStand_Seen;
-        public bool staffStand_Finish;
 
         //стартовые ачивменты - холл - остальное
         public bool logotypeJump;
@@ -168,8 +171,5 @@ public class DataStructures : MonoBehaviour
 
         public bool firstVisitLecture;
         public bool firstVisitTest;
-        public int teleportations;
-        public int paragraphsSeen;
-        public int testsFinished;
     }
 }

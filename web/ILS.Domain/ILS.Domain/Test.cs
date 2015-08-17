@@ -15,7 +15,9 @@ namespace ILS.Domain
 
         public int AttemptsNumber { get; set; }
 
-        //public int TestDifficulty { get; set; }
+        public double TestDifficulty { get; set; }
+
+        public int MaxMinutes { get; set; }
 
         public Test()
         {

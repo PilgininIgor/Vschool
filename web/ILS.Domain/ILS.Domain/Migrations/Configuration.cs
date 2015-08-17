@@ -1,13 +1,8 @@
-﻿using ILS.Domain.GameAchievements;
-
-namespace ILS.Domain.Migrations
+﻿namespace ILS.Domain.Migrations
 {
+    using GameAchievements;
     using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.IO;
-    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -27,7 +22,7 @@ namespace ILS.Domain.Migrations
             return hash;
         }
 
-        protected override void Seed(ILS.Domain.ILSContext context)
+        protected override void Seed(ILSContext context)
         {
             context.Database.ExecuteSqlCommand(FillDatabaseHelper.ScriptFillTables);   
             
@@ -41,7 +36,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Theme,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.CourseProgressAchievementExecutor",
                 AdditionalParameters = "courseProgress=25",
                 ImagePath = "just_the_beginning.png"
@@ -54,7 +49,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 200,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Theme,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.CourseProgressAchievementExecutor",
                 AdditionalParameters = "courseProgress=50",
                 ImagePath = "no_way_back.png"
@@ -67,7 +62,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 500,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Theme,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.CourseProgressAchievementExecutor",
                 AdditionalParameters = "courseProgress=100",
                 ImagePath = "remember_you_are_here_forever.png"
@@ -80,7 +75,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Theme,
+                AchievementTrigger = AchievementTrigger.Multiplayer,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
                 ImagePath = "friends_forever.png"
             });
@@ -92,7 +87,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 500,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Test,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TopRatingAchievementExecutor",
                 AdditionalParameters = "ratingThreshold=20",
                 ImagePath = "neeerd.png"
@@ -105,7 +100,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 750,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Test,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TopRatingAchievementExecutor",
                 AdditionalParameters = "ratingThreshold=10",
                 ImagePath = "best_of_us.png"
@@ -118,7 +113,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 1000,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Test,
+                AchievementTrigger = AchievementTrigger.Education,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.TopRatingAchievementExecutor",
                 AdditionalParameters = "ratingThreshold=0",
                 ImagePath = "special_olympics.png"
@@ -131,7 +126,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Paragraph,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
                 ImagePath = "premature_ejaculator.png"
             });
@@ -182,7 +177,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Guide,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldAchievementExecutor",
                 ImagePath = "my_dreams_make_more_sense_than_this_anyway.png"
             });
@@ -194,7 +189,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Stend,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=1",
                 ImagePath = "dora_the_explorer_1.png"
@@ -207,7 +202,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 200,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Stend,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=5",
                 ImagePath = "dora_the_explorer_2.png"
@@ -220,7 +215,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 300,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Stend,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=10",
                 ImagePath = "dora_the_explorer_3.png"
@@ -233,7 +228,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 100,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Teleport,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=2",
                 ImagePath = "forward_to_the_past_1.png"
@@ -246,7 +241,7 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 200,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Teleport,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=50",
                 ImagePath = "forward_to_the_past_2.png"
@@ -259,12 +254,16 @@ namespace ILS.Domain.Migrations
                 AchievementAwardType = AchievementAwardType.Coins,
                 Score = 300,
                 Priority = 10,
-                AchievementTrigger = AchievementTrigger.Game,
+                AchievementTrigger = AchievementTrigger.Teleport,
                 AchievementExecutor = "ILS.Web.GameAchievements.AchievementsExecutors.VirtualWorldNumberAchievementExecutor",
                 AdditionalParameters = "number=100",
                 ImagePath = "forward_to_the_past_3.png"
             });
             #endregion
+
+            context.Course.Remove(context.Course.Find(new Guid("61137184-8eda-4d36-9cb5-21aba2c911e0"))); //Математика
+            context.Course.Remove(context.Course.Find(new Guid("3d0f6b8b-7c10-49c3-bdfe-788a73d839b5"))); //Связанная информатика
+            context.Course.Find(new Guid("51b98495-2c83-43d5-aa3f-eb81f8cef8f3")).Name = "Подготовка к ЕГЭ";
         }
     }
 }

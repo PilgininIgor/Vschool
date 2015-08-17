@@ -75,11 +75,16 @@ Ext.define("GameAchievementModel", {
 ils.gameachievements.triggerStore = Ext.create("Ext.data.Store", {
     fields: ["id", "name"],
     data: [
-        { "id": "0", "name": "Игра" },
+        { "id": "0", "name": "Обучение" },
         { "id": "1", "name": "Тест" },
         { "id": "2", "name": "Лекция" },
         { "id": "3", "name": "Тема" },
-        { "id": "4", "name": "Курс" }
+        { "id": "4", "name": "Курс" },
+        { "id": "5", "name": "Параграф" },
+        { "id": "6", "name": "Мультплеер" },
+        { "id": "7", "name": "Гид" },
+        { "id": "8", "name": "Стенд" },
+        { "id": "9", "name": "Телепорт" }
     ]
 });
 
