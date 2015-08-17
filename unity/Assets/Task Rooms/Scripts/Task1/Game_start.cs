@@ -14,8 +14,16 @@ public class Game_start : MonoBehaviour {
 		if (other.collider.tag == "Player" && !gameStarted)
 		{
 			gameStarted = true;
+
+            var httpConnector = GameObject.Find("TriggerStart").GetComponent<HttpConnector>();
+            httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetTask1Url, www =>
+            {
+                StartTask1(www.text);
+            });
 			
-			System.Random rnd = new System.Random();
+			/*
+             
+            System.Random rnd = new System.Random();
 			
 			task = rnd.Next(0,2);
 			if (task == 0)
@@ -79,9 +87,20 @@ public class Game_start : MonoBehaviour {
 				taskText1.text = "Из " + scale + " СС в " + scale2 + " СС:";
 				taskText2.text = Convert.ToString(number1, scale).ToUpper();
 			}
+            
+            */
 		}
 	}
-	
+
+    void StartTask1(string taskStr)
+    {
+        taskStr = taskStr.Replace("\"", "");
+        string[] task = taskStr.Split(',');
+        taskText1.text = task[0];
+        taskText2.text = task[1]; 
+    }
+
+    /*
 	public string GetResult()
 	{
 		if (task == 0)
@@ -102,6 +121,7 @@ public class Game_start : MonoBehaviour {
 		}
 		return "";
 	}
-	
+	*/
+
 }
 
