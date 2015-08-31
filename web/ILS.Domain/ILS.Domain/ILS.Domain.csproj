@@ -83,6 +83,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\FillDatabaseHelper.cs" />
+    <Compile Include="Task1Run.cs" />
+    <Compile Include="Task1Content.cs" />
     <Compile Include="TestGenerator\Settings\TGCountOfTaskMode.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="CourseRun.cs" />
@@ -107,8 +109,10 @@
     <Compile Include="TestGenerator\Settings\TGRatingCalculationMode.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="Task2Run.cs" />
     <Compile Include="TestRun.cs" />
     <Compile Include="Theme.cs" />
+    <Compile Include="Task2Content.cs" />
     <Compile Include="ThemeContent.cs" />
     <Compile Include="ThemeContentLink.cs" />
     <Compile Include="ThemeLink.cs" />

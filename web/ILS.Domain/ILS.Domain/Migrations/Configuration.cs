@@ -1,5 +1,6 @@
 ﻿namespace ILS.Domain.Migrations
 {
+    using System.Linq;
     using GameAchievements;
     using System;
     using System.Data.Entity.Migrations;
@@ -264,6 +265,61 @@
             context.Course.Remove(context.Course.Find(new Guid("61137184-8eda-4d36-9cb5-21aba2c911e0"))); //Математика
             context.Course.Remove(context.Course.Find(new Guid("3d0f6b8b-7c10-49c3-bdfe-788a73d839b5"))); //Связанная информатика
             context.Course.Find(new Guid("51b98495-2c83-43d5-aa3f-eb81f8cef8f3")).Name = "Подготовка к ЕГЭ";
+
+            #region Tasks
+            var courseRun = new CourseRun
+            {
+                Course = context.Course.First(course => course.Name == "Информатика"),
+                User = context.User.First(x => x.Name == "admin")
+            };
+            context.CourseRun.Add(courseRun);
+
+            var themeRun = new ThemeRun
+            {
+                CourseRun = courseRun,
+            };
+            context.ThemeRun.Add(themeRun);
+
+            Task1Content task1Content1 = new Task1Content
+            {
+                OrderNumber = 1,
+                Type = "operation",
+                Operation = "+",
+                Number1 = 5,
+                Number2 = 17,
+                Scale1 = 2,
+                Scale2 = 0,
+                Theme = context.Theme.First(theme => theme.Name == "Кодирование информации")
+            };
+            Task1Content task1Content2 = new Task1Content
+            {
+                OrderNumber = 2,
+                Type = "translation",
+                Operation = "",
+                Number1 = 29,
+                Number2 = 0,
+                Scale1 = 2,
+                Scale2 = 16,
+                Theme = context.Theme.First(theme => theme.Name == "Кодирование информации")
+            };
+            Task2Content task2Content1 = new Task2Content
+            {
+                OrderNumber = 1,
+                TaskString = "e(d(i(b,b),e(b,1)),i(1,0))",
+                Theme = context.Theme.First(theme => theme.Name == "Кодирование информации")
+            };
+            Task2Content task2Content2 = new Task2Content
+            {
+                OrderNumber = 2,
+                TaskString = "c(c(d(0,b),o(0,0)),c(o(1,0),e(b,0)))",
+                Theme = context.Theme.First(theme => theme.Name == "Кодирование информации")
+            };
+
+            context.ThemeContent.Add(task1Content1);
+            context.ThemeContent.Add(task1Content2);
+            context.ThemeContent.Add(task2Content1);
+            context.ThemeContent.Add(task2Content2);
+            #endregion
         }
     }
 }
