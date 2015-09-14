@@ -17,6 +17,10 @@ public class HttpConnector : MonoBehaviour
     public const string GetUsernameUrl = "/Render/GetUserName";
     public const string SaveGameAchievementUrl = "/Render/SaveGameAchievement";
     public const string GetUserCoinsUrl = "/Render/GetUserCoinsUrl";
+	public const string GetTask2Url = "/Task/GetTask2";
+	public const string CheckTask2Url = "/Task/CheckTask2";
+    public const string GetTask1Url = "/Task/GetTask1";
+    public const string CheckTask1Url = "/Task/CheckTask1";
 
     public void Get(string url, Action<WWW> onSuccess)
     {

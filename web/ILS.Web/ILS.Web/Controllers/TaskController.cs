@@ -1,0 +1,306 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Microsoft.CSharp;
+using System.CodeDom.Compiler;
+using System.Reflection;
+using System.Text;
+using ILS.Domain;
+
+namespace ILS.Web.Controllers
+{
+    public class TaskController : Controller
+    {
+        ILSContext context;
+
+        public TaskController(ILSContext context)
+        {
+            this.context = context;
+        }
+
+        public JsonResult GetTask1()
+        {
+            var tasks = context.ThemeContent.Where(themeContent => themeContent is Task1Content);
+            System.Random rnd = new System.Random();
+            int k = rnd.Next(0, tasks.Count());
+            var task = tasks.ToList()[k];
+
+            var user = GetCurrentUser();
+            var themeRun = context.ThemeRun.First(localThemeRun => localThemeRun.CourseRun.User_Id == user.Id /*&& localThemeRun.Theme_Id == task.Theme.Id*/);
+            var taskRuns = context.Task1Run.Where(localTask => localTask.ThemeRun.Id == themeRun.Id);
+            Task1Run taskRun;
+            if (taskRuns == null || taskRuns.Count() == 0)
+            {
+                taskRun = new Task1Run
+                {
+                    Task1Content = task as Task1Content,
+                    ThemeRun = themeRun,
+                };
+                context.Task1Run.Add(taskRun);
+            }
+            else
+            {
+                taskRun = taskRuns.First();
+                taskRun.Task1Content = task as Task1Content;
+            }
+
+            taskRun.AttemptsNumber = 0;
+            context.SaveChanges();
+
+            string taskStr = "";
+
+            if ((task as Task1Content).Type == "operation")
+            {
+                taskStr = "Действие в " + (task as Task1Content).Scale1 + " СС:" + "," + Convert.ToString((task as Task1Content).Number1, (task as Task1Content).Scale1).ToUpper() + " "
+                    + (task as Task1Content).Operation + " " + Convert.ToString((task as Task1Content).Number2, (task as Task1Content).Scale1).ToUpper();
+            }
+            else if ((task as Task1Content).Type == "translation")
+            {
+                taskStr = "Из " + (task as Task1Content).Scale1 + " СС в " + (task as Task1Content).Scale2 + " СС:" + ","
+                    + Convert.ToString((task as Task1Content).Number1, (task as Task1Content).Scale1).ToUpper();
+            }
+
+            return Json(taskStr, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CheckTask1(string answer)
+        {
+            var user = GetCurrentUser();
+            var taskRun = context.Task1Run.First(localTask => localTask.ThemeRun.CourseRun.User_Id == user.Id);
+
+            taskRun.AttemptsNumber++;
+
+            string correctAnswer = "";
+
+            if (taskRun.Task1Content.Type == "operation")
+            {
+                int result = 0;
+                switch (taskRun.Task1Content.Operation)
+                {
+                    case "+": result = taskRun.Task1Content.Number1 + taskRun.Task1Content.Number2; break;
+                    case "-": result = taskRun.Task1Content.Number1 - taskRun.Task1Content.Number2; break;
+                    case "*": result = taskRun.Task1Content.Number1 * taskRun.Task1Content.Number2; break;
+                    default: break;
+                }
+                correctAnswer = Convert.ToString(result, taskRun.Task1Content.Scale1).ToUpper();
+            }
+            else if (taskRun.Task1Content.Type == "translation")
+            {
+                correctAnswer = Convert.ToString(taskRun.Task1Content.Number1, taskRun.Task1Content.Scale2).ToUpper();
+            }
+
+            bool check = correctAnswer == answer;
+
+            if (check)
+            {
+                switch (taskRun.AttemptsNumber)
+                {
+                    case 1: taskRun.Result = 5; break;
+                    case 2: taskRun.Result = 4; break;
+                    case 3: taskRun.Result = 3; break;
+                    default: break;
+                }
+
+            }
+            else
+            {
+                if (taskRun.AttemptsNumber == 3)
+                {
+                    taskRun.Result = 2;
+                }
+            }
+
+            context.SaveChanges();
+
+            string resultStr = check + "," + correctAnswer + "," + taskRun.AttemptsNumber;
+
+            return Json(resultStr);
+        }
+
+        public JsonResult GetTask2()
+        {
+            var tasks = context.ThemeContent.Where(themeContent => themeContent is Task2Content);
+            System.Random rnd = new System.Random();
+            int k = rnd.Next(0, tasks.Count());
+            var task = tasks.ToList()[k];
+
+            var user = GetCurrentUser();
+            var themeRun = context.ThemeRun.First(localThemeRun => localThemeRun.CourseRun.User_Id == user.Id /*&& localThemeRun.Theme_Id == task.Theme.Id*/);
+            var taskRuns = context.Task2Run.Where(localTask => localTask.ThemeRun.Id == themeRun.Id);
+            Task2Run taskRun;
+            if (taskRuns == null || taskRuns.Count() == 0)
+            {
+                taskRun = new Task2Run
+                {
+                    Task2Content = task as Task2Content,
+                    ThemeRun = themeRun,
+                };
+                context.Task2Run.Add(taskRun);
+            }
+            else
+            {
+                taskRun = taskRuns.First();
+                taskRun.Task2Content = task as Task2Content;
+            }
+
+            taskRun.AttemptsNumber = 0;
+            context.SaveChanges();
+
+            return Json((taskRun.Task2Content as Task2Content).TaskString, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CheckTask2(string el1, string el2, string el3, string el4)
+        {
+            var user = GetCurrentUser();
+            var taskRun = context.Task2Run.First(localTask => localTask.ThemeRun.CourseRun.User_Id == user.Id);
+
+            taskRun.AttemptsNumber++;
+
+            string[] answer = new string[4] { el1, el2, el3, el4 };
+            string formula = taskRun.Task2Content.TaskString;
+
+            int k = 0;
+            for (int i = 0; i < formula.Length; i++)
+            {
+                if (formula[i] == 'b' || formula[i] == 'o')
+                {
+                    k++;
+                }
+            }
+
+            bool check = true;
+            for (int i = 0; i < k; i++)
+            {
+                if (answer[i] == "1" || answer[i] == "0")
+                {
+                    int pos = formula.IndexOf("b");
+                    formula = formula.Remove(pos, 1);
+                    formula = formula.Insert(pos, answer[i]);
+                }
+                if (answer[i] == "c" || answer[i] == "d" || answer[i] == "i" || answer[i] == "e")
+                {
+                    int pos = formula.IndexOf("o");
+                    formula = formula.Remove(pos, 1);
+                    formula = formula.Insert(pos, answer[i]);
+                }
+                if (answer[i] == "")
+                {
+                    check = false;
+                }
+            }
+
+            string resultStr = "";
+            bool check2 = false;
+
+            if (check)
+            {
+                check2 = FormulaExecuter.Eval(FormulaExecuter.PrepareFormula(formula));
+
+                if (check2)
+                {
+                    switch (taskRun.AttemptsNumber)
+                    {
+                        case 1: taskRun.Result = 5; break;
+                        case 2: taskRun.Result = 4; break;
+                        case 3: taskRun.Result = 3; break;
+                        default: break;
+                    }
+
+                }
+                else
+                {
+                    if (taskRun.AttemptsNumber == 3)
+                    {
+                        taskRun.Result = 2;
+                    }
+                }
+
+                context.SaveChanges();
+
+                resultStr = check2 + "," + taskRun.AttemptsNumber;
+
+                return Json(resultStr);
+            }
+
+            if (taskRun.AttemptsNumber == 3)
+            {
+                taskRun.Result = 2;
+            }
+
+            context.SaveChanges();
+
+            resultStr = check2 + "," + taskRun.AttemptsNumber;
+
+            return Json(resultStr);
+        }
+
+        private User GetCurrentUser()
+        {
+            return String.IsNullOrEmpty(HttpContext.User.Identity.Name) ? context.User.First(x => x.Name == "admin")
+                : context.User.First(x => x.Name == HttpContext.User.Identity.Name);
+        }
+
+        public class FormulaExecuter
+        {
+            public static string PrepareFormula(string f)
+            {
+
+                return f.Replace("1", "true").Replace("0", "false");
+            }
+
+            public static bool Eval(string expression)
+            {
+                CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+
+                string sourceCode = string.Format(@"
+                    namespace MyAssembly
+                    {{
+                        public class Evaluator
+                        {{
+                            public bool Eval()
+                            {{
+                                return {0};
+                            }}
+
+                            public static bool c(bool p1, bool p2)
+                            {{
+                                return (p1 && p2);
+                            }}
+
+
+                            public static bool d(bool p1, bool p2)
+                            {{
+                                return (p1 || p2);
+                            }}
+
+
+                            public static bool e(bool p1, bool p2)
+                            {{
+                                return (p1 == p2);
+                            }}
+
+
+                            public static bool i(bool p1, bool p2)
+                            {{
+                                return (!p1 || p2);
+                            }}
+                        }}
+                    }}
+
+                ", expression);
+
+                CompilerResults results =
+                    codeProvider
+                    .CompileAssemblyFromSource(new CompilerParameters(), new string[] { sourceCode });
+
+                Assembly assembly = results.CompiledAssembly;
+                dynamic evaluator =
+                    Activator.CreateInstance(assembly.GetType("MyAssembly.Evaluator"));
+                return evaluator.Eval();
+            }
+        }
+
+    }
+}
