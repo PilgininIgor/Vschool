@@ -8,7 +8,6 @@ using GameAchievements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
@@ -527,12 +526,18 @@ using System.Web.Script.Serialization;
 
         public ActionResult SaveGameAchievement(string triggerValue, string parameters)
         {
-            var achievementsManager = new AchievementsManager(context);
             var trigger = (AchievementTrigger)Enum.Parse(typeof(AchievementTrigger), triggerValue);
-            var changedAchievementRuns = achievementsManager.ExecuteAchievement(trigger, GetCurrentUser(), new Dictionary<string, object>());
+            //TODO support additional parameters
+           return SaveGameAchievement(trigger, new Dictionary<string, object>());
+        }
+
+        public ActionResult SaveGameAchievement(AchievementTrigger trigger, Dictionary<string, object> parameters)
+        {
+            var achievementsManager = new AchievementsManager(context);
+            var changedAchievementRuns = achievementsManager.ExecuteAchievement(trigger, GetCurrentUser(), parameters);
             return Json(changedAchievementRuns.Select(run => new
             {
-                name = run.GameAchievement.Name, 
+                name = run.GameAchievement.Name,
                 score = run.GameAchievement.Score,
                 result = run.Result,
                 passed = run.Passed,
@@ -632,8 +637,12 @@ using System.Web.Script.Serialization;
                 }
                 i++;
             }
-            new UserRating(context, GetCurrentUser().Id).CalculateRating();
             context.SaveChanges();
+            new UserRating(context, GetCurrentUser().Id).CalculateRating();
+            SaveGameAchievement(AchievementTrigger.Course, new Dictionary<string, object>
+            {
+                {AchievementsConstants.CourseIdParamName, course_run.Course_Id},
+            });
             return 1;
         }
 
@@ -788,7 +797,7 @@ using System.Web.Script.Serialization;
         private User GetCurrentUser()
         {
             //TODO MAKE REAL AUTHORIZATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            return String.IsNullOrEmpty(HttpContext.User.Identity.Name) ? context.User.First(x => x.Name == "admin")
+            return string.IsNullOrEmpty(HttpContext.User.Identity.Name) ? context.User.First(x => x.Name == "admin")
                 : context.User.First(x => x.Name == HttpContext.User.Identity.Name);
         }
     }
