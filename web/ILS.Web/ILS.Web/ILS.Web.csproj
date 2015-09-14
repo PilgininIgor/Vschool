@@ -397,24 +397,10 @@
     <Content Include="Content\Sprites\profile\achievement3.png" />
     <Content Include="Content\Sprites\profile\achievements.png" />
     <Content Include="Content\Sprites\profile\achievements_gold.png" />
-    <Content Include="Content\Sprites\profile\achievement\ach %281%29.png" />
-    <Content Include="Content\Sprites\profile\achievement\ach %282%29.png" />
-    <Content Include="Content\Sprites\profile\achievement\ach %283%29.png" />
-    <Content Include="Content\Sprites\profile\achievement\ach %284%29.png" />
-    <Content Include="Content\Sprites\profile\achievement\ach %285%29.png" />
-    <Content Include="Content\Sprites\profile\achievement\ach %286%29.png" />
-    <Content Include="Content\Sprites\profile\achievement\ach %287%29.png" />
-    <Content Include="Content\Sprites\profile\achievement\ach %288%29.png" />
-    <Content Include="Content\Sprites\profile\achievement\ach %289%29.png" />
-    <Content Include="Content\Sprites\profile\achievement\got500money.png" />
     <Content Include="Content\Sprites\profile\avatar.jpg" />
     <Content Include="Content\Sprites\profile\hexes.png" />
     <Content Include="Content\Sprites\profile\minimize.png" />
     <Content Include="Content\Sprites\profile\money.png" />
-    <Content Include="Content\Sprites\profile\progress.png" />
-    <Content Include="Content\Sprites\profile\progress_copper.png" />
-    <Content Include="Content\Sprites\profile\progress_gold.png" />
-    <Content Include="Content\Sprites\profile\progress_silver.png" />
     <Content Include="Content\Sprites\profile\rating.png" />
     <Content Include="Content\Sprites\profile\rating_gold.png" />
     <Content Include="Content\Sprites\profile\rating_silver.png" />
@@ -1000,6 +986,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Sprites\profile\achievement\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1012,10 +999,6 @@
       <Project>{22d7210b-2cbc-4dbe-bdd3-e8bfcfd508ee}</Project>
       <Name>ILS.Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\ext\resources\css\images\btn\Thumbs.db" />
-    <Content Include="Scripts\ext\resources\css\images\tools\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UnityDeploy\Main.unity3d" />
@@ -1059,7 +1042,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Sprites\profile\achievement\Thumbs.db" />
     <None Include="Properties\PublishProfiles\folder.pubxml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Masterhost.pubxml" />
