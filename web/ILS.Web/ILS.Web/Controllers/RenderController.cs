@@ -528,10 +528,10 @@ using System.Web.Script.Serialization;
         {
             var trigger = (AchievementTrigger)Enum.Parse(typeof(AchievementTrigger), triggerValue);
             //TODO support additional parameters
-           return SaveGameAchievement(trigger, new Dictionary<string, object>());
+           return SaveGameAchievementByTrigger(trigger, new Dictionary<string, object>());
         }
 
-        public ActionResult SaveGameAchievement(AchievementTrigger trigger, Dictionary<string, object> parameters)
+        public ActionResult SaveGameAchievementByTrigger(AchievementTrigger trigger, Dictionary<string, object> parameters)
         {
             var achievementsManager = new AchievementsManager(context);
             var changedAchievementRuns = achievementsManager.ExecuteAchievement(trigger, GetCurrentUser(), parameters);
@@ -639,7 +639,7 @@ using System.Web.Script.Serialization;
             }
             context.SaveChanges();
             new UserRating(context, GetCurrentUser().Id).CalculateRating();
-            SaveGameAchievement(AchievementTrigger.Course, new Dictionary<string, object>
+            SaveGameAchievementByTrigger(AchievementTrigger.Course, new Dictionary<string, object>
             {
                 {AchievementsConstants.CourseIdParamName, course_run.Course_Id},
             });
