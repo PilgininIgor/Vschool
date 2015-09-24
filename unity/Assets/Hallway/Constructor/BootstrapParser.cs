@@ -191,6 +191,13 @@ public class BootstrapParser : MonoBehaviour {
 			"]"+
 			"}";
 
+
+    public static readonly string SceneNameQuiz = "QuizRoom";
+    public static readonly string SceneNameLecture = "LectureRoom";
+    public static readonly string SceneNameTask1 = "task1Room";
+    public static readonly string SceneNameTask2 = "task2Room";
+
+
 	public GameObject MainCorridorStart;
 	public GameObject MainCorridorMiddle;
 	public GameObject MainCorridorEnd;
@@ -243,13 +250,66 @@ public class BootstrapParser : MonoBehaviour {
 		}
 
 		//достраиваем лекционные и тестовые комнаты, сразу инициализируем их и задаем аналогичную связь между будками
-		GameObject room = null;
-		float y1 = 0, y2 = -1.25f;
+        //нужно переделать - чтобы при входе в будки, телепортирующие в комнаты тестов, лекций и пр., осуществлялся переход в новую сцену
+		
+        /*GameObject room = null;
+		float y1 = 0, y2 = -1.25f;*/
 
 		for (int i = 0; i < data.themes.Count; i++) {
 			int test_num = 0, lec_num = 0;
 			for(int j = 0; j < data.themes[i].contents.Count; j++){
-				if (data.themes[i].contents[j].type == "test") {
+
+                string sceneName = "";
+                switch (data.themes[i].contents[j].type)
+                {
+                    case "test": sceneName = SceneNameQuiz; break;
+                    case "lecture": sceneName = SceneNameLecture; break;
+                    
+                    // !!! добавить комнаты с заданиями !!!
+                    
+                    default: break;
+                }
+
+                if (j % 2 == 0)
+                {
+                    c_other[i][1 + j / 2].transform.Find("TeleportBooth_Left").GetComponent<TeleportToSceneScript>().SceneNameRoom = sceneName;
+                    c_other[i][1 + j / 2].transform.Find("TeleportBooth_Left").GetComponent<TeleportToSceneScript>().content = data.themes[i].contents[j];
+                    c_other[i][1 + j / 2].transform.Find("TeleportBooth_Left").GetComponent<TeleportToSceneScript>().theme_num = i;
+                    switch (data.themes[i].contents[j].type)
+                    {
+                        case "test":
+                            c_other[i][1 + j / 2].transform.Find("TeleportBooth_Left").GetComponent<TeleportToSceneScript>().content_num = test_num;
+                            test_num++; 
+                            break;
+                        case "lecture":
+                            c_other[i][1 + j / 2].transform.Find("TeleportBooth_Left").GetComponent<TeleportToSceneScript>().content_num = lec_num;
+                            lec_num++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    c_other[i][1 + j / 2].transform.Find("TeleportBooth_Right").GetComponent<TeleportToSceneScript>().SceneNameRoom = sceneName;
+                    c_other[i][1 + j / 2].transform.Find("TeleportBooth_Right").GetComponent<TeleportToSceneScript>().content = data.themes[i].contents[j];
+                    c_other[i][1 + j / 2].transform.Find("TeleportBooth_Right").GetComponent<TeleportToSceneScript>().theme_num = i;
+                    switch (data.themes[i].contents[j].type)
+                    {
+                        case "test":
+                            c_other[i][1 + j / 2].transform.Find("TeleportBooth_Right").GetComponent<TeleportToSceneScript>().content_num = test_num;
+                            test_num++;
+                            break;
+                        case "lecture":
+                            c_other[i][1 + j / 2].transform.Find("TeleportBooth_Right").GetComponent<TeleportToSceneScript>().content_num = lec_num;
+                            lec_num++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+				/*if (data.themes[i].contents[j].type == "test") {
                     room = (GameObject)Instantiate(QuizRoomA);
 					room.tag = "Clone";
                     //room.transform.position.y = y2;
@@ -285,7 +345,7 @@ public class BootstrapParser : MonoBehaviour {
 						room.transform.Find("TeleportBooth").gameObject;
 					room.transform.Find("TeleportBooth").GetComponent<TeleportScript>().Destination = 
 						c_other[i][1+j/2].transform.Find("TeleportBooth_Right").gameObject;
-				}
+				}*/
 			}
 		}
 

@@ -6,8 +6,8 @@ using System.Collections.Generic;
 public class HttpConnector : MonoBehaviour
 {
     //TODO move to config file
-//    public const string ServerUrl = "http://localhost:63866";
-    public const string ServerUrl = "http://virtual.itschool.ssau.ru";
+    public const string ServerUrl = "http://localhost:63866";
+  //  public const string ServerUrl = "http://virtual.itschool.ssau.ru";
 
     public const string CourseDataUrl = "/Render/UnityData";
     public const string StatUrl = "/Render/UnityStat";
