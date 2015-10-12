@@ -155,6 +155,8 @@ public class CourseSelection : MonoBehaviour
             httpConnector = GameObject.Find("Bootstrap").GetComponent<HttpConnector>();
         httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CourseDataUrl, parameters, www =>
         {
+            Global.course_json = www.text; //запоминаем json курса
+
             BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
             bootstrapParser.CourseConstructor(www.text);
 			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.StatUrl, parameters, w =>

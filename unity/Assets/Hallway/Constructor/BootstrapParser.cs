@@ -275,6 +275,7 @@ public class BootstrapParser : MonoBehaviour {
                     c_other[i][1 + j / 2].transform.Find("TeleportBooth_Left").GetComponent<TeleportToSceneScript>().SceneNameRoom = sceneName;
                     c_other[i][1 + j / 2].transform.Find("TeleportBooth_Left").GetComponent<TeleportToSceneScript>().content = data.themes[i].contents[j];
                     c_other[i][1 + j / 2].transform.Find("TeleportBooth_Left").GetComponent<TeleportToSceneScript>().theme_num = i;
+                    c_other[i][1 + j / 2].transform.Find("TeleportBooth_Left").GetComponent<TeleportToSceneScript>().be_ready_to_receive = false;
                     switch (data.themes[i].contents[j].type)
                     {
                         case "test":
@@ -294,6 +295,7 @@ public class BootstrapParser : MonoBehaviour {
                     c_other[i][1 + j / 2].transform.Find("TeleportBooth_Right").GetComponent<TeleportToSceneScript>().SceneNameRoom = sceneName;
                     c_other[i][1 + j / 2].transform.Find("TeleportBooth_Right").GetComponent<TeleportToSceneScript>().content = data.themes[i].contents[j];
                     c_other[i][1 + j / 2].transform.Find("TeleportBooth_Right").GetComponent<TeleportToSceneScript>().theme_num = i;
+                    c_other[i][1 + j / 2].transform.Find("TeleportBooth_Right").GetComponent<TeleportToSceneScript>().be_ready_to_receive = false;
                     switch (data.themes[i].contents[j].type)
                     {
                         case "test":

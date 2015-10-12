@@ -10,4 +10,7 @@ public class Global
     public static DataStructures.ThemeContent content;
     public static int theme_num;
     public static int content_num;
+    public static Transform teleportBooth;
+    public static string course_json;
+    public static bool returning;
 }
