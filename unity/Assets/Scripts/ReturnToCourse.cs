@@ -11,7 +11,7 @@ public class ReturnToCourse : MonoBehaviour
             var TeleportBoothArray = GameObject.FindGameObjectsWithTag("TeleportBooth");
             for (var i = 0; i < TeleportBoothArray.Length; i++)
             {
-                if (TeleportBoothArray[i].transform.position == Global.teleportBooth.position)
+                if (TeleportBoothArray[i].transform.position == Global.teleportBoothPos)
                 {
                     TeleportBoothArray[i].GetComponent<TeleportToSceneScript>().be_ready_to_receive = true;
                     GameObject Player = GameObject.Find("MainCamera").GetComponent<OrbitCam>().player;
