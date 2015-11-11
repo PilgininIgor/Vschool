@@ -16,6 +16,14 @@ public class ReturnToCourse : MonoBehaviour
                     TeleportBoothArray[i].GetComponent<TeleportToSceneScript>().be_ready_to_receive = true;
                     GameObject Player = GameObject.Find("MainCamera").GetComponent<OrbitCam>().player;
                     Player.transform.position = TeleportBoothArray[i].transform.position;
+
+                    //запоминаем угол, на который повернута будка-получатель
+                    var rt = Mathf.Round(TeleportBoothArray[i].transform.localRotation.eulerAngles.y);
+                    //ручками поворачиваем камеру так, чтобы она смотрела на будку
+                    //GameObject.Find("MainCamera").GetComponent<OrbitCam>().x = rt + 180;
+                    //поворачиваем персонажа так, чтобы он стоял лицом к выходу из будки
+                    Player.transform.rotation = Quaternion.AngleAxis(rt, Player.transform.up);
+
                     break;
                 }
             }
