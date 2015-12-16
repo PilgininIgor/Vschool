@@ -191,6 +191,65 @@ public class BootstrapParser : MonoBehaviour {
 			"]"+
 			"}";
 
+    static string JSONTestString2 =
+            "{" +
+              "\"name\":\"Информатика\"," +
+              "\"themes\":" +
+              "[" +
+              "{" +
+                "\"id\":\"2ef6b138-b51c-445a-8aa2-eb0e36bca870\"," +
+                "\"name\":\"Введение\"," +
+                "\"contents\":" +
+                "[" +
+                "{" +
+                  "\"id\":\"517213c4-2e23-4ca2-98dc-8237f50ef79f\"," +
+                  "\"name\":\"Вводная лекция\"," +
+                  "\"type\":\"lecture\"," +
+                  "\"paragraphs\":" +
+                  "[" +
+                  "{\"orderNumber\":1,\"header\":\"Введение\",\"text\":\"Тут следует дико длинная строчка 1\",\"pictures\":[]}," +
+                  "{\"orderNumber\":2,\"header\":\"Информация\",\"text\":\"Тут следует дико длинная строчка 2\",\"pictures\":[]}" +
+                  "]," +
+                  "\"maxMinutes\":0," +
+                  "\"questions\":null," +
+                  "\"outputThemeContentLinks\":[]" +
+                "}," +
+                "{" +
+                  "\"id\":\"527213c4-2e23-4ca2-98dc-8238f50ef79f\"," +
+                  "\"name\":\"Вводная лекция 2\"," +
+                  "\"type\":\"lecture\"," +
+                  "\"paragraphs\":" +
+                  "[" +
+                  "{\"orderNumber\":1,\"header\":\"Введение\",\"text\":\"Тут следует дико длинная строчка 3\",\"pictures\":[]}," +
+                  "{\"orderNumber\":2,\"header\":\"Информация\",\"text\":\"Тут следует дико длинная строчка 4\",\"pictures\":[]}" +
+                  "]," +
+                  "\"maxMinutes\":0," +
+                  "\"questions\":null," +
+                  "\"outputThemeContentLinks\":[]" +
+                "}," +
+                "{" +
+                  "\"id\":\"537213c4-2e23-4ca2-98dc-8239f50ef79f\"," +
+                  "\"name\":\"Задание 1\"," +
+                  "\"type\":\"task1\"," +
+                  "\"paragraphs\":null," +
+                  "\"maxMinutes\":0," +
+                  "\"questions\":null," +
+                  "\"outputThemeContentLinks\":[]" +
+                "}," +
+                "{" +
+                  "\"id\":\"547213c4-2e23-4ca2-98dc-8230f50ef79f\"," +
+                  "\"name\":\"Задание 2\"," +
+                  "\"type\":\"task2\"," +
+                  "\"paragraphs\":null," +
+                  "\"maxMinutes\":0," +
+                  "\"questions\":null," +
+                  "\"outputThemeContentLinks\":[]" +
+                "}" +
+                "]," +
+                "\"outputThemeLinks\":[]" +
+              "}" +
+              "]" +
+            "}";
 
     public static readonly string SceneNameQuiz = "QuizRoom";
     public static readonly string SceneNameLecture = "LectureRoom";
@@ -214,7 +273,9 @@ public class BootstrapParser : MonoBehaviour {
 		var collected = GameObject.FindGameObjectsWithTag("Clone");
 		sdlng = 0;
 
-        DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(json);
+        //DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(json);
+        DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(JSONTestString2);     
+
 		//строим главный коридор и получаем массив ссылок на его кусочки
 		//c_main[0] - это начало, c_main[c_main.length-1] - конец, а все между - серединки
 		GameObject[] c_main = BuildMainCorridor(data.themes);
@@ -264,8 +325,8 @@ public class BootstrapParser : MonoBehaviour {
                 {
                     case "test": sceneName = SceneNameQuiz; break;
                     case "lecture": sceneName = SceneNameLecture; break;
-                    
-                    // !!! добавить комнаты с заданиями !!!
+                    case "task1": sceneName = SceneNameTask1; break;
+                    case "task2": sceneName = SceneNameTask2; break;   
                     
                     default: break;
                 }
