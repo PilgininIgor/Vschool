@@ -229,7 +229,7 @@ using System.Web.Script.Serialization;
                         id = y.Id,
                         name = y.Name,
                         //type = (y is Lecture) ? "lecture" : "test",
-                        type = (y is Lecture) ? "lecture" : (y is Test) ? "test" : (y is Task1Content) ? "task1" : "task2",
+                        type = (y is Lecture) ? "lecture" : (y is Test) ? "test" : (y is Task1Content) ? "task1" : (y is Task2Content) ? "task2" : "island",
                         paragraphs = (y is Lecture) ? ((Lecture)y).Paragraphs.OrderBy(z => z.OrderNumber).Select(z => new
                         {
                             orderNumber = z.OrderNumber,

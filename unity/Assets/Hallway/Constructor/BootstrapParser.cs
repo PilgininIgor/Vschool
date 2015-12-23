@@ -283,8 +283,8 @@ public class BootstrapParser : MonoBehaviour {
 		var collected = GameObject.FindGameObjectsWithTag("Clone");
 		sdlng = 0;
 
-        //DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(json);
-        DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(JSONTestString2);     
+        DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(json);
+        //DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(JSONTestString2);     
 
 		//строим главный коридор и получаем массив ссылок на его кусочки
 		//c_main[0] - это начало, c_main[c_main.length-1] - конец, а все между - серединки

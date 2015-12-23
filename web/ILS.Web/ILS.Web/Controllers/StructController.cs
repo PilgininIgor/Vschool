@@ -251,10 +251,10 @@ namespace ILS.Web.Controllers
             if (theme != null)
             {
                 //уровень тем - возвращаем список лекций и тестов
-                return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content))).OrderBy(x => x.OrderNumber).Select(x => new
+                return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content) || (x is IslandContent))).OrderBy(x => x.OrderNumber).Select(x => new
                 {
                     //iconCls = (x is Lecture) ? "lecture" : "test",
-                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : "tgtasktemplate",
+                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is IslandContent) ? "location" : "tgtasktemplate",
                     id = x.Id.ToString(),
                     text = x.Name,
                     difficulty = (x is Test)? ((Test)x).TestDifficulty : 0,
@@ -758,6 +758,18 @@ namespace ILS.Web.Controllers
             return tc;
         }
 
+        public Guid AddIsland(Guid parent_id)
+        {
+            var t = context.Theme.Find(parent_id);
+            int num;
+            if (t.ThemeContents.Count == 0) num = 1;
+            else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
+            var tc = new IslandContent { OrderNumber = num, Name = "Остров" };
+            t.ThemeContents.Add(tc);
+            context.SaveChanges();
+            return tc.Id;
+        }
+
         public string RemoveContent(Guid id, Guid parent_id)
         {
             ThemeContent tc = context.ThemeContent.Find(id);
@@ -769,6 +781,7 @@ namespace ILS.Web.Controllers
             else if (tc is Test) path += "/Test_";
             else if (tc is Task1Content) path += "/Task1Content_";
             else if (tc is Task2Content) path += "/Task2Content_";
+            else if (tc is IslandContent) path += "/IslandContent_";
             path += tc.Id.ToString();
             if (Directory.Exists(path)) Directory.Delete(path, true);
             RemoveThemeContentLinks(tc);

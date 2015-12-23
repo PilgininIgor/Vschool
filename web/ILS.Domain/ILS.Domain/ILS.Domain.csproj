@@ -83,6 +83,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\FillDatabaseHelper.cs" />
+    <Compile Include="IslandContent.cs" />
     <Compile Include="Task1Run.cs" />
     <Compile Include="Task1Content.cs" />
     <Compile Include="TestGenerator\Settings\TGCountOfTaskMode.cs" />

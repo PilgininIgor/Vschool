@@ -211,6 +211,7 @@
     <Content Include="Content\demo.mp4" />
     <Content Include="Content\icons.css" />
     <Content Include="Content\icons\loading_gear.png" />
+    <Content Include="Content\icons\location.png" />
     <Content Include="Content\icons\tgtest.png" />
     <Content Include="Content\icons\test.png" />
     <Content Include="Content\icons\tgtasktemplate.png" />
