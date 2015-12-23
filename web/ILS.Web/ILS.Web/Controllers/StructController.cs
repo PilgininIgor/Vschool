@@ -738,7 +738,10 @@ namespace ILS.Web.Controllers
             var tasks = new List<string> //список возможных заданий
             {
                 "e(d(i(b,b),e(b,1)),i(1,0))",
-                "c(c(d(0,b),o(0,0)),c(o(1,0),e(b,0)))"
+                "c(c(d(0,b),o(0,0)),c(o(1,0),e(b,0)))",
+                "e(c(i(1,b),d(0,b)),i(o(1,0),o(0,0)))",
+                "c(e(b,b),c(o(1,0),b))",
+                "e(d(c(1,b),b),e(o(1,0),b))"
             };
 
             System.Random rnd = new System.Random();
