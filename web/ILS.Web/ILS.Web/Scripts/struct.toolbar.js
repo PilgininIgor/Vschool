@@ -454,6 +454,15 @@ var tlbar = new Ext.panel.Panel({
     }, {
         xtype: 'button', text: 'Загрузить из moodle', iconCls: 'moodle', hidden: true,
         handler: function () { addMoodle(link_addMoodle); }
+    }, {
+        xtype: 'button', text: 'Добавить задание на СС', iconCls: 'add', hidden: true,
+        handler: function () { addEntity(link_addTask1); }
+    }, {
+        xtype: 'button', text: 'Добавить задание на логику', iconCls: 'add', hidden: true,
+        handler: function () { addEntity(link_addTask2); }
+    }, {
+        xtype: 'button', text: 'Удалить задание', iconCls: 'remove', hidden: true,
+        handler: function () { removeEntity(link_removeContent); }
     }/*, {
         text: 'Обновить список из Moodle', iconCls: 'moodleUpdate', hidden: true,
         handler: function () { updateListMoodle(link_moodleListUpdate); }

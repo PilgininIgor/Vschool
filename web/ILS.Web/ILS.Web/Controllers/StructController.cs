@@ -251,9 +251,10 @@ namespace ILS.Web.Controllers
             if (theme != null)
             {
                 //уровень тем - возвращаем список лекций и тестов
-                return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test))).OrderBy(x => x.OrderNumber).Select(x => new
+                return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content))).OrderBy(x => x.OrderNumber).Select(x => new
                 {
-                    iconCls = (x is Lecture) ? "lecture" : "test",
+                    //iconCls = (x is Lecture) ? "lecture" : "test",
+                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : "tgtasktemplate",
                     id = x.Id.ToString(),
                     text = x.Name,
                     difficulty = (x is Test)? ((Test)x).TestDifficulty : 0,
@@ -275,7 +276,7 @@ namespace ILS.Web.Controllers
                         leaf = true
                     }), JsonRequestBehavior.AllowGet);
                 }
-                else
+                else if (tc is Test)
                 {
                     //уровень тестов - возвращаем список вопросов
                     Test test = (Test)tc;
@@ -613,6 +614,147 @@ namespace ILS.Web.Controllers
             return tc.Id;
         }
 
+        public Guid AddTask1(Guid parent_id)
+        {
+            var t = context.Theme.Find(parent_id);
+            int num;
+            if (t.ThemeContents.Count == 0) num = 1;
+            else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
+            var tc = RandomTask1(num);
+            t.ThemeContents.Add(tc);
+            context.SaveChanges();
+            return tc.Id;
+        }
+
+        Task1Content RandomTask1(int num) //Генерация рандомного задания на алгебру логики. Заменить на форму
+        {
+            Task1Content tc = new Task1Content { OrderNumber = num, Name = "Задание на системы счисления" };
+            
+            int task, scale, scale2, number1, number2;
+            string operation = "";
+
+            System.Random rnd = new System.Random();
+
+            task = rnd.Next(0, 2);
+            if (task == 0)
+            {
+                scale = rnd.Next(0, 3);
+                switch (scale)
+                {
+                    case 0: scale = 2; break;
+                    case 1: scale = 8; break;
+                    case 2: scale = 16; break;
+                    default: break;
+                }
+                int _operation = rnd.Next(0, 2);
+                switch (_operation)
+                {
+                    case 0: operation = "+"; break;
+                    case 1: operation = "-"; break;
+                    case 2: operation = "*"; break;
+                    default: break;
+                }
+                number1 = rnd.Next(10, 51);
+                do
+                {
+                    number2 = rnd.Next(10, 51);
+                }
+                while (number1 == number2);
+                if (number2 > number1)
+                {
+                    int b = number2;
+                    number2 = number1;
+                    number1 = b;
+                }
+
+                tc = new Task1Content
+                {
+                    OrderNumber = num,
+                    Name = "Задание на системы счисления",
+                    Type = "operation",
+                    Operation = operation,
+                    Number1 = number1,
+                    Number2 = number2,
+                    Scale1 = scale,
+                    Scale2 = 0
+                };
+            }
+            else if (task == 1)
+            {
+                scale = rnd.Next(0, 4);
+                switch (scale)
+                {
+                    case 0: scale = 2; break;
+                    case 1: scale = 8; break;
+                    case 2: scale = 10; break;
+                    case 3: scale = 16; break;
+                    default: break;
+                }
+                do
+                {
+                    scale2 = rnd.Next(0, 4);
+                    switch (scale2)
+                    {
+                        case 0: scale2 = 2; break;
+                        case 1: scale2 = 8; break;
+                        case 2: scale2 = 10; break;
+                        case 3: scale2 = 16; break;
+                        default: break;
+                    }
+                }
+                while (scale == scale2);
+                number1 = rnd.Next(10, 51);
+
+                tc = new Task1Content
+                {
+                    OrderNumber = num,
+                    Name = "Задание на системы счисления",
+                    Type = "translation",
+                    Operation = "",
+                    Number1 = number1,
+                    Number2 = 0,
+                    Scale1 = scale,
+                    Scale2 = scale2
+                };
+            }
+
+            return tc;
+        }
+
+        public Guid AddTask2(Guid parent_id)
+        {
+            var t = context.Theme.Find(parent_id);
+            int num;
+            if (t.ThemeContents.Count == 0) num = 1;
+            else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
+            var tc = RandomTask2(num);
+            t.ThemeContents.Add(tc);
+            context.SaveChanges();
+            return tc.Id;
+        }
+
+        Task2Content RandomTask2(int num) //Выбор одного из заданий на алгебру логики. Заменить на форму
+        {
+            var tasks = new List<string> //список возможных заданий
+            {
+                "e(d(i(b,b),e(b,1)),i(1,0))",
+                "c(c(d(0,b),o(0,0)),c(o(1,0),e(b,0)))"
+            };
+
+            System.Random rnd = new System.Random();
+
+            int i = rnd.Next(0, tasks.Count);
+
+            Task2Content tc = new Task2Content
+            {
+                OrderNumber = num,
+                Name = "Задание на алгебру логики",
+                TaskString = tasks[i]
+            };
+
+            return tc;
+        }
+
         public string RemoveContent(Guid id, Guid parent_id)
         {
             ThemeContent tc = context.ThemeContent.Find(id);
@@ -620,7 +762,10 @@ namespace ILS.Web.Controllers
             string path = Server.MapPath("~/Content/pics_base");
             path += "/Course_" + tc.Theme.Course_Id.ToString();
             path += "/Theme_" + tc.Theme_Id.ToString();
-            if (tc is Lecture) path += "/Lecture_"; else path += "/Test_";
+            if (tc is Lecture) path += "/Lecture_";
+            else if (tc is Test) path += "/Test_";
+            else if (tc is Task1Content) path += "/Task1Content_";
+            else if (tc is Task2Content) path += "/Task2Content_";
             path += tc.Id.ToString();
             if (Directory.Exists(path)) Directory.Delete(path, true);
             RemoveThemeContentLinks(tc);
@@ -883,6 +1028,8 @@ namespace ILS.Web.Controllers
             return "OK";
         }
         #endregion
+
+        #region Moodle
 
         /*пример работы со словарями
         public ActionResult ReadTest(Guid id)
@@ -1389,5 +1536,7 @@ namespace ILS.Web.Controllers
             context.SaveChanges(); context_obj.SaveChanges();
             return "{\"success\":true}";
         }
+
+        #endregion
     }
 }

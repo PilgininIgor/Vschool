@@ -37,6 +37,8 @@ changeToEnglish = function () {
     tlbar.items.items[10].setText('Add a question'); tlbar.items.items[11].setText('Remove the question');
     tlbar.items.items[12].setText('Move up'); tlbar.items.items[13].setText('Move down');
     tlbar.items.items[14].setText('Upload a file with a lecture'); tlbar.items.items[15].setText('Upload a file with a test');
-    tlbar.items.items[16].setText('Upload from Moodle'); //tlbar.items.items[17].setText('Update list from Moodle');
+    tlbar.items.items[16].setText('Upload from Moodle'); tlbar.items.items[17].setText('Add numeric systems task');
+    tlbar.items.items[18].setText('Add logic task'); tlbar.items.items[19].setText('Remove task');
+    //tlbar.items.items[17].setText('Update list from Moodle');
     tree.setTitle('List of learning materials');
 }

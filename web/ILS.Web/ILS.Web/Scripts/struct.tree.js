@@ -71,11 +71,13 @@ tree.on('selectionchange', function (dataView, selections) {
                             if (this.form.getValues().type == "course") form_cttc.setTitle("Курс");
                             else if (this.form.getValues().type == "theme") form_cttc.setTitle("Тема");
                             else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Лекция");
+                            else if (this.form.getValues().type == "task1" || this.form.getValues().type == "task2") form_cttc.setTitle("Задание");
                             else form_cttc.setTitle("Тест");
                         } else {
                             if (this.form.getValues().type == "course") form_cttc.setTitle("Course");
                             else if (this.form.getValues().type == "theme") form_cttc.setTitle("Theme");
                             else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Lecture");
+                            else if (this.form.getValues().type == "task1" || this.form.getValues().type == "task2") form_cttc.setTitle("Task");
                             else form_cttc.setTitle("Test");
                         }
                     }
@@ -124,22 +126,25 @@ tree.on('selectionchange', function (dataView, selections) {
         tlbar.items.items[4].hide(); tlbar.items.items[5].hide(); tlbar.items.items[6].hide(); tlbar.items.items[7].hide();
         tlbar.items.items[8].hide(); tlbar.items.items[9].hide(); tlbar.items.items[10].hide(); tlbar.items.items[11].hide();
         tlbar.items.items[12].hide(); tlbar.items.items[13].hide(); tlbar.items.items[14].hide(); tlbar.items.items[15].hide();
-        tlbar.items.items[16].hide(); //tlbar.items.items[17].hide();
+        tlbar.items.items[16].hide(); tlbar.items.items[17].hide(); tlbar.items.items[18].hide(); tlbar.items.items[19].hide(); //tlbar.items.items[17].hide();
         switch (d) {
             case 1:
                 tlbar.items.items[0].show(); tlbar.items.items[1].show(); tlbar.items.items[2].show();
                 break;
             case 2:
                 tlbar.items.items[3].show(); tlbar.items.items[4].show(); tlbar.items.items[6].show();
-                tlbar.items.items[12].show(); tlbar.items.items[13].show();
-                tlbar.items.items[16].show();
+                tlbar.items.items[17].show(); tlbar.items.items[18].show();
+                tlbar.items.items[12].show(); tlbar.items.items[13].show();                
+                tlbar.items.items[16].show();                
                 //tlbar.items.items[17].show();
                 break;
             case 3:
                 if (selections[0].raw.iconCls == "test") {
                     tlbar.items.items[7].show(); tlbar.items.items[10].show(); tlbar.items.items[15].show();
-                } else {
+                } else if (selections[0].raw.iconCls == "lecture") {
                     tlbar.items.items[5].show(); tlbar.items.items[8].show(); tlbar.items.items[14].show();
+                } else {
+                    tlbar.items.items[19].show();
                 }
                 tlbar.items.items[12].show(); tlbar.items.items[13].show();
                 break;

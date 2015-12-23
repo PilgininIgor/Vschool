@@ -280,7 +280,7 @@
             };
             context.ThemeRun.Add(themeRun);
 
-            Task1Content task1Content1 = new Task1Content
+            /*Task1Content task1Content1 = new Task1Content
             {
                 OrderNumber = 1,
                 Type = "operation",
@@ -318,7 +318,7 @@
             context.ThemeContent.Add(task1Content1);
             context.ThemeContent.Add(task1Content2);
             context.ThemeContent.Add(task2Content1);
-            context.ThemeContent.Add(task2Content2);
+            context.ThemeContent.Add(task2Content2);*/
             #endregion
         }
     }
