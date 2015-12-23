@@ -244,6 +244,15 @@ public class BootstrapParser : MonoBehaviour {
                   "\"maxMinutes\":0," +
                   "\"questions\":null," +
                   "\"outputThemeContentLinks\":[]" +
+                "}," +
+                "{" +
+                  "\"id\":\"557213c4-2e23-4ca2-98dc-8231f50ef79f\"," +
+                  "\"name\":\"Остров\"," +
+                  "\"type\":\"island\"," +
+                  "\"paragraphs\":null," +
+                  "\"maxMinutes\":0," +
+                  "\"questions\":null," +
+                  "\"outputThemeContentLinks\":[]" +
                 "}" +
                 "]," +
                 "\"outputThemeLinks\":[]" +
@@ -255,6 +264,7 @@ public class BootstrapParser : MonoBehaviour {
     public static readonly string SceneNameLecture = "LectureRoom";
     public static readonly string SceneNameTask1 = "task1Room";
     public static readonly string SceneNameTask2 = "task2Room";
+    public static readonly string SceneNameIsland = "Islands";
 
 
 	public GameObject MainCorridorStart;
@@ -273,8 +283,8 @@ public class BootstrapParser : MonoBehaviour {
 		var collected = GameObject.FindGameObjectsWithTag("Clone");
 		sdlng = 0;
 
-        DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(json);
-        //DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(JSONTestString2);     
+        //DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(json);
+        DataStructures.Course data = JsonReader.Deserialize<DataStructures.Course>(JSONTestString2);     
 
 		//строим главный коридор и получаем массив ссылок на его кусочки
 		//c_main[0] - это начало, c_main[c_main.length-1] - конец, а все между - серединки
@@ -326,7 +336,8 @@ public class BootstrapParser : MonoBehaviour {
                     case "test": sceneName = SceneNameQuiz; break;
                     case "lecture": sceneName = SceneNameLecture; break;
                     case "task1": sceneName = SceneNameTask1; break;
-                    case "task2": sceneName = SceneNameTask2; break;   
+                    case "task2": sceneName = SceneNameTask2; break;
+                    case "island": sceneName = SceneNameIsland; break;  
                     
                     default: break;
                 }
