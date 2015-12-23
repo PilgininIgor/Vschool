@@ -254,7 +254,7 @@ namespace ILS.Web.Controllers
                 return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content) || (x is IslandContent))).OrderBy(x => x.OrderNumber).Select(x => new
                 {
                     //iconCls = (x is Lecture) ? "lecture" : "test",
-                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is IslandContent) ? "location" : "tgtasktemplate",
+                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is IslandContent) ? "tgtasktemplate" : "tgtest",
                     id = x.Id.ToString(),
                     text = x.Name,
                     difficulty = (x is Test)? ((Test)x).TestDifficulty : 0,
@@ -764,7 +764,7 @@ namespace ILS.Web.Controllers
             int num;
             if (t.ThemeContents.Count == 0) num = 1;
             else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
-            var tc = new IslandContent { OrderNumber = num, Name = "Остров" };
+            var tc = new IslandContent { OrderNumber = num, Name = "Локация Остров" };
             t.ThemeContents.Add(tc);
             context.SaveChanges();
             return tc.Id;

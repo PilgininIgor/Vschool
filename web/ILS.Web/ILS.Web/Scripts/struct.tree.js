@@ -72,14 +72,14 @@ tree.on('selectionchange', function (dataView, selections) {
                             else if (this.form.getValues().type == "theme") form_cttc.setTitle("Тема");
                             else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Лекция");
                             else if (this.form.getValues().type == "task1" || this.form.getValues().type == "task2") form_cttc.setTitle("Задание");
-                            else if (this.form.getValues().type == "island") form_cttc.setTitle("Остров");
+                            else if (this.form.getValues().type == "island") form_cttc.setTitle("Локация Остров");
                             else form_cttc.setTitle("Тест");
                         } else {
                             if (this.form.getValues().type == "course") form_cttc.setTitle("Course");
                             else if (this.form.getValues().type == "theme") form_cttc.setTitle("Theme");
                             else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Lecture");
                             else if (this.form.getValues().type == "task1" || this.form.getValues().type == "task2") form_cttc.setTitle("Task");
-                            else if (this.form.getValues().type == "island") form_cttc.setTitle("Island");
+                            else if (this.form.getValues().type == "island") form_cttc.setTitle("Island Location");
                             else form_cttc.setTitle("Test");
                         }
                     }
@@ -146,7 +146,7 @@ tree.on('selectionchange', function (dataView, selections) {
                     tlbar.items.items[7].show(); tlbar.items.items[10].show(); tlbar.items.items[15].show();
                 } else if (selections[0].raw.iconCls == "lecture") {
                     tlbar.items.items[5].show(); tlbar.items.items[8].show(); tlbar.items.items[14].show();
-                } else if (selections[0].raw.iconCls == "tgtasktemplate") {
+                } else if (selections[0].raw.iconCls == "tgtest") {
                     tlbar.items.items[19].show();
                 } else {
                     tlbar.items.items[21].show();
