@@ -53,7 +53,7 @@ public class CourseSelection : MonoBehaviour
     void ZoomIn()
     {
 
-        Player = GameObject.Find("MainCamera").GetComponent<OrbitCam>().player;
+        Player = GameObject.Find("MainCamera").GetComponent<CameraFinC>().player;
         hint_visible = false;
         Player.SetActive(false);
         GuiCam.enabled = false;

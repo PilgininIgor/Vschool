@@ -19,7 +19,7 @@ public class TeleportScript : MonoBehaviour
     bool be_ready_to_receive;
     void OnTriggerEnter()
     {
-        Player = GameObject.Find("MainCamera").GetComponent<OrbitCam>().player;
+        Player = GameObject.Find("MainCamera").GetComponent<CameraFinC>().player;
         Debug.Log("Destination.transform.position:" + Destination.transform.position);
         if (!be_ready_to_receive)
         {
@@ -53,7 +53,7 @@ public class TeleportScript : MonoBehaviour
             //запоминаем угол, на который повернута будка-получатель
             var rt = Mathf.Round(Destination.transform.localRotation.eulerAngles.y);
             //ручками поворачиваем камеру так, чтобы она смотрела на будку
-            GameObject.Find("MainCamera").GetComponent<OrbitCam>().x = rt + 180;
+            GameObject.Find("MainCamera").GetComponent<CameraFinC>().x = rt + 180;
             //поворачиваем персонажа так, чтобы он стоял лицом к выходу из будки
 
             Player.transform.rotation = Quaternion.AngleAxis(rt, Player.transform.up);

@@ -14,7 +14,7 @@ public class ReturnToCourse : MonoBehaviour
                 if (TeleportBoothArray[i].transform.position == Global.teleportBoothPos)
                 {
                     TeleportBoothArray[i].GetComponent<TeleportToSceneScript>().be_ready_to_receive = true;
-                    GameObject Player = GameObject.Find("MainCamera").GetComponent<OrbitCam>().player;
+                    GameObject Player = GameObject.Find("MainCamera").GetComponent<CameraFinC>().player;
                     Player.transform.position = TeleportBoothArray[i].transform.position;
 
                     //запоминаем угол, на который повернута будка-получатель

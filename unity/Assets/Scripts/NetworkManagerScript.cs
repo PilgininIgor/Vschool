@@ -89,8 +89,8 @@ public class NetworkManagerScript : MonoBehaviour {
 		if(!Network.isClient && !Network.isServer) {
 			if(GUI.Button(new Rect(btnX, btnY, btnW, btnH), "Start Server")){
 				Debug.Log("Starting Server ");
-				StartServer();	
-				OrbitCam orbitCam = GameObject.Find("MainCamera").GetComponent("OrbitCam") as OrbitCam;
+				StartServer();
+                CameraFinC orbitCam = GameObject.Find("MainCamera").GetComponent("CameraFinC") as CameraFinC;
 				orbitCam.target = GameObject.Find(nameOfAvatar + "(Clone)").transform;
 			}
 			

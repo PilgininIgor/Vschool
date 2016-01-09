@@ -61,8 +61,12 @@ public class PhotonGame : Photon.MonoBehaviour
         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
         GameObject instantiatedPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
         //instantiatedPlayer.name = PhotonNetwork.playerName;
-        Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
-        Camera.main.GetComponent<OrbitCam>().player = instantiatedPlayer;
+        
+        //Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
+        //Camera.main.GetComponent<OrbitCam>().player = instantiatedPlayer;
+
+        Camera.main.GetComponent<CameraFinC>().target = instantiatedPlayer.transform;
+        Camera.main.GetComponent<CameraFinC>().player = instantiatedPlayer;
 
 		Camera.main.GetComponent<CNCameraFollow>().targetObject = instantiatedPlayer.transform;
 

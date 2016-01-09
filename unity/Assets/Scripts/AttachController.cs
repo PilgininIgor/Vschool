@@ -34,7 +34,7 @@ public class AttachController : MonoBehaviour
 			var tpc = avatar.GetComponent<ThirdPersonController>();
 			tpc.enabled = true;
 			
-			var oc = cameraScript.GetComponent<OrbitCam>();
+			var oc = cameraScript.GetComponent<CameraFinC>();
 			oc.target = avatar.transform;
 		}
 	}

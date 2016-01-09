@@ -24,7 +24,7 @@ public class CameraChange : MonoBehaviour
 
     void setIsBound(bool isBound)
     {
-        Player = GameObject.Find("MainCamera").GetComponent<OrbitCam>().player;
+        Player = GameObject.Find("MainCamera").GetComponent<CameraFinC>().player;
 
         Player.SetActive(!isBound);
 
