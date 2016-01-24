@@ -337,18 +337,18 @@ var form_task1 = new Ext.form.Panel({
             }, {
                 name: 'scale', xtype: 'combobox', anchor: '100%', editable: false,
                 fieldLabel: struct_lang_LBL31, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
-                store: ['2', '8', '16']//, value: '2'
+                store: ['2', '8', '16']
             }, {
                 name: 'operation', xtype: 'combobox', anchor: '100%', editable: false,
                 fieldLabel: struct_lang_LBL29, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
-                store: ['+', '-', '*']//, value: '+'
+                store: ['+', '-', '*']
             }, {
                 name: 'number1', xtype: 'numberfield', anchor: '100%', editable: false,
-                minValue: 10, maxValue: 50, //value: 35,
+                minValue: 10, maxValue: 50,
                 fieldLabel: struct_lang_LBL32, labelAlign: 'right', labelWidth: labelWidthOfTextfield
             }, {
                 name: 'number2', xtype: 'numberfield', anchor: '100%', editable: false,
-                minValue: 10, maxValue: 50, //value: 25,
+                minValue: 10, maxValue: 50,
                 fieldLabel: struct_lang_LBL33, labelAlign: 'right', labelWidth: labelWidthOfTextfield
             }]
         }, { //перевод
@@ -360,14 +360,14 @@ var form_task1 = new Ext.form.Panel({
             }, {
                 name: 'scale1', xtype: 'combobox', anchor: '100%', disabled: true, editable: false,
                 fieldLabel: struct_lang_LBL35, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
-                store: ['2', '8', '10', '16']//, value: '10'
+                store: ['2', '8', '10', '16']
             }, {
                 name: 'scale2', xtype: 'combobox', anchor: '100%', disabled: true, editable: false,
                 fieldLabel: struct_lang_LBL36, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
-                store: ['2', '8', '10', '16']//, value: '2'
+                store: ['2', '8', '10', '16']
             }, {
                 name: 'number', xtype: 'numberfield', anchor: '100%', disabled: true, editable: false,
-                minValue: 10, maxValue: 50, //value: 30,
+                minValue: 10, maxValue: 50,
                 fieldLabel: struct_lang_LBL37, labelAlign: 'right', labelWidth: labelWidthOfTextfield
             }]
         }]

@@ -543,13 +543,13 @@ namespace ILS.Web.Controllers
                     Id = task.Id,
                     ordernumber = task.OrderNumber,
                     rb_task = task.Type,
-                    scale = (task.Type == "operation") ? task.Scale1.ToString() : "",
-                    operation = (task.Type == "operation") ? task.Operation : "",
-                    number1 = (task.Type == "operation") ? task.Number1 : 0,
-                    number2 = (task.Type == "operation") ? task.Number2 : 0,
-                    scale1 = (task.Type == "translation") ? task.Scale1.ToString() : "",
-                    scale2 = (task.Type == "translation") ? task.Scale2.ToString() : "",
-                    number = (task.Type == "translation") ? task.Number1 : 0
+                    scale = (task.Type == "operation") ? task.Scale1.ToString() : "2",
+                    operation = (task.Type == "operation") ? task.Operation : "+",
+                    number1 = (task.Type == "operation") ? task.Number1 : 10,
+                    number2 = (task.Type == "operation") ? task.Number2 : 10,
+                    scale1 = (task.Type == "translation") ? task.Scale1.ToString() : "2",
+                    scale2 = (task.Type == "translation") ? task.Scale2.ToString() : "10",
+                    number = (task.Type == "translation") ? task.Number1 : 10
                 }
             }, JsonRequestBehavior.AllowGet);
         }
