@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
+using JsonFx.Json;
 
 public class Game_start : MonoBehaviour {
 	
@@ -15,80 +17,14 @@ public class Game_start : MonoBehaviour {
 		{
 			gameStarted = true;
 
+            var parameters = new Dictionary<string, string>();
+            parameters["id"] = Global.content.id;
+
             var httpConnector = GameObject.Find("TriggerStart").GetComponent<HttpConnector>();
-            httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetTask1Url, www =>
+            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.GetTask1Url, parameters, www =>
             {
                 StartTask1(www.text);
             });
-			
-			/*
-             
-            System.Random rnd = new System.Random();
-			
-			task = rnd.Next(0,2);
-			if (task == 0)
-			{
-				scale = rnd.Next(0,3);
-				switch (scale)
-				{
-				case 0: scale = 2; break;
-				case 1: scale = 8; break;
-				case 2: scale = 16; break;
-				default: break;
-				}
-				int _operation = rnd.Next(0,2);
-				switch (_operation)
-				{
-				case 0: operation = "+"; break;
-				case 1: operation = "-"; break;
-				case 2: operation = "*"; break;
-				default: break;
-				}
-				number1 = rnd.Next(10,51);
-				do
-				{
-					number2 = rnd.Next(10,51);
-				}
-				while (number1 == number2);
-				if (number2 > number1)
-				{
-					int b = number2;
-					number2 = number1;
-					number1 = b;
-				}
-				taskText1.text = "Действие в " + scale + " СС:";
-				taskText2.text = Convert.ToString(number1, scale).ToUpper() + " " + operation + " " + Convert.ToString(number2, scale).ToUpper();
-			}
-			else if (task == 1)
-			{
-				scale = rnd.Next(0,4);
-				switch (scale)
-				{
-				case 0: scale = 2; break;
-				case 1: scale = 8; break;
-				case 2: scale = 10; break;
-				case 3: scale = 16; break;
-				default: break;
-				}
-				do
-				{
-					scale2 = rnd.Next(0,4);
-					switch (scale2)
-					{
-					case 0: scale2 = 2; break;
-					case 1: scale2 = 8; break;
-					case 2: scale2 = 10; break;
-					case 3: scale2 = 16; break;
-					default: break;
-					}
-				}
-				while (scale == scale2);
-				number1 = rnd.Next(10,51);
-				taskText1.text = "Из " + scale + " СС в " + scale2 + " СС:";
-				taskText2.text = Convert.ToString(number1, scale).ToUpper();
-			}
-            
-            */
 		}
 	}
 
@@ -99,29 +35,6 @@ public class Game_start : MonoBehaviour {
         taskText1.text = task[0];
         taskText2.text = task[1]; 
     }
-
-    /*
-	public string GetResult()
-	{
-		if (task == 0)
-		{
-			int result = 0;
-			switch (operation)
-			{
-			case "+": result = number1 + number2; break;
-			case "-": result = number1 - number2; break;
-			case "*": result = number1 * number2; break;
-			default: break;
-			}
-			return Convert.ToString(result, scale).ToUpper();
-		}
-		else if (task == 1)
-		{
-			return Convert.ToString(number1, scale2).ToUpper();
-		}
-		return "";
-	}
-	*/
 
 }
 

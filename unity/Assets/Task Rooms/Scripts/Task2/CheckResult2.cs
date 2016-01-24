@@ -44,7 +44,8 @@ public class CheckResult2 : MonoBehaviour {
 			}
 
 			var parameters = new Dictionary<string, string>();
-			parameters["el1"] = answer[0];
+            parameters["id"] = Global.content.id;
+            parameters["el1"] = answer[0];
 			parameters["el2"] = answer[1];
 			parameters["el3"] = answer[2];
 			parameters["el4"] = answer[3];

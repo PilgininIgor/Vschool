@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
-
+using JsonFx.Json;
 public class Game2_Start : MonoBehaviour {
 	
 	bool gameStarted = false;
@@ -34,10 +35,11 @@ public class Game2_Start : MonoBehaviour {
             0 - bool 0 (false)
             */
 
-			//string task = "c(c(d(0,b),o(0,0)),c(o(1,0),e(b,0)))";
-			//string task = "e(d(i(b,b),e(b,1)),i(1,0))";
+            var parameters = new Dictionary<string, string>();
+            parameters["id"] = Global.content.id;
+
 			var httpConnector = GameObject.Find("TriggerStart").GetComponent<HttpConnector>();
-			httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetTask2Url, www =>
+			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.GetTask2Url, parameters, www =>
 			{
 				StartTask2(www.text);
 			});

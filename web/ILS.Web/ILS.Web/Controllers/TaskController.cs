@@ -20,12 +20,13 @@ namespace ILS.Web.Controllers
             this.context = context;
         }
 
-        public JsonResult GetTask1()
-        {
-            var tasks = context.ThemeContent.Where(themeContent => themeContent is Task1Content);
-            System.Random rnd = new System.Random();
-            int k = rnd.Next(0, tasks.Count());
-            var task = tasks.ToList()[k];
+        public JsonResult GetTask1(Guid id)
+        {            
+            //var tasks = context.ThemeContent.Where(themeContent => themeContent is Task1Content);
+            //System.Random rnd = new System.Random();
+            //int k = rnd.Next(0, tasks.Count());
+            //var task = tasks.ToList()[k];
+            var task = context.ThemeContent.Find(id) as Task1Content;
 
             var user = GetCurrentUser();
             var themeRun = context.ThemeRun.First(localThemeRun => localThemeRun.CourseRun.User_Id == user.Id /*&& localThemeRun.Theme_Id == task.Theme.Id*/);
@@ -35,7 +36,7 @@ namespace ILS.Web.Controllers
             {
                 taskRun = new Task1Run
                 {
-                    Task1Content = task as Task1Content,
+                    Task1Content = task,
                     ThemeRun = themeRun,
                 };
                 context.Task1Run.Add(taskRun);
@@ -43,7 +44,7 @@ namespace ILS.Web.Controllers
             else
             {
                 taskRun = taskRuns.First();
-                taskRun.Task1Content = task as Task1Content;
+                taskRun.Task1Content = task;
             }
 
             taskRun.AttemptsNumber = 0;
@@ -51,22 +52,24 @@ namespace ILS.Web.Controllers
 
             string taskStr = "";
 
-            if ((task as Task1Content).Type == "operation")
+            if (task.Type == "operation")
             {
-                taskStr = "Действие в " + (task as Task1Content).Scale1 + " СС:" + "," + Convert.ToString((task as Task1Content).Number1, (task as Task1Content).Scale1).ToUpper() + " "
-                    + (task as Task1Content).Operation + " " + Convert.ToString((task as Task1Content).Number2, (task as Task1Content).Scale1).ToUpper();
+                taskStr = "Действие в " + task.Scale1 + " СС:" + "," + Convert.ToString(task.Number1, task.Scale1).ToUpper() + " "
+                    + task.Operation + " " + Convert.ToString(task.Number2, task.Scale1).ToUpper();
             }
-            else if ((task as Task1Content).Type == "translation")
+            else if (task.Type == "translation")
             {
-                taskStr = "Из " + (task as Task1Content).Scale1 + " СС в " + (task as Task1Content).Scale2 + " СС:" + ","
-                    + Convert.ToString((task as Task1Content).Number1, (task as Task1Content).Scale1).ToUpper();
+                taskStr = "Из " + task.Scale1 + " СС в " + task.Scale2 + " СС:" + ","
+                    + Convert.ToString(task.Number1, task.Scale1).ToUpper();
             }
 
             return Json(taskStr, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult CheckTask1(string answer)
+        public JsonResult CheckTask1(Guid id, string answer)
         {
+            var task = context.ThemeContent.Find(id) as Task1Content;
+            
             var user = GetCurrentUser();
             var taskRun = context.Task1Run.First(localTask => localTask.ThemeRun.CourseRun.User_Id == user.Id);
 
@@ -74,21 +77,21 @@ namespace ILS.Web.Controllers
 
             string correctAnswer = "";
 
-            if (taskRun.Task1Content.Type == "operation")
+            if (task.Type == "operation")
             {
                 int result = 0;
-                switch (taskRun.Task1Content.Operation)
+                switch (task.Operation)
                 {
-                    case "+": result = taskRun.Task1Content.Number1 + taskRun.Task1Content.Number2; break;
-                    case "-": result = taskRun.Task1Content.Number1 - taskRun.Task1Content.Number2; break;
-                    case "*": result = taskRun.Task1Content.Number1 * taskRun.Task1Content.Number2; break;
+                    case "+": result = task.Number1 + task.Number2; break;
+                    case "-": result = task.Number1 - task.Number2; break;
+                    case "*": result = task.Number1 * task.Number2; break;
                     default: break;
                 }
-                correctAnswer = Convert.ToString(result, taskRun.Task1Content.Scale1).ToUpper();
+                correctAnswer = Convert.ToString(result, task.Scale1).ToUpper();
             }
-            else if (taskRun.Task1Content.Type == "translation")
+            else if (task.Type == "translation")
             {
-                correctAnswer = Convert.ToString(taskRun.Task1Content.Number1, taskRun.Task1Content.Scale2).ToUpper();
+                correctAnswer = Convert.ToString(task.Number1, task.Scale2).ToUpper();
             }
 
             bool check = correctAnswer == answer;
@@ -119,12 +122,13 @@ namespace ILS.Web.Controllers
             return Json(resultStr);
         }
 
-        public JsonResult GetTask2()
+        public JsonResult GetTask2(Guid id)
         {
-            var tasks = context.ThemeContent.Where(themeContent => themeContent is Task2Content);
-            System.Random rnd = new System.Random();
-            int k = rnd.Next(0, tasks.Count());
-            var task = tasks.ToList()[k];
+            //var tasks = context.ThemeContent.Where(themeContent => themeContent is Task2Content);
+            //System.Random rnd = new System.Random();
+            //int k = rnd.Next(0, tasks.Count());
+            //var task = tasks.ToList()[k];
+            var task = context.ThemeContent.Find(id) as Task2Content;
 
             var user = GetCurrentUser();
             var themeRun = context.ThemeRun.First(localThemeRun => localThemeRun.CourseRun.User_Id == user.Id /*&& localThemeRun.Theme_Id == task.Theme.Id*/);
@@ -134,7 +138,7 @@ namespace ILS.Web.Controllers
             {
                 taskRun = new Task2Run
                 {
-                    Task2Content = task as Task2Content,
+                    Task2Content = task,
                     ThemeRun = themeRun,
                 };
                 context.Task2Run.Add(taskRun);
@@ -142,24 +146,26 @@ namespace ILS.Web.Controllers
             else
             {
                 taskRun = taskRuns.First();
-                taskRun.Task2Content = task as Task2Content;
+                taskRun.Task2Content = task;
             }
 
             taskRun.AttemptsNumber = 0;
             context.SaveChanges();
 
-            return Json((taskRun.Task2Content as Task2Content).TaskString, JsonRequestBehavior.AllowGet);
+            return Json(task.TaskString, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult CheckTask2(string el1, string el2, string el3, string el4)
+        public JsonResult CheckTask2(Guid id, string el1, string el2, string el3, string el4)
         {
+            var task = context.ThemeContent.Find(id) as Task2Content;
+
             var user = GetCurrentUser();
             var taskRun = context.Task2Run.First(localTask => localTask.ThemeRun.CourseRun.User_Id == user.Id);
 
             taskRun.AttemptsNumber++;
 
             string[] answer = new string[4] { el1, el2, el3, el4 };
-            string formula = taskRun.Task2Content.TaskString;
+            string formula = task.TaskString;
 
             int k = 0;
             for (int i = 0; i < formula.Length; i++)

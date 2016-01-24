@@ -41,7 +41,8 @@ public class Check_result : MonoBehaviour {
 			//string correctAnswer = GameObject.Find("TriggerStart").GetComponent<Game_start>().GetResult();
 
             var parameters = new Dictionary<string, string>();
-			parameters["answer"] = answer;
+			parameters["id"] = Global.content.id;
+            parameters["answer"] = answer;
 
             var httpConnector = GameObject.Find("buttonOK").GetComponent<HttpConnector>();
             httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask1Url, parameters, www =>
