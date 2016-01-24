@@ -466,7 +466,7 @@ var tlbar = new Ext.panel.Panel({
     }, {
         xtype: 'button', text: 'Добавить локацию Остров', iconCls: 'add', hidden: true,
         handler: function () { addEntity(link_addIsland); }
-    }, {
+    }, /*{
         xtype: 'button', text: 'Удалить локацию', iconCls: 'remove', hidden: true,
         handler: function () { removeEntity(link_removeContent); }
     }, /*, {

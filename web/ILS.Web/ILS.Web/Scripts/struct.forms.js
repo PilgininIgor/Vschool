@@ -97,6 +97,16 @@ question_radio_change = function (val) {
     else question_anscount2_change(form_question.down('[name=anscount2]').value);
 }
 
+task1_radio_change = function (val) {
+    form_task1.down('[name=scale]').setDisabled(!val);
+    form_task1.down('[name=operation]').setDisabled(!val);
+    form_task1.down('[name=number1]').setDisabled(!val);
+    form_task1.down('[name=number2]').setDisabled(!val);
+    form_task1.down('[name=scale1]').setDisabled(val);
+    form_task1.down('[name=scale2]').setDisabled(val);
+    form_task1.down('[name=number]').setDisabled(val);
+}
+
 question_pic_popup = function (c, nm) {
     c.getEl().on('click', function () {
         if (form_question.down('[name=' + nm + ']').getValue() != "") {
@@ -123,7 +133,10 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     var struct_lang_LBL16 = "Выбрать..."; var struct_lang_LBL17 = "Формат ответов"; var struct_lang_LBL18 = "Текст";
     var struct_lang_LBL19 = "Количество вариантов"; var struct_lang_LBL20 = "Вариант ответа"; var struct_lang_LBL21 = "Верный";
     var struct_lang_LBL22 = "Изображение"; var struct_lang_LBL23 = "Верные"; var struct_lang_LBL24 = "";
-    var struct_lang_LBL25 = ""; var struct_lang_LBL26 = ""; var struct_lang_LBL27 = "";
+    var struct_lang_LBL25 = ""; var struct_lang_LBL26 = ""; var struct_lang_LBL27 = ""; var struct_lang_LBL28 = "Задание на системы счисления";
+    var struct_lang_LBL29 = "Операция"; var struct_lang_LBL30 = "Тип задания"; var struct_lang_LBL31 = "Система счисления";
+    var struct_lang_LBL32 = "Число 1 (в 10 СС)"; var struct_lang_LBL33 = "Число 2 (в 10 СС)"; var struct_lang_LBL34 = "Перевод";
+    var struct_lang_LBL35 = "Система счисления 1"; var struct_lang_LBL36 = "Система счисления 2"; var struct_lang_LBL37 = "Число (в 10 СС)";
     var struct_lang_LBLMinutes = "Количество минут";
     var struct_lang_LBLDifficulty = "Сложность";
     var struct_lang_LBLTest = "Тест";
@@ -135,8 +148,11 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     struct_lang_LBL13 = "Question's text"; struct_lang_LBL14 = "Illustration to the question"; struct_lang_LBL15 = "Path";
     struct_lang_LBL16 = "Select..."; struct_lang_LBL17 = "Form of variants"; struct_lang_LBL18 = "Text";
     struct_lang_LBL19 = "Number of variants"; struct_lang_LBL20 = "Answer variant"; struct_lang_LBL21 = "Correct";
-    struct_lang_LBL22 = "Picture"; struct_lang_LBL23 = "Correct ones"; struct_lang_LBL24 = "";
-    struct_lang_LBL25 = ""; struct_lang_LBL26 = ""; struct_lang_LBL27 = "";
+    struct_lang_LBL22 = "Picture"; struct_lang_LBL23 = "Correct ones"; struct_lang_LBL24 = ""; 
+    struct_lang_LBL25 = ""; struct_lang_LBL26 = ""; struct_lang_LBL27 = ""; struct_lang_LBL28 = "Numeric systems task";
+    struct_lang_LBL29 = "Operation"; struct_lang_LBL30 = "Task type"; struct_lang_LBL31 = "Numeric system";
+    struct_lang_LBL32 = "Number 1 (decimal)"; struct_lang_LBL33 = "Number 2 (decimal)"; struct_lang_LBL34 = "Translation";
+    struct_lang_LBL35 = "Numeric system 1"; struct_lang_LBL36 = "Numeric system 2"; struct_lang_LBL37 = "Number (decimal)";
     struct_lang_LBLMinutes = "Minutes";
     struct_lang_LBLDifficulty = "Difficulty";
     struct_lang_LBLTest = "Test";
@@ -296,6 +312,81 @@ form_paragraph_addPic = function (i) {
 }
 
 var labelWidthOfTextfield = 150;
+
+var form_task1 = new Ext.form.Panel({
+    hidden: true, title: struct_lang_LBL28, waitMsgTarget: true,
+    items: [{ //служебная часть
+        bodyPadding: 10, layout: 'anchor', hidden: true,
+        items: [{
+            name: 'Id', xtype: 'textfield', anchor: '100%', hidden: true,
+            fieldLabel: 'Guid', labelAlign: 'right', labelWidth: 170
+        }, {
+            name: 'ordernumber', xtype: 'textfield', anchor: '100%',
+            fieldLabel: 'Порядковый номер', labelAlign: 'right', labelWidth: 170
+        }]
+    }, {
+        border: false,
+        layout: { type: 'hbox', align: 'stretchmax' },
+        items: [{ //операция
+            flex: 1, bodyPadding: 10, layout: 'anchor', height: 200,
+            items: [{
+                name: 'rb_task', inputValue: 'operation', id: 'rb_task1',
+                xtype: 'radiofield', boxLabel: struct_lang_LBL29,
+                fieldLabel: struct_lang_LBL30, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
+                checked: true, handler: function () { task1_radio_change(this.checked); }
+            }, {
+                name: 'scale', xtype: 'combobox', anchor: '100%', editable: false,
+                fieldLabel: struct_lang_LBL31, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
+                store: ['2', '8', '16']//, value: '2'
+            }, {
+                name: 'operation', xtype: 'combobox', anchor: '100%', editable: false,
+                fieldLabel: struct_lang_LBL29, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
+                store: ['+', '-', '*']//, value: '+'
+            }, {
+                name: 'number1', xtype: 'numberfield', anchor: '100%', editable: false,
+                minValue: 10, maxValue: 50, //value: 35,
+                fieldLabel: struct_lang_LBL32, labelAlign: 'right', labelWidth: labelWidthOfTextfield
+            }, {
+                name: 'number2', xtype: 'numberfield', anchor: '100%', editable: false,
+                minValue: 10, maxValue: 50, //value: 25,
+                fieldLabel: struct_lang_LBL33, labelAlign: 'right', labelWidth: labelWidthOfTextfield
+            }]
+        }, { //перевод
+            flex: 1, bodyPadding: 10, layout: 'anchor', height: 200,
+            items: [{
+                name: 'rb_task', inputValue: 'translation', id: 'rb_task2',
+                xtype: 'radiofield', boxLabel: struct_lang_LBL34,
+                fieldLabel: struct_lang_LBL30, labelAlign: 'right', labelWidth: labelWidthOfTextfield
+            }, {
+                name: 'scale1', xtype: 'combobox', anchor: '100%', disabled: true, editable: false,
+                fieldLabel: struct_lang_LBL35, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
+                store: ['2', '8', '10', '16']//, value: '10'
+            }, {
+                name: 'scale2', xtype: 'combobox', anchor: '100%', disabled: true, editable: false,
+                fieldLabel: struct_lang_LBL36, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
+                store: ['2', '8', '10', '16']//, value: '2'
+            }, {
+                name: 'number', xtype: 'numberfield', anchor: '100%', disabled: true, editable: false,
+                minValue: 10, maxValue: 50, //value: 30,
+                fieldLabel: struct_lang_LBL37, labelAlign: 'right', labelWidth: labelWidthOfTextfield
+            }]
+        }]
+    }],
+    buttons: [{
+        text: struct_lang_LBL5, name: 'saver',
+        formBind: true,
+        handler: function () {
+            this.up('form').submit({
+                url: link_saveTask1,
+                waitMsg: struct_lang_LBL6,
+                success: function () {
+                    var s = extractPath(currently_selected);
+                    treestore.load({ callback: function () { tree.selectPath(s); } });
+                }
+            });
+        }
+    }]
+});
 
 var form_question = new Ext.form.Panel({
     hidden: true, title: struct_lang_LBL12, waitMsgTarget: true,

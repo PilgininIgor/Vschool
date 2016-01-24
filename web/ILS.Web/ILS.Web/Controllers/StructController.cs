@@ -254,7 +254,7 @@ namespace ILS.Web.Controllers
                 return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content) || (x is IslandContent))).OrderBy(x => x.OrderNumber).Select(x => new
                 {
                     //iconCls = (x is Lecture) ? "lecture" : "test",
-                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is IslandContent) ? "tgtasktemplate" : "tgtest",
+                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is Task1Content) ? "tgtasktemplate" : "tgtest",
                     id = x.Id.ToString(),
                     text = x.Name,
                     difficulty = (x is Test)? ((Test)x).TestDifficulty : 0,
@@ -335,7 +335,7 @@ namespace ILS.Web.Controllers
                 {
                     id = tc.Id,
                     name = tc.Name,
-                    type = (tc is Lecture) ? "lecture" : "test",
+                    type = (tc is Lecture) ? "lecture" : (tc is Test) ? "test" : "task",
                     ordernumber = tc.OrderNumber,
                     difficulty = (tc is Test) ? ((Test)tc).TestDifficulty : 0,
                     minutes = (tc is Test) ? ((Test)tc).MaxMinutes : 0
@@ -531,6 +531,42 @@ namespace ILS.Web.Controllers
             context.SaveChanges(); context_obj.SaveChanges();
             return "{\"success\":true}";
         }
+
+        public ActionResult ReadTask1(string id_s)
+        {
+            var task = context.ThemeContent.Find(Guid.Parse(id_s)) as Task1Content;
+            return Json(new
+            {
+                success = true,
+                data = new
+                {
+                    Id = task.Id,
+                    ordernumber = task.OrderNumber,
+                    rb_task = task.Type,
+                    scale = (task.Type == "operation") ? task.Scale1.ToString() : "",
+                    operation = (task.Type == "operation") ? task.Operation : "",
+                    number1 = (task.Type == "operation") ? task.Number1 : 0,
+                    number2 = (task.Type == "operation") ? task.Number2 : 0,
+                    scale1 = (task.Type == "translation") ? task.Scale1.ToString() : "",
+                    scale2 = (task.Type == "translation") ? task.Scale2.ToString() : "",
+                    number = (task.Type == "translation") ? task.Number1 : 0
+                }
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SaveTask1(Guid Id, string rb_task, string scale, string operation, int? number1, int? number2, string scale1, string scale2, int? number)
+        {
+            var task = context.ThemeContent.Find(Id) as Task1Content;
+            task.Type = rb_task;
+            task.Operation = (rb_task == "operation") ? operation : "";
+            task.Number1 = (rb_task == "operation") ? (int)number1 : (int)number;
+            task.Number2 = (rb_task == "operation") ? (int)number2 : 0;
+            task.Scale1 = (rb_task == "translation") ? int.Parse(scale1) : int.Parse(scale);
+            task.Scale2 = (rb_task == "translation") ? int.Parse(scale2) : 0;
+            context.SaveChanges();
+            return Json(new { success = true });
+        }
+        
         #endregion
 
         #region Add-Remove

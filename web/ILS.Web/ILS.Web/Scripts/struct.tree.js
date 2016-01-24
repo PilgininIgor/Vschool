@@ -51,9 +51,9 @@ tree.on('selectionchange', function (dataView, selections) {
             //если это курсы, то скрываем поле с порядковым номером, т.к. курсы единственные, где его нет
             if (d == 1) form_cttc.items.items[0].items.items[2].hide();
             else form_cttc.items.items[0].items.items[2].show();
-            if (selections[0].raw.iconCls === "test") {
+            if (selections[0].raw.iconCls == "test") {
                 form_test.getForm().load({
-//загрузить данные в форму
+                    //загрузить данные в форму
                     url: link_readCTTC, //обратиться по этой ссылке, т.е. вызвать метод ReadCTTC из контроллера Struct
                     params: { id: selections[0].data.id, depth: d } //передать методу ReadCTTC эти параметры
                 });
@@ -61,6 +61,18 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_test.show();
                 form_paragraph.hide();
                 form_question.hide();
+                form_task1.hide();
+            } else if (selections[0].raw.iconCls == "tgtasktemplate") {
+                form_task1.getForm().load({
+                    //загрузить данные в форму
+                    url: link_readTask1, //обратиться по этой ссылке, т.е. вызвать метод readTask1 из контроллера Struct
+                    params: { id_s: selections[0].data.id } //передать методу readTask1 эти параметры
+                });
+                form_cttc.hide();
+                form_test.hide();
+                form_paragraph.hide();
+                form_question.hide();
+                form_task1.show();
             } else {
                 form_cttc.getForm().load({
 //загрузить данные в форму
@@ -71,15 +83,15 @@ tree.on('selectionchange', function (dataView, selections) {
                             if (this.form.getValues().type == "course") form_cttc.setTitle("Курс");
                             else if (this.form.getValues().type == "theme") form_cttc.setTitle("Тема");
                             else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Лекция");
-                            else if (this.form.getValues().type == "task1" || this.form.getValues().type == "task2") form_cttc.setTitle("Задание");
-                            else if (this.form.getValues().type == "island") form_cttc.setTitle("Локация Остров");
+                            else if (this.form.getValues().type == "task") form_cttc.setTitle("Задание");
+                            //else if (this.form.getValues().type == "island") form_cttc.setTitle("Локация Остров");
                             else form_cttc.setTitle("Тест");
                         } else {
                             if (this.form.getValues().type == "course") form_cttc.setTitle("Course");
                             else if (this.form.getValues().type == "theme") form_cttc.setTitle("Theme");
                             else if (this.form.getValues().type == "lecture") form_cttc.setTitle("Lecture");
-                            else if (this.form.getValues().type == "task1" || this.form.getValues().type == "task2") form_cttc.setTitle("Task");
-                            else if (this.form.getValues().type == "island") form_cttc.setTitle("Island Location");
+                            else if (this.form.getValues().type == "task") form_cttc.setTitle("Task");
+                            //else if (this.form.getValues().type == "island") form_cttc.setTitle("Island Location");
                             else form_cttc.setTitle("Test");
                         }
                     }
@@ -88,6 +100,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_test.hide();
                 form_paragraph.hide();
                 form_question.hide();
+                form_task1.hide();
             }
         } else {
             if (selections[0].raw.iconCls == "paragraph") {
@@ -105,6 +118,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 });
                 form_cttc.hide(); form_test.hide();
                 form_paragraph.show(); form_question.hide();
+                form_task1.hide();
             } else {
                 form_question.getForm().load({
                     params: { id_s: selections[0].data.id },
@@ -120,6 +134,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 });
                 form_cttc.hide(); form_paragraph.hide();
                 form_test.hide(); form_question.show();
+                form_task1.hide();
             }
         }
 
@@ -129,7 +144,7 @@ tree.on('selectionchange', function (dataView, selections) {
         tlbar.items.items[8].hide(); tlbar.items.items[9].hide(); tlbar.items.items[10].hide(); tlbar.items.items[11].hide();
         tlbar.items.items[12].hide(); tlbar.items.items[13].hide(); tlbar.items.items[14].hide(); tlbar.items.items[15].hide();
         tlbar.items.items[16].hide(); tlbar.items.items[17].hide(); tlbar.items.items[18].hide(); tlbar.items.items[19].hide();
-        tlbar.items.items[20].hide(); tlbar.items.items[21].hide(); //tlbar.items.items[17].hide();
+        tlbar.items.items[20].hide(); //tlbar.items.items[21].hide(); //tlbar.items.items[17].hide();
         switch (d) {
             case 1:
                 tlbar.items.items[0].show(); tlbar.items.items[1].show(); tlbar.items.items[2].show();
@@ -146,10 +161,8 @@ tree.on('selectionchange', function (dataView, selections) {
                     tlbar.items.items[7].show(); tlbar.items.items[10].show(); tlbar.items.items[15].show();
                 } else if (selections[0].raw.iconCls == "lecture") {
                     tlbar.items.items[5].show(); tlbar.items.items[8].show(); tlbar.items.items[14].show();
-                } else if (selections[0].raw.iconCls == "tgtest") {
-                    tlbar.items.items[19].show();
                 } else {
-                    tlbar.items.items[21].show();
+                    tlbar.items.items[19].show();
                 } 
                 tlbar.items.items[12].show(); tlbar.items.items[13].show();
                 break;

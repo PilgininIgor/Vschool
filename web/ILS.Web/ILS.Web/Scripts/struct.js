@@ -12,7 +12,7 @@ var forms = new Ext.Panel({
     margin: "-1px 0px 0px 0px",
     //все формы загружаются в контейнер сразу, но активна одновременна максимум одна из них, остальные скрыты
     //это обеспечивается кодом из обработчика tree.on('selectionchange'
-    items: [form_cttc, form_paragraph, form_question, form_test]
+    items: [form_cttc, form_paragraph, form_question, form_test, form_task1]
 });
 
 var editor = new Ext.Panel({
@@ -39,7 +39,7 @@ changeToEnglish = function () {
     tlbar.items.items[14].setText('Upload a file with a lecture'); tlbar.items.items[15].setText('Upload a file with a test');
     tlbar.items.items[16].setText('Upload from Moodle'); tlbar.items.items[17].setText('Add numeric systems task');
     tlbar.items.items[18].setText('Add logic task'); tlbar.items.items[19].setText('Remove task');
-    tlbar.items.items[20].setText('Add Island location'); tlbar.items.items[21].setText('Remove location');
+    tlbar.items.items[20].setText('Add Island location'); //tlbar.items.items[21].setText('Remove location');
     //tlbar.items.items[17].setText('Update list from Moodle');
     tree.setTitle('List of learning materials');
 }
