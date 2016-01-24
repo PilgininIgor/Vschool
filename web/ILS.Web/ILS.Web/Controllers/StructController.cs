@@ -559,6 +559,12 @@ namespace ILS.Web.Controllers
             var task = context.ThemeContent.Find(Id) as Task1Content;
             task.Type = rb_task;
             task.Operation = (rb_task == "operation") ? operation : "";
+            if (rb_task == "operation" && operation == "-" && (int)number2 > (int)number1)
+            {
+                int b = (int)number1;
+                number1 = (int)number2;
+                number2 = b;
+            }
             task.Number1 = (rb_task == "operation") ? (int)number1 : (int)number;
             task.Number2 = (rb_task == "operation") ? (int)number2 : 0;
             task.Scale1 = (rb_task == "translation") ? int.Parse(scale1) : int.Parse(scale);
