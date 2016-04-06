@@ -43,7 +43,7 @@ tree.on('selectionchange', function (dataView, selections) {
     if (selections.length == 1) {
         //console.log(selections[0].data.id + ' ' + selections[0].data.text + ' ' + selections[0].getDepth());
         currently_selected = selections[0];
-        //определить глубину (понятно, что 1 - это курсы, 2 - темы, 3 - лекции с тестами, 4 - параграфы с вопросами)
+        //определить глубину (понятно, что 1 - это курсы, 2 - темы, 3 - лекции с тестами + задания и остров, 4 - параграфы с вопросами)
         var d = selections[0].getDepth();
 
         //кусок, который отвечает за вывод в правую часть окна нужной формы и загрузки в нее данных
@@ -144,14 +144,14 @@ tree.on('selectionchange', function (dataView, selections) {
         tlbar.items.items[8].hide(); tlbar.items.items[9].hide(); tlbar.items.items[10].hide(); tlbar.items.items[11].hide();
         tlbar.items.items[12].hide(); tlbar.items.items[13].hide(); tlbar.items.items[14].hide(); tlbar.items.items[15].hide();
         tlbar.items.items[16].hide(); tlbar.items.items[17].hide(); tlbar.items.items[18].hide(); tlbar.items.items[19].hide();
-        tlbar.items.items[20].hide(); //tlbar.items.items[21].hide(); //tlbar.items.items[17].hide();
+        tlbar.items.items[20].hide(); tlbar.items.items[21].hide(); //tlbar.items.items[21].hide(); //tlbar.items.items[17].hide();
         switch (d) {
             case 1:
                 tlbar.items.items[0].show(); tlbar.items.items[1].show(); tlbar.items.items[2].show();
                 break;
             case 2:
                 tlbar.items.items[3].show(); tlbar.items.items[4].show(); tlbar.items.items[6].show();
-                tlbar.items.items[17].show(); tlbar.items.items[18].show(); tlbar.items.items[20].show();
+                tlbar.items.items[17].show(); tlbar.items.items[18].show(); tlbar.items.items[20].show(); tlbar.items.items[21].show();
                 tlbar.items.items[12].show(); tlbar.items.items[13].show();                
                 tlbar.items.items[16].show();                
                 //tlbar.items.items[17].show();

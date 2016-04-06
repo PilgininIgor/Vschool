@@ -6,9 +6,9 @@ using System.Collections.Generic;
 public class HttpConnector : MonoBehaviour
 {
     //TODO move to config file
-    //public const string ServerUrl = "http://localhost:63866";
+    public const string ServerUrl = "http://localhost:63866";
     //public const string ServerUrl = "http://virtual.itschool.ssau.ru";
-    public const string ServerUrl = "https://virtual.itschool.ssau.ru";
+    //public const string ServerUrl = "https://virtual.itschool.ssau.ru";
 
     public const string CourseDataUrl = "/Render/UnityData";
     public const string StatUrl = "/Render/UnityStat";
@@ -22,6 +22,8 @@ public class HttpConnector : MonoBehaviour
 	public const string CheckTask2Url = "/Task/CheckTask2";
     public const string GetTask1Url = "/Task/GetTask1";
     public const string CheckTask1Url = "/Task/CheckTask1";
+    public const string GetTask3Url = "/Task/GetTask3";
+    public const string CheckTask3Url = "/Task/CheckTask3";
 
     public void Get(string url, Action<WWW> onSuccess)
     {

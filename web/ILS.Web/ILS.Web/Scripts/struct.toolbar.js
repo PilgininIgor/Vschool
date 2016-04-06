@@ -404,72 +404,75 @@ var tlbar = new Ext.panel.Panel({
         padding: "2 8 2 8"
     },
     items: [{
-        xtype: 'button', text: 'Добавить курс', iconCls: 'course_add',
+        xtype: 'button', text: 'Добавить курс', iconCls: 'course_add',                              //0
         handler: function () { addEntity(link_addCourse); }
     }, {
-        xtype: 'button', text: 'Удалить курс', iconCls: 'course_remove',
+        xtype: 'button', text: 'Удалить курс', iconCls: 'course_remove',                            //1
         handler: function () { removeEntity(link_removeCourse); }
     }, {
-        xtype: 'button', text: 'Добавить тему', iconCls: 'theme_add', hidden: true,
+        xtype: 'button', text: 'Добавить тему', iconCls: 'theme_add', hidden: true,                 //2
         handler: function () { addEntity(link_addTheme); }
     }, {
-        xtype: 'button', text: 'Удалить тему', iconCls: 'theme_remove', hidden: true,
+        xtype: 'button', text: 'Удалить тему', iconCls: 'theme_remove', hidden: true,               //3
         handler: function () { removeEntity(link_removeTheme); }
     }, {
-        xtype: 'button', text: 'Добавить лекцию', iconCls: 'lecture_add', hidden: true,
+        xtype: 'button', text: 'Добавить лекцию', iconCls: 'lecture_add', hidden: true,             //4
         handler: function () { addEntity(link_addLecture); }
     }, {
-        xtype: 'button', text: 'Удалить лекцию', iconCls: 'lecture_remove', hidden: true,
+        xtype: 'button', text: 'Удалить лекцию', iconCls: 'lecture_remove', hidden: true,           //5
         handler: function () { removeEntity(link_removeContent); }
     }, {
-        xtype: 'button', text: 'Добавить тест', iconCls: 'add', hidden: true,
+        xtype: 'button', text: 'Добавить тест', iconCls: 'add', hidden: true,                       //6
         handler: function () { addEntity(link_addTest); }
     }, {
-        xtype: 'button', text: 'Удалить тест', iconCls: 'remove', hidden: true,
+        xtype: 'button', text: 'Удалить тест', iconCls: 'remove', hidden: true,                     //7
         handler: function () { removeEntity(link_removeContent); }
     }, {
-        xtype: 'button', text: 'Добавить параграф', iconCls: 'paragraph_add', hidden: true,
+        xtype: 'button', text: 'Добавить параграф', iconCls: 'paragraph_add', hidden: true,         //8
         handler: function () { addEntity(link_addParagraph); }
     }, {
-        xtype: 'button', text: 'Удалить параграф', iconCls: 'paragraph_remove', hidden: true,
+        xtype: 'button', text: 'Удалить параграф', iconCls: 'paragraph_remove', hidden: true,       //9
         handler: function () { removeEntity(link_removeParagraph); }
     }, {
-        xtype: 'button', text: 'Добавить вопрос', iconCls: 'add', hidden: true,
+        xtype: 'button', text: 'Добавить вопрос', iconCls: 'add', hidden: true,                     //10
         handler: function () { addEntity(link_addQuestion); }
     }, {
-        xtype: 'button', text: 'Удалить вопрос', iconCls: 'remove', hidden: true,
+        xtype: 'button', text: 'Удалить вопрос', iconCls: 'remove', hidden: true,                   //11
         handler: function () { removeEntity(link_removeQuestion); }
     }, {
-        xtype: 'button', text: 'Поднять', iconCls: 'move_up', hidden: true,
+        xtype: 'button', text: 'Поднять', iconCls: 'move_up', hidden: true,                         //12
         handler: function () { changeOrderNumber(link_moveUp); }
     }, {
-        xtype: 'button', text: 'Опустить', iconCls: 'move_down', hidden: true,
+        xtype: 'button', text: 'Опустить', iconCls: 'move_down', hidden: true,                      //13
         handler: function () { changeOrderNumber(link_moveDown); }
     }, {
-        xtype: 'button', text: 'Загрузить файл с лекцией', iconCls: 'paragraph_add', hidden: true,
+        xtype: 'button', text: 'Загрузить файл с лекцией', iconCls: 'paragraph_add', hidden: true,  //14
         handler: function () { addDoc(link_addDoc, 'lecture'); }
     }, {
-        xtype: 'button', text: 'Загрузить файл с тестом', iconCls: 'paragraph_add', hidden: true,
+        xtype: 'button', text: 'Загрузить файл с тестом', iconCls: 'paragraph_add', hidden: true,   //15
         handler: function () { addDoc(link_addDoc, 'test'); }
     }, {
-        xtype: 'button', text: 'Загрузить из moodle', iconCls: 'moodle', hidden: true,
+        xtype: 'button', text: 'Загрузить из moodle', iconCls: 'moodle', hidden: true,              //16
         handler: function () { addMoodle(link_addMoodle); }
     }, {
-        xtype: 'button', text: 'Добавить задание на СС', iconCls: 'add', hidden: true,
+        xtype: 'button', text: 'Добавить задание на СС', iconCls: 'add', hidden: true,              //17
         handler: function () { addEntity(link_addTask1); }
     }, {
-        xtype: 'button', text: 'Добавить задание на логику', iconCls: 'add', hidden: true,
+        xtype: 'button', text: 'Добавить задание на логику', iconCls: 'add', hidden: true,          //18
         handler: function () { addEntity(link_addTask2); }
     }, {
-        xtype: 'button', text: 'Удалить задание', iconCls: 'remove', hidden: true,
+        xtype: 'button', text: 'Удалить задание', iconCls: 'remove', hidden: true,                  //19
         handler: function () { removeEntity(link_removeContent); }
     }, {
-        xtype: 'button', text: 'Добавить локацию Остров', iconCls: 'add', hidden: true,
+        xtype: 'button', text: 'Добавить задание 3', iconCls: 'add', hidden: true,                  //20
+        handler: function () { addEntity(link_addTask3); }
+    }, {
+        xtype: 'button', text: 'Добавить локацию Остров', iconCls: 'add', hidden: true,             //21
         handler: function () { addEntity(link_addIsland); }
-    }, /*{
+    }/*, {
         xtype: 'button', text: 'Удалить локацию', iconCls: 'remove', hidden: true,
         handler: function () { removeEntity(link_removeContent); }
-    }, /*, {
+    }, {
         text: 'Обновить список из Moodle', iconCls: 'moodleUpdate', hidden: true,
         handler: function () { updateListMoodle(link_moodleListUpdate); }
     }*/]

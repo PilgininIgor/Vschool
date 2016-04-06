@@ -264,6 +264,7 @@ public class BootstrapParser : MonoBehaviour {
     public static readonly string SceneNameLecture = "LectureRoom";
     public static readonly string SceneNameTask1 = "task1Room";
     public static readonly string SceneNameTask2 = "task2Room";
+    public static readonly string SceneNameTask3 = "task3Room";
     public static readonly string SceneNameIsland = "Islands";
 
 
@@ -337,6 +338,7 @@ public class BootstrapParser : MonoBehaviour {
                     case "lecture": sceneName = SceneNameLecture; break;
                     case "task1": sceneName = SceneNameTask1; break;
                     case "task2": sceneName = SceneNameTask2; break;
+                    case "task3": sceneName = SceneNameTask3; break;
                     case "island": sceneName = SceneNameIsland; break;  
                     
                     default: break;

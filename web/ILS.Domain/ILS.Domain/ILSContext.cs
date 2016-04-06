@@ -28,6 +28,7 @@ namespace ILS.Domain
 
         public DbSet<CourseRun> CourseRun { get; set; }
         public DbSet<ThemeRun> ThemeRun { get; set; }
+        public DbSet<Task3Run> Task3Run { get; set; }
         public DbSet<Task2Run> Task2Run { get; set; }
         public DbSet<Task1Run> Task1Run { get; set; }
         public DbSet<TestRun> TestRun { get; set; }

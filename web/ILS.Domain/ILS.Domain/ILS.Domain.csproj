@@ -86,6 +86,8 @@
     <Compile Include="IslandContent.cs" />
     <Compile Include="Task1Run.cs" />
     <Compile Include="Task1Content.cs" />
+    <Compile Include="Task3Run.cs" />
+    <Compile Include="Task3Content.cs" />
     <Compile Include="TestGenerator\Settings\TGCountOfTaskMode.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="CourseRun.cs" />

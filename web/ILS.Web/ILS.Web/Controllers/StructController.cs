@@ -251,7 +251,7 @@ namespace ILS.Web.Controllers
             if (theme != null)
             {
                 //уровень тем - возвращаем список лекций и тестов
-                return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content) || (x is IslandContent))).OrderBy(x => x.OrderNumber).Select(x => new
+                return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content) || (x is Task3Content) || (x is IslandContent))).OrderBy(x => x.OrderNumber).Select(x => new
                 {
                     //iconCls = (x is Lecture) ? "lecture" : "test",
                     iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is Task1Content) ? "tgtasktemplate" : "tgtest",
@@ -800,6 +800,18 @@ namespace ILS.Web.Controllers
             return tc;
         }
 
+        public Guid AddTask3(Guid parent_id)
+        {
+            var t = context.Theme.Find(parent_id);
+            int num;
+            if (t.ThemeContents.Count == 0) num = 1;
+            else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
+            var tc = new Task3Content { OrderNumber = num, Name = "Задание 3" };
+            t.ThemeContents.Add(tc);
+            context.SaveChanges();
+            return tc.Id;
+        }
+
         public Guid AddIsland(Guid parent_id)
         {
             var t = context.Theme.Find(parent_id);
@@ -823,6 +835,7 @@ namespace ILS.Web.Controllers
             else if (tc is Test) path += "/Test_";
             else if (tc is Task1Content) path += "/Task1Content_";
             else if (tc is Task2Content) path += "/Task2Content_";
+            else if (tc is Task3Content) path += "/Task3Content_";
             else if (tc is IslandContent) path += "/IslandContent_";
             path += tc.Id.ToString();
             if (Directory.Exists(path)) Directory.Delete(path, true);
