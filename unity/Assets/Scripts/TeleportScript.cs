@@ -16,7 +16,7 @@ public class TeleportScript : MonoBehaviour
     //телепортация начинается по заходу персонажа в триггер - вот только и в будке-получателе есть такой же триггер,
     //поэтому, чтобы не было каскадной активации, вводится переменная be_ready_to_receive, которую будка-отправитель
     //устанавливает будке-получателю в true перед тем, как переместить персонажа
-    bool be_ready_to_receive;
+    public bool be_ready_to_receive;
     void OnTriggerEnter()
     {
         Player = GameObject.Find("MainCamera").GetComponent<CameraFinC>().player;

@@ -12,5 +12,6 @@ public class Global
     public static int content_num;
     public static Vector3 teleportBoothPos;
     public static string course_json;
+    public static string stats_json;
     public static bool returning;
 }

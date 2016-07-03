@@ -8,6 +8,10 @@ public class ReturnToCourse : MonoBehaviour
         {
             BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
             bootstrapParser.CourseConstructor(Global.course_json);
+
+            StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
+            statisticParser.StatisticDisplay(Global.stats_json);
+
             var TeleportBoothArray = GameObject.FindGameObjectsWithTag("TeleportBooth");
             for (var i = 0; i < TeleportBoothArray.Length; i++)
             {

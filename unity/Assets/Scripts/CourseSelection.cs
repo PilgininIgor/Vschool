@@ -161,6 +161,8 @@ public class CourseSelection : MonoBehaviour
             bootstrapParser.CourseConstructor(www.text);
 			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.StatUrl, parameters, w =>
 			{
+                Global.stats_json = w.text;
+
 				StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
 				statisticParser.StatisticDisplay(w.text);
 				ZoomOut();
