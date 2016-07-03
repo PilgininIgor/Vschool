@@ -7,7 +7,7 @@
     public class Task3Run : EntityBase
     {
         public int Result { get; set; }
-        public int NumberOfTurns { get; set; }
+        public int AttemptsNumber { get; set; }
         
         [ForeignKey("ThemeRun")] public Guid ThemeRun_Id { get; set; }
         [ForeignKey("Task3Content")] public Guid? Task3ContentId { get; set; }

@@ -39,7 +39,7 @@ changeToEnglish = function () {
     tlbar.items.items[14].setText('Upload a file with a lecture'); tlbar.items.items[15].setText('Upload a file with a test');
     tlbar.items.items[16].setText('Upload from Moodle'); tlbar.items.items[17].setText('Add numeric systems task');
     tlbar.items.items[18].setText('Add logic task'); tlbar.items.items[19].setText('Remove task');
-    tlbar.items.items[20].setText('Add tower of Hanoi task'); tlbar.items.items[21].setText('Add Island location');
+    tlbar.items.items[20].setText('Add task 3'); tlbar.items.items[21].setText('Add Island location');
     //tlbar.items.items[21].setText('Remove location'); tlbar.items.items[17].setText('Update list from Moodle');
     tree.setTitle('List of learning materials');
 }

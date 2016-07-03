@@ -7,7 +7,5 @@ namespace ILS.Domain
 	public class Task3Content : ThemeContent
 	{
         public int OrderNumber { get; set; }
-
-        public int NumberOfCylinders { get; set; }
 	}
 }

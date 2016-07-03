@@ -137,7 +137,6 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     var struct_lang_LBL29 = "Операция"; var struct_lang_LBL30 = "Тип задания"; var struct_lang_LBL31 = "Система счисления";
     var struct_lang_LBL32 = "Число 1 (в 10 СС)"; var struct_lang_LBL33 = "Число 2 (в 10 СС)"; var struct_lang_LBL34 = "Перевод";
     var struct_lang_LBL35 = "Система счисления 1"; var struct_lang_LBL36 = "Система счисления 2"; var struct_lang_LBL37 = "Число (в 10 СС)";
-    var struct_lang_LBL38 = "Задание на Ханойскую башню"; var struct_lang_LBL39 = "Количество колец";
     var struct_lang_LBLMinutes = "Количество минут";
     var struct_lang_LBLDifficulty = "Сложность";
     var struct_lang_LBLTest = "Тест";
@@ -154,7 +153,6 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     struct_lang_LBL29 = "Operation"; struct_lang_LBL30 = "Task type"; struct_lang_LBL31 = "Numeric system";
     struct_lang_LBL32 = "Number 1 (decimal)"; struct_lang_LBL33 = "Number 2 (decimal)"; struct_lang_LBL34 = "Translation";
     struct_lang_LBL35 = "Numeric system 1"; struct_lang_LBL36 = "Numeric system 2"; struct_lang_LBL37 = "Number (decimal)";
-    struct_lang_LBL38 = "Tower of Hanoi task"; struct_lang_LBL39 = "Amount of rings";
     struct_lang_LBLMinutes = "Minutes";
     struct_lang_LBLDifficulty = "Difficulty";
     struct_lang_LBLTest = "Test";
@@ -314,45 +312,6 @@ form_paragraph_addPic = function (i) {
 }
 
 var labelWidthOfTextfield = 150;
-
-var form_task3 = new Ext.form.Panel({
-    hidden: true, title: struct_lang_LBL38, waitMsgTarget: true,
-    items: [{ //служебная часть
-        bodyPadding: 10, layout: 'anchor', hidden: true,
-        items: [{
-            name: 'Id', xtype: 'textfield', anchor: '100%', hidden: true,
-            fieldLabel: 'Guid', labelAlign: 'right', labelWidth: 170
-        }, {
-            name: 'ordernumber', xtype: 'textfield', anchor: '100%',
-            fieldLabel: 'Порядковый номер', labelAlign: 'right', labelWidth: 170
-        }]
-    }, {
-        border: false,
-        layout: { type: 'hbox', align: 'stretchmax' },
-        items: [{
-            flex: 1, bodyPadding: 10, layout: 'anchor', height: 200,
-            items: [{
-                name: 'numberOfCylinders', xtype: 'numberfield', anchor: '100%', editable: false,
-                minValue: 2, maxValue: 6,
-                fieldLabel: struct_lang_LBL38, labelAlign: 'right', labelWidth: labelWidthOfTextfield
-            },]
-        },]
-    }],
-    buttons: [{
-        text: struct_lang_LBL5, name: 'saver',
-        formBind: true,
-        handler: function () {
-            this.up('form').submit({
-                url: link_saveTask3,
-                waitMsg: struct_lang_LBL6,
-                success: function () {
-                    var s = extractPath(currently_selected);
-                    treestore.load({ callback: function () { tree.selectPath(s); } });
-                }
-            });
-        }
-    }]
-});
 
 var form_task1 = new Ext.form.Panel({
     hidden: true, title: struct_lang_LBL28, waitMsgTarget: true,
