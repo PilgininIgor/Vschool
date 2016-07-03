@@ -18,22 +18,20 @@ public class Game3_Start : MonoBehaviour
         {
             gameStarted = true;
 
-            //var parameters = new Dictionary<string, string>();
-            //parameters["id"] = Global.content.id;
+            var parameters = new Dictionary<string, string>();
+            parameters["id"] = Global.content.id;
 
-            //var httpConnector = GameObject.Find("TriggerStart").GetComponent<HttpConnector>();
-            //httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.GetTask3Url, parameters, www =>
-            //{
-            //    StartTask3(www.text);
-            //});
-
-            int n = 3;
-            StartTask3(n);
+            var httpConnector = GameObject.Find("TriggerStart").GetComponent<HttpConnector>();
+            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.GetTask3Url, parameters, www =>
+            {
+                StartTask3(www.text);
+            });
         }
     }
 
-    void StartTask3(int n)
+    void StartTask3(string n_str)
     {
+        int n = int.Parse(n_str);
         instCylindersLeft = new GameObject[n];
         instCylindersCenter = new GameObject[n];
         instCylindersRight = new GameObject[n];

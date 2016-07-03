@@ -254,7 +254,7 @@ namespace ILS.Web.Controllers
                 return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content) || (x is Task3Content) || (x is IslandContent))).OrderBy(x => x.OrderNumber).Select(x => new
                 {
                     //iconCls = (x is Lecture) ? "lecture" : "test",
-                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is Task1Content) ? "tgtasktemplate" : "tgtest",
+                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is Task1Content) ? "tgtasktemplate" : (x is Task2Content) ? "tgtasktemplate2" : (x is Task3Content) ? "tgtasktemplate3" : "tgtest",
                     id = x.Id.ToString(),
                     text = x.Name,
                     difficulty = (x is Test)? ((Test)x).TestDifficulty : 0,
@@ -572,6 +572,29 @@ namespace ILS.Web.Controllers
             context.SaveChanges();
             return Json(new { success = true });
         }
+
+        public ActionResult ReadTask3(string id_s)
+        {
+            var task = context.ThemeContent.Find(Guid.Parse(id_s)) as Task3Content;
+            return Json(new
+            {
+                success = true,
+                data = new
+                {
+                    Id = task.Id,
+                    ordernumber = task.OrderNumber,
+                    numberOfCylinders = task.NumberOfCylinders
+                }
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SaveTask3(Guid Id, int? numberOfCylinders)
+        {
+            var task = context.ThemeContent.Find(Id) as Task3Content;
+            task.NumberOfCylinders = (int)numberOfCylinders;
+            context.SaveChanges();
+            return Json(new { success = true });
+        }
         
         #endregion
 
@@ -668,7 +691,7 @@ namespace ILS.Web.Controllers
             return tc.Id;
         }
 
-        Task1Content RandomTask1(int num) //Генерация рандомного задания на алгебру логики. Заменить на форму
+        Task1Content RandomTask1(int num) //Генерация рандомного задания на системы счисления. Заменить на форму
         {
             Task1Content tc = new Task1Content { OrderNumber = num, Name = "Задание на системы счисления" };
             
@@ -806,7 +829,7 @@ namespace ILS.Web.Controllers
             int num;
             if (t.ThemeContents.Count == 0) num = 1;
             else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
-            var tc = new Task3Content { OrderNumber = num, Name = "Задание 3" };
+            var tc = new Task3Content { OrderNumber = num, Name = "Задание на Ханойскую башню", NumberOfCylinders = 3 };
             t.ThemeContents.Add(tc);
             context.SaveChanges();
             return tc.Id;
