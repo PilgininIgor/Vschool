@@ -481,11 +481,12 @@ public class BootstrapParser : MonoBehaviour {
 	private GameObject[] BuildThemeCorridor(List<DataStructures.ThemeContent> contents, int y)
 	{
 		var c = new List<GameObject> ();
-		ThemeCorridorStart.tag = "Clone";
-		var tr = ThemeCorridorStart.transform.position;
+        GameObject ts = (GameObject)Instantiate(ThemeCorridorStart);
+        ts.tag = "Clone";
+		var tr = ts.transform.position;
         tr.y = y;
-	    ThemeCorridorStart.transform.position = tr;
-		c.Add (ThemeCorridorStart);
+	    ts.transform.position = tr;
+		c.Add (ts);
 		int k = 0;
 		for (int i = 0; i < contents.Count; i++)
 		{
@@ -509,8 +510,9 @@ public class BootstrapParser : MonoBehaviour {
             Destroy(c[k].transform.Find("TeleportBooth_Right").gameObject);
 		}
 
-		ThemeCorridorEnd.tag = "Clone";
-		c.Add (ThemeCorridorEnd);
+        GameObject te = (GameObject)Instantiate(ThemeCorridorEnd);
+        te.tag = "Clone";
+        c.Add(te);
 		c [k + 1].transform.position = c [k].transform.Find ("Anchor_Next").gameObject.transform.position
 			- c [k + 1].transform.Find ("Anchor_Prev").gameObject.transform.localPosition;
 	    var s = c[0].transform.Find("Timer").GetComponent<BoxCollider>().size;
