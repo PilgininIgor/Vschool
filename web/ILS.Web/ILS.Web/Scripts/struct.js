@@ -12,7 +12,7 @@ var forms = new Ext.Panel({
     margin: "-1px 0px 0px 0px",
     //все формы загружаются в контейнер сразу, но активна одновременна максимум одна из них, остальные скрыты
     //это обеспечивается кодом из обработчика tree.on('selectionchange'
-    items: [form_cttc, form_paragraph, form_question, form_test, form_task1, form_task3]
+    items: [form_cttc, form_paragraph, form_question, form_test, form_task1, form_task2, form_task3]
 });
 
 var editor = new Ext.Panel({

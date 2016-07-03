@@ -62,6 +62,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_paragraph.hide();
                 form_question.hide();
                 form_task1.hide();
+                form_task2.hide();
                 form_task3.hide();
             } else if (selections[0].raw.text == "Задание на системы счисления") {
                 form_task1.getForm().load({
@@ -73,8 +74,22 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_test.hide();
                 form_paragraph.hide();
                 form_question.hide();
+                form_task2.hide();
                 form_task3.hide();
                 form_task1.show();
+            } else if (selections[0].raw.text == "Задание на алгебру логики") {
+                form_task2.getForm().load({
+                    //загрузить данные в форму
+                    url: link_readTask2, //обратиться по этой ссылке, т.е. вызвать метод readTask2 из контроллера Struct
+                    params: { id_s: selections[0].data.id } //передать методу readTask2 эти параметры
+                });
+                form_cttc.hide();
+                form_test.hide();
+                form_paragraph.hide();
+                form_question.hide();
+                form_task1.hide();
+                form_task3.hide();
+                form_task2.show();
             } else if (selections[0].raw.text == "Задание на Ханойскую башню") {
                 form_task3.getForm().load({
                     //загрузить данные в форму
@@ -86,6 +101,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_paragraph.hide();
                 form_question.hide();
                 form_task1.hide();
+                form_task2.hide();
                 form_task3.show();
             } else {
                 form_cttc.getForm().load({
@@ -115,6 +131,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_paragraph.hide();
                 form_question.hide();
                 form_task1.hide();
+                form_task2.hide();
                 form_task3.hide();
             }
         } else {
@@ -133,7 +150,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 });
                 form_cttc.hide(); form_test.hide();
                 form_paragraph.show(); form_question.hide();
-                form_task1.hide(); form_task3.hide();
+                form_task1.hide(); form_task2.hide();  form_task3.hide();
             } else {
                 form_question.getForm().load({
                     params: { id_s: selections[0].data.id },
@@ -149,7 +166,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 });
                 form_cttc.hide(); form_paragraph.hide();
                 form_test.hide(); form_question.show();
-                form_task1.hide(); form_task3.hide();
+                form_task1.hide(); form_task2.hide(); form_task3.hide();
             }
         }
 

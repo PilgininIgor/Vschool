@@ -137,7 +137,8 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     var struct_lang_LBL29 = "Операция"; var struct_lang_LBL30 = "Тип задания"; var struct_lang_LBL31 = "Система счисления";
     var struct_lang_LBL32 = "Число 1 (в 10 СС)"; var struct_lang_LBL33 = "Число 2 (в 10 СС)"; var struct_lang_LBL34 = "Перевод";
     var struct_lang_LBL35 = "Система счисления 1"; var struct_lang_LBL36 = "Система счисления 2"; var struct_lang_LBL37 = "Число (в 10 СС)";
-    var struct_lang_LBL38 = "Задание на Ханойскую башню"; var struct_lang_LBL39 = "Количество колец";
+    var struct_lang_LBL38 = "Задание на Ханойскую башню"; var struct_lang_LBL39 = "Количество колец"; var struct_lang_LBL40 = "Задание на алгебру логики";
+    var struct_lang_LBL41 = "Линейная запись формулы"; var struct_lang_LBL42 = "Линейная скобочная запись используется для представления дерева логической формулы в виде строки. Для обозначения логических операций и значений введены следующие обозначения: 1 - истина, 0 - ложь, b - пропущенное значение, c - конъюнкция, d - дизъюнкция, e - эквивалентность, i - импликация, o - пропущенная операция.";
     var struct_lang_LBLMinutes = "Количество минут";
     var struct_lang_LBLDifficulty = "Сложность";
     var struct_lang_LBLTest = "Тест";
@@ -154,7 +155,8 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     struct_lang_LBL29 = "Operation"; struct_lang_LBL30 = "Task type"; struct_lang_LBL31 = "Numeric system";
     struct_lang_LBL32 = "Number 1 (decimal)"; struct_lang_LBL33 = "Number 2 (decimal)"; struct_lang_LBL34 = "Translation";
     struct_lang_LBL35 = "Numeric system 1"; struct_lang_LBL36 = "Numeric system 2"; struct_lang_LBL37 = "Number (decimal)";
-    struct_lang_LBL38 = "Tower of Hanoi task"; struct_lang_LBL39 = "Amount of rings";
+    struct_lang_LBL38 = "Tower of Hanoi task"; struct_lang_LBL39 = "Amount of rings"; struct_lang_LBL40 = "Logic task";
+    struct_lang_LBL41 = "Linear notation of a formula"; struct_lang_LBL42 = "Linear bracket notation is used to represent the tree of a logical formula in a line. The following notation is used to indicate logical operations and values: 1 - true, 0 - false, b - blank value, c - conjunction, d - disjunction, e - equivalence, i - implication, o - blank operation.";
     struct_lang_LBLMinutes = "Minutes";
     struct_lang_LBLDifficulty = "Difficulty";
     struct_lang_LBLTest = "Test";
@@ -313,7 +315,7 @@ form_paragraph_addPic = function (i) {
     });
 }
 
-var labelWidthOfTextfield = 150;
+var labelWidthOfTextfield = 175;
 
 var form_task3 = new Ext.form.Panel({
     hidden: true, title: struct_lang_LBL38, waitMsgTarget: true,
@@ -344,6 +346,99 @@ var form_task3 = new Ext.form.Panel({
         handler: function () {
             this.up('form').submit({
                 url: link_saveTask3,
+                waitMsg: struct_lang_LBL6,
+                success: function () {
+                    var s = extractPath(currently_selected);
+                    treestore.load({ callback: function () { tree.selectPath(s); } });
+                }
+            });
+        }
+    }]
+});
+
+var form_task3 = new Ext.form.Panel({
+    hidden: true, title: struct_lang_LBL38, waitMsgTarget: true,
+    items: [{ //служебная часть
+        bodyPadding: 10, layout: 'anchor', hidden: true,
+        items: [{
+            name: 'Id', xtype: 'textfield', anchor: '100%', hidden: true,
+            fieldLabel: 'Guid', labelAlign: 'right', labelWidth: 170
+        }, {
+            name: 'ordernumber', xtype: 'textfield', anchor: '100%',
+            fieldLabel: 'Порядковый номер', labelAlign: 'right', labelWidth: 170
+        }]
+    }, {
+        border: false,
+        layout: { type: 'hbox', align: 'stretchmax' },
+        items: [{
+            flex: 1, bodyPadding: 10, layout: 'anchor', height: 75,
+            items: [{
+                name: 'numberOfCylinders', xtype: 'numberfield', anchor: '100%', editable: false,
+                minValue: 2, maxValue: 6,
+                fieldLabel: struct_lang_LBL39, labelAlign: 'right', labelWidth: labelWidthOfTextfield
+            }]
+        }]
+    }],
+    buttons: [{
+        text: struct_lang_LBL5, name: 'saver',
+        formBind: true,
+        handler: function () {
+            this.up('form').submit({
+                url: link_saveTask3,
+                waitMsg: struct_lang_LBL6,
+                success: function () {
+                    var s = extractPath(currently_selected);
+                    treestore.load({ callback: function () { tree.selectPath(s); } });
+                }
+            });
+        }
+    }]
+});
+
+var form_task2 = new Ext.form.Panel({
+    hidden: true, title: struct_lang_LBL40, waitMsgTarget: true,
+    items: [{ //служебная часть
+        bodyPadding: 10, layout: 'anchor', hidden: true,
+        items: [{
+            name: 'Id', xtype: 'textfield', anchor: '100%', hidden: true,
+            fieldLabel: 'Guid', labelAlign: 'right', labelWidth: 170
+        }, {
+            name: 'ordernumber', xtype: 'textfield', anchor: '100%',
+            fieldLabel: 'Порядковый номер', labelAlign: 'right', labelWidth: 170
+        }]
+    }, {
+        border: false,
+        layout: { type: 'hbox', align: 'stretchmax' },
+        items: [{
+            flex: 1, bodyPadding: 10, layout: 'anchor', height: 100,
+            items: [{
+                name: 'taskStr', xtype: 'combo', anchor: '100%', editable: false,
+                store: new Ext.data.SimpleStore({
+                    data: [
+                        ['e(d(i(b,b),e(b,1)),i(1,0))'],
+                        ['c(c(d(0,b),o(0,0)),c(o(1,0),e(b,0)))'],
+                        ['e(c(i(1,b),d(0,b)),i(o(1,0),o(0,0)))'],
+                        ['c(e(b,b),c(o(1,0),b))'],
+                        ['e(d(c(1,b),b),e(o(1,0),b))'],
+
+                    ],
+                    fields: ['formula']
+                }),
+                valueField: 'formula',
+                displayField: 'formula',
+                fieldLabel: struct_lang_LBL41, labelAlign: 'left', labelWidth: labelWidthOfTextfield
+            }, {
+                name: 'hint', xtype: 'label', anchor: '100%',
+                html: struct_lang_LBL42, cls: 'customlabel',
+            }]
+        }]
+    }],
+    buttons: [{
+        text: struct_lang_LBL5, name: 'saver',
+        formBind: true,
+        handler: function () {
+            this.up('form').submit({
+                url: link_saveTask2,
                 waitMsg: struct_lang_LBL6,
                 success: function () {
                     var s = extractPath(currently_selected);

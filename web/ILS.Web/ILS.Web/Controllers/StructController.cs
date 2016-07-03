@@ -254,7 +254,7 @@ namespace ILS.Web.Controllers
                 return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content) || (x is Task3Content) || (x is IslandContent))).OrderBy(x => x.OrderNumber).Select(x => new
                 {
                     //iconCls = (x is Lecture) ? "lecture" : "test",
-                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is Task1Content) ? "tgtasktemplate" : (x is Task2Content) ? "tgtasktemplate" : (x is Task3Content) ? "tgtasktemplate" : "tgtest",
+                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : "tgtest",
                     id = x.Id.ToString(),
                     text = x.Name,
                     difficulty = (x is Test)? ((Test)x).TestDifficulty : 0,
@@ -569,6 +569,29 @@ namespace ILS.Web.Controllers
             task.Number2 = (rb_task == "operation") ? (int)number2 : 0;
             task.Scale1 = (rb_task == "translation") ? int.Parse(scale1) : int.Parse(scale);
             task.Scale2 = (rb_task == "translation") ? int.Parse(scale2) : 0;
+            context.SaveChanges();
+            return Json(new { success = true });
+        }
+
+        public ActionResult ReadTask2(string id_s)
+        {
+            var task = context.ThemeContent.Find(Guid.Parse(id_s)) as Task2Content;
+            return Json(new
+            {
+                success = true,
+                data = new
+                {
+                    Id = task.Id,
+                    ordernumber = task.OrderNumber,
+                    taskStr = task.TaskString
+                }
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SaveTask2(Guid Id, string taskStr)
+        {
+            var task = context.ThemeContent.Find(Id) as Task2Content;
+            task.TaskString = taskStr;
             context.SaveChanges();
             return Json(new { success = true });
         }
