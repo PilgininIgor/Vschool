@@ -464,7 +464,7 @@ var tlbar = new Ext.panel.Panel({
         xtype: 'button', text: 'Удалить задание', iconCls: 'remove', hidden: true,                  //19
         handler: function () { removeEntity(link_removeContent); }
     }, {
-        xtype: 'button', text: 'Добавить задание 3', iconCls: 'add', hidden: true,                  //20
+        xtype: 'button', text: 'Добавить задание на Ханойскую башню', iconCls: 'add', hidden: true,                  //20
         handler: function () { addEntity(link_addTask3); }
     }, {
         xtype: 'button', text: 'Добавить локацию Остров', iconCls: 'add', hidden: true,             //21

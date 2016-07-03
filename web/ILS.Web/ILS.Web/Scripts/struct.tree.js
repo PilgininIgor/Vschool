@@ -62,6 +62,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_paragraph.hide();
                 form_question.hide();
                 form_task1.hide();
+                form_task3.hide();
             } else if (selections[0].raw.iconCls == "tgtasktemplate") {
                 form_task1.getForm().load({
                     //загрузить данные в форму
@@ -72,10 +73,23 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_test.hide();
                 form_paragraph.hide();
                 form_question.hide();
+                form_task3.hide();
                 form_task1.show();
+            } else if (selections[0].raw.iconCls == "tgtasktemplate3") {
+                form_task3.getForm().load({
+                    //загрузить данные в форму
+                    url: link_readTask3, //обратиться по этой ссылке, т.е. вызвать метод readTask1 из контроллера Struct
+                    params: { id_s: selections[0].data.id } //передать методу readTask1 эти параметры
+                });
+                form_cttc.hide();
+                form_test.hide();
+                form_paragraph.hide();
+                form_question.hide();
+                form_task1.hide();
+                form_task3.show();
             } else {
                 form_cttc.getForm().load({
-//загрузить данные в форму
+                    //загрузить данные в форму
                     url: link_readCTTC, //обратиться по этой ссылке, т.е. вызвать метод ReadCTTC из контроллера Struct
                     params: { id: selections[0].data.id, depth: d }, //передать методу ReadCTTC эти параметры
                     success: function() { //после того, как метод вернул результат и данные успешно загружены
@@ -101,6 +115,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_paragraph.hide();
                 form_question.hide();
                 form_task1.hide();
+                form_task3.hide();
             }
         } else {
             if (selections[0].raw.iconCls == "paragraph") {
@@ -118,7 +133,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 });
                 form_cttc.hide(); form_test.hide();
                 form_paragraph.show(); form_question.hide();
-                form_task1.hide();
+                form_task1.hide(); form_task3.hide();
             } else {
                 form_question.getForm().load({
                     params: { id_s: selections[0].data.id },
@@ -134,7 +149,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 });
                 form_cttc.hide(); form_paragraph.hide();
                 form_test.hide(); form_question.show();
-                form_task1.hide();
+                form_task1.hide(); form_task3.hide();
             }
         }
 
