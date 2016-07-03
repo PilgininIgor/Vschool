@@ -254,7 +254,7 @@ namespace ILS.Web.Controllers
                 return Json(theme.ThemeContents.ToList().Where(x => ((x is Lecture) || (x is Test) || (x is Task1Content) || (x is Task2Content) || (x is Task3Content) || (x is IslandContent))).OrderBy(x => x.OrderNumber).Select(x => new
                 {
                     //iconCls = (x is Lecture) ? "lecture" : "test",
-                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is Task1Content) ? "tgtasktemplate" : (x is Task2Content) ? "tgtasktemplate2" : (x is Task3Content) ? "tgtasktemplate3" : "tgtest",
+                    iconCls = (x is Lecture) ? "lecture" : (x is Test) ? "test" : (x is Task1Content) ? "tgtasktemplate" : (x is Task2Content) ? "tgtasktemplate" : (x is Task3Content) ? "tgtasktemplate" : "tgtest",
                     id = x.Id.ToString(),
                     text = x.Name,
                     difficulty = (x is Test)? ((Test)x).TestDifficulty : 0,

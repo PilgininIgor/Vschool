@@ -74,7 +74,7 @@ public class CheckResult3 : MonoBehaviour {
 
                 var parameters = new Dictionary<string, string>();
                 parameters["id"] = Global.content.id;
-                parameters["turns"] = numberOfTurns.ToString();
+                parameters["turns_str"] = numberOfTurns.ToString();
 
                 var httpConnector = GameObject.Find("buttonOK").GetComponent<HttpConnector>();
                 httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask3Url, parameters, www =>
@@ -99,7 +99,7 @@ public class CheckResult3 : MonoBehaviour {
 
                     var parameters = new Dictionary<string, string>();
                     parameters["id"] = Global.content.id;
-                    parameters["turns"] = "-1";
+                    parameters["turns_str"] = "-1";
 
                     var httpConnector = GameObject.Find("buttonOK").GetComponent<HttpConnector>();
                     httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask3Url, parameters, www =>

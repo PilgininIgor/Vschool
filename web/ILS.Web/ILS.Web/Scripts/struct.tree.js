@@ -63,7 +63,7 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_question.hide();
                 form_task1.hide();
                 form_task3.hide();
-            } else if (selections[0].raw.iconCls == "tgtasktemplate") {
+            } else if (selections[0].raw.text == "Задание на системы счисления") {
                 form_task1.getForm().load({
                     //загрузить данные в форму
                     url: link_readTask1, //обратиться по этой ссылке, т.е. вызвать метод readTask1 из контроллера Struct
@@ -75,11 +75,11 @@ tree.on('selectionchange', function (dataView, selections) {
                 form_question.hide();
                 form_task3.hide();
                 form_task1.show();
-            } else if (selections[0].raw.iconCls == "tgtasktemplate3") {
+            } else if (selections[0].raw.text == "Задание на Ханойскую башню") {
                 form_task3.getForm().load({
                     //загрузить данные в форму
-                    url: link_readTask3, //обратиться по этой ссылке, т.е. вызвать метод readTask1 из контроллера Struct
-                    params: { id_s: selections[0].data.id } //передать методу readTask1 эти параметры
+                    url: link_readTask3, //обратиться по этой ссылке, т.е. вызвать метод readTask3 из контроллера Struct
+                    params: { id_s: selections[0].data.id } //передать методу readTask3 эти параметры
                 });
                 form_cttc.hide();
                 form_test.hide();

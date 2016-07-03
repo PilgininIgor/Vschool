@@ -330,13 +330,13 @@ var form_task3 = new Ext.form.Panel({
         border: false,
         layout: { type: 'hbox', align: 'stretchmax' },
         items: [{
-            flex: 1, bodyPadding: 10, layout: 'anchor', height: 200,
+            flex: 1, bodyPadding: 10, layout: 'anchor', height: 75,
             items: [{
                 name: 'numberOfCylinders', xtype: 'numberfield', anchor: '100%', editable: false,
                 minValue: 2, maxValue: 6,
-                fieldLabel: struct_lang_LBL38, labelAlign: 'right', labelWidth: labelWidthOfTextfield
-            },]
-        },]
+                fieldLabel: struct_lang_LBL39, labelAlign: 'right', labelWidth: labelWidthOfTextfield
+            }]
+        }]
     }],
     buttons: [{
         text: struct_lang_LBL5, name: 'saver',
