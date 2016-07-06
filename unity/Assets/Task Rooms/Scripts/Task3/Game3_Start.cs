@@ -12,6 +12,8 @@ public class Game3_Start : MonoBehaviour
     public GameObject[] instCylindersLeft, instCylindersCenter, instCylindersRight;
     public int highestLeft, highestCenter, highestRight;
 
+    int limitOf5, limitOf4;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.collider.tag == "Player" && !gameStarted)
@@ -29,9 +31,13 @@ public class Game3_Start : MonoBehaviour
         }
     }
 
-    void StartTask3(string n_str)
+    void StartTask3(string taskStr)
     {
-        int n = int.Parse(n_str);
+        taskStr = taskStr.Replace("\"", "");
+        string[] taskStrArr = taskStr.Split(',');
+        int n = int.Parse(taskStrArr[0]);
+        limitOf5 = int.Parse(taskStrArr[1]);
+        limitOf4 = int.Parse(taskStrArr[2]);
         instCylindersLeft = new GameObject[n];
         instCylindersCenter = new GameObject[n];
         instCylindersRight = new GameObject[n];
@@ -46,5 +52,15 @@ public class Game3_Start : MonoBehaviour
         highestLeft = n;
         highestCenter = 0;
         highestRight = 0;
+    }
+
+    public int GetLimitOf5()
+    {
+        return limitOf5;
+    }
+
+    public int GetLimitOf4()
+    {
+        return limitOf4;
     }
 }

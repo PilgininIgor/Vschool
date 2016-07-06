@@ -606,15 +606,19 @@ namespace ILS.Web.Controllers
                 {
                     Id = task.Id,
                     ordernumber = task.OrderNumber,
-                    numberOfCylinders = task.NumberOfCylinders
+                    numberOfCylinders = task.NumberOfCylinders,
+                    limitOf5 = task.LimitOf5,
+                    limitOf4 = task.LimitOf4
                 }
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SaveTask3(Guid Id, int? numberOfCylinders)
+        public ActionResult SaveTask3(Guid Id, int? numberOfCylinders, int? limitOf5, int? limitOf4)
         {
             var task = context.ThemeContent.Find(Id) as Task3Content;
             task.NumberOfCylinders = (int)numberOfCylinders;
+            task.LimitOf5 = (int)limitOf5;
+            task.LimitOf4 = (int)limitOf4;
             context.SaveChanges();
             return Json(new { success = true });
         }
@@ -852,7 +856,7 @@ namespace ILS.Web.Controllers
             int num;
             if (t.ThemeContents.Count == 0) num = 1;
             else num = t.ThemeContents.OrderBy(x => x.OrderNumber).Last().OrderNumber + 1;
-            var tc = new Task3Content { OrderNumber = num, Name = "Задание на Ханойскую башню", NumberOfCylinders = 3 };
+            var tc = new Task3Content { OrderNumber = num, Name = "Задание на Ханойскую башню", NumberOfCylinders = 3, LimitOf5 = 0, LimitOf4 = 10 };
             t.ThemeContents.Add(tc);
             context.SaveChanges();
             return tc.Id;

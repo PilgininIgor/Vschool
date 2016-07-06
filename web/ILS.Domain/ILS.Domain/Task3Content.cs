@@ -9,5 +9,9 @@ namespace ILS.Domain
         public int OrderNumber { get; set; }
 
         public int NumberOfCylinders { get; set; }
+
+        public int LimitOf5 { get; set; }
+
+        public int LimitOf4 { get; set; }
 	}
 }

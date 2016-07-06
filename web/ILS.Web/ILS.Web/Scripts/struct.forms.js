@@ -139,6 +139,7 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     var struct_lang_LBL35 = "Система счисления 1"; var struct_lang_LBL36 = "Система счисления 2"; var struct_lang_LBL37 = "Число (в 10 СС)";
     var struct_lang_LBL38 = "Задание на Ханойскую башню"; var struct_lang_LBL39 = "Количество колец"; var struct_lang_LBL40 = "Задание на алгебру логики";
     var struct_lang_LBL41 = "Линейная запись формулы"; var struct_lang_LBL42 = "Линейная скобочная запись используется для представления дерева логической формулы в виде строки. Для обозначения логических операций и значений введены следующие обозначения: 1 - истина, 0 - ложь, b - пропущенное значение, c - конъюнкция, d - дизъюнкция, e - эквивалентность, i - импликация, o - пропущенная операция.";
+    var struct_lang_LBL43 = "Предел оценки 5"; var struct_lang_LBL44 = "Предел оценки 4"; var struct_lang_LBL45 = "Предел оценки 4 отсчитывается от предела оценки 5.";
     var struct_lang_LBLMinutes = "Количество минут";
     var struct_lang_LBLDifficulty = "Сложность";
     var struct_lang_LBLTest = "Тест";
@@ -157,6 +158,7 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     struct_lang_LBL35 = "Numeric system 1"; struct_lang_LBL36 = "Numeric system 2"; struct_lang_LBL37 = "Number (decimal)";
     struct_lang_LBL38 = "Tower of Hanoi task"; struct_lang_LBL39 = "Amount of rings"; struct_lang_LBL40 = "Logic task";
     struct_lang_LBL41 = "Linear notation of a formula"; struct_lang_LBL42 = "Linear bracket notation is used to represent the tree of a logical formula in a line. The following notation is used to indicate logical operations and values: 1 - true, 0 - false, b - blank value, c - conjunction, d - disjunction, e - equivalence, i - implication, o - blank operation.";
+    struct_lang_LBL43 = "Limit of mark 5"; struct_lang_LBL44 = "Limit of mark 4"; struct_lang_LBL45 = "Limit of mark 4 is counted from limit of mark 5.";
     struct_lang_LBLMinutes = "Minutes";
     struct_lang_LBLDifficulty = "Difficulty";
     struct_lang_LBLTest = "Test";
@@ -371,11 +373,22 @@ var form_task3 = new Ext.form.Panel({
         border: false,
         layout: { type: 'hbox', align: 'stretchmax' },
         items: [{
-            flex: 1, bodyPadding: 10, layout: 'anchor', height: 75,
+            flex: 1, bodyPadding: 10, layout: 'anchor', height: 150,
             items: [{
                 name: 'numberOfCylinders', xtype: 'numberfield', anchor: '100%', editable: false,
                 minValue: 2, maxValue: 6,
-                fieldLabel: struct_lang_LBL39, labelAlign: 'right', labelWidth: labelWidthOfTextfield
+                fieldLabel: struct_lang_LBL39, labelAlign: 'left', labelWidth: labelWidthOfTextfield
+            }, {
+                name: 'limitOf5', xtype: 'numberfield', anchor: '100%', editable: false,
+                minValue: 0, maxValue: 10,
+                fieldLabel: struct_lang_LBL43, labelAlign: 'left', labelWidth: labelWidthOfTextfield
+            }, {
+                name: 'limitOf4', xtype: 'numberfield', anchor: '100%', editable: false,
+                minValue: 1, maxValue: 10,
+                fieldLabel: struct_lang_LBL44, labelAlign: 'left', labelWidth: labelWidthOfTextfield
+            }, {
+                name: 'hint', xtype: 'label', anchor: '100%',
+                html: struct_lang_LBL45, cls: 'customlabel',
             }]
         }]
     }],

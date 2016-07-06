@@ -44,8 +44,10 @@ public class CheckResult3 : MonoBehaviour {
             {
                 int optimal = (int)Mathf.Pow((float)2, (float)cyls.Length) - 1;
                 int numberOfTurns = GameObject.Find("Main Camera").GetComponent<TakingCylinder>().GetNumberOfTurns();
+                int limitOf5 = GameObject.Find("TriggerStart").GetComponent<Game3_Start>().GetLimitOf5();
+                int limitOf4 = GameObject.Find("TriggerStart").GetComponent<Game3_Start>().GetLimitOf4();
 
-                if (numberOfTurns == optimal)
+                if (numberOfTurns - optimal <= limitOf5)
                 {
                     taskText1.text = "Задание выполнено!";
                     taskText2.text = "Вы решили задание за";
@@ -53,7 +55,7 @@ public class CheckResult3 : MonoBehaviour {
                     taskText4.text = "Оценка: 5";
                     taskText5.text = "";
                 }
-                if (numberOfTurns > optimal && numberOfTurns - optimal <= 10)
+                if (numberOfTurns - optimal > limitOf5 && numberOfTurns - optimal <= limitOf5 + limitOf4)
                 {
                     taskText1.text = "Задание выполнено!";
                     taskText2.text = "Вы решили задание за";
@@ -61,7 +63,7 @@ public class CheckResult3 : MonoBehaviour {
                     taskText4.text = "к оптимальному.";
                     taskText5.text = "Оценка: 4";
                 }
-                if (numberOfTurns - optimal > 10)
+                if (numberOfTurns - optimal > limitOf5 + limitOf4)
                 {
                     taskText1.text = "Задание выполнено!";
                     taskText2.text = "Вы решили задание за";

@@ -50,7 +50,9 @@ namespace ILS.Web.Controllers
             taskRun.NumberOfTurns = 0;
             context.SaveChanges();
 
-            return Json(task.NumberOfCylinders, JsonRequestBehavior.AllowGet);
+            string taskStr = task.NumberOfCylinders + "," + task.LimitOf5 + "," + task.LimitOf4;
+
+            return Json(taskStr, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult CheckTask3(Guid id, string turns_str)
@@ -64,15 +66,15 @@ namespace ILS.Web.Controllers
             int turns = int.Parse(turns_str);
 
             taskRun.NumberOfTurns = turns;
-            if (turns == optimal)
+            if (turns - optimal <= task.LimitOf5)
             {
                 taskRun.Result = 5;
             }
-            if (turns > optimal && turns - optimal <= 10)
+            if (turns - optimal > task.LimitOf5 && turns - optimal <= task.LimitOf5 + task.LimitOf4)
             {
                 taskRun.Result = 4;
             }
-            if (turns - optimal > 10)
+            if (turns - optimal > task.LimitOf5 + task.LimitOf4)
             {
                 taskRun.Result = 3;
             }
