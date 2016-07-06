@@ -140,6 +140,7 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     var struct_lang_LBL38 = "Задание на Ханойскую башню"; var struct_lang_LBL39 = "Количество колец"; var struct_lang_LBL40 = "Задание на алгебру логики";
     var struct_lang_LBL41 = "Линейная запись формулы"; var struct_lang_LBL42 = "Линейная скобочная запись используется для представления дерева логической формулы в виде строки. Для обозначения логических операций и значений введены следующие обозначения: 1 - истина, 0 - ложь, b - пропущенное значение, c - конъюнкция, d - дизъюнкция, e - эквивалентность, i - импликация, o - пропущенная операция.";
     var struct_lang_LBL43 = "Предел оценки 5"; var struct_lang_LBL44 = "Предел оценки 4"; var struct_lang_LBL45 = "Предел оценки 4 отсчитывается от предела оценки 5.";
+    var struct_lang_LBL46 = "Линейная скобочная запись используется для представления дерева логической формулы в виде строки. Для обозначения логических операций и значений введены следующие обозначения: 1 - истина, 0 - ложь, b - пропущенное значение, c - конъюнкция, d - дизъюнкция, e - эквивалентность, i - импликация, o - пропущенная операция (символы букв на английском языке). Вы можете составить логическую формулу, используя эти обозначения и скобки для расстановки приоритетов. Знак операции ставится перед скобками, внутри которых указываются операнды. Максимальный уровень вложенности операндов равен 3, на последнем уровне операндами обязательно должны являться логические значения или их пропуск. В формуле можно допустить до 4ех пропусков. Удостоверьтесь, что путем подстановки учащийся сможет получить истинное значение формулы. Примеры правильно построенных формул:";
     var struct_lang_LBLMinutes = "Количество минут";
     var struct_lang_LBLDifficulty = "Сложность";
     var struct_lang_LBLTest = "Тест";
@@ -159,6 +160,7 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     struct_lang_LBL38 = "Tower of Hanoi task"; struct_lang_LBL39 = "Amount of rings"; struct_lang_LBL40 = "Logic task";
     struct_lang_LBL41 = "Linear notation of a formula"; struct_lang_LBL42 = "Linear bracket notation is used to represent the tree of a logical formula in a line. The following notation is used to indicate logical operations and values: 1 - true, 0 - false, b - blank value, c - conjunction, d - disjunction, e - equivalence, i - implication, o - blank operation.";
     struct_lang_LBL43 = "Limit of mark 5"; struct_lang_LBL44 = "Limit of mark 4"; struct_lang_LBL45 = "Limit of mark 4 is counted from limit of mark 5.";
+    struct_lang_LBL46 = "Linear bracket notation is used to represent the tree of a logical formula in a line. The following notation is used to indicate logical operations and values: 1 - true, 0 - false, b - blank value, c - conjunction, d - disjunction, e - equivalence, i - implication, o - blank operation. You can compose a logical formula using these symbols and brackets. Operation symbol is placed before brackets, inside which operand symbols are placed. Maximum nesting level of operands is 3, on the last level operands have to be logical values or blank. You can put up to 4 blank values or operations into formula. Make sure a student can get true value as a result of substituting. Examples of formulas:";
     struct_lang_LBLMinutes = "Minutes";
     struct_lang_LBLDifficulty = "Difficulty";
     struct_lang_LBLTest = "Test";
@@ -422,27 +424,52 @@ var form_task2 = new Ext.form.Panel({
     }, {
         border: false,
         layout: { type: 'hbox', align: 'stretchmax' },
-        items: [{
-            flex: 1, bodyPadding: 10, layout: 'anchor', height: 100,
-            items: [{
-                name: 'taskStr', xtype: 'combo', anchor: '100%', editable: false,
-                store: new Ext.data.SimpleStore({
-                    data: [
-                        ['e(d(i(b,b),e(b,1)),i(1,0))'],
-                        ['c(c(d(0,b),o(0,0)),c(o(1,0),e(b,0)))'],
-                        ['e(c(i(1,b),d(0,b)),i(o(1,0),o(0,0)))'],
-                        ['c(e(b,b),c(o(1,0),b))'],
-                        ['e(d(c(1,b),b),e(o(1,0),b))'],
+        //items: [{
+        //    flex: 1, bodyPadding: 10, layout: 'anchor', height: 100,
+        //    items: [{
+        //        name: 'taskStr', xtype: 'combo', anchor: '100%', editable: false,
+        //        store: new Ext.data.SimpleStore({
+        //            data: [
+        //                ['e(d(i(b,b),e(b,1)),i(1,0))'],
+        //                ['c(c(d(0,b),o(0,0)),c(o(1,0),e(b,0)))'],
+        //                ['e(c(i(1,b),d(0,b)),i(o(1,0),o(0,0)))'],
+        //                ['c(e(b,b),c(o(1,0),b))'],
+        //                ['e(d(c(1,b),b),e(o(1,0),b))'],
 
-                    ],
-                    fields: ['formula']
-                }),
-                valueField: 'formula',
-                displayField: 'formula',
+        //            ],
+        //            fields: ['formula']
+        //        }),
+        //        valueField: 'formula',
+        //        displayField: 'formula',
+        //        fieldLabel: struct_lang_LBL41, labelAlign: 'left', labelWidth: labelWidthOfTextfield
+        //    }, {
+        //        name: 'hint', xtype: 'label', anchor: '100%',
+        //        html: struct_lang_LBL42, cls: 'customlabel',
+        //    }]
+        //}]
+        items: [{
+            flex: 1, bodyPadding: 10, layout: 'anchor',                                              //тут нет проверки правильности ввода формулы
+            items: [{
+                name: 'taskStr', xtype: 'textfield', anchor: '100%', editable: true,
                 fieldLabel: struct_lang_LBL41, labelAlign: 'left', labelWidth: labelWidthOfTextfield
             }, {
                 name: 'hint', xtype: 'label', anchor: '100%',
-                html: struct_lang_LBL42, cls: 'customlabel',
+                html: struct_lang_LBL46 + '<br>', cls: 'customlabel',
+            }, {
+                name: 'formula1', xtype: 'label', anchor: '100%',
+                html: 'e(d(i(b, b), e(b, 1)), i(1, 0))<br>', cls: 'customlabel',
+            }, {
+                name: 'formula2', xtype: 'label', anchor: '100%',
+                html: 'c(c(d(0,b),o(0,0)),c(o(1,0),e(b,0)))<br>', cls: 'customlabel',
+            }, {
+                name: 'formula3', xtype: 'label', anchor: '100%',
+                html: 'e(c(i(1,b),d(0,b)),i(o(1,0),o(0,0)))<br>', cls: 'customlabel',
+            }, {
+                name: 'formula4', xtype: 'label', anchor: '100%',
+                html: 'c(e(b,b),c(o(1,0),b))<br>', cls: 'customlabel',
+            }, {
+                name: 'formula5', xtype: 'label', anchor: '100%',
+                html: 'e(d(c(1,b),b),e(o(1,0),b))', cls: 'customlabel',
             }]
         }]
     }],
