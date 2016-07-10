@@ -150,6 +150,13 @@ function validateMarkLimits(value) {
     return true;
 }
 
+numberOfCylinders_listener = function ()
+{
+    var value = form_task3.down('[name=numberOfCylinders]').getValue();
+    var n = Math.pow(2, parseInt(value)) - 1;
+    form_task3.down('[name=hint]').setText(struct_lang_LBL45 + n);
+}
+
 //====================================================================================================
 //===============================================  ФОРМЫ  ============================================
 //====================================================================================================
@@ -170,7 +177,7 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     var struct_lang_LBL35 = "Система счисления 1"; var struct_lang_LBL36 = "Система счисления 2"; var struct_lang_LBL37 = "Число (в 10 СС)";
     var struct_lang_LBL38 = "Задание на Ханойскую башню"; var struct_lang_LBL39 = "Количество колец"; var struct_lang_LBL40 = "Задание на алгебру логики";
     var struct_lang_LBL41 = "Линейная запись формулы"; var struct_lang_LBL42 = "Линейная скобочная запись используется для представления дерева логической формулы в виде строки. Для обозначения логических операций и значений введены следующие обозначения: 1 - истина, 0 - ложь, b - пропущенное значение, c - конъюнкция, d - дизъюнкция, e - эквивалентность, i - импликация, o - пропущенная операция.";
-    var struct_lang_LBL43 = "Предел оценки 5 (в ходах)"; var struct_lang_LBL44 = "Предел оценки 4 (в ходах)"; var struct_lang_LBL45 = "Предел оценки 4 отсчитывается от предела оценки 5.";
+    var struct_lang_LBL43 = "Предел оценки 5 (в ходах)"; var struct_lang_LBL44 = "Предел оценки 4 (в ходах)"; var struct_lang_LBL45 = "Оптимальное количество ходов = ";
     var struct_lang_LBL46 = "Линейная скобочная запись используется для представления дерева логической формулы в виде строки. Для обозначения логических операций и значений введены следующие обозначения: 1 - истина, 0 - ложь, b - пропущенное значение, c - конъюнкция, d - дизъюнкция, e - эквивалентность, i - импликация, o - пропущенная операция (символы букв на английском языке). Вы можете составить логическую формулу, используя эти обозначения и скобки для расстановки приоритетов. Знак операции ставится перед скобками, внутри которых указываются операнды. Максимальный уровень вложенности операндов равен 3, на последнем уровне операндами обязательно должны являться логические значения или их пропуск. В формуле можно допустить до 4ех пропусков. Удостоверьтесь, что путем подстановки учащийся сможет получить истинное значение формулы. Примеры правильно построенных формул:";
     var struct_lang_LBL47 = "Системы счисления не должны совпадать."; var struct_lang_LBL48 = "Предел оценки 4 должен быть выше предела оценки 5.";
     var struct_lang_LBLMinutes = "Количество минут";
@@ -191,7 +198,7 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     struct_lang_LBL35 = "Numeric system 1"; struct_lang_LBL36 = "Numeric system 2"; struct_lang_LBL37 = "Number (decimal)";
     struct_lang_LBL38 = "Tower of Hanoi task"; struct_lang_LBL39 = "Amount of rings"; struct_lang_LBL40 = "Logic task";
     struct_lang_LBL41 = "Linear notation of a formula"; struct_lang_LBL42 = "Linear bracket notation is used to represent the tree of a logical formula in a line. The following notation is used to indicate logical operations and values: 1 - true, 0 - false, b - blank value, c - conjunction, d - disjunction, e - equivalence, i - implication, o - blank operation.";
-    struct_lang_LBL43 = "Limit of mark 5 (in turns)"; struct_lang_LBL44 = "Limit of mark 4 (in turns)"; struct_lang_LBL45 = "Limit of mark 4 is counted from limit of mark 5.";
+    struct_lang_LBL43 = "Limit of mark 5 (turns)"; struct_lang_LBL44 = "Limit of mark 4 (turns)"; struct_lang_LBL45 = "Optimal amount of turns = ";
     struct_lang_LBL46 = "Linear bracket notation is used to represent the tree of a logical formula in a line. The following notation is used to indicate logical operations and values: 1 - true, 0 - false, b - blank value, c - conjunction, d - disjunction, e - equivalence, i - implication, o - blank operation. You can compose a logical formula using these symbols and brackets. Operation symbol is placed before brackets, inside which operand symbols are placed. Maximum nesting level of operands is 3, on the last level operands have to be logical values or blank. You can put up to 4 blank values or operations into formula. Make sure a student can get true value as a result of substituting. Examples of formulas:";
     struct_lang_LBL47 = "Numeric systems should not be the same."; struct_lang_LBL48 = "Limit of mark 4 should be greater than limit of mark 5.";
     struct_lang_LBLMinutes = "Minutes";
@@ -412,7 +419,8 @@ var form_task3 = new Ext.form.Panel({
             items: [{
                 name: 'numberOfCylinders', xtype: 'numberfield', anchor: '100%', editable: false,
                 minValue: 2, maxValue: 6,
-                fieldLabel: struct_lang_LBL39, labelAlign: 'left', labelWidth: labelWidthOfTextfield
+                fieldLabel: struct_lang_LBL39, labelAlign: 'left', labelWidth: labelWidthOfTextfield,
+                listeners: { change: function () { numberOfCylinders_listener(); } }
             }, {
                 name: 'limitOf5', xtype: 'numberfield', anchor: '100%', editable: false,
                 minValue: 0, maxValue: 10,
@@ -425,7 +433,7 @@ var form_task3 = new Ext.form.Panel({
                 validateValue: function (value) { return validateMarkLimits(value); }
             }, {
                 name: 'hint', xtype: 'label', anchor: '100%',
-                html: struct_lang_LBL45, cls: 'customlabel',
+                html: struct_lang_LBL45, cls: 'customlabel'
             }]
         }]
     }],
