@@ -70,11 +70,11 @@ namespace ILS.Web.Controllers
             {
                 taskRun.Result = 5;
             }
-            if (turns - optimal > task.LimitOf5 && turns - optimal <= task.LimitOf5 + task.LimitOf4)
+            if (turns - optimal > task.LimitOf5 && turns - optimal <= task.LimitOf4)
             {
                 taskRun.Result = 4;
             }
-            if (turns - optimal > task.LimitOf5 + task.LimitOf4)
+            if (turns - optimal > task.LimitOf4)
             {
                 taskRun.Result = 3;
             }

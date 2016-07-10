@@ -49,13 +49,13 @@ public class CheckResult3 : MonoBehaviour {
 
                 if (numberOfTurns - optimal <= limitOf5)
                 {
-                    taskText1.text = "Задание выполнено!";
-                    taskText2.text = "Вы решили задание за";
-                    taskText3.text = "оптимальное число шагов.";
-                    taskText4.text = "Оценка: 5";
+                    taskText1.text = "";
+                    taskText2.text = "Задание выполнено!";
+                    taskText3.text = "Оценка: 5";
+                    taskText4.text = "";
                     taskText5.text = "";
                 }
-                if (numberOfTurns - optimal > limitOf5 && numberOfTurns - optimal <= limitOf5 + limitOf4)
+                if (numberOfTurns - optimal > limitOf5 && numberOfTurns - optimal <= limitOf4)
                 {
                     taskText1.text = "Задание выполнено!";
                     taskText2.text = "Вы решили задание за";
@@ -63,7 +63,7 @@ public class CheckResult3 : MonoBehaviour {
                     taskText4.text = "к оптимальному.";
                     taskText5.text = "Оценка: 4";
                 }
-                if (numberOfTurns - optimal > limitOf5 + limitOf4)
+                if (numberOfTurns - optimal > limitOf4)
                 {
                     taskText1.text = "Задание выполнено!";
                     taskText2.text = "Вы решили задание за";
