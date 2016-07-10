@@ -119,6 +119,22 @@ question_pic_popup = function (c, nm) {
     });
 }
 
+function validateScalesNotEqual(value)
+{
+    var task_type = Ext.ComponentQuery.query('[name=rb_task]')[0].getGroupValue();
+    var scale1 = form_task1.down('[name=scale1]').getValue();
+    var scale2 = form_task1.down('[name=scale2]').getValue();
+    if (scale1 == scale2 && task_type == "translation")
+    {
+        form_task1.getForm().markInvalid({ 'scale1': struct_lang_LBL47 });
+        form_task1.getForm().markInvalid({ 'scale2': struct_lang_LBL47 });
+        return false;
+    }
+    form_task1.down('[name=scale1]').clearInvalid();
+    form_task1.down('[name=scale2]').clearInvalid();
+    return true;
+}
+
 //====================================================================================================
 //===============================================  ФОРМЫ  ============================================
 //====================================================================================================
@@ -141,6 +157,7 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     var struct_lang_LBL41 = "Линейная запись формулы"; var struct_lang_LBL42 = "Линейная скобочная запись используется для представления дерева логической формулы в виде строки. Для обозначения логических операций и значений введены следующие обозначения: 1 - истина, 0 - ложь, b - пропущенное значение, c - конъюнкция, d - дизъюнкция, e - эквивалентность, i - импликация, o - пропущенная операция.";
     var struct_lang_LBL43 = "Предел оценки 5"; var struct_lang_LBL44 = "Предел оценки 4"; var struct_lang_LBL45 = "Предел оценки 4 отсчитывается от предела оценки 5.";
     var struct_lang_LBL46 = "Линейная скобочная запись используется для представления дерева логической формулы в виде строки. Для обозначения логических операций и значений введены следующие обозначения: 1 - истина, 0 - ложь, b - пропущенное значение, c - конъюнкция, d - дизъюнкция, e - эквивалентность, i - импликация, o - пропущенная операция (символы букв на английском языке). Вы можете составить логическую формулу, используя эти обозначения и скобки для расстановки приоритетов. Знак операции ставится перед скобками, внутри которых указываются операнды. Максимальный уровень вложенности операндов равен 3, на последнем уровне операндами обязательно должны являться логические значения или их пропуск. В формуле можно допустить до 4ех пропусков. Удостоверьтесь, что путем подстановки учащийся сможет получить истинное значение формулы. Примеры правильно построенных формул:";
+    var struct_lang_LBL47 = "Системы счисления не должны совпадать.";
     var struct_lang_LBLMinutes = "Количество минут";
     var struct_lang_LBLDifficulty = "Сложность";
     var struct_lang_LBLTest = "Тест";
@@ -161,6 +178,7 @@ if (Ext.util.Cookies.get("language") == "Russian") {
     struct_lang_LBL41 = "Linear notation of a formula"; struct_lang_LBL42 = "Linear bracket notation is used to represent the tree of a logical formula in a line. The following notation is used to indicate logical operations and values: 1 - true, 0 - false, b - blank value, c - conjunction, d - disjunction, e - equivalence, i - implication, o - blank operation.";
     struct_lang_LBL43 = "Limit of mark 5"; struct_lang_LBL44 = "Limit of mark 4"; struct_lang_LBL45 = "Limit of mark 4 is counted from limit of mark 5.";
     struct_lang_LBL46 = "Linear bracket notation is used to represent the tree of a logical formula in a line. The following notation is used to indicate logical operations and values: 1 - true, 0 - false, b - blank value, c - conjunction, d - disjunction, e - equivalence, i - implication, o - blank operation. You can compose a logical formula using these symbols and brackets. Operation symbol is placed before brackets, inside which operand symbols are placed. Maximum nesting level of operands is 3, on the last level operands have to be logical values or blank. You can put up to 4 blank values or operations into formula. Make sure a student can get true value as a result of substituting. Examples of formulas:";
+    struct_lang_LBL47 = "Numeric systems should not be the same.";
     struct_lang_LBLMinutes = "Minutes";
     struct_lang_LBLDifficulty = "Difficulty";
     struct_lang_LBLTest = "Test";
@@ -435,7 +453,6 @@ var form_task2 = new Ext.form.Panel({
         //                ['e(c(i(1,b),d(0,b)),i(o(1,0),o(0,0)))'],
         //                ['c(e(b,b),c(o(1,0),b))'],
         //                ['e(d(c(1,b),b),e(o(1,0),b))'],
-
         //            ],
         //            fields: ['formula']
         //        }),
@@ -509,6 +526,7 @@ var form_task1 = new Ext.form.Panel({
                 name: 'rb_task', inputValue: 'operation', id: 'rb_task1',
                 xtype: 'radiofield', boxLabel: struct_lang_LBL29,
                 fieldLabel: struct_lang_LBL30, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
+                validateValue: function (value) { return validateScalesNotEqual(value);},
                 checked: true, handler: function () { task1_radio_change(this.checked); }
             }, {
                 name: 'scale', xtype: 'combobox', anchor: '100%', editable: false,
@@ -532,15 +550,38 @@ var form_task1 = new Ext.form.Panel({
             items: [{
                 name: 'rb_task', inputValue: 'translation', id: 'rb_task2',
                 xtype: 'radiofield', boxLabel: struct_lang_LBL34,
-                fieldLabel: struct_lang_LBL30, labelAlign: 'right', labelWidth: labelWidthOfTextfield
+                fieldLabel: struct_lang_LBL30, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
+                validateValue: function (value) { return validateScalesNotEqual(value); }
             }, {
                 name: 'scale1', xtype: 'combobox', anchor: '100%', disabled: true, editable: false,
                 fieldLabel: struct_lang_LBL35, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
-                store: ['2', '8', '10', '16']
+                store: new Ext.data.SimpleStore({
+                    data: [
+                        ['2'],
+                        ['8'],
+                        ['10'],
+                        ['16']
+                    ],
+                    fields: ['sc1']
+                }),
+                valueField: 'sc1',
+                displayField: 'sc1',
+                validateValue: function (value) { return validateScalesNotEqual(value);}
             }, {
                 name: 'scale2', xtype: 'combobox', anchor: '100%', disabled: true, editable: false,
                 fieldLabel: struct_lang_LBL36, labelAlign: 'right', labelWidth: labelWidthOfTextfield,
-                store: ['2', '8', '10', '16']
+                store: new Ext.data.SimpleStore({
+                    data: [
+                        ['2'],
+                        ['8'],
+                        ['10'],
+                        ['16']
+                    ],
+                    fields: ['sc2']
+                }),
+                valueField: 'sc2',
+                displayField: 'sc2',
+                validateValue: function (value) { return validateScalesNotEqual(value); }
             }, {
                 name: 'number', xtype: 'numberfield', anchor: '100%', disabled: true, editable: false,
                 minValue: 10, maxValue: 50,
