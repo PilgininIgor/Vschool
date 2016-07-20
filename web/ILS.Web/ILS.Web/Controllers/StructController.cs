@@ -581,17 +581,51 @@ namespace ILS.Web.Controllers
                 success = true,
                 data = new
                 {
+                    rb_task2 = "combo",
                     Id = task.Id,
                     ordernumber = task.OrderNumber,
-                    taskStr = task.TaskString
+                    taskStr = task.TaskString,
+                    taskStrCombo = task.TaskString
                 }
             }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult SaveTask2(Guid Id, string taskStr)
+        public ActionResult ReadTask2Strings()
+        {
+            var list = context.ThemeContent.ToList();
+            var task2Strings = new List<Array>();
+            var supportingList = new List<string>();
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] is Task2Content)
+                {
+                    Task2Content task = list[i] as Task2Content;
+                    if (!supportingList.Contains(task.TaskString))
+                    {
+                        var taskStringAsArray = new string[1] { task.TaskString };
+                        task2Strings.Add(taskStringAsArray);
+                        supportingList.Add(task.TaskString);
+                    }
+                }
+            }
+            return Json(new
+            {
+                success = true,
+                task2StringList = task2Strings
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult SaveTask2(Guid Id, string taskStrCombo, string taskStr, string rb_task2)
         {
             var task = context.ThemeContent.Find(Id) as Task2Content;
-            task.TaskString = taskStr;
+            if (rb_task2 == "combo")
+            {
+                task.TaskString = taskStrCombo;
+            }
+            else
+            {
+                task.TaskString = taskStr;
+            }
             context.SaveChanges();
             return Json(new { success = true });
         }
