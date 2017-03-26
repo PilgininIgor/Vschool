@@ -19,31 +19,31 @@ public class InsertItem : MonoBehaviour {
 		
 		if (itemType == "")
 		{
-			panelObject.renderer.material.mainTexture = textureBlank;
+			panelObject.GetComponent<Renderer>().material.mainTexture = textureBlank;
 		}
 		if (itemType == "AND")
 		{
-			panelObject.renderer.material.mainTexture = textureAND;
+			panelObject.GetComponent<Renderer>().material.mainTexture = textureAND;
 		}
 		if (itemType == "OR")
 		{
-			panelObject.renderer.material.mainTexture = textureOR;
+			panelObject.GetComponent<Renderer>().material.mainTexture = textureOR;
 		}
 		if (itemType == "IMPL")
 		{
-			panelObject.renderer.material.mainTexture = textureIMPL;
+			panelObject.GetComponent<Renderer>().material.mainTexture = textureIMPL;
 		}
 		if (itemType == "EQUIV")
 		{
-			panelObject.renderer.material.mainTexture = textureEQUIV;
+			panelObject.GetComponent<Renderer>().material.mainTexture = textureEQUIV;
 		}
 		if (itemType == "0")
 		{
-			panelObject.renderer.material.mainTexture = texture0;
+			panelObject.GetComponent<Renderer>().material.mainTexture = texture0;
 		}
 		if (itemType == "1")
 		{
-			panelObject.renderer.material.mainTexture = texture1;
+			panelObject.GetComponent<Renderer>().material.mainTexture = texture1;
 		}
 		
 		int panelNumber = int.Parse (panelObject.name.Substring (5, 1));

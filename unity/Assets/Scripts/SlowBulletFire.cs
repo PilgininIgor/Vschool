@@ -27,10 +27,10 @@ public class SlowBulletFire : MonoBehaviour
         var coneRandomRotation = Quaternion.Euler(Random.Range(-coneAngle, coneAngle), Random.Range(-coneAngle, coneAngle), 0);
         Spawner.Spawn(bulletPrefab, transform.position, transform.rotation * coneRandomRotation);
 
-        if (audio && fireSound)
+        if (GetComponent<AudioSource>() && fireSound)
         {
-            audio.clip = fireSound;
-            audio.Play();
+            GetComponent<AudioSource>().clip = fireSound;
+            GetComponent<AudioSource>().Play();
         }
 
         lastFireTime = Time.time;

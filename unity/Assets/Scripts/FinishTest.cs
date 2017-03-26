@@ -9,20 +9,20 @@ public class FinishTest : MonoBehaviour
         var p = BoardStatic.transform.localPosition;
         p.z = 18.5f;
         BoardStatic.transform.localPosition = p;
-        BoardToMove.transform.Find("BoardGroup").animation.Play("BoardDisappear");
+        BoardToMove.transform.Find("BoardGroup").GetComponent<Animation>().Play("BoardDisappear");
 
         //задвинуть кубы, а потом сделать их все неактивными
         board = BoardToMove.transform.Find("BoardGroup").GetComponent<Board>();
-        Cube1.animation.Play(!board.a[board.i][0] ? "CubeInactiveDown" : "CubeActiveDown");
-        Cube2.animation.Play(!board.a[board.i][1] ? "CubeInactiveDown" : "CubeActiveDown");
-        Cube3.animation.Play(!board.a[board.i][2] ? "CubeInactiveDown" : "CubeActiveDown");
+        Cube1.GetComponent<Animation>().Play(!board.a[board.i][0] ? "CubeInactiveDown" : "CubeActiveDown");
+        Cube2.GetComponent<Animation>().Play(!board.a[board.i][1] ? "CubeInactiveDown" : "CubeActiveDown");
+        Cube3.GetComponent<Animation>().Play(!board.a[board.i][2] ? "CubeInactiveDown" : "CubeActiveDown");
         if (board.qAnsNum[board.i] > 3)
         {
-            Cube4.animation.Play(!board.a[board.i][3] ? "CubeInactiveDown" : "CubeActiveDown");
+            Cube4.GetComponent<Animation>().Play(!board.a[board.i][3] ? "CubeInactiveDown" : "CubeActiveDown");
         }
         if (board.qAnsNum[board.i] > 4)
         {
-            Cube5.animation.Play(!board.a[board.i][4] ? "CubeInactiveDown" : "CubeActiveDown");
+            Cube5.GetComponent<Animation>().Play(!board.a[board.i][4] ? "CubeInactiveDown" : "CubeActiveDown");
         }
         Cube1.GetComponent<Cube>().is_active = false; Cube2.GetComponent<Cube>().is_active = false;
         Cube3.GetComponent<Cube>().is_active = false; Cube4.GetComponent<Cube>().is_active = false;

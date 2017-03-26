@@ -29,11 +29,11 @@ public class CP_Digit_Click : MonoBehaviour
             var txt = transform.parent.transform.Find("Field Group").transform.Find("Field Text");
             if (txt.GetComponent<TextMesh>().text.Length >= code_length)
             {
-                transform.Find(child_to_glow).animation.Play("CP ButtonError");
+                transform.Find(child_to_glow).GetComponent<Animation>().Play("CP ButtonError");
             }
             else
             {
-                transform.Find(child_to_glow).animation.Play("CP ButtonLight");
+                transform.Find(child_to_glow).GetComponent<Animation>().Play("CP ButtonLight");
                 txt.GetComponent<TextMesh>().text += digit;
             }
         }

@@ -13,7 +13,7 @@ public class InstCylinderInHand : MonoBehaviour {
         currentCylinder = Instantiate(cylinders[cylinderType-1], transform.position, transform.rotation) as GameObject;
         currentCylinder.transform.parent = transform;
         currentCylinder.transform.Rotate(new Vector3(0, 180, 0));
-        currentCylinder.collider.isTrigger = true;
+        currentCylinder.GetComponent<Collider>().isTrigger = true;
         currentCylinderType = cylinderType;
     }
 

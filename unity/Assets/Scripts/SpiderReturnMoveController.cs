@@ -29,8 +29,8 @@ public class SpiderReturnMoveController : MonoBehaviour
         if (motor.movementDirection.sqrMagnitude < 0.01)
         {
             character.position = new Vector3(spawnPos.x, character.position.y, spawnPos.z);
-            motor.rigidbody.velocity = Vector3.zero;
-            motor.rigidbody.angularVelocity = Vector3.zero;
+            motor.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            motor.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             motor.movementDirection = Vector3.zero;
             enabled = false;
             animationBehaviour.enabled = false;

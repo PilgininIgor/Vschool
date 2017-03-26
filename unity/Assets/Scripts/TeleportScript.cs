@@ -27,7 +27,7 @@ public class TeleportScript : MonoBehaviour
             Destination.GetComponent<TeleportScript>().be_ready_to_receive = true;
 
             //включаем эффект, цилиндр начинает из прозрачного становиться белым
-            transform.Find("TeleportEffect").animation.Play("TeleportEffect");
+            transform.Find("TeleportEffect").GetComponent<Animation>().Play("TeleportEffect");
             //полностью белым он станет через 30 кадров - ждем их (yield ждет один кадр, отсюда и цикл)
             //for (var i=0; i<30; i++) yield;
             //отключаем скрипт управления и скрываем геометрию персонажа
@@ -59,7 +59,7 @@ public class TeleportScript : MonoBehaviour
             Player.transform.rotation = Quaternion.AngleAxis(rt, Player.transform.up);
 
             //включаем эффект, теперь у получателя								
-            Destination.transform.Find("TeleportEffect").animation.Play("TeleportEffect");
+            Destination.transform.Find("TeleportEffect").GetComponent<Animation>().Play("TeleportEffect");
             //for (i=0; i<30; i++) yield;
             //после того, как цилиндр достиг белого максимума, возвращаем персонажу видимость и управление
             //Player.transform.Find("rootJoint").gameObject.SetActive(true);

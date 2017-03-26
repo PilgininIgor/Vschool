@@ -25,7 +25,7 @@ public float distance;
 	
     void OnGUI()
     {
-		camera.rect = new Rect(0,0, 200f/Screen.width, 200f/Screen.height);
+		GetComponent<Camera>().rect = new Rect(0,0, 200f/Screen.width, 200f/Screen.height);
 		GUI.DrawTexture( new Rect(10, Screen.height-190, 178, 178), minimapFon );
 		
 		
@@ -38,10 +38,10 @@ public float distance;
 				{
 					if (Vector3.Dot(transform.forward, e.transform.position-transform.position) >= 0)
 					{
-						Vector3 screenPos = camera.WorldToScreenPoint(e.transform.position);
+						Vector3 screenPos = GetComponent<Camera>().WorldToScreenPoint(e.transform.position);
 						if (new Rect(0, 0, Screen.width, Screen.height).Contains(screenPos))
 						{
-							GUI.DrawTexture( new Rect(screenPos.x-7, camera.GetScreenHeight()-screenPos.y-7, 14, 14), enemyIcon );
+							GUI.DrawTexture( new Rect(screenPos.x-7, Screen.height-screenPos.y-7, 14, 14), enemyIcon );
 						}
 					}
 				}

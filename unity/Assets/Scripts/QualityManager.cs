@@ -128,7 +128,7 @@ public class QualityManager : MonoBehaviour
 
         // default states
 
-        camera.cullingMask = -1 & ~(1 << LayerMask.NameToLayer("Adventure"));
+        GetComponent<Camera>().cullingMask = -1 & ~(1 << LayerMask.NameToLayer("Adventure"));
         var textAdventure = GameObject.Find("TextAdventure");
         if (textAdventure)
             textAdventure.GetComponent<TextAdventureManager>().enabled = false;
@@ -140,12 +140,12 @@ public class QualityManager : MonoBehaviour
             DisableAllFx();
             if (textAdventure)
                 textAdventure.GetComponent<TextAdventureManager>().enabled = true;
-            camera.cullingMask = 1 << LayerMask.NameToLayer("Adventure");
+            GetComponent<Camera>().cullingMask = 1 << LayerMask.NameToLayer("Adventure");
             EnableFx(depthOfField, false);
             EnableFx(heightFog, false);
             EnableFx(bloom, false);
             EnableFx(noise, false);
-            camera.depthTextureMode = DepthTextureMode.None;
+            GetComponent<Camera>().depthTextureMode = DepthTextureMode.None;
         }
         else if (quality == Quality.Poor)
         {
@@ -154,7 +154,7 @@ public class QualityManager : MonoBehaviour
             EnableFx(bloom, false);
             EnableFx(noise, false);
             EnableFx(reflection, false);
-            camera.depthTextureMode = DepthTextureMode.None;
+            GetComponent<Camera>().depthTextureMode = DepthTextureMode.None;
         }
         else if (quality == Quality.Low)
         {
@@ -163,7 +163,7 @@ public class QualityManager : MonoBehaviour
             EnableFx(bloom, false);
             EnableFx(noise, false);
             EnableFx(reflection, true);
-            camera.depthTextureMode = DepthTextureMode.None;
+            GetComponent<Camera>().depthTextureMode = DepthTextureMode.None;
         }
         else if (quality == Quality.Medium)
         {
@@ -172,7 +172,7 @@ public class QualityManager : MonoBehaviour
             EnableFx(bloom, true);
             EnableFx(noise, false);
             EnableFx(reflection, true);
-            camera.depthTextureMode = DepthTextureMode.None;
+            GetComponent<Camera>().depthTextureMode = DepthTextureMode.None;
         }
         else if (quality == Quality.High)
         {
@@ -181,7 +181,7 @@ public class QualityManager : MonoBehaviour
             EnableFx(bloom, true);
             EnableFx(noise, true);
             EnableFx(reflection, true);
-            camera.depthTextureMode = DepthTextureMode.None;
+            GetComponent<Camera>().depthTextureMode = DepthTextureMode.None;
         }
         else
         { // Highest
@@ -191,7 +191,7 @@ public class QualityManager : MonoBehaviour
             EnableFx(reflection, true);
             EnableFx(noise, true);
             if ((heightFog && heightFog.enabled) || (depthOfField && depthOfField.enabled))
-                camera.depthTextureMode |= DepthTextureMode.Depth;
+                GetComponent<Camera>().depthTextureMode |= DepthTextureMode.Depth;
         }
 
         Debug.Log("AngryBots: setting shader LOD to " + quality);
@@ -205,7 +205,7 @@ public class QualityManager : MonoBehaviour
 
     private void DisableAllFx()
     {
-        camera.depthTextureMode = DepthTextureMode.None;
+        GetComponent<Camera>().depthTextureMode = DepthTextureMode.None;
         EnableFx(reflection, false);
         EnableFx(depthOfField, false);
         EnableFx(heightFog, false);

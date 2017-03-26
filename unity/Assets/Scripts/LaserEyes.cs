@@ -29,8 +29,8 @@ public class LaserEyes : MonoBehaviour
 		botCtrl = transform.root.GetComponent<BotControlScript>(); 
 		
 		// setting up the audio component
-		audio.loop = true;
-		audio.playOnAwake = false;
+		GetComponent<AudioSource>().loop = true;
+		GetComponent<AudioSource>().playOnAwake = false;
 	}
 	
 	
@@ -46,7 +46,7 @@ public class LaserEyes : MonoBehaviour
 			// register that we have shot once
 			shot = true;
 			// play the laser beam effect
-			audio.Play ();
+			GetComponent<AudioSource>().Play ();
 		}
 		// if the look weight returns to normal
 		else if(botCtrl.lookWeight < 0.9f)
@@ -58,7 +58,7 @@ public class LaserEyes : MonoBehaviour
 			// reset the shot toggle
 			shot = false;
 			// stop audio playback
-			audio.Stop();
+			GetComponent<AudioSource>().Stop();
 		}
 		// if our laser line renderer objects exist..
 		if(laserL != null)

@@ -29,16 +29,16 @@ public class CubeScript : MonoBehaviour
                 switch (i)
                 {
                     case 1:
-                        animation.Play("CubeAnim1");
+                        GetComponent<Animation>().Play("CubeAnim1");
                         break;
                     case 2:
-                        animation.Play("CubeAnim2");
+                        GetComponent<Animation>().Play("CubeAnim2");
                         break;
                     case 3:
-                        animation.Play("CubeAnim3");
+                        GetComponent<Animation>().Play("CubeAnim3");
                         break;
                     case 4:
-                        animation.Play("CubeAnim4");
+                        GetComponent<Animation>().Play("CubeAnim4");
                         break;
                 }
                 is_active = true;
@@ -46,7 +46,7 @@ public class CubeScript : MonoBehaviour
             }
             else
             {
-                animation.Play("CubeReturn");
+                GetComponent<Animation>().Play("CubeReturn");
                 is_active = false;
                 SetAnswer(false);
             }

@@ -40,7 +40,7 @@ public class IslandWater : MonoBehaviour
 	// camera will just work!
 	public void OnWillRenderObject()
 	{
-		if( !enabled || !renderer || !renderer.sharedMaterial || !renderer.enabled )
+		if( !enabled || !GetComponent<Renderer>() || !GetComponent<Renderer>().sharedMaterial || !GetComponent<Renderer>().enabled )
 			return;
 			
 		if( !m_Terrain ) {
@@ -67,8 +67,8 @@ public class IslandWater : MonoBehaviour
 		m_HardwareWaterSupport = FindHardwareWaterSupport();
 		WaterMode mode = GetWaterMode();
 		Shader newShader = ( mode == WaterMode.Refractive ) ? m_ShaderFull : m_ShaderSimple;
-		if( renderer.sharedMaterial.shader != newShader )
-			renderer.sharedMaterial.shader = newShader;
+		if( GetComponent<Renderer>().sharedMaterial.shader != newShader )
+			GetComponent<Renderer>().sharedMaterial.shader = newShader;
 		
 		Camera reflectionCamera, refractionCamera;
 		CreateWaterObjects( cam, out reflectionCamera, out refractionCamera );
@@ -133,7 +133,7 @@ public class IslandWater : MonoBehaviour
 			
 			reflectionCamera.transform.position = oldpos;
 			GL.SetRevertBackfacing (false);
-			renderer.sharedMaterial.SetTexture( "_ReflectionTex", m_ReflectionTexture );
+			GetComponent<Renderer>().sharedMaterial.SetTexture( "_ReflectionTex", m_ReflectionTexture );
 		}
 		
 		// Render refraction
@@ -167,7 +167,7 @@ public class IslandWater : MonoBehaviour
 			m_Terrain.treeDistance = oldTreeDist;
 			m_Terrain.treeBillboardDistance = oldTreeBillDist;
 			
-			renderer.sharedMaterial.SetTexture( "_RefractionTex", m_RefractionTexture );
+			GetComponent<Renderer>().sharedMaterial.SetTexture( "_RefractionTex", m_RefractionTexture );
 		}
 		
 		QualitySettings.softVegetation = oldSoftVegetation;
@@ -203,9 +203,9 @@ public class IslandWater : MonoBehaviour
 	// Cleanup all the objects we possibly have created
 	void OnDisable()
 	{
-		if( renderer )
+		if( GetComponent<Renderer>() )
 		{
-			Material mat = renderer.sharedMaterial;
+			Material mat = GetComponent<Renderer>().sharedMaterial;
 			if( mat )
 			{
 				mat.SetTexture( "_ReflectionTex", null );
@@ -234,9 +234,9 @@ public class IslandWater : MonoBehaviour
 	// old cards to make water texture scroll.
 	void Update()
 	{
-		if( !renderer )
+		if( !GetComponent<Renderer>() )
 			return;
-		Material mat = renderer.sharedMaterial;
+		Material mat = GetComponent<Renderer>().sharedMaterial;
 		if( !mat )
 			return;
 			
@@ -313,11 +313,11 @@ public class IslandWater : MonoBehaviour
 			if( !reflectionCamera ) // catch both not-in-dictionary and in-dictionary-but-deleted-GO
 			{
 				GameObject go = new GameObject( "Water Refl Camera id" + GetInstanceID() + " for " + currentCamera.GetInstanceID(), typeof(Camera), typeof(Skybox) );
-				reflectionCamera = go.camera;
+				reflectionCamera = go.GetComponent<Camera>();
 				reflectionCamera.enabled = false;
 				reflectionCamera.transform.position = transform.position;
 				reflectionCamera.transform.rotation = transform.rotation;
-				reflectionCamera.gameObject.AddComponent("FlareLayer");
+				reflectionCamera.gameObject.AddComponent<FlareLayer>();
 				go.hideFlags = HideFlags.HideAndDontSave;
 				m_ReflectionCameras[currentCamera] = reflectionCamera;
 			}
@@ -342,11 +342,11 @@ public class IslandWater : MonoBehaviour
 			if( !refractionCamera ) // catch both not-in-dictionary and in-dictionary-but-deleted-GO
 			{
 				GameObject go = new GameObject( "Water Refr Camera id" + GetInstanceID() + " for " + currentCamera.GetInstanceID(), typeof(Camera), typeof(Skybox) );
-				refractionCamera = go.camera;
+				refractionCamera = go.GetComponent<Camera>();
 				refractionCamera.enabled = false;
 				refractionCamera.transform.position = transform.position;
 				refractionCamera.transform.rotation = transform.rotation;
-				refractionCamera.gameObject.AddComponent("FlareLayer");
+				refractionCamera.gameObject.AddComponent<FlareLayer>();
 				go.hideFlags = HideFlags.HideAndDontSave;
 				m_RefractionCameras[currentCamera] = refractionCamera;
 			}
@@ -363,10 +363,10 @@ public class IslandWater : MonoBehaviour
 	
 	public WaterMode FindHardwareWaterSupport()
 	{
-		if( !SystemInfo.supportsRenderTextures || !renderer || !m_ShaderFull )
+		if( !SystemInfo.supportsRenderTextures || !GetComponent<Renderer>() || !m_ShaderFull )
 			return WaterMode.Simple;
 			
-		Material mat = renderer.sharedMaterial;
+		Material mat = GetComponent<Renderer>().sharedMaterial;
 		if( !mat )
 			return WaterMode.Simple;
 			

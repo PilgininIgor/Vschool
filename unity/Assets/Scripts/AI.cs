@@ -52,10 +52,10 @@ public class AI : MonoBehaviour
             behaviourOnSpotted.enabled = true;
             behaviourOnLostTrack.enabled = false;
 
-            if (audio && soundOnSpotted)
+            if (GetComponent<AudioSource>() && soundOnSpotted)
             {
-                audio.clip = soundOnSpotted;
-                audio.Play();
+                GetComponent<AudioSource>().clip = soundOnSpotted;
+                GetComponent<AudioSource>().Play();
             }
         }
     }

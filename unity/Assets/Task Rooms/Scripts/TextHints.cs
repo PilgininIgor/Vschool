@@ -5,7 +5,7 @@ public class TextHints : MonoBehaviour {
 	
 	void ShowHint(string message)
 	{
-		guiText.text = message;
-		if(!guiText.enabled){ guiText.enabled = true; }
+		GetComponent<GUIText>().text = message;
+		if(!GetComponent<GUIText>().enabled){ GetComponent<GUIText>().enabled = true; }
 	}
 }

@@ -16,7 +16,7 @@ public class Game3_Start : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.collider.tag == "Player" && !gameStarted)
+        if (other.GetComponent<Collider>().tag == "Player" && !gameStarted)
         {
             gameStarted = true;
 

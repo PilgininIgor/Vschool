@@ -20,7 +20,7 @@ public class Game2_Start : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.collider.tag == "Player" && !gameStarted)
+		if (other.GetComponent<Collider>().tag == "Player" && !gameStarted)
 		{
 			gameStarted = true;
 
@@ -109,7 +109,7 @@ public class Game2_Start : MonoBehaviour {
 				panelObj.transform.parent = board.transform;
 				panelObj.transform.localPosition = coordinates[layer][heights[layer]];
 				panelObj.transform.Rotate(new Vector3(0,180,0));
-				panelObj.renderer.material.mainTexture = textureAND;
+				panelObj.GetComponent<Renderer>().material.mainTexture = textureAND;
 				heights[layer]++;
 				lastObject[layer] = panelObj;
 			}
@@ -120,7 +120,7 @@ public class Game2_Start : MonoBehaviour {
 				panelObj.transform.parent = board.transform;
 				panelObj.transform.localPosition = coordinates[layer][heights[layer]];
 				panelObj.transform.Rotate(new Vector3(0,180,0));
-				panelObj.renderer.material.mainTexture = textureOR;
+				panelObj.GetComponent<Renderer>().material.mainTexture = textureOR;
 				heights[layer]++;
 				lastObject[layer] = panelObj;
 			}
@@ -131,7 +131,7 @@ public class Game2_Start : MonoBehaviour {
 				panelObj.transform.parent = board.transform;
 				panelObj.transform.localPosition = coordinates[layer][heights[layer]];
 				panelObj.transform.Rotate(new Vector3(0,180,0));
-				panelObj.renderer.material.mainTexture = textureIMPL;
+				panelObj.GetComponent<Renderer>().material.mainTexture = textureIMPL;
 				heights[layer]++;
 				lastObject[layer] = panelObj;
 			}
@@ -142,7 +142,7 @@ public class Game2_Start : MonoBehaviour {
 				panelObj.transform.parent = board.transform;
 				panelObj.transform.localPosition = coordinates[layer][heights[layer]];
 				panelObj.transform.Rotate(new Vector3(0,180,0));
-				panelObj.renderer.material.mainTexture = textureEQUIV;
+				panelObj.GetComponent<Renderer>().material.mainTexture = textureEQUIV;
 				heights[layer]++;
 				lastObject[layer] = panelObj;
 			}
@@ -153,7 +153,7 @@ public class Game2_Start : MonoBehaviour {
 				panelObj.transform.parent = board.transform;
 				panelObj.transform.localPosition = coordinates[layer][heights[layer]];
 				panelObj.transform.Rotate(new Vector3(0,180,0));
-				panelObj.renderer.material.mainTexture = texture1;
+				panelObj.GetComponent<Renderer>().material.mainTexture = texture1;
 				heights[layer]++;
 				lastObject[layer] = panelObj;
 			}
@@ -164,7 +164,7 @@ public class Game2_Start : MonoBehaviour {
 				panelObj.transform.parent = board.transform;
 				panelObj.transform.localPosition = coordinates[layer][heights[layer]];
 				panelObj.transform.Rotate(new Vector3(0,180,0));
-				panelObj.renderer.material.mainTexture = texture0;
+				panelObj.GetComponent<Renderer>().material.mainTexture = texture0;
 				heights[layer]++;
 				lastObject[layer] = panelObj;
 			}
@@ -177,7 +177,7 @@ public class Game2_Start : MonoBehaviour {
 				panelObj.transform.parent = board.transform;
 				panelObj.transform.localPosition = coordinates[layer][heights[layer]];
 				panelObj.transform.Rotate(new Vector3(0,180,0));
-				panelObj.renderer.material.mainTexture = textureBlank;
+				panelObj.GetComponent<Renderer>().material.mainTexture = textureBlank;
 				heights[layer]++;
 				lastObject[layer] = panelObj;
 			}
@@ -190,7 +190,7 @@ public class Game2_Start : MonoBehaviour {
 				panelObj.transform.parent = board.transform;
 				panelObj.transform.localPosition = coordinates[layer][heights[layer]];
 				panelObj.transform.Rotate(new Vector3(0,180,0));
-				panelObj.renderer.material.mainTexture = textureBlank;
+				panelObj.GetComponent<Renderer>().material.mainTexture = textureBlank;
 				heights[layer]++;
 				lastObject[layer] = panelObj;
 			}

@@ -101,8 +101,8 @@ public class MoodBoxManager : MonoBehaviour
         }
         if (fog && fog.enabled)
         {
-            fog.renderer.sharedMaterial.SetFloat("_Y", currentData.fogY);
-            fog.renderer.sharedMaterial.SetColor("_FogColor", currentData.fogColor);
+            fog.GetComponent<Renderer>().sharedMaterial.SetFloat("_Y", currentData.fogY);
+            fog.GetComponent<Renderer>().sharedMaterial.SetColor("_FogColor", currentData.fogColor);
         }
     }
 

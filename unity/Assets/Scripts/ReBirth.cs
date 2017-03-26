@@ -14,6 +14,6 @@ public class ReBirth : MonoBehaviour
         var sm = GetComponent<ShaderDatabase>();
         StartCoroutine(sm.WhiteIn());
 
-        camera.backgroundColor = Color.white;
+        GetComponent<Camera>().backgroundColor = Color.white;
     }
 }

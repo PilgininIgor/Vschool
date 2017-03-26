@@ -114,7 +114,7 @@ public class CheckResult2 : MonoBehaviour {
         {
             if (links[i] != null)
             {
-                links[i].renderer.material.mainTexture = texture1;                
+                links[i].GetComponent<Renderer>().material.mainTexture = texture1;                
             }
         }
 
@@ -126,7 +126,7 @@ public class CheckResult2 : MonoBehaviour {
             {
                 if (links[i] != null)
                 {
-                    links[i].renderer.material.mainTexture = texture2;
+                    links[i].GetComponent<Renderer>().material.mainTexture = texture2;
                 }
             }
         }

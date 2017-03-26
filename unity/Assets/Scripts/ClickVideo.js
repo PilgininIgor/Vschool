@@ -18,10 +18,10 @@ var s1 = transform.parent.transform.Find("Plane").GetComponent(NameMovie);
 		PlaneBoardAudio.audio.clip=PlaneBoardMaterial.material.mainTexture.audioClip;
 		PlaneBoardAudio.audio.Play();*/
 		//renderer.material.SetColor('black');
-		renderer.material.color = Color.red;
-		gameObject.Find("List2").renderer.material.color = Color.white;
-		gameObject.Find("List3").renderer.material.color = Color.white;
-		gameObject.Find("List4").renderer.material.color = Color.white;
+		GetComponent.<Renderer>().material.color = Color.red;
+		gameObject.Find("List2").GetComponent.<Renderer>().material.color = Color.white;
+		gameObject.Find("List3").GetComponent.<Renderer>().material.color = Color.white;
+		gameObject.Find("List4").GetComponent.<Renderer>().material.color = Color.white;
 		} 
 		
 		if(name=="List2"){
@@ -31,10 +31,10 @@ var s1 = transform.parent.transform.Find("Plane").GetComponent(NameMovie);
 		PlaneBoardMaterial.material.mainTexture.Play();
 		PlaneBoardAudio.audio.clip=PlaneBoardMaterial.material.mainTexture.audioClip;
 		PlaneBoardAudio.audio.Play();*/
-		renderer.material.color = Color.red;
-		gameObject.Find("List1").renderer.material.color = Color.white;
-		gameObject.Find("List3").renderer.material.color = Color.white;
-		gameObject.Find("List4").renderer.material.color = Color.white;
+		GetComponent.<Renderer>().material.color = Color.red;
+		gameObject.Find("List1").GetComponent.<Renderer>().material.color = Color.white;
+		gameObject.Find("List3").GetComponent.<Renderer>().material.color = Color.white;
+		gameObject.Find("List4").GetComponent.<Renderer>().material.color = Color.white;
 		} 
 		
 		if(name=="List3"){
@@ -46,10 +46,10 @@ var s1 = transform.parent.transform.Find("Plane").GetComponent(NameMovie);
 		//audio.Play();
 		PlaneBoardAudio.audio.clip=PlaneBoardMaterial.material.mainTexture.audioClip;
 		PlaneBoardAudio.audio.Play();*/
-		renderer.material.color = Color.red;
-		gameObject.Find("List1").renderer.material.color = Color.white;
-		gameObject.Find("List2").renderer.material.color = Color.white;
-		gameObject.Find("List4").renderer.material.color = Color.white;
+		GetComponent.<Renderer>().material.color = Color.red;
+		gameObject.Find("List1").GetComponent.<Renderer>().material.color = Color.white;
+		gameObject.Find("List2").GetComponent.<Renderer>().material.color = Color.white;
+		gameObject.Find("List4").GetComponent.<Renderer>().material.color = Color.white;
 		} 
 		
 		if(name=="List4"){
@@ -61,9 +61,9 @@ var s1 = transform.parent.transform.Find("Plane").GetComponent(NameMovie);
 		//audio.Play();		
 		PlaneBoardAudio.audio.clip=PlaneBoardMaterial.material.mainTexture.audioClip;
 		PlaneBoardAudio.audio.Play();*/
-		renderer.material.color = Color.red;
-		gameObject.Find("List1").renderer.material.color = Color.white;
-		gameObject.Find("List2").renderer.material.color = Color.white;
-		gameObject.Find("List3").renderer.material.color = Color.white;
+		GetComponent.<Renderer>().material.color = Color.red;
+		gameObject.Find("List1").GetComponent.<Renderer>().material.color = Color.white;
+		gameObject.Find("List2").GetComponent.<Renderer>().material.color = Color.white;
+		gameObject.Find("List3").GetComponent.<Renderer>().material.color = Color.white;
 		} 
 }

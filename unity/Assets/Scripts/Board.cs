@@ -126,14 +126,14 @@ public class Board : MonoBehaviour
         transform.Find("Text_Question").GetComponent<TextMesh>().text = qText[i];
         Text_Header.GetComponent<TextMesh>().text = "Вопрос №" + (i + 1);
 
-        if (qPicPath[i] == "0") transform.Find("Plane_RightButton").renderer.enabled = false;
-        else transform.Find("Plane_RightButton").renderer.enabled = true;
+        if (qPicPath[i] == "0") transform.Find("Plane_RightButton").GetComponent<Renderer>().enabled = false;
+        else transform.Find("Plane_RightButton").GetComponent<Renderer>().enabled = true;
 
         switch (qAnsNum[i])
         {
             case 3:
-                CubeGroup4.transform.Find("Cube4").renderer.enabled = false;
-                CubeGroup5.transform.Find("Cube5").renderer.enabled = false;
+                CubeGroup4.transform.Find("Cube4").GetComponent<Renderer>().enabled = false;
+                CubeGroup5.transform.Find("Cube5").GetComponent<Renderer>().enabled = false;
                 CubeGroup1.transform.localPosition.Set(-2, CubeGroup1.transform.localPosition.y,
                     CubeGroup1.transform.localPosition.z);
                 CubeGroup2.transform.localPosition.Set(0, CubeGroup2.transform.localPosition.y,
@@ -142,8 +142,8 @@ public class Board : MonoBehaviour
                     CubeGroup3.transform.localPosition.z);
                 break;
             case 4:
-                CubeGroup4.transform.Find("Cube4").renderer.enabled = true;
-                CubeGroup5.transform.Find("Cube5").renderer.enabled = false;
+                CubeGroup4.transform.Find("Cube4").GetComponent<Renderer>().enabled = true;
+                CubeGroup5.transform.Find("Cube5").GetComponent<Renderer>().enabled = false;
                 CubeGroup1.transform.localPosition.Set(-3, CubeGroup1.transform.localPosition.y,
                     CubeGroup1.transform.localPosition.z);
                 CubeGroup2.transform.localPosition.Set(-1, CubeGroup2.transform.localPosition.y,
@@ -154,8 +154,8 @@ public class Board : MonoBehaviour
                     CubeGroup4.transform.localPosition.z);
                 break;
             case 5:
-                CubeGroup4.transform.Find("Cube4").renderer.enabled = true;
-                CubeGroup5.transform.Find("Cube5").renderer.enabled = true;
+                CubeGroup4.transform.Find("Cube4").GetComponent<Renderer>().enabled = true;
+                CubeGroup5.transform.Find("Cube5").GetComponent<Renderer>().enabled = true;
                 CubeGroup1.transform.localPosition.Set(-4, CubeGroup1.transform.localPosition.y,
                     CubeGroup1.transform.localPosition.z);
                 CubeGroup2.transform.localPosition.Set(-2, CubeGroup2.transform.localPosition.y,
@@ -178,49 +178,49 @@ public class Board : MonoBehaviour
 
         transform.Find("Plane_LeftButton").transform.Find("Answers").gameObject.active = true;
         transform.Find("Plane_LeftButton").transform.Find("Question").gameObject.active = false;
-        transform.Find("Text_Question").renderer.enabled = true;
-        transform.Find("Plane_Pic_Answers").renderer.enabled = false;
+        transform.Find("Text_Question").GetComponent<Renderer>().enabled = true;
+        transform.Find("Plane_Pic_Answers").GetComponent<Renderer>().enabled = false;
 
         if (a[i][0])
         {
-            CubeGroup1.transform.Find("Cube1").animation.Play("CubeActiveUp");
+            CubeGroup1.transform.Find("Cube1").GetComponent<Animation>().Play("CubeActiveUp");
             CubeGroup1.transform.Find("Cube1").GetComponent<Cube>().is_active = true;
         }
         else
         {
-            CubeGroup1.transform.Find("Cube1").animation.Play("CubeInactiveUp");
+            CubeGroup1.transform.Find("Cube1").GetComponent<Animation>().Play("CubeInactiveUp");
             CubeGroup1.transform.Find("Cube1").GetComponent<Cube>().is_active = false;
         }
         if (a[i][1])
         {
-            CubeGroup2.transform.Find("Cube2").animation.Play("CubeActiveUp");
+            CubeGroup2.transform.Find("Cube2").GetComponent<Animation>().Play("CubeActiveUp");
             CubeGroup2.transform.Find("Cube2").GetComponent<Cube>().is_active = true;
         }
         else
         {
-            CubeGroup2.transform.Find("Cube2").animation.Play("CubeInactiveUp");
+            CubeGroup2.transform.Find("Cube2").GetComponent<Animation>().Play("CubeInactiveUp");
             CubeGroup2.transform.Find("Cube2").GetComponent<Cube>().is_active = false;
         }
         if (a[i][2])
         {
-            CubeGroup3.transform.Find("Cube3").animation.Play("CubeActiveUp");
+            CubeGroup3.transform.Find("Cube3").GetComponent<Animation>().Play("CubeActiveUp");
             CubeGroup3.transform.Find("Cube3").GetComponent<Cube>().is_active = true;
         }
         else
         {
-            CubeGroup3.transform.Find("Cube3").animation.Play("CubeInactiveUp");
+            CubeGroup3.transform.Find("Cube3").GetComponent<Animation>().Play("CubeInactiveUp");
             CubeGroup3.transform.Find("Cube3").GetComponent<Cube>().is_active = false;
         }
         if (qAnsNum[i] > 3)
         {
             if (a[i][3])
             {
-                CubeGroup4.transform.Find("Cube4").animation.Play("CubeActiveUp");
+                CubeGroup4.transform.Find("Cube4").GetComponent<Animation>().Play("CubeActiveUp");
                 CubeGroup4.transform.Find("Cube4").GetComponent<Cube>().is_active = true;
             }
             else
             {
-                CubeGroup4.transform.Find("Cube4").animation.Play("CubeInactiveUp");
+                CubeGroup4.transform.Find("Cube4").GetComponent<Animation>().Play("CubeInactiveUp");
                 CubeGroup4.transform.Find("Cube4").GetComponent<Cube>().is_active = false;
             }
         }
@@ -228,12 +228,12 @@ public class Board : MonoBehaviour
         {
             if (a[i][4])
             {
-                CubeGroup5.transform.Find("Cube5").animation.Play("CubeActiveUp");
+                CubeGroup5.transform.Find("Cube5").GetComponent<Animation>().Play("CubeActiveUp");
                 CubeGroup5.transform.Find("Cube5").GetComponent<Cube>().is_active = true;
             }
             else
             {
-                CubeGroup5.transform.Find("Cube5").animation.Play("CubeInactiveUp");
+                CubeGroup5.transform.Find("Cube5").GetComponent<Animation>().Play("CubeInactiveUp");
                 CubeGroup5.transform.Find("Cube5").GetComponent<Cube>().is_active = false;
             }
         }

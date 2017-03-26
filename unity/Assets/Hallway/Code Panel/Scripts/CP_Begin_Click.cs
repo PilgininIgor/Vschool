@@ -56,7 +56,7 @@ public class CP_Begin_Click : MonoBehaviour
                 {
                     MainCam.enabled = true; MainCam.GetComponent<AudioListener>().enabled = true;
                     PanelCam.enabled = false; PanelCam.GetComponent<AudioListener>().enabled = false;
-                    PlayerAvatar.SetActive(true); PlayerAvatar.animation.Play("idle");
+                    PlayerAvatar.SetActive(true); PlayerAvatar.GetComponent<Animation>().Play("idle");
 
                     GetComponent<BoxCollider>().size = new Vector3(1.9f, 3, 1);
                     panel_activated = false;
@@ -70,7 +70,7 @@ public class CP_Begin_Click : MonoBehaviour
     {
         MainCam.enabled = true; MainCam.GetComponent<AudioListener>().enabled = true;
         PanelCam.enabled = false; PanelCam.GetComponent<AudioListener>().enabled = false;
-        PlayerAvatar.SetActive(true); PlayerAvatar.animation.Play("idle");
+        PlayerAvatar.SetActive(true); PlayerAvatar.GetComponent<Animation>().Play("idle");
         GetComponent<BoxCollider>().size = new Vector3(1.9f, 3, 1);
         panel_activated = false;
 

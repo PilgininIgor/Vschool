@@ -44,7 +44,7 @@ public class PictureLib : MonoBehaviour
         txt.transform.localPosition = Vector3.zero - new Vector3(0.02f, 0, 0);
 
         back.transform.localScale = scale; pic.transform.localScale = scale;
-        back.renderer.material = bckg; pic.renderer.material = bckg;
+        back.GetComponent<Renderer>().material = bckg; pic.GetComponent<Renderer>().material = bckg;
         var t = txt.transform.localPosition;
         t.y -= (float)(back.transform.localScale.z / 2 * 10 - 0.3);
         t.z -= (float)(back.transform.localScale.x / 2 * 10 - 0.2);
@@ -52,7 +52,7 @@ public class PictureLib : MonoBehaviour
 
         obj.AddComponent<BoxCollider>();
         obj.GetComponent<BoxCollider>().size = new Vector3(0.1f, scale.z * 10, scale.x * 10);
-        obj.AddComponent("PictureLib_Scale");
+        obj.AddComponent<PictureLib_Scale>();
         obj.GetComponent<PictureLib_Scale>().Wall = gameObject;
 
         return obj;
@@ -62,7 +62,7 @@ public class PictureLib : MonoBehaviour
     //чтобы она уместилась в области w_max на h_maх и в то же время сохранила пропорции
     public void loadPicture(GameObject obj, Texture2D texture, float w_max, float h_max)
     {
-        obj.renderer.material.mainTexture = texture;
+        obj.GetComponent<Renderer>().material.mainTexture = texture;
         var w = texture.width;
         var h = texture.height;
         var t = obj.transform.localScale;
