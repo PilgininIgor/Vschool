@@ -14,28 +14,28 @@ public class Right_Button : MonoBehaviour
         var scr = transform.parent.GetComponent<Board>();
         var www = new WWW(scr.qPicPath[scr.i]);
         var Plane_RightButton = transform.parent.transform.Find("Plane_RightButton");
-        Plane_RightButton.renderer.material.mainTexture = www.texture;
+        Plane_RightButton.GetComponent<Renderer>().material.mainTexture = www.texture;
     }
 
     void UnloadPicture()
     {
         var Plane_RightButton = transform.parent.transform.Find("Plane_RightButton");
-        Plane_RightButton.renderer.material.mainTexture = pic;
+        Plane_RightButton.GetComponent<Renderer>().material.mainTexture = pic;
     }
 
     void OnMouseDown()
     {
-        if ((!animation_in_progress) && (renderer.enabled))
+        if ((!animation_in_progress) && (GetComponent<Renderer>().enabled))
         {
             if (!pic_enlarged)
             {
                 pic_enlarged = true;
-                animation.Play("PictureAnimUp");
+                GetComponent<Animation>().Play("PictureAnimUp");
             }
             else
             {
                 pic_enlarged = false;
-                animation.Play("PictureAnimDown");
+                GetComponent<Animation>().Play("PictureAnimDown");
             }
         }
     }

@@ -65,7 +65,7 @@ public class GameOverGUI : MonoBehaviour
 			while (guiFade < kGUITarget);
 		#endif
 		
-		Screen.showCursor = true;
+		Cursor.visible = true;
 		Screen.lockCursor = false;
 	}
 	

@@ -16,22 +16,22 @@ public class KamikazeMovementMotor : MovementMotor {
 		smoothedDirection = Vector3.Slerp (smoothedDirection, dir, Time.deltaTime * 3.0f);
 		var orientationSpeed = 1.0f;
 				
-		var deltaVelocity = (smoothedDirection * flyingSpeed + zigzag) - rigidbody.velocity;		
+		var deltaVelocity = (smoothedDirection * flyingSpeed + zigzag) - GetComponent<Rigidbody>().velocity;		
 		if (Vector3.Dot (dir, transform.forward) > 0.8f)
-			rigidbody.AddForce (deltaVelocity, ForceMode.Force);
+			GetComponent<Rigidbody>().AddForce (deltaVelocity, ForceMode.Force);
 		else {
-			rigidbody.AddForce (-deltaVelocity * backtrackIntensity, ForceMode.Force);	
+			GetComponent<Rigidbody>().AddForce (-deltaVelocity * backtrackIntensity, ForceMode.Force);	
 			orientationSpeed = oriantationMultiplier;
 		}
 		
 		// Make the character rotate towards the target rotation
 		var faceDir = smoothedDirection;
 		if (faceDir == Vector3.zero) {
-			rigidbody.angularVelocity = Vector3.zero;
+			GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 		}
 		else {
 			var rotationAngle = AngleAroundAxis (transform.forward, faceDir, Vector3.up);
-			rigidbody.angularVelocity = (Vector3.up * rotationAngle * 0.2f * orientationSpeed);
+			GetComponent<Rigidbody>().angularVelocity = (Vector3.up * rotationAngle * 0.2f * orientationSpeed);
 		}		
 	
 	}

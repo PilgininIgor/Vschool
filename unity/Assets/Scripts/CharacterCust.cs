@@ -135,7 +135,7 @@ public class CharacterCust : MonoBehaviour
         for (int i = 0; i < characters.Length; i++)
             characters[i].SetActive(false);
         characters[curCharacter].SetActive(true);
-        AvatarNameText.guiText.text = characters[curCharacter].name;
+        AvatarNameText.GetComponent<GUIText>().text = characters[curCharacter].name;
     }
 
     void ChangeEffects(int curEffect)

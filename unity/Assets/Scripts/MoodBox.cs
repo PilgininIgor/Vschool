@@ -24,7 +24,7 @@ public class MoodBox : MonoBehaviour
         if (transform.parent)
         {
             Gizmos.color = new Color(0.5f, 0.9f, 1.0f, 0.15f);
-            Gizmos.DrawCube(collider.bounds.center, collider.bounds.size);
+            Gizmos.DrawCube(GetComponent<Collider>().bounds.center, GetComponent<Collider>().bounds.size);
         }
     }
 
@@ -33,7 +33,7 @@ public class MoodBox : MonoBehaviour
         if (transform.parent)
         {
             Gizmos.color = new Color(0.5f, 0.9f, 1.0f, 0.75f);
-            Gizmos.DrawCube(collider.bounds.center, collider.bounds.size);
+            Gizmos.DrawCube(GetComponent<Collider>().bounds.center, GetComponent<Collider>().bounds.size);
         }
     }
 

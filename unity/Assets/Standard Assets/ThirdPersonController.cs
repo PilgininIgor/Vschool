@@ -313,7 +313,7 @@ public class ThirdPersonController : MonoBehaviour
 	}
 
 	void Update() {
-	if(networkView.isMine)
+	if(GetComponent<NetworkView>().isMine)
 		{
 		if (!isControllable)
 		{

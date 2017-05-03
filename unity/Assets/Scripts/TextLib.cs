@@ -269,12 +269,12 @@ public class TextLib : MonoBehaviour
                            TextAlignment.Right, TextFont, TextMaterial_Other);
         next.GetComponent<TextMesh>().text = "Далее >>>";
 
-        pos = new Vector3((float)(center.x - width / 2 + 0.1), (float)(center.y + height / 2 - h.renderer.bounds.size.y - 0.1), 0);
+        pos = new Vector3((float)(center.x - width / 2 + 0.1), (float)(center.y + height / 2 - h.GetComponent<Renderer>().bounds.size.y - 0.1), 0);
         t = createText("Content", pos, offZ, txt_size, spacing, TextAnchor.UpperLeft,
                         TextAlignment.Left, TextFont, TextMaterial_Main);
 
         var txt_formatted = justifyText(txt, width - 0.2, indent, list_indent, list_mark, t);
-        p = divideText(txt_formatted, height - h.renderer.bounds.size.y - c.renderer.bounds.size.y - 0.4, t);
+        p = divideText(txt_formatted, height - h.GetComponent<Renderer>().bounds.size.y - c.GetComponent<Renderer>().bounds.size.y - 0.4, t);
 
         current_page = 1;
         t.GetComponent<TextMesh>().text = p[current_page - 1];

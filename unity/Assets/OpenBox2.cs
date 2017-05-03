@@ -33,7 +33,7 @@ public class OpenBox2 : MonoBehaviour {
          //GameObject.Find("Flare/Christmas").particleSystem.Stop();
 		 //print("1111");
          ////GameObject.Find("FlareChristmas").particleSystem.Play();
-		 Christmas.particleSystem.Play();
+		 Christmas.GetComponent<ParticleSystem>().Play();
          //WaitForSeconds(2);	 
 		 //Foo();
 		 StartCoroutine("Foo");

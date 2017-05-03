@@ -7,7 +7,7 @@ public class Stop : MonoBehaviour {
 	void Start () {
 	
 	//Stop();
-	gameObject.particleSystem.Stop();
+	gameObject.GetComponent<ParticleSystem>().Stop();
 	}
 	
 	// Update is called once per frame

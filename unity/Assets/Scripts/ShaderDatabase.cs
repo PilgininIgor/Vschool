@@ -29,7 +29,7 @@ public class ShaderDatabase : MonoBehaviour
     GameObject CreateCameraCoverPlane()
     {
         cookShadersObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cookShadersObject.renderer.material = cookShadersCover;
+        cookShadersObject.GetComponent<Renderer>().material = cookShadersCover;
         cookShadersObject.transform.parent = transform;
         cookShadersObject.transform.localPosition = new Vector3 { z = 1.55f };
         cookShadersObject.transform.localRotation = Quaternion.identity;
@@ -46,7 +46,7 @@ public class ShaderDatabase : MonoBehaviour
     IEnumerator WhiteOut()
     {
         CreateCameraCoverPlane();
-        var mat = cookShadersObject.renderer.sharedMaterial;
+        var mat = cookShadersObject.GetComponent<Renderer>().sharedMaterial;
         mat.SetColor("_TintColor", new Color(1.0f, 1.0f, 1.0f, 0));
 
         var c = new Color(1.0f, 1.0f, 1.0f, 0);
@@ -63,7 +63,7 @@ public class ShaderDatabase : MonoBehaviour
     public IEnumerator WhiteIn()
     {
         CreateCameraCoverPlane();
-        var mat = cookShadersObject.renderer.sharedMaterial;
+        var mat = cookShadersObject.GetComponent<Renderer>().sharedMaterial;
         mat.SetColor("_TintColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
 
 
@@ -115,7 +115,7 @@ public class ShaderDatabase : MonoBehaviour
                 if (s)
                 {
                     m.shader = s;
-                    cube.renderer.material = m;
+                    cube.GetComponent<Renderer>().material = m;
                 }
                 yield return s;
             }

@@ -90,7 +90,7 @@ public class Chat : MonoBehaviour
             //@TODO: This should be dependent on who actually sent the message
             //var mine = entries.Count % 2 == 0;
             ApplyGlobalChatText(inputField, true);
-            networkView.RPC("ApplyGlobalChatText", RPCMode.Others, inputField, false);
+            GetComponent<NetworkView>().RPC("ApplyGlobalChatText", RPCMode.Others, inputField, false);
             inputField = "";
         }
         GUI.SetNextControlName("Chat input field");

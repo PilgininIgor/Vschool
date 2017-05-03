@@ -169,8 +169,8 @@ public class CourseSelection : MonoBehaviour
 			});
         });
         dieSignals.SendSignals(this);
-        this.renderer.material = NewScreen;
-        transform.parent.transform.Find("UnlockPipe").renderer.material = NewPipe;
+        this.GetComponent<Renderer>().material = NewScreen;
+        transform.parent.transform.Find("UnlockPipe").GetComponent<Renderer>().material = NewPipe;
         escape_visible = false; data_loaded = false; //ZoomOut();
     }
 

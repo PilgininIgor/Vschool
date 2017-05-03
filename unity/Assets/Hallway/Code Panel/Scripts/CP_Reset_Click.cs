@@ -10,11 +10,11 @@ public class CP_Reset_Click : MonoBehaviour
             var l = txt.GetComponent<TextMesh>().text.Length;
             if (l <= 0)
             {
-                transform.Find("G Reset").animation.Play("CP ButtonError");
+                transform.Find("G Reset").GetComponent<Animation>().Play("CP ButtonError");
             }
             else
             {
-                transform.Find("G Reset").animation.Play("CP ButtonLight");
+                transform.Find("G Reset").GetComponent<Animation>().Play("CP ButtonLight");
                 //это мы так удаляем последний символ
                 //напрашивающийся slice работать не захотел
                 var s = "";

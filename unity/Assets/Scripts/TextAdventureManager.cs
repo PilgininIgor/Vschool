@@ -23,12 +23,12 @@ public class TextAdventureManager : MonoBehaviour
 #if UNITY_IPHONE || UNITY_ANDROID
         leftIcon.guiText.text = "<";
 #else
-	leftIcon.guiText.text = "< backspace";		
+	leftIcon.GetComponent<GUIText>().text = "< backspace";		
 #endif
 
-        leftIcon.guiText.font = guiText.font;
-        leftIcon.guiText.material = guiText.material;
-        leftIcon.guiText.anchor = TextAnchor.UpperLeft;
+        leftIcon.GetComponent<GUIText>().font = GetComponent<GUIText>().font;
+        leftIcon.GetComponent<GUIText>().material = GetComponent<GUIText>().material;
+        leftIcon.GetComponent<GUIText>().anchor = TextAnchor.UpperLeft;
         leftIcon.gameObject.layer = (LayerMask.NameToLayer("Adventure"));
 
         leftIcon.transform.position = new Vector3(0.01f, 0.1f, 0);
@@ -36,11 +36,11 @@ public class TextAdventureManager : MonoBehaviour
 #if UNITY_IPHONE || UNITY_ANDROID
         rightIcon.guiText.text = ">";
 #else
-	rightIcon.guiText.text = "space >";		
+	rightIcon.GetComponent<GUIText>().text = "space >";		
 #endif
-        rightIcon.guiText.font = guiText.font;
-        rightIcon.guiText.material = guiText.material;
-        rightIcon.guiText.anchor = TextAnchor.UpperRight;
+        rightIcon.GetComponent<GUIText>().font = GetComponent<GUIText>().font;
+        rightIcon.GetComponent<GUIText>().material = GetComponent<GUIText>().material;
+        rightIcon.GetComponent<GUIText>().anchor = TextAnchor.UpperRight;
         rightIcon.gameObject.layer = (LayerMask.NameToLayer("Adventure"));
 
         rightIcon.transform.position = new Vector3(0.99f, 0.1f, 0);
@@ -61,7 +61,7 @@ public class TextAdventureManager : MonoBehaviour
             ctrler.enabled = false;
         }
 
-        guiText.enabled = true;
+        GetComponent<GUIText>().enabled = true;
     }
 
     void OnDisable()
@@ -74,14 +74,14 @@ public class TextAdventureManager : MonoBehaviour
             ctrler.enabled = true;
         }
 
-        guiText.enabled = false;
+        GetComponent<GUIText>().enabled = false;
     }
 
     void Update()
     {
-        guiText.text = "AngryBots \n \n" + playableMoodBoxes[currentMoodBox].data.adventureString.Substring(0, textAnimation);
+        GetComponent<GUIText>().text = "AngryBots \n \n" + playableMoodBoxes[currentMoodBox].data.adventureString.Substring(0, textAnimation);
 
-        Debug.Log(guiText.text);
+        Debug.Log(GetComponent<GUIText>().text);
 
         if (textAnimation >= playableMoodBoxes[currentMoodBox].data.adventureString.Length)
         {

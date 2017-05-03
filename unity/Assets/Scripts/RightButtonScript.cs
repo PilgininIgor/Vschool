@@ -13,26 +13,26 @@ public class RightButtonScript : MonoBehaviour
     {
         var scr = GameObject.Find("BoardGroup").GetComponent<Board>();
         var www = new WWW(scr.qPicPath[scr.i]);
-        GameObject.Find("Plane_RightButton").renderer.material.mainTexture = www.texture;
+        GameObject.Find("Plane_RightButton").GetComponent<Renderer>().material.mainTexture = www.texture;
     }
 
     void UnloadPicture()
     {
-        GameObject.Find("Plane_RightButton").renderer.material.mainTexture = (Texture) Resources.Load("Picture");
+        GameObject.Find("Plane_RightButton").GetComponent<Renderer>().material.mainTexture = (Texture) Resources.Load("Picture");
     }
 
     void OnMouseDown()
     {
-        if ((animation_in_progress) || (!renderer.enabled)) return;
+        if ((animation_in_progress) || (!GetComponent<Renderer>().enabled)) return;
         if (pic_enlarged)
         {
             pic_enlarged = false;
-            animation.Play("PictureAnimDown");
+            GetComponent<Animation>().Play("PictureAnimDown");
         }
         else
         {
             pic_enlarged = true;
-            animation.Play("PictureAnimUp");
+            GetComponent<Animation>().Play("PictureAnimUp");
         }
     }
 }

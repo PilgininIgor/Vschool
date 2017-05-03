@@ -12,11 +12,11 @@ function Start () {
 //Screen.showCursor = true;
 
 function Update() {
-   if (Input.GetKeyDown(KeyCode.E) && Screen.showCursor == false) { 
-      Screen.showCursor = true;
+   if (Input.GetKeyDown(KeyCode.E) && UnityEngine.Cursor.visible == false) { 
+      UnityEngine.Cursor.visible = true;
       Screen.lockCursor = false;
    }else if(Input.GetKeyDown(KeyCode.E)){
-     Screen.showCursor = false;
+     UnityEngine.Cursor.visible = false;
      Screen.lockCursor = true;
   }
 }

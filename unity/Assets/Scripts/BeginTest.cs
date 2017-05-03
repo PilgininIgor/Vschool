@@ -11,7 +11,7 @@ public class BeginTest : MonoBehaviour
         var p = BoardStatic.transform.localPosition;
         p.z = 17.95f;
         BoardStatic.transform.localPosition = p; //выдвинуть на вид заголовок вопроса и кнопки переключения
-        BoardToMove.transform.Find("BoardGroup").animation.Play("BoardAppear"); //запустить вылет стенда
+        BoardToMove.transform.Find("BoardGroup").GetComponent<Animation>().Play("BoardAppear"); //запустить вылет стенда
 
         p = transform.localPosition;
         p.z = 0.5f;
@@ -33,10 +33,10 @@ public class BeginTest : MonoBehaviour
         scr.i = 0; scr.initializeArrays(); scr.UpdateBeginning();
 
         //выдвинуть нужные кубы
-        Cube1.animation.Play("CubeInactiveUp");
-        Cube2.animation.Play("CubeInactiveUp");
-        Cube3.animation.Play("CubeInactiveUp");
-        if (scr.qAnsNum[0] > 3) Cube4.animation.Play("CubeInactiveUp");
-        if (scr.qAnsNum[0] > 4) Cube5.animation.Play("CubeInactiveUp");
+        Cube1.GetComponent<Animation>().Play("CubeInactiveUp");
+        Cube2.GetComponent<Animation>().Play("CubeInactiveUp");
+        Cube3.GetComponent<Animation>().Play("CubeInactiveUp");
+        if (scr.qAnsNum[0] > 3) Cube4.GetComponent<Animation>().Play("CubeInactiveUp");
+        if (scr.qAnsNum[0] > 4) Cube5.GetComponent<Animation>().Play("CubeInactiveUp");
     }
 }

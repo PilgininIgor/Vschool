@@ -19,11 +19,11 @@ public class Left_Button : MonoBehaviour
             }
             else
             {
-                Text_Question.renderer.enabled = false;
-                Plane_Pic_Answers.renderer.enabled = true;
+                Text_Question.GetComponent<Renderer>().enabled = false;
+                Plane_Pic_Answers.GetComponent<Renderer>().enabled = true;
                 WWW www = new WWW(board.qAns[board.i]);
-                Plane_Pic_Answers.renderer.material.mainTexture = www.texture;
-                Plane_Pic_Answers.renderer.material.mainTextureScale = new Vector2(-1, -1);
+                Plane_Pic_Answers.GetComponent<Renderer>().material.mainTexture = www.texture;
+                Plane_Pic_Answers.GetComponent<Renderer>().material.mainTextureScale = new Vector2(-1, -1);
             }
         }
         else
@@ -31,8 +31,8 @@ public class Left_Button : MonoBehaviour
             looking_at_question = true;
             transform.Find("Answers").gameObject.active = true;
             transform.Find("Question").gameObject.active = false;
-            Text_Question.renderer.enabled = true;
-            Plane_Pic_Answers.renderer.enabled = false;
+            Text_Question.GetComponent<Renderer>().enabled = true;
+            Plane_Pic_Answers.GetComponent<Renderer>().enabled = false;
             Text_Question.GetComponent<TextMesh>().text = board.qText[board.i];
         }
     }

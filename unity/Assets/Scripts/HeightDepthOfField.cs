@@ -95,30 +95,30 @@ public class HeightDepthOfField : MonoBehaviour
         widthOverHeight = (1.0f * source.width) / (1.0f * source.height);
         oneOverBaseSize = 1.0f / 512.0f;
 
-        cameraNear = camera.nearClipPlane;
-        cameraFar = camera.farClipPlane;
-        cameraFov = camera.fieldOfView;
-        cameraAspect = camera.aspect;
+        cameraNear = GetComponent<Camera>().nearClipPlane;
+        cameraFar = GetComponent<Camera>().farClipPlane;
+        cameraFov = GetComponent<Camera>().fieldOfView;
+        cameraAspect = GetComponent<Camera>().aspect;
 
         var frustumCorners = Matrix4x4.identity;
         float fovWHalf = cameraFov * 0.5f;
-        var toRight = camera.transform.right * cameraNear * Mathf.Tan(fovWHalf * Mathf.Deg2Rad) * cameraAspect;
-        var toTop = camera.transform.up * cameraNear * Mathf.Tan(fovWHalf * Mathf.Deg2Rad);
-        var topLeft = (camera.transform.forward * cameraNear - toRight + toTop);
+        var toRight = GetComponent<Camera>().transform.right * cameraNear * Mathf.Tan(fovWHalf * Mathf.Deg2Rad) * cameraAspect;
+        var toTop = GetComponent<Camera>().transform.up * cameraNear * Mathf.Tan(fovWHalf * Mathf.Deg2Rad);
+        var topLeft = (GetComponent<Camera>().transform.forward * cameraNear - toRight + toTop);
         float cameraScaleFactor = topLeft.magnitude * cameraFar / cameraNear;
 
         topLeft.Normalize();
         topLeft *= cameraScaleFactor;
 
-        var topRight = (camera.transform.forward * cameraNear + toRight + toTop);
+        var topRight = (GetComponent<Camera>().transform.forward * cameraNear + toRight + toTop);
         topRight.Normalize();
         topRight *= cameraScaleFactor;
 
-        var bottomRight = (camera.transform.forward * cameraNear + toRight - toTop);
+        var bottomRight = (GetComponent<Camera>().transform.forward * cameraNear + toRight - toTop);
         bottomRight.Normalize();
         bottomRight *= cameraScaleFactor;
 
-        var bottomLeft = (camera.transform.forward * cameraNear - toRight - toTop);
+        var bottomLeft = (GetComponent<Camera>().transform.forward * cameraNear - toRight - toTop);
         bottomLeft.Normalize();
         bottomLeft *= cameraScaleFactor;
 
@@ -128,12 +128,12 @@ public class HeightDepthOfField : MonoBehaviour
         frustumCorners.SetRow(3, bottomLeft);
 
         dofMaterial.SetMatrix("_FrustumCornersWS", frustumCorners);
-        dofMaterial.SetVector("_CameraWS", camera.transform.position);
+        dofMaterial.SetVector("_CameraWS", GetComponent<Camera>().transform.position);
 
-        var t = !objectFocus ? camera.transform : objectFocus.transform;
+        var t = !objectFocus ? GetComponent<Camera>().transform : objectFocus.transform;
 
         dofMaterial.SetVector("_ObjectFocusParameter", new Vector4(
-                    t.position.y - 0.25f, t.localScale.y * 1.0f / smoothness, 1.0f, objectFocus ? objectFocus.collider.bounds.extents.y * 0.75f : 0.55f));
+                    t.position.y - 0.25f, t.localScale.y * 1.0f / smoothness, 1.0f, objectFocus ? objectFocus.GetComponent<Collider>().bounds.extents.y * 0.75f : 0.55f));
 
         dofMaterial.SetFloat("_ForegroundBlurExtrude", foregroundBlurExtrude);
         dofMaterial.SetVector("_InvRenderTargetSize", new Vector4(1.0f / (1.0f * source.width), 1.0f / (1.0f * source.height), 0.0f, 0.0f));
