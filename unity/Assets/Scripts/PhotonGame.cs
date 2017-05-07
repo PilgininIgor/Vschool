@@ -5,10 +5,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PhotonGame : Photon.MonoBehaviour
 {
     public Transform playerPrefab;
+
+	public string sceneName;
 
     //avatars
     public Transform Joan;
@@ -21,7 +24,7 @@ public class PhotonGame : Photon.MonoBehaviour
     public Transform Punk;
     public Transform Carl;
 
-    public Transform SpawnPlace;
+    public Vector3 spawnPlace;
 
     public Texture gear;
 
@@ -29,8 +32,14 @@ public class PhotonGame : Photon.MonoBehaviour
 
     public string nameOfAvatar;
 
-    public void Awake()
+	public void Awake()
+	{
+		Init ();
+	}
+
+    public void Init()
     {
+
         //select avatar
         nameOfAvatar = /*"Solder"*/CharacterCust.nameOfAvatar;
 
@@ -59,16 +68,19 @@ public class PhotonGame : Photon.MonoBehaviour
             return;
         }
         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-        GameObject instantiatedPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, SpawnPlace.position, Quaternion.identity, 0);
+
+		spawnPlace = TeleportManager.SettingPortals ();
+
+        GameObject instantiatedPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPlace, Quaternion.identity, 0);
         //instantiatedPlayer.name = PhotonNetwork.playerName;
         
         //Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
         //Camera.main.GetComponent<OrbitCam>().player = instantiatedPlayer;
 
-        Camera.main.GetComponent<CameraFinC>().target = instantiatedPlayer.transform;
-        Camera.main.GetComponent<CameraFinC>().player = instantiatedPlayer;
+		GameObject.Find("MainCamera").GetComponent<CameraFinC>().target = instantiatedPlayer.transform;
+		GameObject.Find("MainCamera").GetComponent<CameraFinC>().player = instantiatedPlayer;
 
-		Camera.main.GetComponent<CNCameraFollow>().targetObject = instantiatedPlayer.transform;
+		//GameObject.Find("MainCamera").GetComponent<CNCameraFollow>().targetObject = instantiatedPlayer.transform;
 
     }
 
@@ -148,4 +160,5 @@ public class PhotonGame : Photon.MonoBehaviour
         // back to main menu        
         Application.LoadLevel(PhotonMenu.SceneNameMenu);
     }
+		
 }

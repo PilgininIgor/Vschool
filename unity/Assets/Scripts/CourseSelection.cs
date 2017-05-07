@@ -157,17 +157,34 @@ public class CourseSelection : MonoBehaviour
         {
             Global.course_json = www.text; //запоминаем json курса
 
-            BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
-            bootstrapParser.CourseConstructor(www.text);
+            //BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
+            //bootstrapParser.CourseConstructor(www.text);
+
+			//Раньше коридоры генерировались динамически в одной сцене World.
+			//Теперь все вынесено в отдельные сцены.
+
+				//Надо будет переписать, чтобы все грузилось с сервера по кусочкам, а не весь курс сразу в начале.
+				Global.courseData = JsonReader.Deserialize<DataStructures.Course>(www.text);
+				Global.courseId = id;
+
+				Global.themeData = null;
+				Global.themeId = null;
+
+				transform.parent.parent.transform.Find("ToCourse/TeleportBooth_ToCourse").GetComponent<TeleportToScene>().active = true;
+				transform.parent.parent.transform.Find("ToCourse/MonitorToCourse/Text").GetComponent<TextMesh>().text = Global.courseData.name;
+
+			/**
 			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.StatUrl, parameters, w =>
 			{
                 Global.stats_json = w.text;
 
-				StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
-				statisticParser.StatisticDisplay(w.text);
+				//StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
+				//statisticParser.StatisticDisplay(w.text);
 				ZoomOut();
 			});
+			*/
         });
+		ZoomOut();
         dieSignals.SendSignals(this);
         this.GetComponent<Renderer>().material = NewScreen;
         transform.parent.transform.Find("UnlockPipe").GetComponent<Renderer>().material = NewPipe;

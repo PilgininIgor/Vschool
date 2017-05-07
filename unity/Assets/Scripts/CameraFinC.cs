@@ -29,6 +29,7 @@ public class CameraFinC : MonoBehaviour {
 		if (GetComponent<Rigidbody>())
 			GetComponent<Rigidbody>().freezeRotation = true;
 	}
+		
 	
 	void LateUpdate () {
 		if(!target)

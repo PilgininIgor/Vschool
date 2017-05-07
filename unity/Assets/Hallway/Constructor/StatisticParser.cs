@@ -72,15 +72,25 @@ class StatisticParser : MonoBehaviour
     public DataStructures.CourseRun stat;
     private BootstrapParser bsParser;
 
-    public void StatisticDisplay(string json)
+	public void CourseStatisticDisplay(string json)
     {
-        stat = JsonFx.Json.JsonReader.Deserialize<DataStructures.CourseRun>(json);
-        bsParser = GetComponent<BootstrapParser>();
+		stat = JsonFx.Json.JsonReader.Deserialize<DataStructures.CourseRun>(json);
+		bsParser = GetComponent<BootstrapParser>();
         bsParser.statDisplays[0].transform.Find("TextCourse").GetComponent<TextMesh>().text = string.Format("{0} \"{1}\"", LBL1, stat.name);
         bsParser.statDisplays[0].transform.Find("TextProgress").GetComponent<TextMesh>().text = string.Format("{0}%", stat.progress);
         for (var i = 1; i < bsParser.sdlng; i++)
             UpdateThemeStat(i);
     }
+
+	public void ThemeStatisticDisplay(string json)
+	{
+		stat = JsonFx.Json.JsonReader.Deserialize<DataStructures.CourseRun>(json);
+		bsParser = GetComponent<BootstrapParser>();
+		bsParser.statDisplays[0].transform.Find("TextCourse").GetComponent<TextMesh>().text = string.Format("{0} \"{1}\"", LBL1, stat.name);
+		bsParser.statDisplays[0].transform.Find("TextProgress").GetComponent<TextMesh>().text = string.Format("{0}%", stat.progress);
+		for (var i = 1; i < bsParser.sdlng; i++)
+			UpdateThemeStat(i);
+	}
 
     public void UpdateThemeStat(int index)
     {
