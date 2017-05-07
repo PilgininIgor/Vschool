@@ -187,7 +187,6 @@ public class CourseSelection : MonoBehaviour
 		ZoomOut();
         dieSignals.SendSignals(this);
         this.GetComponent<Renderer>().material = NewScreen;
-        transform.parent.transform.Find("UnlockPipe").GetComponent<Renderer>().material = NewPipe;
         escape_visible = false; data_loaded = false; //ZoomOut();
     }
 
