@@ -86,8 +86,14 @@ public class PhotonGame : Photon.MonoBehaviour
 
     public void onStart()
     {
-        string id = PlayerPrefs.GetString(PhotonMenu.CourseID);
-        if (Application.loadedLevelName == "world") HubLoadingScreen.GetComponent<CourseSelection>().LoadCourseData(id);
+		CourseSelection.CourseName course = new CourseSelection.CourseName ()
+		{
+			id = PlayerPrefs.GetString(PhotonMenu.CourseID),
+			name = PlayerPrefs.GetString(PhotonMenu.CourseName)
+		};
+			
+
+        if (Application.loadedLevelName == "world") HubLoadingScreen.GetComponent<CourseSelection>().LoadCourseData(course);
     }
 
     public void OnGUI()

@@ -26,6 +26,7 @@ public class PhotonMenu : MonoBehaviour
 
     public const string PlayerName = "playerName";
     public const string CourseID = "courseID";
+	public const string CourseName = "courseName";
 
     private string userName = Strings.Get("Guest");
 
@@ -226,6 +227,7 @@ public class PhotonMenu : MonoBehaviour
         Debug.Log("OnCreatedRoom");
         //PhotonNetwork.isMessageQueueRunning = false;
         PlayerPrefs.SetString(CourseID, coursesNames[comboBoxControl.GetSelectedItemIndex()].id);
+		PlayerPrefs.SetString(CourseName, coursesNames[comboBoxControl.GetSelectedItemIndex()].name);
         PhotonNetwork.LoadLevel(SceneNameGame);
     }
 

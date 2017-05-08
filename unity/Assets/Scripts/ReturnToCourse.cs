@@ -7,7 +7,7 @@ public class ReturnToCourse : MonoBehaviour
         if (Global.returning)
         {
             BootstrapParser bootstrapParser = GameObject.Find("Bootstrap").GetComponent<BootstrapParser>();
-            bootstrapParser.CourseConstructor(Global.course_json);
+            //bootstrapParser.CourseConstructor(Global.course_json);
 
             StatisticParser statisticParser = GameObject.Find("Bootstrap").GetComponent<StatisticParser>();
             //statisticParser.StatisticDisplay(Global.stats_json);

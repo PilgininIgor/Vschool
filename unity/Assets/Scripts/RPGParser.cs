@@ -57,7 +57,7 @@ public class RPGParser : MonoBehaviour
     void Start()
     {
         httpConnector = GetComponent<HttpConnector>();
-        //RoleSystemSet(JSONTestString);
+        RoleSystemSet(JSONTestString);
         SetCoinsForUser();
     }
 

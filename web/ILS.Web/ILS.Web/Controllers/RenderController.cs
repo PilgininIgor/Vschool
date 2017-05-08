@@ -214,6 +214,108 @@ using System.Web.Script.Serialization;
             }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult ThemesList(Guid id)
+        {
+            var course = context.Course.Find(id);
+            return Json(new
+            {
+                themesNames = course.Themes.OrderBy(x => x.Name).Select(x => new
+                {
+                    id = x.Id,
+                    name = x.Name
+                }).ToList()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult TasksList(Guid id)
+        {
+            var theme = context.Theme.Find(id);
+            return Json(new
+            {
+                tasksNames = theme.ThemeContents.OrderBy(x => x.Name).Select(x => new
+                {
+                    id = x.Id,
+                    name = x.Name
+                }).ToList()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult TaskData(Guid themeId, Guid id)
+        {
+            ThemeContent y = null;
+            var test_num = 0;
+            var lec_num = 0;
+            var content_num = 0;
+            var themeContents = context.Theme.Find(themeId).ThemeContents.OrderBy(x => x.Name).ToList();
+
+            for (int x = 0; x < themeContents.Count; x++)
+            {
+                if (themeContents[x].Id == id)
+                {
+                    if (themeContents[x] is Test)
+                    {
+                        content_num = test_num;
+                    }
+                    if (themeContents[x] is Lecture)
+                    {
+                        content_num = lec_num;
+                    }
+                    y = themeContents[x];
+                    break;
+                }
+                if (themeContents[x] is Test)
+                {
+                    test_num++;
+                }
+                if (themeContents[x] is Lecture)
+                {
+                    lec_num++;
+                }
+            }
+            return Json(new
+            {
+                theme_num = test_num,
+                content_num = content_num,
+                content = new
+                {
+                    id = y.Id,
+                    name = y.Name,
+                    //type = (y is Lecture) ? "lecture" : "test",
+                    type = (y is Lecture) ? "lecture" : (y is Test) ? "test" : (y is Task1Content) ? "task1" : (y is Task2Content) ? "task2" : (y is Task3Content) ? "task3" : "island",
+                    paragraphs = (y is Lecture) ? ((Lecture)y).Paragraphs.OrderBy(z => z.OrderNumber).Select(z => new
+                    {
+                        orderNumber = z.OrderNumber,
+                        header = z.Header,
+                        text = z.Text,
+                        pictures = z.Pictures.OrderBy(u => u.OrderNumber).Select(u => new
+                        {
+                            path = u.Path
+                        })
+                    }) : null,
+                    maxMinutes = (y is Test) ? ((Test)y).MaxMinutes : 0,
+                    questions = (y is Test) ? ((Test)y).Questions.OrderBy(v => v.OrderNumber).Select(v => new
+                    {
+                        text = v.Text,
+                        picQ = v.PicQ,
+                        if_pictured = v.IfPictured,
+                        picA = v.PicA,
+                        ans_count = v.AnswerVariants.Count,
+                        answers = v.AnswerVariants.OrderBy(w => w.OrderNumber).Select(w => new
+                        {
+                            text = w.OrderNumber + ") " + w.Text
+                        })
+                    }) : null,
+                    outputThemeContentLinks = y.OutputThemeContentLinks.OrderBy(t => y.OrderNumber).Select(t => new
+                    {
+                        parentThemeContentId = t.ParentThemeContent_Id,
+                        linkedThemeContentId = t.LinkedThemeContent_Id,
+                        status = GetThemeContentLinkStatus(t)
+                    })
+                }
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult UnityData(Guid id)
         {
             var c = context.Course.Find(id);

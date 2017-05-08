@@ -6,14 +6,17 @@ using System.Collections.Generic;
 public class HttpConnector : MonoBehaviour
 {
     //TODO move to config file
-    //public const string ServerUrl = "http://localhost:63866";
-    public const string ServerUrl = "http://virtual.itschool.ssau.ru";
+    public const string ServerUrl = "http://localhost:63866";
+    //public const string ServerUrl = "http://virtual.itschool.ssau.ru";
     //public const string ServerUrl = "https://virtual.itschool.ssau.ru";
 
     public const string CourseDataUrl = "/Render/UnityData";
+	public const string TaskDataUrl = "/Render/TaskData";
     public const string StatUrl = "/Render/UnityStat";
     public const string SaveStatisticUrl = "/Render/UnitySave";
-    public const string UnityListUrl = "/Render/UnityList";
+    public const string UnityListUrl = "/Render/UnityList"; //Courses list
+	public const string ThemesListUrl = "/Render/ThemesList";
+	public const string TasksListUrl = "/Render/TasksList";
     public const string UnitySaveRpgUrl = "/Render/UnitySaveRPG";
     public const string GetUsernameUrl = "/Render/GetUserName";
     public const string SaveGameAchievementUrl = "/Render/SaveGameAchievement";

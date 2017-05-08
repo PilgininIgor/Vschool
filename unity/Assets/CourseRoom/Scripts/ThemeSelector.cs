@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JsonFx.Json;
 
 public class ThemeSelector : MonoBehaviour {
 
@@ -76,23 +77,18 @@ public class ThemeSelector : MonoBehaviour {
 
 	public void LoadThemesList()
 	{
-		//переписать, чтобы грузилось с сервера
-		ThemeDisplay(Global.courseData);
-
+		var parameters = new Dictionary<string, string> ();
+		parameters ["id"] = Global.courseId;
+		if (httpConnector == null)
+			httpConnector = GameObject.Find ("Bootstrap").GetComponent<HttpConnector> ();
+		httpConnector.Post (HttpConnector.ServerUrl + HttpConnector.ThemesListUrl, parameters, www => {
+			ThemeDisplay (www.text);
+		});
 	}
 
-	public void ThemeDisplay(DataStructures.Course course)
+	public void ThemeDisplay(string JSONStringFromServer)
 	{
-		ThemesNamesList res = new ThemesNamesList ();
-		res.themesNames = new List<ThemeName> ();
-		for (int x = 0; x < course.themes.Count; x++) {
-			Debug.Log (course.themes [x].name);
-			ThemeName theme = new ThemeName ();
-			theme.id = course.themes [x].id;
-			theme.name = course.themes [x].name;
-			res.themesNames.Add (theme);
-		}
-
+		ThemesNamesList res = JsonReader.Deserialize<ThemesNamesList>(JSONStringFromServer);
 		cl = res.themesNames;
 		i = 1;
 		transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
@@ -126,7 +122,7 @@ public class ThemeSelector : MonoBehaviour {
 
 				//БОЛЬШОЙ РУБИЛЬНИК
 				//Application.ExternalCall("LoadCourseData", cl[i-1].id);			
-				LoadThemeData(cl[i - 1].id);
+				LoadThemeData(cl[i - 1]);
 			}
 			var hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
 			var wUnit = Mathf.RoundToInt(Screen.width * DefaultSkin.LayoutScale);
@@ -154,27 +150,13 @@ public class ThemeSelector : MonoBehaviour {
 	void OnTriggerEnter(Collider other) { hint_visible = true; }
 	void OnTriggerExit(Collider other) { hint_visible = false; }
 
-	public void LoadThemeData(string id)
+	public void LoadThemeData(ThemeName theme)
 	{
-		var parameters = new Dictionary<string, string>();
-		parameters["id"] = id;
-		if (httpConnector == null)
-			httpConnector = GameObject.Find("Bootstrap").GetComponent<HttpConnector>();
-
-		//тут будет загрузка с сервера по id
-		//Global.themeData
-		for (int x = 0; x < Global.courseData.themes.Count; x++) {
-			if (Global.courseData.themes [x].id == id) {
-				Global.themeData = Global.courseData.themes [x];
-				Global.theme_num = x;
-				break;
-			}
-		}
-
-		Global.themeId = id;
+		Global.themeId = theme.id;
+		Global.themeName = theme.name;
 
 		GameObject.Find("TeleportBooth_ToTheme").GetComponent<TeleportToScene>().active = true;
-		GameObject.Find("MonitorToTheme/Text").GetComponent<TextMesh>().text = Global.themeData.name;
+		GameObject.Find("MonitorToTheme/Text").GetComponent<TextMesh>().text = Global.themeName;
 
 		dieSignals.SendSignals(this);
 		this.GetComponent<Renderer>().material = NewScreen;
@@ -204,7 +186,7 @@ public class ThemeSelector : MonoBehaviour {
 
 			//БОЛЬШОЙ РУБИЛЬНИК
 			//Application.ExternalCall("LoadCourseData", cl[i-1].id);
-			LoadThemeData(cl[i - 1].id);
+			LoadThemeData(cl[i - 1]);
 		}
 	}
 }

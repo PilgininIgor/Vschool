@@ -16,8 +16,7 @@ public class CourseStat : MonoBehaviour {
 		parameters["id"] = Global.courseId;
 
 		httpConnector.Post (HttpConnector.ServerUrl + HttpConnector.StatUrl, parameters, w => {
-			Global.stats_json = w.text;
-			Global.stat = JsonFx.Json.JsonReader.Deserialize<DataStructures.CourseRun>(Global.stats_json);
+			Global.stat = JsonFx.Json.JsonReader.Deserialize<DataStructures.CourseRun>(w.text);
 			statDisplay.transform.Find("TextCourse").GetComponent<TextMesh>().text = string.Format("{0} \"{1}\"", LBL1, Global.stat.name);
 			statDisplay.transform.Find("TextProgress").GetComponent<TextMesh>().text = string.Format("{0}%", Global.stat.progress);
 		});

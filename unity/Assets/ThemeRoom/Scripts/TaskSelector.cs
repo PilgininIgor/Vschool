@@ -1,19 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JsonFx.Json;
 
 public class TaskSelector : MonoBehaviour {
-
-	public static readonly string SceneNameQuiz = "QuizRoom";
-	public static readonly string SceneNameLecture = "LectureRoom";
-	public static readonly string SceneNameTask1 = "task1Room";
-	public static readonly string SceneNameTask2 = "task2Room";
-	public static readonly string SceneNameTask3 = "task3Room";
-	public static readonly string SceneNameIsland = "Islands";
-
+	
 	public class TasksNamesList
 	{
 		public List<TaskName> tasksNames;
+	}
+
+	public class Task
+	{
+		public string theme_num;
+		public string content_num;
+		public DataStructures.ThemeContent content;
 	}
 
 	[System.Serializable]
@@ -21,7 +22,6 @@ public class TaskSelector : MonoBehaviour {
 	{
 		public string id;
 		public string name;
-		public string type;
 	}
 
 	private string JSONTestString = "{\"coursesNames\":[" +
@@ -84,26 +84,21 @@ public class TaskSelector : MonoBehaviour {
 
 	public void LoadTasksList()
 	{
-		//переписать, чтобы грузилось с сервера
-		TaskDisplay(Global.themeData);
-
+		var parameters = new Dictionary<string, string> ();
+		parameters ["id"] = Global.themeId;
+		if (httpConnector == null)
+			httpConnector = GameObject.Find ("Bootstrap").GetComponent<HttpConnector> ();
+		httpConnector.Post (HttpConnector.ServerUrl + HttpConnector.TasksListUrl, parameters, www => {
+			TaskDisplay(www.text);
+		});
 	}
 
-	public void TaskDisplay(DataStructures.Theme theme)
+	public void TaskDisplay(string JSONStringFromServer)
 	{
-		TasksNamesList res = new TasksNamesList ();
-		res.tasksNames = new List<TaskName> ();
-		for (int x = 0; x < theme.contents.Count; x++) {
-			TaskName task = new TaskName ();
-			task.id = theme.contents [x].id;
-			task.name = theme.contents [x].name;
-			task.type = theme.contents [x].type;
-			res.tasksNames.Add (task);
-		}
-
+		TasksNamesList res = JsonReader.Deserialize<TasksNamesList>(JSONStringFromServer);
 		cl = res.tasksNames;
 		i = 1;
-		transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name + " (" + cl[i - 1].type + ")";
+		transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
 		transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "1/" + cl.Count.ToString();
 		data_loaded = true; escape_visible = true;
 	}
@@ -134,7 +129,7 @@ public class TaskSelector : MonoBehaviour {
 
 				//БОЛЬШОЙ РУБИЛЬНИК
 				//Application.ExternalCall("LoadCourseData", cl[i-1].id);			
-				LoadTaskData(cl[i - 1].id);
+				LoadTaskData(cl[i - 1]);
 			}
 			var hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
 			var wUnit = Mathf.RoundToInt(Screen.width * DefaultSkin.LayoutScale);
@@ -146,14 +141,14 @@ public class TaskSelector : MonoBehaviour {
 			if (GUI.Button(new Rect(x, y, wUnit, hUnit), "<"))
 			{
 				i--; if (i <= 0) i = cl.Count;
-				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name  + " (" + cl[i - 1].type + ")";
+				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
 				transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = i.ToString() + "/" + cl.Count.ToString();
 			}
 
 			if (GUI.Button(new Rect(x + blockWidth, y, wUnit, hUnit), ">"))
 			{
 				i++; if (i > cl.Count) i = 1;
-				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name  + " (" + cl[i - 1].type + ")";
+				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
 				transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = i.ToString() + "/" + cl.Count.ToString();
 			}
 		}
@@ -162,78 +157,56 @@ public class TaskSelector : MonoBehaviour {
 	void OnTriggerEnter(Collider other) { hint_visible = true; }
 	void OnTriggerExit(Collider other) { hint_visible = false; }
 
-	public void LoadTaskData(string id)
+	public void LoadTaskData(TaskName taskName)
 	{
 		var parameters = new Dictionary<string, string> ();
-		parameters ["id"] = id;
+		parameters ["id"] = taskName.id;
+		parameters ["themeId"] = Global.themeId;
 		if (httpConnector == null)
 			httpConnector = GameObject.Find ("Bootstrap").GetComponent<HttpConnector> ();
-		
-		int test_num = 0, lec_num = 0;
-		for (int x = 0; x < Global.themeData.contents.Count; x++) {
-			if (Global.themeData.contents [x].id == id) {
-				switch (Global.themeData.contents [x].type) {
-				case "test":
-					Global.content_num = test_num;
-					break;
-				case "lecture":
-					Global.content_num = lec_num;
-					break;
-				default:
-					break;
-				}
-				Global.taskData = Global.themeData.contents [x];
-				break;
-			}
-			switch (Global.themeData.contents [x].type) {
+		httpConnector.Post (HttpConnector.ServerUrl + HttpConnector.TaskDataUrl, parameters, www => {
+
+			Task task = JsonReader.Deserialize<Task>(www.text);
+			Global.content = task.content;
+			Global.content_num = int.Parse(task.content_num);
+			Global.theme_num = int.Parse(task.theme_num);
+
+			string sceneName = "";
+			switch (Global.content.type) {
 			case "test":
-				test_num++; 
+				sceneName = Names.Scenes.Quiz;
 				break;
 			case "lecture":
-				lec_num++;
+				sceneName = Names.Scenes.Lecture;
 				break;
+			case "task1":
+				sceneName = Names.Scenes.Task1;
+				break;
+			case "task2":
+				sceneName = Names.Scenes.Task2;
+				break;
+			case "task3":
+				sceneName = Names.Scenes.Task3;
+				break;
+			case "island":
+				sceneName = Names.Scenes.Island;
+				break;  
+
 			default:
 				break;
 			}
 
-		}
 
-		string sceneName = "";
-		switch (Global.taskData.type) {
-		case "test":
-			sceneName = SceneNameQuiz;
-			break;
-		case "lecture":
-			sceneName = SceneNameLecture;
-			break;
-		case "task1":
-			sceneName = SceneNameTask1;
-			break;
-		case "task2":
-			sceneName = SceneNameTask2;
-			break;
-		case "task3":
-			sceneName = SceneNameTask3;
-			break;
-		case "island":
-			sceneName = SceneNameIsland;
-			break;  
+			Global.taskId = taskName.id;
+			GameObject.Find ("TeleportBooth_ToTask").GetComponent<TeleportToScene> ().active = true;
+			GameObject.Find ("TeleportBooth_ToTask").GetComponent<TeleportToScene> ().SceneNameRoom = sceneName;
+			GameObject.Find ("MonitorToTask/Text").GetComponent<TextMesh> ().text = Global.content.name + " (" + sceneName + ")";
 
-		default:
-			break;
-		}
-
-
-		Global.taskId = id;
-		GameObject.Find ("TeleportBooth_ToTask").GetComponent<TeleportToScene> ().active = true;
-		Global.content = Global.taskData;
-		GameObject.Find ("TeleportBooth_ToTask").GetComponent<TeleportToScene> ().SceneNameRoom = sceneName;
-		GameObject.Find ("MonitorToTask/Text").GetComponent<TextMesh> ().text = Global.taskData.name + " (" + sceneName + ")";
-
-		dieSignals.SendSignals (this);
-		this.GetComponent<Renderer> ().material = NewScreen;
-		escape_visible = false;
-		data_loaded = false;
+			dieSignals.SendSignals (this);
+			this.GetComponent<Renderer> ().material = NewScreen;
+			escape_visible = false;
+			data_loaded = false;
+		});
 		ZoomOut ();
 	}
 
@@ -242,14 +215,14 @@ public class TaskSelector : MonoBehaviour {
 		if ((Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) && escape_visible)
 		{
 			i--; if (i <= 0) i = cl.Count;
-			transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name  + " (" + cl[i - 1].type + ")";
+			transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
 			transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = i.ToString() + "/" + cl.Count.ToString();
 		}
 
 		if ((Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) && escape_visible)
 		{
 			i++; if (i > cl.Count) i = 1;
-			transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name  + " (" + cl[i - 1].type + ")";
+			transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
 			transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = i.ToString() + "/" + cl.Count.ToString();
 		}
 
@@ -260,7 +233,7 @@ public class TaskSelector : MonoBehaviour {
 
 			//БОЛЬШОЙ РУБИЛЬНИК
 			//Application.ExternalCall("LoadCourseData", cl[i-1].id);
-			LoadTaskData(cl[i - 1].id);
+			LoadTaskData(cl[i - 1]);
 		}
 	}
 }
