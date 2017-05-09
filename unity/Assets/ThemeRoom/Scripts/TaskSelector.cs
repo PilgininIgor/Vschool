@@ -40,7 +40,7 @@ public class TaskSelector : MonoBehaviour {
 
 	public Camera GuiCam, MainCam, StandCam;
 	public GameObject Player;
-	public Texture magnifier, arrow, select, reload;
+	public Texture magnifier, arrow, select, reload, back;
 	public Font helvetica;
 
 	public Material NewPipe, NewScreen;
@@ -175,6 +175,9 @@ public class TaskSelector : MonoBehaviour {
 				} else {
 					if (GUI.Button (new Rect (DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow))
 						ZoomOut ();
+					if (GUI.Button (new Rect (Screen.width - 2 * DataStructures.buttonSize - 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), back)) {
+						LoadTasksList ();
+					}
 					if (GUI.Button (new Rect (Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), reload)) {
 						LoadTaskData (cl [i - 1]);
 					}
