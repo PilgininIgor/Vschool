@@ -24,7 +24,8 @@ public class Game_start : MonoBehaviour {
             httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.GetTask1Url, parameters, www =>
             {
                 StartTask1(www.text);
-            });
+				},
+				w=>{});
 		}
 	}
 

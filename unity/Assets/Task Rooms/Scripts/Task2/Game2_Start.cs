@@ -42,7 +42,8 @@ public class Game2_Start : MonoBehaviour {
 			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.GetTask2Url, parameters, www =>
 			{
 				StartTask2(www.text);
-			});
+				},
+				w=>{});
 		}
 	}
 

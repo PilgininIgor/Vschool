@@ -67,7 +67,8 @@ public class RPGParser : MonoBehaviour
                www =>
                {
                    RPG = new DataStructures.OverallRPG {EXP = int.Parse(www.text)};
-               });
+			},
+			w=>{});
     }
 
     private void ShowAchievment(string text, Texture image = null)
@@ -131,7 +132,8 @@ public class RPGParser : MonoBehaviour
             var s = JsonWriter.Serialize(RPG);
             var parameters = new Dictionary<string, string>();
             parameters["s"] = s;
-            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.UnitySaveRpgUrl, parameters, www => { });
+			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.UnitySaveRpgUrl, parameters, www => { },
+				w=>{});
         }
     }
 
@@ -158,7 +160,8 @@ public class RPGParser : MonoBehaviour
                         ShowCoinsAdded(achievementRun.score);
                         RPG.EXP += achievementRun.score;
                     }
-                });
+				},
+				w=>{});
         }
     }
 }

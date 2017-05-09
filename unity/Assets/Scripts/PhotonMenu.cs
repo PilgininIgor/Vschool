@@ -73,7 +73,8 @@ public class PhotonMenu : MonoBehaviour
         httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUsernameUrl, www =>
         {
             PhotonNetwork.playerName = JsonReader.Deserialize<String>(www.text);
-        });
+			},
+			w=>{});
     }
 
     public void LoadCoursesList()
@@ -84,7 +85,8 @@ public class PhotonMenu : MonoBehaviour
             coursesNames = res.coursesNames;
             comboBoxList = coursesNames.Select(c => new GUIContent(c.name)).ToArray();
             isDataLoaded = true;
-        });
+			},
+			w=>{});
     }
 
     private void UpdateRoomName()

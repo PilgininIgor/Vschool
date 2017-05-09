@@ -35,10 +35,12 @@ public class TaskSelector : MonoBehaviour {
 	public const string LBL2 = "A / стрелка влево - предыдущая тема";
 	public const string LBL3 = "D / стрелка вправо - следующая тема";
 	public const string LBL4 = "Enter - загрузка";
+	public const string LBL5 = "Ошибка при загрузке списка заданий и лекций...";
+	public const string LBL6 = "Ошибка при загрузке задания/лекции...";
 
 	public Camera GuiCam, MainCam, StandCam;
 	public GameObject Player;
-	public Texture magnifier, arrow, select;
+	public Texture magnifier, arrow, select, reload;
 	public Font helvetica;
 
 	public Material NewPipe, NewScreen;
@@ -49,6 +51,8 @@ public class TaskSelector : MonoBehaviour {
 	private bool hint_visible = false;
 	private bool escape_visible = false;
 	private bool data_loaded = false;
+	private bool error_loading = false;
+	private bool error_task = false;
 
 	private HttpConnector httpConnector;
 
@@ -89,8 +93,15 @@ public class TaskSelector : MonoBehaviour {
 		if (httpConnector == null)
 			httpConnector = GameObject.Find ("Bootstrap").GetComponent<HttpConnector> ();
 		httpConnector.Post (HttpConnector.ServerUrl + HttpConnector.TasksListUrl, parameters, www => {
-			TaskDisplay(www.text);
-		});
+			TaskDisplay (www.text);
+		},
+			www => {
+				transform.parent.transform.Find ("Menu/TextMain").GetComponent<TextMesh> ().text = LBL5;
+				transform.parent.transform.Find ("Menu/TextCounter").GetComponent<TextMesh> ().text = "";
+				data_loaded = false;
+				escape_visible = true;
+				error_loading = true;
+			});
 	}
 
 	public void TaskDisplay(string JSONStringFromServer)
@@ -100,7 +111,7 @@ public class TaskSelector : MonoBehaviour {
 		i = 1;
 		transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
 		transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "1/" + cl.Count.ToString();
-		data_loaded = true; escape_visible = true;
+		data_loaded = true; escape_visible = true; error_loading = false;
 	}
 
 	void ZoomOut()
@@ -121,35 +132,53 @@ public class TaskSelector : MonoBehaviour {
 		}
 		if (escape_visible)
 		{
-			if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow)) ZoomOut();
-			if (GUI.Button(new Rect(Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), select))
-			{
-				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = LBL1;
-				transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "";
+			if (!error_loading) {
+				if (GUI.Button (new Rect (DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow))
+					ZoomOut ();
+				if (GUI.Button (new Rect (Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), select)) {
+					transform.parent.transform.Find ("Menu/TextMain").GetComponent<TextMesh> ().text = LBL1;
+					transform.parent.transform.Find ("Menu/TextCounter").GetComponent<TextMesh> ().text = "";
 
-				//БОЛЬШОЙ РУБИЛЬНИК
-				//Application.ExternalCall("LoadCourseData", cl[i-1].id);			
-				LoadTaskData(cl[i - 1]);
-			}
-			var hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
-			var wUnit = Mathf.RoundToInt(Screen.width * DefaultSkin.LayoutScale);
-			var blockWidth = wUnit * 3 + 30;
-			var blockHeight = hUnit * 3;
-			var x = (Screen.width / 2) - (blockWidth / 2);
-			var y = (Screen.height / 2) - (blockHeight / 2);
-			wUnit /= 4;
-			if (GUI.Button(new Rect(x, y, wUnit, hUnit), "<"))
-			{
-				i--; if (i <= 0) i = cl.Count;
-				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
-				transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = i.ToString() + "/" + cl.Count.ToString();
-			}
+					//БОЛЬШОЙ РУБИЛЬНИК
+					//Application.ExternalCall("LoadCourseData", cl[i-1].id);			
+					LoadTaskData (cl [i - 1]);
+				}
+				var hUnit = Mathf.RoundToInt (Screen.height * DefaultSkin.LayoutScale);
+				var wUnit = Mathf.RoundToInt (Screen.width * DefaultSkin.LayoutScale);
+				var blockWidth = wUnit * 3 + 30;
+				var blockHeight = hUnit * 3;
+				var x = (Screen.width / 2) - (blockWidth / 2);
+				var y = (Screen.height / 2) - (blockHeight / 2);
+				wUnit /= 4;
+				if (GUI.Button (new Rect (x, y, wUnit, hUnit), "<")) {
+					i--;
+					if (i <= 0)
+						i = cl.Count;
+					transform.parent.transform.Find ("Menu/TextMain").GetComponent<TextMesh> ().text = cl [i - 1].name;
+					transform.parent.transform.Find ("Menu/TextCounter").GetComponent<TextMesh> ().text = i.ToString () + "/" + cl.Count.ToString ();
+				}
 
-			if (GUI.Button(new Rect(x + blockWidth, y, wUnit, hUnit), ">"))
-			{
-				i++; if (i > cl.Count) i = 1;
-				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
-				transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = i.ToString() + "/" + cl.Count.ToString();
+				if (GUI.Button (new Rect (x + blockWidth, y, wUnit, hUnit), ">")) {
+					i++;
+					if (i > cl.Count)
+						i = 1;
+					transform.parent.transform.Find ("Menu/TextMain").GetComponent<TextMesh> ().text = cl [i - 1].name;
+					transform.parent.transform.Find ("Menu/TextCounter").GetComponent<TextMesh> ().text = i.ToString () + "/" + cl.Count.ToString ();
+				}
+			} else {
+				if (!error_task) {
+					if (GUI.Button (new Rect (DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow))
+						ZoomOut ();
+					if (GUI.Button (new Rect (Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), reload)) {
+						LoadTasksList ();
+					}
+				} else {
+					if (GUI.Button (new Rect (DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow))
+						ZoomOut ();
+					if (GUI.Button (new Rect (Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), reload)) {
+						LoadTaskData (cl [i - 1]);
+					}
+				}
 			}
 		}
 	}
@@ -166,10 +195,10 @@ public class TaskSelector : MonoBehaviour {
 			httpConnector = GameObject.Find ("Bootstrap").GetComponent<HttpConnector> ();
 		httpConnector.Post (HttpConnector.ServerUrl + HttpConnector.TaskDataUrl, parameters, www => {
 
-			Task task = JsonReader.Deserialize<Task>(www.text);
+			Task task = JsonReader.Deserialize<Task> (www.text);
 			Global.content = task.content;
-			Global.content_num = int.Parse(task.content_num);
-			Global.theme_num = int.Parse(task.theme_num);
+			Global.content_num = int.Parse (task.content_num);
+			Global.theme_num = int.Parse (task.theme_num);
 
 			string sceneName = "";
 			switch (Global.content.type) {
@@ -206,8 +235,18 @@ public class TaskSelector : MonoBehaviour {
 			this.GetComponent<Renderer> ().material = NewScreen;
 			escape_visible = false;
 			data_loaded = false;
-		});
-		ZoomOut ();
+			error_loading = false;
+			error_task = false;
+			ZoomOut ();
+		},
+			www => {
+				transform.parent.transform.Find ("Menu/TextMain").GetComponent<TextMesh> ().text = LBL6;
+				transform.parent.transform.Find ("Menu/TextCounter").GetComponent<TextMesh> ().text = "";
+				escape_visible = true;
+				error_loading = true;
+				error_task = true;
+			});
+		
 	}
 
 	void Update()

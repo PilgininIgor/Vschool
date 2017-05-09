@@ -28,13 +28,13 @@ public class HttpConnector : MonoBehaviour
     public const string GetTask3Url = "/Task/GetTask3";
     public const string CheckTask3Url = "/Task/CheckTask3";
 
-    public void Get(string url, Action<WWW> onSuccess)
+	public void Get(string url, Action<WWW> onSuccess, Action<WWW> onError)
     {
         WWW www = new WWW(url);
-        StartCoroutine(WaitForRequest(www, onSuccess));
+		StartCoroutine(WaitForRequest(www, onSuccess, onError));
     }
 
-    public void Post(string url, Dictionary<string, string> post, Action<WWW> onSuccess)
+	public void Post(string url, Dictionary<string, string> post, Action<WWW> onSuccess, Action<WWW> onError)
     {
         WWWForm form = new WWWForm();
         foreach (KeyValuePair<String, String> postArg in post)
@@ -43,10 +43,10 @@ public class HttpConnector : MonoBehaviour
         }
         WWW www = new WWW(url, form);
 
-        StartCoroutine(WaitForRequest(www, onSuccess));
+		StartCoroutine(WaitForRequest(www, onSuccess, onError));
     }
 
-    private IEnumerator WaitForRequest(WWW www, Action<WWW> onSuccess)
+	private IEnumerator WaitForRequest(WWW www, Action<WWW> onSuccess, Action<WWW> onError)
     {
         yield return www;
 
@@ -57,6 +57,7 @@ public class HttpConnector : MonoBehaviour
         else
         {
             Debug.Log("WWW Error: " + www.error);
+			onError (www);
         }
     }
 }

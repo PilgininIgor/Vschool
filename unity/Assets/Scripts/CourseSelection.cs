@@ -27,10 +27,11 @@ public class CourseSelection : MonoBehaviour
 	public const string LBL2 = "A / стрелка влево - предыдущий курс";
 	public const string LBL3 = "D / стрелка вправо - следующий курс";
 	public const string LBL4 = "Enter - загрузка";
+	public const string LBL5 = "Ошибка при загрузке списка курсов...";
 
 	public Camera GuiCam, MainCam, StandCam;
 	public GameObject Player;
-	public Texture magnifier, arrow, select;
+	public Texture magnifier, arrow, select, reload;
 	public Font helvetica;
 
 	public Material NewPipe, NewScreen;
@@ -41,6 +42,7 @@ public class CourseSelection : MonoBehaviour
 	private bool hint_visible = false;
 	private bool escape_visible = false;
 	private bool data_loaded = false;
+	private bool error_loading = false;
 
 	private HttpConnector httpConnector;
 
@@ -77,9 +79,14 @@ public class CourseSelection : MonoBehaviour
 
 	public void LoadCoursesList()
 	{
-		httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.UnityListUrl, www =>
-			{
-				CourseDisplay(www.text);
+		httpConnector.Get (HttpConnector.ServerUrl + HttpConnector.UnityListUrl, 
+			www => {
+				CourseDisplay (www.text);
+			},
+			www => {
+				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = LBL5;
+				transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "";
+				data_loaded = false; escape_visible = true; error_loading = true;
 			});
 	}
 
@@ -90,7 +97,7 @@ public class CourseSelection : MonoBehaviour
 		i = 1;
 		transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
 		transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "1/" + cl.Count.ToString();
-		data_loaded = true; escape_visible = true;
+		data_loaded = true; escape_visible = true; error_loading = false;
 	}
 
 	void ZoomOut()
@@ -105,41 +112,50 @@ public class CourseSelection : MonoBehaviour
 
 	void OnGUI()
 	{
-		if (hint_visible)
-		{
-			if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), magnifier)) ZoomIn();
+		if (hint_visible) {
+			if (GUI.Button (new Rect (DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), magnifier))
+				ZoomIn ();
 		}
-		if (escape_visible)
-		{
-			if (GUI.Button(new Rect(DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow)) ZoomOut();
-			if (GUI.Button(new Rect(Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), select))
-			{
-				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = LBL1;
-				transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = "";
+		if (escape_visible) {
+			if (!error_loading) {
+				if (GUI.Button (new Rect (DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow))
+					ZoomOut ();
+				if (GUI.Button (new Rect (Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), select)) {
+					transform.parent.transform.Find ("Menu/TextMain").GetComponent<TextMesh> ().text = LBL1;
+					transform.parent.transform.Find ("Menu/TextCounter").GetComponent<TextMesh> ().text = "";
 
-				//БОЛЬШОЙ РУБИЛЬНИК
-				//Application.ExternalCall("LoadCourseData", cl[i-1].id);			
-				LoadCourseData(cl[i - 1]);
-			}
-			var hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
-			var wUnit = Mathf.RoundToInt(Screen.width * DefaultSkin.LayoutScale);
-			var blockWidth = wUnit * 3 + 30;
-			var blockHeight = hUnit * 3;
-			var x = (Screen.width / 2) - (blockWidth / 2);
-			var y = (Screen.height / 2) - (blockHeight / 2);
-			wUnit /= 4;
-			if (GUI.Button(new Rect(x, y, wUnit, hUnit), "<"))
-			{
-				i--; if (i <= 0) i = cl.Count;
-				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
-				transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = i.ToString() + "/" + cl.Count.ToString();
-			}
+					//БОЛЬШОЙ РУБИЛЬНИК
+					//Application.ExternalCall("LoadCourseData", cl[i-1].id);			
+					LoadCourseData (cl [i - 1]);
+				}
+				var hUnit = Mathf.RoundToInt (Screen.height * DefaultSkin.LayoutScale);
+				var wUnit = Mathf.RoundToInt (Screen.width * DefaultSkin.LayoutScale);
+				var blockWidth = wUnit * 3 + 30;
+				var blockHeight = hUnit * 3;
+				var x = (Screen.width / 2) - (blockWidth / 2);
+				var y = (Screen.height / 2) - (blockHeight / 2);
+				wUnit /= 4;
+				if (GUI.Button (new Rect (x, y, wUnit, hUnit), "<")) {
+					i--;
+					if (i <= 0)
+						i = cl.Count;
+					transform.parent.transform.Find ("Menu/TextMain").GetComponent<TextMesh> ().text = cl [i - 1].name;
+					transform.parent.transform.Find ("Menu/TextCounter").GetComponent<TextMesh> ().text = i.ToString () + "/" + cl.Count.ToString ();
+				}
 
-			if (GUI.Button(new Rect(x + blockWidth, y, wUnit, hUnit), ">"))
-			{
-				i++; if (i > cl.Count) i = 1;
-				transform.parent.transform.Find("Menu/TextMain").GetComponent<TextMesh>().text = cl[i - 1].name;
-				transform.parent.transform.Find("Menu/TextCounter").GetComponent<TextMesh>().text = i.ToString() + "/" + cl.Count.ToString();
+				if (GUI.Button (new Rect (x + blockWidth, y, wUnit, hUnit), ">")) {
+					i++;
+					if (i > cl.Count)
+						i = 1;
+					transform.parent.transform.Find ("Menu/TextMain").GetComponent<TextMesh> ().text = cl [i - 1].name;
+					transform.parent.transform.Find ("Menu/TextCounter").GetComponent<TextMesh> ().text = i.ToString () + "/" + cl.Count.ToString ();
+				}
+			} else {
+				if (GUI.Button (new Rect (DataStructures.buttonSize + 2 * DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), arrow))
+					ZoomOut ();
+				if (GUI.Button (new Rect (Screen.width - DataStructures.buttonSize - DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), reload)) {
+					LoadCoursesList ();
+				}
 			}
 		}
 	}
@@ -156,10 +172,10 @@ public class CourseSelection : MonoBehaviour
 		transform.parent.parent.transform.Find("ToCourse/TeleportBooth_ToCourse").GetComponent<TeleportToScene>().active = true;
 		transform.parent.parent.transform.Find("ToCourse/MonitorToCourse/Text").GetComponent<TextMesh>().text = Global.courseName;
 
-		ZoomOut();
 		dieSignals.SendSignals(this);
 		this.GetComponent<Renderer>().material = NewScreen;
-		escape_visible = false; data_loaded = false; //ZoomOut();
+		escape_visible = false; data_loaded = false;
+		ZoomOut();
 	}
 
 	void Update()

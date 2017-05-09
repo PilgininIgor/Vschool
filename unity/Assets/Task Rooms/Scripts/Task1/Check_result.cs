@@ -48,7 +48,8 @@ public class Check_result : MonoBehaviour {
             httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask1Url, parameters, www =>
             {
                 ProcessResult(www.text);
-            });
+				},
+				w=>{});
 		}
 	}
 

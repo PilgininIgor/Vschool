@@ -81,7 +81,8 @@ public class CheckResult3 : MonoBehaviour {
                 var httpConnector = GameObject.Find("buttonOK").GetComponent<HttpConnector>();
                 httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask3Url, parameters, www =>
                 {
-                });
+					},
+					w=>{});
             }
             else
             {
@@ -106,7 +107,8 @@ public class CheckResult3 : MonoBehaviour {
                     var httpConnector = GameObject.Find("buttonOK").GetComponent<HttpConnector>();
                     httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask3Url, parameters, www =>
                     {
-                    });
+						},
+						w=>{});
                 }
             }
         }

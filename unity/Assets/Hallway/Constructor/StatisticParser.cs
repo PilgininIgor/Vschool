@@ -171,7 +171,8 @@ class StatisticParser : MonoBehaviour
             var parameters = new Dictionary<string, string>();
             parameters["s"] = s;
             var httpConnector = GameObject.Find("Bootstrap").AddComponent<HttpConnector>();
-            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveStatisticUrl, parameters, www => {});
+			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveStatisticUrl, parameters, www => {},
+				w=>{});
         }
     }
 }

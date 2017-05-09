@@ -19,6 +19,7 @@ public class CourseStat : MonoBehaviour {
 			Global.stat = JsonFx.Json.JsonReader.Deserialize<DataStructures.CourseRun>(w.text);
 			statDisplay.transform.Find("TextCourse").GetComponent<TextMesh>().text = string.Format("{0} \"{1}\"", LBL1, Global.stat.name);
 			statDisplay.transform.Find("TextProgress").GetComponent<TextMesh>().text = string.Format("{0}%", Global.stat.progress);
-		});
+		},
+			w=>{});
 	}
 }
