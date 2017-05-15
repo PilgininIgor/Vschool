@@ -34,7 +34,7 @@ public class HoverMovementMotor : MovementMotor
     void OnCollisionStay(Collision collisionInfo)
     {
         // Move up if colliding with static geometry
-        if (collisionInfo.rigidbody == null)
+        if (collisionInfo.GetComponent<Rigidbody>() == null)
             GetComponent<Rigidbody>().velocity += Vector3.up * Time.deltaTime * 50;
     }
 

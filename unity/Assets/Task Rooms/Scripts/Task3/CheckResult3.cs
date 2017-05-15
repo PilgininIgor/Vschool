@@ -79,7 +79,7 @@ public class CheckResult3 : MonoBehaviour {
                 parameters["turns_str"] = numberOfTurns.ToString();
 
                 var httpConnector = GameObject.Find("buttonOK").GetComponent<HttpConnector>();
-                httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask3Url, parameters, www =>
+				httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask3Url, parameters, www =>
                 {
 					},
 					w=>{});
@@ -105,7 +105,7 @@ public class CheckResult3 : MonoBehaviour {
                     parameters["turns_str"] = "-1";
 
                     var httpConnector = GameObject.Find("buttonOK").GetComponent<HttpConnector>();
-                    httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask3Url, parameters, www =>
+					httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask3Url, parameters, www =>
                     {
 						},
 						w=>{});

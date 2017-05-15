@@ -275,7 +275,6 @@ using System.Web.Script.Serialization;
             }
             return Json(new
             {
-                theme_num = test_num,
                 content_num = content_num,
                 content = new
                 {
@@ -303,7 +302,8 @@ using System.Web.Script.Serialization;
                         ans_count = v.AnswerVariants.Count,
                         answers = v.AnswerVariants.OrderBy(w => w.OrderNumber).Select(w => new
                         {
-                            text = w.OrderNumber + ") " + w.Text
+                            text = w.OrderNumber + ") " + w.Text,
+                            is_true = w.IfCorrect
                         })
                     }) : null,
                     outputThemeContentLinks = y.OutputThemeContentLinks.OrderBy(t => y.OrderNumber).Select(t => new

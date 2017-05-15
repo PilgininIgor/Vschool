@@ -41,10 +41,9 @@ public class TextLib : MonoBehaviour
     GameObject prev, next;
 
     //часть, необходимая для расчета статистики (если все страницы пролистаны по разу, то параграф просмотрен)
-    int orderNumber;
+    public int orderNumber;
     bool[] have_seen;
     DataStructures.ParagraphRun pr;
-    StatisticParser sp;
     InputScript inp;
     RPGParser rpg;
 
@@ -79,8 +78,8 @@ public class TextLib : MonoBehaviour
     //с добавленными переносами "\n" и нужным количеством пробелов после каждого слова
     string justifyParagraph(string line, double width, int indent, int list_indent, string list_mark, GameObject t)
     {
-
-        var s = line.Split(" "[0]); //превращаем входную строку в массив слов, разбивая ее по пробелам
+		Debug.Log ("justifyParagraph");
+        var s = line.Split(' '); //превращаем входную строку в массив слов, разбивая ее по пробелам
         //знаки препинания становятся частью последнего слова (например, "конец.")
         var i = 0; var j = 0; var k = 0;
         var first = 0; var last = 0;
@@ -172,7 +171,9 @@ public class TextLib : MonoBehaviour
         //количество пробелов
         t.GetComponent<TextMesh>().text = "";
         var res = "";
-        for (j = 0; j < s.Length; j++) res += s[j];
+		for (j = 0; j < s.Length; j++) {
+			res += s [j];
+		}
         return res;
     }
 
@@ -182,13 +183,16 @@ public class TextLib : MonoBehaviour
     //JustifyParagraph, снова сводит воедино и отдает на выход
     string justifyText(string txt, double width, int indent, int list_indent, string list_mark, GameObject t)
     {
+		Debug.Log ("justifyText");
         var txt_formatted = "";
-        var s = txt.Split("\r"[0]);
+		var s = txt.Split (new string[] {"\n"}, System.StringSplitOptions.RemoveEmptyEntries);
         for (var i = 0; i < s.Length; i++)
         {
+			Debug.Log ("before: " + s[i]);
             s[i] = justifyParagraph(s[i], width, indent, list_indent, list_mark, t);
             if (i != s.Length - 1) s[i] += "\n"; //предыдущая функция не добавляет переноса к последнему слову абзаца,
             //поэтому нужно приписать ее тут, если только это не самый последний абзац текста
+			Debug.Log ("after: " + s[i]);
         }
         for (int i = 0; i < s.Length; i++) txt_formatted += s[i];
         return txt_formatted;
@@ -200,13 +204,18 @@ public class TextLib : MonoBehaviour
     //на выход дает массив страниц p (каждый элемент - текст страницы единой строкой)
     string[] divideText(string txt_formatted, double height, GameObject t)
     {
+		Debug.Log ("divideText");
         //определяем высоту одной строки, а через нее - сколько строк уместится на одной странице
         t.GetComponent<TextMesh>().text = "1";
         int lines_per_page;
         lines_per_page = Mathf.FloorToInt((float) (height / t.GetComponent<MeshRenderer>().bounds.size.y));
 
-        var l = txt_formatted.Split("\n"[0]); //дробим отформатированный текст в массив строк	
-        pages_number = Mathf.CeilToInt(l.Length / lines_per_page); //считаем число страниц
+        var l = txt_formatted.Split('\n'); //дробим отформатированный текст в массив строк	
+		pages_number = Mathf.CeilToInt((float) l.Length / (float) lines_per_page); //считаем число страниц
+		have_seen =  new bool[pages_number];
+		Debug.Log ("lines: " + l.Length);
+		Debug.Log ("lines_per_page: " + lines_per_page);
+		Debug.Log ("pages_number: " + pages_number);
         //print(l.length); print(lines_per_page); print(l.length/lines_per_page); print(pages_number);
 
         int j;
@@ -214,20 +223,28 @@ public class TextLib : MonoBehaviour
         //раскидываем строки по страницам (от первой до предпоследней)
         for (int i = 0; i <= pages_number - 2; i++)
         {
+			Debug.Log ("page num: " + i);
             p[i] = "";
-            for (j = i * lines_per_page; j <= (i + 1) * lines_per_page - 2; j++) p[i] += l[j] + "\n";
+			for (j = i * lines_per_page; j <= (i + 1) * lines_per_page - 2; j++) {
+				p [i] += l [j] + "\n";
+			}
             p[i] += l[(i + 1) * lines_per_page - 1];
+			Debug.Log (p [i]);
         }
         //набираем строки в последнюю страницу (здесь цикл немного другой, поэтому отдельно)
-        p[pages_number - 1] = "";
-        for (j = (pages_number - 1) * lines_per_page; j <= l.Length - 2; j++) p[pages_number - 1] += l[j] + "\n";
-        p[pages_number - 1] += l[l.Length - 1];
+
+			p [pages_number - 1] = "";
+			for (j = (pages_number - 1) * lines_per_page; j <= l.Length - 2; j++)
+				p [pages_number - 1] += l [j] + "\n";
+			p [pages_number - 1] += l [l.Length - 1];
+		Debug.Log ("page num: " + (pages_number - 1));
+		Debug.Log (p [pages_number - 1]);
 
         return p;
     }
 
     //итоговая функция, создает все нужные объекты и выводит текст на стенд
-    void Display(string hdr, string txt, float hdr_size, float txt_size, float spacing,
+    public void Display(string hdr, string txt, float hdr_size, float txt_size, float spacing,
                      int indent, int list_indent, string list_mark, float offZ)
     {
         Vector3 pos;
@@ -249,32 +266,32 @@ public class TextLib : MonoBehaviour
         var group_rotation = pt.rotation;
         pt.rotation = Quaternion.identity;
 
-        pos = new Vector3(center.x, center.y + height / 2, 0);
+		pos = new Vector3(center.x, center.y + height / 2, -0.01f);
         h = createText("Header", pos, offZ, hdr_size, spacing, TextAnchor.UpperCenter,
                         TextAlignment.Center, TextFont, TextMaterial_Other);
         h.GetComponent<TextMesh>().text = hdr;
 
-        pos = new Vector3(center.x, (float)(center.y - height / 2 + 0.3), 0);
+        pos = new Vector3(center.x, (float)(center.y - height / 2 + 0.3), -0.01f);
         c = createText("PageCounter", pos, offZ, txt_size, spacing, TextAnchor.LowerCenter,
                         TextAlignment.Center, TextFont, TextMaterial_Other);
         c.GetComponent<TextMesh>().text = "Стр.1 из 1";
 
-        pos = new Vector3((float)(center.x - width / 2 + 0.1), (float)(center.y - height / 2 + 0.3), 0);
+		pos = new Vector3((float)(center.x - width / 2 + 0.1), (float)(center.y - height / 2 + 0.3), -0.01f);
         prev = createText("PrevButton", pos, offZ, txt_size, spacing, TextAnchor.LowerLeft,
                            TextAlignment.Left, TextFont, TextMaterial_Other);
         prev.GetComponent<TextMesh>().text = "<<< Назад";
 
-        pos = new Vector3((float)(center.x + width / 2 - 0.1), (float)(center.y - height / 2 + 0.3), 0);
+		pos = new Vector3((float)(center.x + width / 2 - 0.1), (float)(center.y - height / 2 + 0.3), -0.01f);
         next = createText("NextButton", pos, offZ, txt_size, spacing, TextAnchor.LowerRight,
                            TextAlignment.Right, TextFont, TextMaterial_Other);
         next.GetComponent<TextMesh>().text = "Далее >>>";
 
-        pos = new Vector3((float)(center.x - width / 2 + 0.1), (float)(center.y + height / 2 - h.GetComponent<Renderer>().bounds.size.y - 0.1), 0);
+		pos = new Vector3((float)(center.x - width / 2 + 0.1), (float)(center.y + height / 2 - h.GetComponent<Renderer>().bounds.size.y - 0.1), -0.01f);
         t = createText("Content", pos, offZ, txt_size, spacing, TextAnchor.UpperLeft,
                         TextAlignment.Left, TextFont, TextMaterial_Main);
 
         var txt_formatted = justifyText(txt, width - 0.2, indent, list_indent, list_mark, t);
-        p = divideText(txt_formatted, height - h.GetComponent<Renderer>().bounds.size.y - c.GetComponent<Renderer>().bounds.size.y - 0.4, t);
+		p = divideText(txt_formatted, height - h.GetComponent<Renderer>().bounds.size.y - c.GetComponent<Renderer>().bounds.size.y - 0.4, t);
 
         current_page = 1;
         t.GetComponent<TextMesh>().text = p[current_page - 1];
@@ -285,7 +302,7 @@ public class TextLib : MonoBehaviour
         next.AddComponent<BoxCollider>();
         //выуживаем из ассетов заготовленные скрипты
         prev.AddComponent<TextLib_PrevPage>();
-        next.AddComponent<TextLib_PrevPage>();
+        next.AddComponent<TextLib_NextPage>();
         //передаем им ссылку на стенд
         prev.GetComponent<TextLib_PrevPage>().background = transform.gameObject;
         next.GetComponent<TextLib_NextPage>().background = transform.gameObject;
@@ -294,16 +311,15 @@ public class TextLib : MonoBehaviour
 
         //статистика
         var bs = GameObject.Find("Bootstrap").gameObject;
-        sp = bs.GetComponent<StatisticParser>();
         rpg = bs.GetComponent<RPGParser>();
         inp = transform.parent.transform.parent.transform.parent.GetComponent<InputScript>();
-        pr = sp.stat.themesRuns[inp.theme_num].lecturesRuns[inp.lec_num].paragraphsRuns[orderNumber - 1];
+		pr = Global.stat.themesRuns[inp.theme_num].lecturesRuns[inp.lec_num].paragraphsRuns[orderNumber - 1];
         if (!pr.haveSeen)
         {
             if (pages_number == 1)
             {
                 pr.haveSeen = true;
-                sp.UpdateThemeStat(inp.theme_num + 1);
+//                sp.UpdateThemeStat(inp.theme_num + 1);
 //                rpg.RPG.paragraphsSeen += 1;
 //                if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
 //                else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
@@ -330,7 +346,7 @@ public class TextLib : MonoBehaviour
             if (flag)
             {
                 pr.haveSeen = true;
-                sp.UpdateThemeStat(inp.theme_num + 1);
+//                sp.UpdateThemeStat(inp.theme_num + 1);
 //                rpg.RPG.paragraphsSeen += 1;
 //                if (rpg.RPG.paragraphsSeen == 1) rpg.Achievement("Первый просмотренный параграф!\n+10 очков!", 10);
 //                else if (rpg.RPG.paragraphsSeen == 20) rpg.Achievement("Просмотрено 20 параграфов!\n+50 очков!", 50);
@@ -341,7 +357,7 @@ public class TextLib : MonoBehaviour
         }
     }
 
-    void Undisplay()
+    public void Undisplay()
     {
         Destroy(h); Destroy(c);
         Destroy(prev); Destroy(next);

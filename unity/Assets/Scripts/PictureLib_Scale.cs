@@ -12,6 +12,6 @@ public class PictureLib_Scale : MonoBehaviour
 
         transform.parent.transform.Find("Zoom/ZoomPicNum").GetComponent<TextMesh>().text = "Рисунок " + pn;
 
-        s.loadPicture(transform.parent.transform.Find("Zoom/ZoomPicture").gameObject, s.www[pn - 1].texture, 0.9f, 0.4f);
+		s.loadPicture(transform.parent.transform.Find("Zoom/ZoomPicture").gameObject, s.textures[pn - 1], 0.9f, 0.4f);
     }
 }

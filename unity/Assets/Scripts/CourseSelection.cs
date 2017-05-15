@@ -79,7 +79,7 @@ public class CourseSelection : MonoBehaviour
 
 	public void LoadCoursesList()
 	{
-		httpConnector.Get (HttpConnector.ServerUrl + HttpConnector.UnityListUrl, 
+		httpConnector.Get (HttpConnector.ServerUrl + HttpConnector.UnityListUrl,
 			www => {
 				CourseDisplay (www.text);
 			},
@@ -174,7 +174,8 @@ public class CourseSelection : MonoBehaviour
 
 		dieSignals.SendSignals(this);
 		this.GetComponent<Renderer>().material = NewScreen;
-		escape_visible = false; data_loaded = false;
+		escape_visible = false; data_loaded = false; 
+		Global.stat_loaded = false;
 		ZoomOut();
 	}
 

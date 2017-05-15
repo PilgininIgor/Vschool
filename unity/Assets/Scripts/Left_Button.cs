@@ -21,9 +21,15 @@ public class Left_Button : MonoBehaviour
             {
                 Text_Question.GetComponent<Renderer>().enabled = false;
                 Plane_Pic_Answers.GetComponent<Renderer>().enabled = true;
-                WWW www = new WWW(board.qAns[board.i]);
-                Plane_Pic_Answers.GetComponent<Renderer>().material.mainTexture = www.texture;
-                Plane_Pic_Answers.GetComponent<Renderer>().material.mainTextureScale = new Vector2(-1, -1);
+				HttpConnector httpConnector = GameObject.Find ("Bootstrap").GetComponent<HttpConnector> ();
+				httpConnector.Get (board.qAns[board.i], 
+					www => {
+						Plane_Pic_Answers.GetComponent<Renderer>().material.mainTexture = www.texture;
+						Plane_Pic_Answers.GetComponent<Renderer>().material.mainTextureScale = new Vector2(-1, -1);
+					},
+					www => {
+
+					});
             }
         }
         else

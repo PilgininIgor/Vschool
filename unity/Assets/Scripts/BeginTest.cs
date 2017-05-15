@@ -30,7 +30,7 @@ public class BeginTest : MonoBehaviour
         transform.parent.transform.Find("Conclusion").localPosition = p;
 
         scr = BoardToMove.transform.Find("BoardGroup").GetComponent<Board>();
-        scr.i = 0; scr.initializeArrays(); scr.UpdateBeginning();
+		scr.i = 0; scr.initializeArrays(Global.content); scr.UpdateBeginning();
 
         //выдвинуть нужные кубы
         Cube1.GetComponent<Animation>().Play("CubeInactiveUp");

@@ -1,21 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PictureLib : MonoBehaviour
 {
 
-    Material bckg;
+    public Material bckg;
 
-    public List<WWW> www = new List<WWW>();
-    public List<GameObject> stand = new List<GameObject>();
+	public List<string> www;
+	public List<Texture2D> textures;
+    public List<GameObject> stand;
     public int pages_num;//current_layout
     int pics_per_page;//current_layout
     public int current_page;//current_layout
     public int cl;//current_layout
 
-    public int[] layout_x = { 1, 2, 1, 2, 3, 1, 3, 2, 3, 4, 2, 4, 3, 4 };
+	public int[] layout_x;
 
-    public int[] layout_y = { 1, 1, 2, 2, 1, 3, 2, 3, 3, 2, 4, 3, 4, 4 };
+	public int[] layout_y;
 
 
     float w_max, h_max;
@@ -83,6 +86,7 @@ public class PictureLib : MonoBehaviour
     //создать компоновку x на y стендов
     public void CreateLayout(int x, int y)
     {
+		stand = new List<GameObject>();
         var w_all = this.transform.localScale.x - 0.1;
         var h_all = this.transform.localScale.z - 0.1;
         var w = w_all / x;
@@ -94,15 +98,15 @@ public class PictureLib : MonoBehaviour
         for (var j = 0; j < y; j++)
             for (var i = 0; i < x; i++)
             {
-                stand[k] = createStand(new Vector3((float)(w - 0.01), 1, (float)(h - 0.01)),
-                                       new Vector3(0, (float)(y_start - h * 10 / 2 - j * h * 10), (float)(x_start - w * 10 / 2 - i * w * 10)));
+				stand.Add(createStand(new Vector3((float)(w - 0.01), 1, (float)(h - 0.01)),
+					new Vector3(0, (float)(y_start - h * 10 / 2 - j * h * 10), (float)(x_start - w * 10 / 2 - i * w * 10))));
                 k++;
             }
 
         w_max = (float)(w - 0.01);
         h_max = (float)(h - 0.01);
         pics_per_page = x * y;
-        pages_num = (int)Mathf.Ceil((float)(www.Count / 1.0 / (x * y)));
+		pages_num = (int)Mathf.Ceil((float)(www.Count / 1.0 / (x * y)));
         //у деления на 1.0 есть глубокий функциональный смысл: он добавляет float в операцию трех int'ов
         //если его убрать, то результат тоже будет целым (например, 14/(2*2)=3), и никакой Ceil не поможет
     }
@@ -112,16 +116,17 @@ public class PictureLib : MonoBehaviour
     //при компоновке 2-на-2 и странице №2 - картинки 5,6,7,8
     public void loadPics(int page)
     {
-        int i, stand_length = layout_x[cl] * layout_y[cl];
+		int i = 0, stand_length = layout_x[cl] * layout_y[cl];
+		Debug.Log ("stand_length: " + stand_length);
+		Debug.Log ("stans: " + stand.Count);
         if (page != pages_num)
         {
             for (i = 0; i < stand_length; i++)
             {
+				Debug.Log (i);
                 stand[i].SetActive(true);
-                loadPicture(stand[i].transform.Find("pic").gameObject,
-                            www[(page - 1) * pics_per_page + i].texture,
-                            w_max, h_max);
-                stand[i].transform.Find("txt").GetComponent<TextMesh>().text = "" + ((page - 1) * pics_per_page + i + 1);
+				PicLoader ((page - 1) * pics_per_page + i, i, page);
+				stand[i].transform.Find("txt").GetComponent<TextMesh>().text = "" + ((page - 1) * pics_per_page + i + 1);
             }
             //последняя страница уникальна тем, что может быть неполной
             //(например, компоновка 2-на-2 и всего 14 картинок - тогда на последней будут картинки 13 и 14,
@@ -130,19 +135,17 @@ public class PictureLib : MonoBehaviour
         }
         else
         {
-            int pics_on_last_page = www.Count - (pages_num - 1) * pics_per_page;
+			int pics_on_last_page = www.Count - (pages_num - 1) * pics_per_page;
             for (i = 0; i < pics_on_last_page; i++)
             {
-                loadPicture(stand[i].transform.Find("pic").gameObject,
-                            www[(page - 1) * pics_per_page + i].texture,
-                            w_max, h_max);
-                stand[i].transform.Find("txt").GetComponent<TextMesh>().text = "" + ((page - 1) * pics_per_page + i + 1);
+				PicLoader ((page - 1) * pics_per_page + i, i, page);
+				stand[i].transform.Find("txt").GetComponent<TextMesh>().text = "" + ((page - 1) * pics_per_page + i + 1);
             }
             for (i = pics_on_last_page; i < stand_length; i++) stand[i].SetActive(false);
         }
     }
 
-    void DisplayPictures(List<DataStructures.Picture> input)
+    public void DisplayPictures(List<DataStructures.Picture> input)
     {
         if (input.Count == 0)
         {
@@ -154,21 +157,56 @@ public class PictureLib : MonoBehaviour
         }
         else
         {
+			layout_x = new int[] { 1, 2, 1, 2, 3, 1, 3, 2, 3, 4, 2, 4, 3, 4 };
+			layout_y = new int[] { 1, 1, 2, 2, 1, 3, 2, 3, 3, 2, 4, 3, 4, 4 };
             //суть >>>
-            for (var i = 0; i < input.Count; i++)
-            {
-                www[i] = new WWW(input[i].path);
-                //yield www[i];
-            }
+			stand = new List<GameObject>();
+			www = new List<string> (input.Count);
+			textures = new List<Texture2D> (input.Count);
+
+			for (var i = 0; i < input.Count; i++) {
+				www.Add(input [i].path);
+				textures.Add (null);
+			}
+
             CreateLayout(1, 1); cl = 0;
             loadPics(1); current_page = 1;
             // <<< суть
         }
     }
 
-    void UndisplayPictures()
+    public void UndisplayPictures()
     {
         for (var i = 0; i < stand.Count; i++) Destroy(stand[i]);
         transform.parent.transform.Find("Zoom").gameObject.SetActive(false);
     }
+
+	public void PicLoader(int num, int i, int page)
+	{
+		if (textures [num] == null) {
+			WWW w = new WWW (www [num]);
+			StartCoroutine (WaitForRequest (w, num, i, page));
+		} else {
+			loadPicture(stand[i].transform.Find("pic").gameObject,
+				textures[num],
+				w_max, h_max);
+		}
+	}
+
+	private IEnumerator WaitForRequest(WWW w, int num, int i, int page)
+	{
+		yield return w;
+
+		if (string.IsNullOrEmpty(w.error))
+		{
+			textures [num] = w.texture;
+			loadPicture(stand[i].transform.Find("pic").gameObject,
+				w.texture,
+				w_max, h_max);
+		}
+		else
+		{
+			Debug.Log("WWW Error: " + w.error);
+		}
+	}
 }

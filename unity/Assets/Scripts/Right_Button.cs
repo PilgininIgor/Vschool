@@ -4,23 +4,28 @@ public class Right_Button : MonoBehaviour
 {
     public bool pic_enlarged = false;
     public bool animation_in_progress = false;
-    Texture2D pic;
+    public Texture2D pic;
 
     void AnimationStart() { animation_in_progress = true; }
     void AnimationStop() { animation_in_progress = false; }
 
     void LoadPicture()
     {
-        var scr = transform.parent.GetComponent<Board>();
-        var www = new WWW(scr.qPicPath[scr.i]);
-        var Plane_RightButton = transform.parent.transform.Find("Plane_RightButton");
-        Plane_RightButton.GetComponent<Renderer>().material.mainTexture = www.texture;
+        Board scr = transform.parent.GetComponent<Board>();
+		HttpConnector httpConnector = GameObject.Find ("Bootstrap").GetComponent<HttpConnector> ();
+		Debug.Log (scr.qPicPath[scr.i]);
+		httpConnector.Get (scr.qPicPath[scr.i],
+			www => {
+			GetComponent<Renderer>().material.mainTexture = www.texture;
+		},
+			www => {
+
+			});
     }
 
     void UnloadPicture()
     {
-        var Plane_RightButton = transform.parent.transform.Find("Plane_RightButton");
-        Plane_RightButton.GetComponent<Renderer>().material.mainTexture = pic;
+		GetComponent<Renderer>().material.mainTexture = pic;
     }
 
     void OnMouseDown()
@@ -29,12 +34,16 @@ public class Right_Button : MonoBehaviour
         {
             if (!pic_enlarged)
             {
+				Debug.Log ("start load");
                 pic_enlarged = true;
+				LoadPicture ();
                 GetComponent<Animation>().Play("PictureAnimUp");
             }
             else
             {
+				Debug.Log ("start unload");
                 pic_enlarged = false;
+				UnloadPicture ();
                 GetComponent<Animation>().Play("PictureAnimDown");
             }
         }

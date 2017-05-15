@@ -198,10 +198,10 @@ public class TaskSelector : MonoBehaviour {
 			httpConnector = GameObject.Find ("Bootstrap").GetComponent<HttpConnector> ();
 		httpConnector.Post (HttpConnector.ServerUrl + HttpConnector.TaskDataUrl, parameters, www => {
 
+			Debug.Log(www.text);
 			Task task = JsonReader.Deserialize<Task> (www.text);
 			Global.content = task.content;
 			Global.content_num = int.Parse (task.content_num);
-			Global.theme_num = int.Parse (task.theme_num);
 
 			string sceneName = "";
 			switch (Global.content.type) {

@@ -130,7 +130,7 @@ public class ThemeSelector : MonoBehaviour {
 
 					//БОЛЬШОЙ РУБИЛЬНИК
 					//Application.ExternalCall("LoadCourseData", cl[i-1].id);			
-					LoadThemeData (cl [i - 1]);
+					LoadThemeData (cl [i - 1], i - 1);
 				}
 				var hUnit = Mathf.RoundToInt (Screen.height * DefaultSkin.LayoutScale);
 				var wUnit = Mathf.RoundToInt (Screen.width * DefaultSkin.LayoutScale);
@@ -167,10 +167,11 @@ public class ThemeSelector : MonoBehaviour {
 	void OnTriggerEnter(Collider other) { hint_visible = true; }
 	void OnTriggerExit(Collider other) { hint_visible = false; }
 
-	public void LoadThemeData(ThemeName theme)
+	public void LoadThemeData(ThemeName theme, int theme_num)
 	{
 		Global.themeId = theme.id;
 		Global.themeName = theme.name;
+		Global.theme_num = theme_num;
 
 		GameObject.Find("TeleportBooth_ToTheme").GetComponent<TeleportToScene>().active = true;
 		GameObject.Find("MonitorToTheme/Text").GetComponent<TextMesh>().text = Global.themeName;
@@ -203,7 +204,7 @@ public class ThemeSelector : MonoBehaviour {
 
 			//БОЛЬШОЙ РУБИЛЬНИК
 			//Application.ExternalCall("LoadCourseData", cl[i-1].id);
-			LoadThemeData(cl[i - 1]);
+			LoadThemeData(cl[i - 1], i - 1);
 		}
 	}
 }

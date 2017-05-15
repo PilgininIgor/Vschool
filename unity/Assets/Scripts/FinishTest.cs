@@ -35,19 +35,37 @@ public class FinishTest : MonoBehaviour
         //у нас много тестовых комнат, поэтому нужно обеспечить объекту уникальное имя
         name = "FinishTestObject_" + board.test_id;
         //БОЛЬШОЙ РУБИЛЬНИК
-        DisplayResults(board.qText.Length - 2);
+		int score = CheckAnswers();
+        DisplayResults(score);
         //var sp = GameObject.Find("Bootstrap").GetComponent("StatisticParser");
         //Application.ExternalCall("SaveTestResult",
         //						 sp.STAT.mode, sp.STAT.themesRuns[board.theme_num].id,
         //						 board.test_id, board.a, board.t);
     }
 
+	int CheckAnswers() {
+		int trueNum = 0;
+
+		for (int i = 0; i < board.qAns.Length; i++) {
+			bool isCorrect = true;
+			for (int j = 0; j < board.qAnsNum [i]; j++) {
+				if (board.a [i] [j] != board.trueAns [i] [j]) {
+					isCorrect = false;
+					break;
+				}
+			}
+			if (isCorrect)
+				trueNum++;
+		}
+
+		return trueNum;
+	}
+
     void DisplayResults(int score)
     {
         var bs = GameObject.Find("Bootstrap");
-        var sp = bs.GetComponent<StatisticParser>();
         var rpg = bs.GetComponent<RPGParser>();
-        var tr = sp.stat.themesRuns[board.theme_num].testsRuns[board.test_num];
+        var tr = Global.stat.themesRuns[board.theme_num].testsRuns[board.test_num];
 
         transform.parent.transform.parent.transform.Find("Board Begin/Result").GetComponent<TextMesh>().text =
             "Ваш результат: " + score.ToString() + " из " + tr.answersOverall.ToString();
@@ -74,7 +92,7 @@ public class FinishTest : MonoBehaviour
             //а также заняться ачивментами
             if (tr.answersCorrect < tr.answersMinimum)
             {
-                sp.stat.themesRuns[board.theme_num].testsComplete += 1;
+				Global.stat.themesRuns[board.theme_num].testsComplete += 1;
 //                rpg.Achievement("Тест успешно пройден!\n+30 очков!", 30);
 //                rpg.RPG.testsFinished += 1;
 //                if (rpg.RPG.testsFinished == 1) rpg.Achievement("Первый пройденный тест!\n+20 очков!", 10);
@@ -94,6 +112,6 @@ public class FinishTest : MonoBehaviour
         }
         //и независимо от того, засчитан тест или нет, если это пока что лучший результат юзера, его надо запомнить
         if (tr.answersCorrect < score) tr.answersCorrect = score;
-        sp.UpdateThemeStat(board.theme_num + 1);
+        //sp.UpdateThemeStat(board.theme_num + 1);
     }
 }

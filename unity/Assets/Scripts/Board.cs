@@ -14,6 +14,7 @@ public class Board : MonoBehaviour
     public int[] qType; //тип ответов: 0 - текстом, 1 - картинкой
     public string[] qAns; //ответы текстом (тип = 0) либо путь к картинке с ними (тип = 1)
     public int[] qAnsNum; //количество вариантов ответа
+	public List<bool[]> trueAns; //верные варианты ответов
 
     public List<bool[]> a; //двумерный массив двоичных значений, запоминающий все ответы пользователя
     //a[i][j] = true/false - пользователь выбрал/не выбрал j-тый вариант ответа на i-тый вопрос
@@ -53,6 +54,9 @@ public class Board : MonoBehaviour
 			qText = new string[count];
 			qPicPath = new string[count];
 			qType = new int[count];
+
+
+
             for (var l = 0; l < test.questions.Count; l++)
             {
                 qText[l] = DivideText(test.questions[l].text);
@@ -73,7 +77,8 @@ public class Board : MonoBehaviour
                     qAns[l] += test.questions[l].answers[qAnsNum[l] - 1].text;
                 }
             }
-            initializeArrays();
+            
+			initializeArrays(test);
             UpdateBeginning();
         }
     }
@@ -109,14 +114,18 @@ public class Board : MonoBehaviour
         return res;
     }
 
-    public void initializeArrays()
+	public void initializeArrays(DataStructures.ThemeContent test)
     {
         int j, k;
         a = new List<bool[]>();
-        for (j = 0; j < qText.Length; j++)
-            a.Add(new bool[qAnsNum[j]]);
-        for (j = 0; j < qText.Length; j++)
-            t.Add(0.00);
+		trueAns = new List<bool[]> ();
+		for (j = 0; j < qText.Length; j++) {
+			trueAns.Add (new bool[qAnsNum [j]]);
+			for (var u = 0; u < qAnsNum[j]; u++)
+				trueAns [j] [u] = test.questions [j].answers [u].is_true;
+			a.Add (new bool[qAnsNum [j]]);
+			t.Add (0.00);
+		}
     }
 
     public void UpdateBeginning()
@@ -170,7 +179,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    private void UpdateQuestion()
+    public void UpdateQuestion()
     {
         UpdateBeginning();
 

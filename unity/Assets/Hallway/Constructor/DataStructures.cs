@@ -8,6 +8,7 @@ public class DataStructures : MonoBehaviour
     public class Answer
     {
         public string text;
+		public bool is_true;
     }
 
     public class Picture

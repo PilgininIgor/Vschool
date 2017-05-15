@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Right_Arrow : MonoBehaviour {
 
-    GameObject BoardGroup, Cube1, Cube2, Cube3, Cube4, Cube5, Plane_RightButton;
+    public GameObject BoardGroup, Cube1, Cube2, Cube3, Cube4, Cube5, Plane_RightButton;
 
 	void OnMouseDown() {
 	
@@ -32,7 +32,7 @@ public class Right_Arrow : MonoBehaviour {
 			
 		scr.i = scr.i + 1;
 		if (scr.i >= scr.qText.Length) scr.i = 0;
-		anim.Play("BoardAnim");
+		//anim.Play("BoardAnim");
 		
 		if (scrb.pic_enlarged) {
 			var animb = Plane_RightButton.GetComponent<Animation>();
@@ -45,6 +45,7 @@ public class Right_Arrow : MonoBehaviour {
 	    anim3.Play(scr3.is_active ? "CubeActiveDown" : "CubeInactiveDown");
 	    anim4.Play(scr4.is_active ? "CubeActiveDown" : "CubeInactiveDown");
 	    anim5.Play(scr5.is_active ? "CubeActiveDown" : "CubeInactiveDown");
+			scr.UpdateQuestion ();
 	}
 	
 }

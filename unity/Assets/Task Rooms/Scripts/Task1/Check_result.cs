@@ -45,7 +45,7 @@ public class Check_result : MonoBehaviour {
             parameters["answer"] = answer;
 
             var httpConnector = GameObject.Find("buttonOK").GetComponent<HttpConnector>();
-            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask1Url, parameters, www =>
+			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.CheckTask1Url, parameters, www =>
             {
                 ProcessResult(www.text);
 				},

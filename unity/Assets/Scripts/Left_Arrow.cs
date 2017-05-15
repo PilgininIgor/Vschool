@@ -4,7 +4,7 @@ using System.Collections;
 public class Left_Arrow : MonoBehaviour
 {
 
-    private GameObject BoardGroup, Cube1, Cube2, Cube3, Cube4, Cube5, Plane_RightButton;
+    public GameObject BoardGroup, Cube1, Cube2, Cube3, Cube4, Cube5, Plane_RightButton;
 
     private void OnMouseDown()
     {
@@ -35,7 +35,7 @@ public class Left_Arrow : MonoBehaviour
 
             scr.i = scr.i - 1;
             if (scr.i < 0) scr.i = scr.qText.Length - 1;
-            anim.Play("BoardAnim");
+            //anim.Play("BoardAnim");
 
             if (scrb.pic_enlarged)
             {
@@ -49,6 +49,7 @@ public class Left_Arrow : MonoBehaviour
             anim3.Play(scr3.is_active ? "CubeActiveDown" : "CubeInactiveDown");
             anim4.Play(scr4.is_active ? "CubeActiveDown" : "CubeInactiveDown");
             anim5.Play(scr5.is_active ? "CubeActiveDown" : "CubeInactiveDown");
+			scr.UpdateQuestion ();
         }
     }
 }

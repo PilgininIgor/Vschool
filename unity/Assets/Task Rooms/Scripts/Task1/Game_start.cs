@@ -21,7 +21,7 @@ public class Game_start : MonoBehaviour {
             parameters["id"] = Global.content.id;
 
             var httpConnector = GameObject.Find("TriggerStart").GetComponent<HttpConnector>();
-            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.GetTask1Url, parameters, www =>
+			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.GetTask1Url, parameters, www =>
             {
                 StartTask1(www.text);
 				},

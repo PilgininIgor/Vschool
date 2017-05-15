@@ -63,7 +63,7 @@ public class RPGParser : MonoBehaviour
 
     private void SetCoinsForUser()
     {
-        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUserCoinsUrl,
+		httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUserCoinsUrl,
                www =>
                {
                    RPG = new DataStructures.OverallRPG {EXP = int.Parse(www.text)};
@@ -145,8 +145,8 @@ public class RPGParser : MonoBehaviour
             {
                 parameters = new Dictionary<string, object>();
             }
-            httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveGameAchievementUrl, 
-                new Dictionary<string, string> { { "triggerValue", trigger.ToString() }, {"parameters", parameters.ToString()} },
+			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.SaveGameAchievementUrl,
+				new Dictionary<string, string> { { "triggerValue", trigger.ToString() }, {"parameters", parameters.ToString()} }, 
                 www =>
                 {
                     var achievementRuns = JsonReader.Deserialize<DataStructures.GameAchievementRun[]>(www.text);

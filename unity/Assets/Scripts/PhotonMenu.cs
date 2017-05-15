@@ -70,7 +70,7 @@ public class PhotonMenu : MonoBehaviour
 
     void GetUserFromServer()
     {
-        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUsernameUrl, www =>
+		httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUsernameUrl, www =>
         {
             PhotonNetwork.playerName = JsonReader.Deserialize<String>(www.text);
 			},
@@ -79,7 +79,7 @@ public class PhotonMenu : MonoBehaviour
 
     public void LoadCoursesList()
     {
-        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.UnityListUrl, www =>
+		httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.UnityListUrl, www =>
         {
             var res = JsonReader.Deserialize<CourseSelection.CoursesNamesList>(www.text);
             coursesNames = res.coursesNames;
