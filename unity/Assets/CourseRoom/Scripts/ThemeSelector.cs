@@ -174,7 +174,7 @@ public class ThemeSelector : MonoBehaviour {
 		Global.theme_num = theme_num;
 
 		GameObject.Find("TeleportBooth_ToTheme").GetComponent<TeleportToScene>().active = true;
-		GameObject.Find("MonitorToTheme/Text").GetComponent<TextMesh>().text = Global.themeName;
+		GameObject.Find("MonitorToTheme/Text").GetComponent<TitleMover>().ChangeTitle(Global.themeName);
 
 		dieSignals.SendSignals(this);
 		this.GetComponent<Renderer>().material = NewScreen;

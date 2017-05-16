@@ -93,7 +93,7 @@ public class FinishTest : MonoBehaviour
             if (tr.answersCorrect < tr.answersMinimum)
             {
 				Global.stat.themesRuns[board.theme_num].testsComplete += 1;
-//                rpg.Achievement("Тест успешно пройден!\n+30 очков!", 30);
+                rpg.Achievement("Тест успешно пройден!\n+30 очков!", 30);
 //                rpg.RPG.testsFinished += 1;
 //                if (rpg.RPG.testsFinished == 1) rpg.Achievement("Первый пройденный тест!\n+20 очков!", 10);
 //                else if (rpg.RPG.testsFinished == 10) rpg.Achievement("Пройдено 10 тестов!\n+100 очков!", 100);

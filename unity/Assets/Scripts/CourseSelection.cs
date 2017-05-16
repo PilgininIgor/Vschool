@@ -170,8 +170,7 @@ public class CourseSelection : MonoBehaviour
 		Global.themeId = null;
 
 		transform.parent.parent.transform.Find("ToCourse/TeleportBooth_ToCourse").GetComponent<TeleportToScene>().active = true;
-		transform.parent.parent.transform.Find("ToCourse/MonitorToCourse/Text").GetComponent<TextMesh>().text = Global.courseName;
-
+		transform.parent.parent.transform.Find("ToCourse/MonitorToCourse/Text").GetComponent<TitleMover>().ChangeTitle(Global.courseName);
 		dieSignals.SendSignals(this);
 		this.GetComponent<Renderer>().material = NewScreen;
 		escape_visible = false; data_loaded = false; 

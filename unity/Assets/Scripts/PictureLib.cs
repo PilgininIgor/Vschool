@@ -157,6 +157,12 @@ public class PictureLib : MonoBehaviour
         }
         else
         {
+			transform.parent.transform.Find("LayoutButton").gameObject.active = true;
+			transform.parent.transform.Find("Tip").gameObject.active = true;
+			transform.parent.transform.Find("Left Arrow").gameObject.active = true;
+			transform.parent.transform.Find("Right Arrow").gameObject.active = true;
+			transform.parent.transform.Find("Zoom").gameObject.SetActive(true);
+
 			layout_x = new int[] { 1, 2, 1, 2, 3, 1, 3, 2, 3, 4, 2, 4, 3, 4 };
 			layout_y = new int[] { 1, 1, 2, 2, 1, 3, 2, 3, 3, 2, 4, 3, 4, 4 };
             //суть >>>

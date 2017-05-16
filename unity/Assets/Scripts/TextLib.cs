@@ -188,11 +188,9 @@ public class TextLib : MonoBehaviour
 		var s = txt.Split (new string[] {"\n"}, System.StringSplitOptions.RemoveEmptyEntries);
         for (var i = 0; i < s.Length; i++)
         {
-			Debug.Log ("before: " + s[i]);
             s[i] = justifyParagraph(s[i], width, indent, list_indent, list_mark, t);
             if (i != s.Length - 1) s[i] += "\n"; //предыдущая функция не добавляет переноса к последнему слову абзаца,
             //поэтому нужно приписать ее тут, если только это не самый последний абзац текста
-			Debug.Log ("after: " + s[i]);
         }
         for (int i = 0; i < s.Length; i++) txt_formatted += s[i];
         return txt_formatted;

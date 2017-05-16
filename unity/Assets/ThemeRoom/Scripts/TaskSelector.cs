@@ -232,7 +232,7 @@ public class TaskSelector : MonoBehaviour {
 			Global.taskId = taskName.id;
 			GameObject.Find ("TeleportBooth_ToTask").GetComponent<TeleportToScene> ().active = true;
 			GameObject.Find ("TeleportBooth_ToTask").GetComponent<TeleportToScene> ().SceneNameRoom = sceneName;
-			GameObject.Find ("MonitorToTask/Text").GetComponent<TextMesh> ().text = Global.content.name + " (" + sceneName + ")";
+			GameObject.Find ("MonitorToTask/Text").GetComponent<TitleMover>().ChangeTitle(Global.content.name);
 
 			dieSignals.SendSignals (this);
 			this.GetComponent<Renderer> ().material = NewScreen;

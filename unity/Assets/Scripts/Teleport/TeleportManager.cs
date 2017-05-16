@@ -14,7 +14,7 @@ public class TeleportManager : MonoBehaviour {
 		case Names.Scenes.World: 
 			if (fromSceneName == Names.Scenes.CourseRoom || fromSceneName == Names.Scenes.ThemeRoom) {
 				spawnPlace = GameObject.Find (Names.SpawnPlaces.Course).transform.position;
-				GameObject.Find ("MonitorToCourse/Text").GetComponent<TextMesh> ().text = Global.courseName;
+				GameObject.Find ("MonitorToCourse/Text").GetComponent<TitleMover>().ChangeTitle(Global.courseName);
 			} else {
 				spawnPlace = GameObject.Find (Names.SpawnPlaces.Start).transform.position;
 			}
@@ -26,7 +26,7 @@ public class TeleportManager : MonoBehaviour {
 				spawnPlace = GameObject.Find (Names.SpawnPlaces.Theme).transform.position;
 			}
 			if (Global.themeId != null) {
-				GameObject.Find ("MonitorToTheme/Text").GetComponent<TextMesh> ().text = Global.themeName;
+				GameObject.Find ("MonitorToTheme/Text").GetComponent<TitleMover>().ChangeTitle(Global.themeName);
 			}
 			break;
 		case Names.Scenes.ThemeRoom:
@@ -35,7 +35,7 @@ public class TeleportManager : MonoBehaviour {
 			} else {
 				spawnPlace = GameObject.Find (Names.SpawnPlaces.Task).transform.position;
 			}
-			GameObject.Find ("MonitorToCourse/Text").GetComponent<TextMesh> ().text = Global.themeName;
+			GameObject.Find ("MonitorToCourse/Text").GetComponent<TitleMover>().ChangeTitle(Global.courseName);
 			break;
 		case Names.Scenes.Lecture:
 			spawnPlace = GameObject.Find (Names.SpawnPlaces.Simple).transform.position;
