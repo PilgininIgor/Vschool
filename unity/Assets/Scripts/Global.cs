@@ -13,6 +13,9 @@ public class Global
     public static bool returning;
 	public static bool stat_loaded;
 
+	public static DataStructures.OverallRPG RPG;
+	public static DataStructures.GameAchievement[] Achievements;
+
 	public static DataStructures.ThemeContent content;
 	public static DataStructures.CourseRun stat;
 

@@ -66,7 +66,7 @@ public class RPGParser : MonoBehaviour
 		httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUserCoinsUrl,
                www =>
                {
-                   RPG = new DataStructures.OverallRPG {EXP = int.Parse(www.text)};
+                   Global.RPG = new DataStructures.OverallRPG {EXP = int.Parse(www.text)};
 			},
 			w=>{});
     }
@@ -108,14 +108,14 @@ public class RPGParser : MonoBehaviour
 
     private void RoleSystemSet(string json)
     {
-        RPG = JsonReader.Deserialize<DataStructures.OverallRPG>(json);
+		Global.RPG = JsonReader.Deserialize<DataStructures.OverallRPG>(json);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (RPG != null)
-            coinsText.text = RPG.EXP.ToString();
+		if (Global.RPG != null)
+			coinsText.text = Global.RPG.EXP.ToString();
     }
 
     public void Achievement(string text, int points)
@@ -127,9 +127,9 @@ public class RPGParser : MonoBehaviour
 
     public void Save()
     {
-        if (!RPG.ifGuest)
+		if (!Global.RPG.ifGuest)
         {
-            var s = JsonWriter.Serialize(RPG);
+			var s = JsonWriter.Serialize(Global.RPG);
             var parameters = new Dictionary<string, string>();
             parameters["s"] = s;
 			httpConnector.Post(HttpConnector.ServerUrl + HttpConnector.UnitySaveRpgUrl, parameters, www => { },
@@ -139,7 +139,7 @@ public class RPGParser : MonoBehaviour
 
     public void SaveAchievemnt(DataStructures.AchievementTrigger trigger, Dictionary<string, object> parameters)
     {
-        if (!RPG.ifGuest)
+		if (!Global.RPG.ifGuest)
         {
             if (parameters == null)
             {
@@ -158,7 +158,7 @@ public class RPGParser : MonoBehaviour
                             continue;
                         }
                         ShowCoinsAdded(achievementRun.score);
-                        RPG.EXP += achievementRun.score;
+						Global.RPG.EXP += achievementRun.score;
                     }
 				},
 				w=>{});
