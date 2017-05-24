@@ -6,6 +6,16 @@ public class NetworkManagerScript : MonoBehaviour {
 	public GameObject avatar;
 	public Transform spawnObject;
 	public string gameName = "3Ducation";
+
+    public string nameOfAvatar;
+
+    private bool refreshing;
+    private HostData[] hostData;
+
+    private float btnX;
+    private float btnY;
+    private float btnW;
+    private float btnH;
 	
 	//avatars
 	public GameObject Joan;
@@ -15,16 +25,6 @@ public class NetworkManagerScript : MonoBehaviour {
 	public GameObject Justin;
 	public GameObject Vincent;
 	public GameObject Solder;	
-	
-	public string nameOfAvatar;
-	
-	private bool refreshing;
-	private HostData[] hostData;
-	
-	private float btnX;
-	private float btnY;
-	private float btnW;
-	private float btnH;
 	
 	void Start () {
 		btnX = Screen.width * 0.05f;
@@ -45,6 +45,35 @@ public class NetworkManagerScript : MonoBehaviour {
 		}
         
 	}
+
+    void Update()
+    {
+        if (refreshing)
+        {
+            if (MasterServer.PollHostList().Length > 0)
+            {
+                refreshing = false;
+                Debug.Log(MasterServer.PollHostList().Length);
+                hostData = MasterServer.PollHostList();
+            }
+        }
+    }
+
+    void SpawnPlayer()
+    {
+        Network.Instantiate(avatar, spawnObject.position, Quaternion.identity, 0);
+    }
+
+    void OnServerInitialized()
+    {
+        Debug.Log("Server initialized!");
+        SpawnPlayer();
+    }
+
+    void OnConnectedToServer()
+    {
+        SpawnPlayer();
+    }
 	
 	void StartServer(){
 		Network.InitializeServer(32, 25001, !Network.HavePublicAddress());
@@ -54,29 +83,6 @@ public class NetworkManagerScript : MonoBehaviour {
 	void RefreshHostList(){
 		MasterServer.RequestHostList(gameName);
 		refreshing = true;		
-	}
-	
-	void Update(){
-		if(refreshing){
-			if(MasterServer.PollHostList().Length > 0){
-				refreshing = false;
-				Debug.Log(MasterServer.PollHostList().Length);
-				hostData = MasterServer.PollHostList(); 
-			}
-		}
-	}
-	
-	void SpawnPlayer(){
-		Network.Instantiate(avatar, spawnObject.position, Quaternion.identity, 0);
-	}
-	
-	void OnServerInitialized(){
-		Debug.Log("Server initialized!");
-		SpawnPlayer();
-	}
-	
-	void OnConnectedToServer(){
-		SpawnPlayer();
 	}
 	
 	void OnMasterServerEvent(MasterServerEvent mse){

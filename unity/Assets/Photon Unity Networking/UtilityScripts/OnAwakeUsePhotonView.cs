@@ -17,18 +17,6 @@ public class OnAwakeUsePhotonView : Photon.MonoBehaviour {
 	    this.photonView.RPC("OnAwakeRPC", PhotonTargets.All);
 	}
 
-    // tries to send an RPC as soon as this script starts (e.g. immediately when instantiated)
-    void Start()
-    {
-        if (!this.photonView.isMine)
-        {
-            return;
-        }
-
-        // Debug.Log("OnAwakeSendRPC.Start() of " + this + " photonView: " + this.photonView);
-        this.photonView.RPC("OnAwakeRPC", PhotonTargets.All, (byte)1);
-    }
-	
     [RPC]
     public void OnAwakeRPC()
     {
@@ -39,5 +27,17 @@ public class OnAwakeUsePhotonView : Photon.MonoBehaviour {
     public void OnAwakeRPC(byte myParameter)
     {
         Debug.Log("RPC: 'OnAwakeRPC' Parameter: " + myParameter + " PhotonView: " + this.photonView);
+    }
+
+    // tries to send an RPC as soon as this script starts (e.g. immediately when instantiated)
+    void Start()
+    {
+        if (!this.photonView.isMine)
+        {
+            return;
+        }
+
+        // Debug.Log("OnAwakeSendRPC.Start() of " + this + " photonView: " + this.photonView);
+        this.photonView.RPC("OnAwakeRPC", PhotonTargets.All, (byte)1);
     }
 }

@@ -26,7 +26,6 @@ public class PhotonMenu : MonoBehaviour
 
     public const string PlayerName = "playerName";
     public const string CourseID = "courseID";
-	public const string CourseName = "courseName";
 
     private string userName = Strings.Get("Guest");
 
@@ -34,11 +33,39 @@ public class PhotonMenu : MonoBehaviour
 
     private HttpConnector httpConnector;
 
+    public static bool isConnect = false;
+
+
     private List<CourseSelection.CourseName> coursesNames;
     private bool isDataLoaded;
     private GUIContent[] comboBoxList;
     private ComboBox comboBoxControl = new ComboBox();
     public GUIStyle listStyle;
+
+    // We have two options here: we either joined(by title, list or random) or created a room.
+    public void OnJoinedRoom()
+    {
+        Debug.Log("OnJoinedRoom");
+    }
+
+    public void OnCreatedRoom()
+    {
+        Debug.Log("OnCreatedRoom");
+        //PhotonNetwork.isMessageQueueRunning = false;
+        PlayerPrefs.SetString(CourseID, coursesNames[comboBoxControl.GetSelectedItemIndex()].id);
+        PhotonNetwork.LoadLevel(SceneNameGame);
+    }
+
+    public void OnDisconnectedFromPhoton()
+    {
+        Debug.Log("Disconnected from Photon.");
+    }
+
+    public void OnFailedToConnectToPhoton(object parameters)
+    {
+        this.connectFailed = true;
+        Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.networkingPeer.ServerAddress);
+    }
 
     public void Awake()
     {
@@ -68,30 +95,28 @@ public class PhotonMenu : MonoBehaviour
         // PhotonNetwork.logLevel = NetworkLogLevel.Full;
     }
 
+    private void UpdateRoomName()
+    {
+        roomName = comboBoxList[comboBoxControl.GetSelectedItemIndex()].text;
+    }
+
     void GetUserFromServer()
     {
-		httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUsernameUrl, www =>
+        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUsernameUrl, www =>
         {
             PhotonNetwork.playerName = JsonReader.Deserialize<String>(www.text);
-			},
-			w=>{});
+        });
     }
 
     public void LoadCoursesList()
     {
-		httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.UnityListUrl, www =>
+        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.UnityListUrl, www =>
         {
             var res = JsonReader.Deserialize<CourseSelection.CoursesNamesList>(www.text);
             coursesNames = res.coursesNames;
             comboBoxList = coursesNames.Select(c => new GUIContent(c.name)).ToArray();
             isDataLoaded = true;
-			},
-			w=>{});
-    }
-
-    private void UpdateRoomName()
-    {
-        roomName = comboBoxList[comboBoxControl.GetSelectedItemIndex()].text;
+        });
     }
 
     public void OnGUI()
@@ -177,7 +202,7 @@ public class PhotonMenu : MonoBehaviour
             GUILayout.EndHorizontal();
 
             GUILayout.FlexibleSpace();
-
+            UpdateRoomName();
             GUILayout.BeginHorizontal();
             GUILayout.Label(PhotonNetwork.countOfPlayers + Strings.Get(" users are online in ") + PhotonNetwork.countOfRooms + Strings.Get(" courses."));
             GUILayout.EndHorizontal();
@@ -218,29 +243,4 @@ public class PhotonMenu : MonoBehaviour
         GUILayout.EndArea();
     }
 
-    // We have two options here: we either joined(by title, list or random) or created a room.
-    public void OnJoinedRoom()
-    {
-        Debug.Log("OnJoinedRoom");
-    }
-
-    public void OnCreatedRoom()
-    {
-        Debug.Log("OnCreatedRoom");
-        //PhotonNetwork.isMessageQueueRunning = false;
-        PlayerPrefs.SetString(CourseID, coursesNames[comboBoxControl.GetSelectedItemIndex()].id);
-		PlayerPrefs.SetString(CourseName, coursesNames[comboBoxControl.GetSelectedItemIndex()].name);
-        PhotonNetwork.LoadLevel(SceneNameGame);
-    }
-
-    public void OnDisconnectedFromPhoton()
-    {
-        Debug.Log("Disconnected from Photon.");
-    }
-
-    public void OnFailedToConnectToPhoton(object parameters)
-    {
-        this.connectFailed = true;
-        Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.networkingPeer.ServerAddress);
-    }
 }

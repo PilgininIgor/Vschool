@@ -44,6 +44,8 @@ public enum LobbyType :byte
 }
 
 
+
+
 /// <summary>Refers to a specific lobby (and type) on the server.</summary>
 public class TypedLobby
 {
@@ -197,6 +199,11 @@ public class PhotonMessageInfo
         this.photonView = null;
     }
 
+    public override string ToString()
+    {
+        return string.Format("[PhotonMessageInfo: player='{1}' timestamp={0}]", this.timestamp, this.sender);
+    }
+
     public PhotonMessageInfo(PhotonPlayer player, int timestamp, PhotonView view)
     {
         this.sender = player;
@@ -209,10 +216,6 @@ public class PhotonMessageInfo
         get { return ((double)(uint)this.timeInt) / 1000.0f; }
     }
 
-    public override string ToString()
-    {
-        return string.Format("[PhotonMessageInfo: player='{1}' timestamp={0}]", this.timestamp, this.sender);
-    }
 }
 
 public class PBitStream
@@ -230,11 +233,6 @@ public class PBitStream
     {
         get { return this.totalBits; }
         private set { this.totalBits = value; }
-    }
-
-    public PBitStream()
-    {
-        this.streamBytes = new List<byte>(1);
     }
 
     public PBitStream(int bitCount)
@@ -257,6 +255,12 @@ public class PBitStream
 
         return ((bitCount - 1) / 8) + 1;
     }
+
+    public PBitStream()
+    {
+        this.streamBytes = new List<byte>(1);
+    }
+
 
     public void Add(bool val)
     {

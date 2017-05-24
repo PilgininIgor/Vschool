@@ -15,6 +15,56 @@ using System.Text.RegularExpressions;
 
 public class PhotonConverter : Photon.MonoBehaviour
 {
+
+    /*
+     public static List<string> GetScriptsInFolder(string folder)
+    {
+        List<string> scripts = new List<string>();
+
+        try
+        {
+            scripts.AddRange(Directory.GetFiles(folder, "*.cs", SearchOption.AllDirectories));
+            scripts.AddRange(Directory.GetFiles(folder, "*.js", SearchOption.AllDirectories));
+            scripts.AddRange(Directory.GetFiles(folder, "*.boo", SearchOption.AllDirectories));
+        }
+        catch (System.Exception ex)
+        {
+            Debug.Log("Getting script list from folder " + folder + " failed. Exception:\n" + ex.ToString());
+        }
+
+        return scripts;
+    }
+
+    ///  default path: "Assets"
+    public static void ConvertRpcAttribute(string path)
+    {
+        if (string.IsNullOrEmpty(path))
+        {
+            path = "Assets";
+        }
+
+        List<string> scripts = GetScriptsInFolder(path);
+        foreach (string file in scripts)
+        {
+            string text = File.ReadAllText(file);
+            string textCopy = text;
+            if (file.EndsWith("PhotonConverter.cs"))
+            {
+                continue;
+            }
+
+            text = text.Replace("[RPC]", "[PunRPC]");
+            text = text.Replace("@RPC", "@PunRPC");
+
+            if (!text.Equals(textCopy))
+            {
+                File.WriteAllText(file, text);
+                Debug.Log("Converted RPC to PunRPC in: " + file);
+            }
+        }
+    }
+     */
+
     public static void RunConversion()
     {		
         //Ask if user has made a backup.
@@ -49,6 +99,25 @@ public class PhotonConverter : Photon.MonoBehaviour
         //Ask the user if we can move all prefabs to a resources folder
         bool movePrefabs = EditorUtility.DisplayDialog("Conversion", "Can all prefabs that use a PhotonView be moved to a Resources/ folder? You need this if you use Network.Instantiate.", "Yes", "No");
        
+
+        //Convert NetworkViews to PhotonViews in scenes
+        string[] sceneFiles = Directory.GetFiles("Assets/", "*.unity", SearchOption.AllDirectories);
+        foreach (string sceneName in sceneFiles)
+        {
+            EditorApplication.OpenScene(sceneName);
+            EditorUtility.DisplayProgressBar("Converting..", "Scene:" + sceneName, 0.2f);
+        
+            int converted2 = ConvertNetworkView((NetworkView[])GameObject.FindObjectsOfType(typeof(NetworkView)), true);
+            if (converted2 > 0)
+            {
+                //This will correct all prefabs: The prefabs have gotten new components, but the correct ID's were lost in this case
+                PhotonViewHandler.HierarchyChange();    //TODO: most likely this is triggered on change or on save
+                
+                Output("Replaced " + converted2 + " NetworkViews with PhotonViews in scene: " + sceneName);
+                EditorApplication.SaveScene(EditorApplication.currentScene);
+            }
+            
+        }
 
         string[] prefabs = Directory.GetFiles("Assets/", "*.prefab", SearchOption.AllDirectories);
         foreach (string prefab in prefabs)
@@ -86,24 +155,6 @@ public class PhotonConverter : Photon.MonoBehaviour
             }
         }
         
-        //Convert NetworkViews to PhotonViews in scenes
-        string[] sceneFiles = Directory.GetFiles("Assets/", "*.unity", SearchOption.AllDirectories);
-        foreach (string sceneName in sceneFiles)
-        {
-            EditorApplication.OpenScene(sceneName);
-            EditorUtility.DisplayProgressBar("Converting..", "Scene:" + sceneName, 0.2f);
-        
-            int converted2 = ConvertNetworkView((NetworkView[])GameObject.FindObjectsOfType(typeof(NetworkView)), true);
-            if (converted2 > 0)
-            {
-                //This will correct all prefabs: The prefabs have gotten new components, but the correct ID's were lost in this case
-                PhotonViewHandler.HierarchyChange();    //TODO: most likely this is triggered on change or on save
-                
-                Output("Replaced " + converted2 + " NetworkViews with PhotonViews in scene: " + sceneName);
-                EditorApplication.SaveScene(EditorApplication.currentScene);
-            }
-            
-        }
         
         //Convert C#/JS scripts (API stuff)
         List<string> scripts = GetScriptsInFolder("Assets");
@@ -115,75 +166,6 @@ public class PhotonConverter : Photon.MonoBehaviour
         EditorUtility.ClearProgressBar();
 		
 		EditorUtility.DisplayDialog("Completed the conversion", "Don't forget to add \"PhotonNetwork.ConnectWithDefaultSettings();\" to connect to the Photon server before using any multiplayer functionality.", "OK");
-    }
-
-    public static void PickFolderAndConvertScripts()
-    {
-        string folderPath = EditorUtility.OpenFolderPanel("Pick source folder to convert", Directory.GetCurrentDirectory(), "");
-        if (string.IsNullOrEmpty(folderPath))
-        {
-            EditorUtility.DisplayDialog("Script Conversion", "No folder was selected. No files were changed. Please start over.", "Ok.");
-            return;
-        }
-
-        bool result = EditorUtility.DisplayDialog("Script Conversion", "Scripts in this folder will be modified:\n\n" + folderPath + "\n\nMake sure you have backups of these scripts.\nConversion is not guaranteed to work!", "Backup done. Go!", "Abort");
-        if (!result)
-        {
-            return;
-        }
-
-        List<string> scripts = GetScriptsInFolder(folderPath);
-        ConvertScripts(scripts);
-
-        EditorUtility.DisplayDialog("Script Conversion", "Scripts are now converted to PUN.\n\nYou will need to update\n- scenes\n- components\n- prefabs and\n- add \"PhotonNetwork.ConnectWithDefaultSettings();\"", "Ok");
-    }
-
-
-    public static List<string> GetScriptsInFolder(string folder)
-    {
-        List<string> scripts = new List<string>();
-
-        try
-        {
-            scripts.AddRange(Directory.GetFiles(folder, "*.cs", SearchOption.AllDirectories));
-            scripts.AddRange(Directory.GetFiles(folder, "*.js", SearchOption.AllDirectories));
-            scripts.AddRange(Directory.GetFiles(folder, "*.boo", SearchOption.AllDirectories));
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log("Getting script list from folder " + folder + " failed. Exception:\n" + ex.ToString());
-        }
-
-        return scripts;
-    }
-
-    static void ConvertScripts(List<string> scriptPathList)
-    {
-        bool ignoreWarningIsLogged = false;
-
-        foreach (string script in scriptPathList)
-        {
-            if (script.Contains("PhotonNetwork")) //Don't convert this file (and others)
-            {
-                if (!ignoreWarningIsLogged)
-                {
-                    ignoreWarningIsLogged = true;
-                    Debug.LogWarning("Conversion to PUN ignores all files with \"PhotonNetwork\" in their file-path.\nCheck: " + script);
-                }
-                continue;
-            }
-            if (script.Contains("Image Effects"))
-            {
-                continue;
-            }
-
-            ConvertToPhotonAPI(script);
-        }
-
-        foreach (string script in scriptPathList)
-        {
-            AssetDatabase.ImportAsset(script, ImportAssetOptions.ForceUpdate);
-        }
     }
 
     static void ConvertToPhotonAPI(string file)
@@ -336,6 +318,75 @@ public class PhotonConverter : Photon.MonoBehaviour
     {
         return Regex.Replace(input, pattern, replacement);
 
+    }
+
+    public static void PickFolderAndConvertScripts()
+    {
+        string folderPath = EditorUtility.OpenFolderPanel("Pick source folder to convert", Directory.GetCurrentDirectory(), "");
+        if (string.IsNullOrEmpty(folderPath))
+        {
+            EditorUtility.DisplayDialog("Script Conversion", "No folder was selected. No files were changed. Please start over.", "Ok.");
+            return;
+        }
+
+        bool result = EditorUtility.DisplayDialog("Script Conversion", "Scripts in this folder will be modified:\n\n" + folderPath + "\n\nMake sure you have backups of these scripts.\nConversion is not guaranteed to work!", "Backup done. Go!", "Abort");
+        if (!result)
+        {
+            return;
+        }
+
+        List<string> scripts = GetScriptsInFolder(folderPath);
+        ConvertScripts(scripts);
+
+        EditorUtility.DisplayDialog("Script Conversion", "Scripts are now converted to PUN.\n\nYou will need to update\n- scenes\n- components\n- prefabs and\n- add \"PhotonNetwork.ConnectWithDefaultSettings();\"", "Ok");
+    }
+
+
+    public static List<string> GetScriptsInFolder(string folder)
+    {
+        List<string> scripts = new List<string>();
+
+        try
+        {
+            scripts.AddRange(Directory.GetFiles(folder, "*.cs", SearchOption.AllDirectories));
+            scripts.AddRange(Directory.GetFiles(folder, "*.js", SearchOption.AllDirectories));
+            scripts.AddRange(Directory.GetFiles(folder, "*.boo", SearchOption.AllDirectories));
+        }
+        catch (System.Exception ex)
+        {
+            Debug.Log("Getting script list from folder " + folder + " failed. Exception:\n" + ex.ToString());
+        }
+
+        return scripts;
+    }
+
+    static void ConvertScripts(List<string> scriptPathList)
+    {
+        bool ignoreWarningIsLogged = false;
+
+        foreach (string script in scriptPathList)
+        {
+            if (script.Contains("PhotonNetwork")) //Don't convert this file (and others)
+            {
+                if (!ignoreWarningIsLogged)
+                {
+                    ignoreWarningIsLogged = true;
+                    Debug.LogWarning("Conversion to PUN ignores all files with \"PhotonNetwork\" in their file-path.\nCheck: " + script);
+                }
+                continue;
+            }
+            if (script.Contains("Image Effects"))
+            {
+                continue;
+            }
+
+            ConvertToPhotonAPI(script);
+        }
+
+        foreach (string script in scriptPathList)
+        {
+            AssetDatabase.ImportAsset(script, ImportAssetOptions.ForceUpdate);
+        }
     }
 
     static void EnsureFolder(string path)
