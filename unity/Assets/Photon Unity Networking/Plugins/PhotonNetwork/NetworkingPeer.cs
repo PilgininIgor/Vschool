@@ -1188,6 +1188,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                 break;
 
             case OperationCode.FindFriends:
+                Debug.Log("FindFriends");
                 bool[] onlineList = operationResponse[ParameterCode.FindFriendsResponseOnlineList] as bool[];
                 string[] roomList = operationResponse[ParameterCode.FindFriendsResponseRoomIdList] as string[];
 
@@ -1513,6 +1514,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         {
             case EventCode.GameList:
                 {
+                    Debug.Log("GameList");
                     this.mGameList = new Dictionary<string, RoomInfo>();
                     Hashtable games = (Hashtable)photonEvent[ParameterCode.GameList];
                     foreach (DictionaryEntry game in games)
@@ -1528,6 +1530,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
             case EventCode.GameListUpdate:
                 {
+                    Debug.Log("GameListUpdate");
                     Hashtable games = (Hashtable)photonEvent[ParameterCode.GameList];
                     foreach (DictionaryEntry room in games)
                     {
@@ -1646,7 +1649,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             case PunEvent.SendSerialize:
             case PunEvent.SendSerializeReliable:
                 Hashtable serializeData = (Hashtable)photonEvent[ParameterCode.Data];
-                //Debug.Log(serializeData.ToStringFull());
+                Debug.Log(serializeData.ToStringFull());
 
                 int remoteUpdateServerTimestamp = (int)serializeData[(byte)0];
                 short remoteLevelPrefix = -1;

@@ -14,10 +14,23 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
     private bool ConnectInUpdate = true;
 
+    private bool isConnect = false;
+
     public virtual void Start()
     {
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
     }
+
+    public void OnJoinedRoom()
+    {
+        Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
+    }
+
+    public virtual void OnJoinedLobby()
+    {
+        Debug.Log("OnJoinedLobby(). Use a GUI to show existing rooms available in PhotonNetwork.GetRoomList().");
+    }
+
 
     public virtual void Update()
     {
@@ -49,15 +62,5 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     public virtual void OnFailedToConnectToPhoton(DisconnectCause cause)
     {
         Debug.LogError("Cause: " + cause);
-    }
-
-    public void OnJoinedRoom()
-    {
-        Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
-    }
-
-    public virtual void OnJoinedLobby()
-    {
-        Debug.Log("OnJoinedLobby(). Use a GUI to show existing rooms available in PhotonNetwork.GetRoomList().");
     }
 }

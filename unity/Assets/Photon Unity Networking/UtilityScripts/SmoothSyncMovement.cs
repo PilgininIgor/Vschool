@@ -6,6 +6,7 @@ public class SmoothSyncMovement : Photon.MonoBehaviour
     public float SmoothingDelay = 5;
     public void Awake()
     {
+        Debug.Log("Awake");
         if (this.photonView == null || this.photonView.observed != this)
         {
             Debug.LogWarning(this + " is not observed by this object's photonView! OnPhotonSerializeView() in this class won't be used.");
@@ -14,6 +15,7 @@ public class SmoothSyncMovement : Photon.MonoBehaviour
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+        Debug.Log("onPhotonSerializeView");
         if (stream.isWriting)
         {
             //We own this player: send the others our data
@@ -30,6 +32,10 @@ public class SmoothSyncMovement : Photon.MonoBehaviour
 
     private Vector3 correctPlayerPos = Vector3.zero; //We lerp towards this
     private Quaternion correctPlayerRot = Quaternion.identity; //We lerp towards this
+    private float lastSynchonizationTime = 0f;
+    private float syncDelay = 0f;
+    private float syncTime = 0f;
+    private Vector3 startPosition = Vector3.zero;
 
     public void Update()
     {
