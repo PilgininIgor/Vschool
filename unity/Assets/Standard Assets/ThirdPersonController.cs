@@ -313,7 +313,7 @@ public class ThirdPersonController : MonoBehaviour
 	}
 
 	void Update() {
-	if(GetComponent<NetworkView>().isMine)
+	/*if(GetComponent<NetworkView>().isMine)
 		{
 		if (!isControllable)
 		{
@@ -411,7 +411,7 @@ public class ThirdPersonController : MonoBehaviour
 				SendMessage("DidLand", SendMessageOptions.DontRequireReceiver);
 			}
 		}
-		}
+		}*/
 	}
 
 	void OnControllerColliderHit (ControllerColliderHit hit)
