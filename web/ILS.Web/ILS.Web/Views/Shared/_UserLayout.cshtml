@@ -291,17 +291,17 @@
             }
             demorTimer = setInterval(move, 40);
         }
-		
+
 		var suspensionTimer;
 		var suspensionInterval;
 		var suspensionOpacity = 0;
-		
+
 		function showWaitingRing() {
 			document.getElementById("waitingRing").style.display = "block";
 			document.getElementById("waitingBlack").style.display = "block";
 			suspensionInterval = setInterval(enhanceWaitingOpacity, 40);
 		}
-		
+
 		function enhanceWaitingOpacity() {
 			suspensionOpacity += 0.05;
 			document.getElementById("waiting").style.opacity = suspensionOpacity;
@@ -309,7 +309,7 @@
 				clearInterval(suspensionInterval);
 			}
 		}
-		
+
 		function suspend() {
 			suspensionOpacity = 0;
 			clearTimeout(suspensionTimer);
@@ -320,7 +320,7 @@
 			document.getElementById("waiting").style.opacity = "0";
 			suspensionTimer = setTimeout(showWaitingRing, 1000);
 		}
-		
+
 		function resume() {
 			clearTimeout(suspensionTimer);
 			clearInterval(suspensionInterval);
@@ -492,15 +492,15 @@
             </div>
             @RenderBody()
             @RenderSection("end", required: false)
-			<div id="waiting" class="waiting">
-				<div id="waitingBlack" class="waitingBlack">
-				</div>
-				<div id="waitingRing" class="waitingRing" style="overflow:visible">
-					<img src="/Content/Sprites/loading/loading.png" class="loadingRing">
-					<img src="/Content/Sprites/loading/indicator.png" class="loadingIndicator">
-					<p align="center" style="position: absolute; top: 80px; left: 65px; font-size: 20px; color: #eeeeee; letter-spacing: 0.8px; line-height: 30px; font-family: Futurica">Загрузка</p>           
-				</div>
-			</div>
+            <div id="waiting" class="waiting">
+                <div id="waitingBlack" class="waitingBlack">
+                </div>
+                <div id="waitingRing" class="waitingRing" style="overflow:visible">
+                    <img src="/Content/Sprites/loading/loading.png" class="loadingRing">
+                    <img src="/Content/Sprites/loading/indicator.png" class="loadingIndicator">
+                    <p align="center" style="position: absolute; top: 80px; left: 65px; font-size: 20px; color: #eeeeee; letter-spacing: 0.8px; line-height: 30px; font-family: Futurica">Загрузка</p>
+                </div>
+            </div>
         </div>
 
 

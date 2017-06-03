@@ -157,7 +157,7 @@ ModelImporter:
     400148: Spine
     400150: TongueBack
     400152: TongueTip
-    7400000: Idle_JumpDownLow_Idle
+    7400000: Jump_Land
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -175,10 +175,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Idle_JumpDownLow_Idle
+      name: Jump_Land
       takeName: _197_Idle_JumpDownLow_Idle
-      firstFrame: 75
-      lastFrame: 260
+      firstFrame: 187
+      lastFrame: 218
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
