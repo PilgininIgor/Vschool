@@ -7,7 +7,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PhotonGame : Photon.MonoBehaviour
+public class PhotonGame : MonoBehaviour
 {
     public Transform playerPrefab;
 
@@ -62,16 +62,17 @@ public class PhotonGame : Photon.MonoBehaviour
 
 
         // in case we started this demo with the wrong scene being active, simply load the menu scene
-        if (!PhotonNetwork.connected)
-        {
-            Application.LoadLevel(PhotonMenu.SceneNameMenu);
-            return;
-        }
+        //if (!PhotonNetwork.connected)
+        //{
+            //Application.LoadLevel(PhotonMenu.SceneNameMenu);
+            //return;
+        //}
         // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
 
 		spawnPlace = TeleportManager.SettingPortals ();
 
-        GameObject instantiatedPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPlace, Quaternion.identity, 0);
+		GameObject instantiatedPlayer = Instantiate(this.playerPrefab, spawnPlace, Quaternion.identity).gameObject;
+        //GameObject instantiatedPlayer = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPlace, Quaternion.identity, 0);
         //instantiatedPlayer.name = PhotonNetwork.playerName;
         
         //Camera.main.GetComponent<OrbitCam>().target = instantiatedPlayer.transform;
@@ -100,11 +101,11 @@ public class PhotonGame : Photon.MonoBehaviour
     {
         if (GUI.Button(new Rect(DataStructures.buttonSpace, DataStructures.buttonSpace, DataStructures.buttonSize, DataStructures.buttonSize), gear))
         {
-            PhotonNetwork.LeaveRoom();  // we will load the menu level when we successfully left the room
+            //PhotonNetwork.LeaveRoom();  // we will load the menu level when we successfully left the room
         }
     }
 
-    public void OnMasterClientSwitched(PhotonPlayer player)
+/*    public void OnMasterClientSwitched(PhotonPlayer player)
     {
         Debug.Log("OnMasterClientSwitched: " + player);
 
@@ -133,7 +134,7 @@ public class PhotonGame : Photon.MonoBehaviour
         Debug.Log("OnLeftRoom (local)");
         
         // back to main menu        
-        Application.LoadLevel(PhotonMenu.SceneNameMenu);
+        //Application.LoadLevel(PhotonMenu.SceneNameMenu);
     }
 
     public void OnDisconnectedFromPhoton()
@@ -141,7 +142,7 @@ public class PhotonGame : Photon.MonoBehaviour
         Debug.Log("OnDisconnectedFromPhoton");
 
         // back to main menu        
-        Application.LoadLevel(PhotonMenu.SceneNameMenu);
+        //Application.LoadLevel(PhotonMenu.SceneNameMenu);
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
@@ -165,6 +166,6 @@ public class PhotonGame : Photon.MonoBehaviour
 
         // back to main menu        
         Application.LoadLevel(PhotonMenu.SceneNameMenu);
-    }
+    }*/
 		
 }

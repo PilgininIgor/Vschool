@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Chat : MonoBehaviour
 {
-
+	/*
     public GUISkin skin;
     public bool showChat = false;
     private string inputField = "";
@@ -117,5 +117,5 @@ public class Chat : MonoBehaviour
         public string sender = "";
         public string text = "";
         public bool mine = true;
-    }
+    }*/
 }

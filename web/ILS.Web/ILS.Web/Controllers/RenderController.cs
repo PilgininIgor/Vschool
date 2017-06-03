@@ -531,6 +531,18 @@ using System.Web.Script.Serialization;
                             CompleteAll = false
                         };
                         cr.ThemesRuns.Add(tr);
+
+                        /* Добавил создание TestRun'ов заранее (по одному для каждого теста), хотя изначально
+                         * их было много, так как хранились все попытки.
+                         * TODO Нужно сделать по-нормальному, как задумано изначально. 
+                         */
+                        foreach (var tc in t.ThemeContents.OfType<Test>().OrderBy(x => x.OrderNumber))
+                        {
+                            TestRun ter = new TestRun() { Result = 0, TestDateTime = DateTime.Now };
+                            tr.TestsRuns.Add(ter); tc.TestRuns.Add(ter);
+                        }
+                        /**************************************/
+
                         foreach (var tc in t.ThemeContents.OfType<Lecture>().OrderBy(x => x.OrderNumber))
                         {
                             LectureRun lr = new LectureRun() { Lecture = tc, ThemeRun = tr, TimeSpent = 0.0 };
@@ -693,8 +705,19 @@ using System.Web.Script.Serialization;
                 theme_run.AllTestsMax = obj["themesRuns"][i]["allTestsMax"];
                 theme_run.CompleteAll = obj["themesRuns"][i]["completeAll"];
 
-                //при полном прохождении темы открываем индивидуальные связи между темами
-                if (theme_run.CompleteAll)
+                /* TestRun сейчас хранится один для каждого теста.
+                 * TODO Нужно сделать по-нормальному, как задумано изначально. 
+                 *  */
+                int t = 0;
+                foreach (TestRun test_run in theme_run.TestsRuns.OrderBy(x => x.Test.OrderNumber))
+                {
+                    test_run.Result = (int)obj["themesRuns"][i]["testsRuns"][t]["answersCorrect"];
+                    t++;
+                }
+                /********************************/
+
+                    //при полном прохождении темы открываем индивидуальные связи между темами
+                    if (theme_run.CompleteAll)
                 {
                     foreach (ThemeLink theme_link in theme_run.Theme.OutputThemeLinks)
                     {

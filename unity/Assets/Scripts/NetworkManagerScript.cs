@@ -10,7 +10,7 @@ public class NetworkManagerScript : MonoBehaviour {
     public string nameOfAvatar;
 
     private bool refreshing;
-    private HostData[] hostData;
+//    private HostData[] hostData;
 
     private float btnX;
     private float btnY;
@@ -48,7 +48,7 @@ public class NetworkManagerScript : MonoBehaviour {
 
     void Update()
     {
-        if (refreshing)
+       /* if (refreshing)
         {
             if (MasterServer.PollHostList().Length > 0)
             {
@@ -56,12 +56,12 @@ public class NetworkManagerScript : MonoBehaviour {
                 Debug.Log(MasterServer.PollHostList().Length);
                 hostData = MasterServer.PollHostList();
             }
-        }
+        }*/
     }
 
     void SpawnPlayer()
     {
-        Network.Instantiate(avatar, spawnObject.position, Quaternion.identity, 0);
+        //Network.Instantiate(avatar, spawnObject.position, Quaternion.identity, 0);
     }
 
     void OnServerInitialized()
@@ -76,23 +76,23 @@ public class NetworkManagerScript : MonoBehaviour {
     }
 	
 	void StartServer(){
-		Network.InitializeServer(32, 25001, !Network.HavePublicAddress());
-		MasterServer.RegisterHost(gameName, "3Ducation", "This is the network version of the education");
+		//Network.InitializeServer(32, 25001, !Network.HavePublicAddress());
+		//MasterServer.RegisterHost(gameName, "3Ducation", "This is the network version of the education");
 	}
 	
 	void RefreshHostList(){
-		MasterServer.RequestHostList(gameName);
+		//MasterServer.RequestHostList(gameName);
 		refreshing = true;		
 	}
 	
-	void OnMasterServerEvent(MasterServerEvent mse){
+/*	void OnMasterServerEvent(MasterServerEvent mse){
 		if(mse == MasterServerEvent.RegistrationSucceeded){
 			Debug.Log("Registered Server!");
 		}
-	}
+	}*/
 	
 	void OnGUI(){
-		if(!Network.isClient && !Network.isServer) {
+		/*if(!Network.isClient && !Network.isServer) {
 			if(GUI.Button(new Rect(btnX, btnY, btnW, btnH), "Start Server")){
 				Debug.Log("Starting Server ");
 				StartServer();
@@ -112,7 +112,7 @@ public class NetworkManagerScript : MonoBehaviour {
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
 }

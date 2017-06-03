@@ -83,6 +83,7 @@ public class CharacterCust : MonoBehaviour
             var menu = GameObject.Find("_Customization").AddComponent<PhotonMenu>();
             menu.listStyle = guiStyle;
             buttonsIsVisible = false;
+			Application.LoadLevel(Names.Scenes.World);
         }
         if (GUILayout.Button(">", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
         {

@@ -42,10 +42,11 @@
             {
                 return 0;
             }
-            return
-                TestMagicConstant*test.TestDifficulty*
-                context.QuestionRun.Where(run => run.TestRun_Id == testRun.Id).Sum(run => run.TimeSpent)/
-                test.MaxMinutes*Math.Pow(testRun.Result/(double) test.Questions.Count, 2);
+            return 0;
+            /*Пришлось закомментить, так как вылетала ошибка из-за того что QuestionRun не используются*/
+            /*TestMagicConstant*test.TestDifficulty*
+            context.QuestionRun.Where(run => run.TestRun_Id == testRun.Id).Sum(run => run.TimeSpent)/
+            test.MaxMinutes*Math.Pow(testRun.Result/(double) test.Questions.Count, 2);*/
         }
     }
 }

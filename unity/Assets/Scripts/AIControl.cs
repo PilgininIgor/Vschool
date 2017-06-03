@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AIControl : Photon.MonoBehaviour
+public class AIControl // Photon.MonoBehaviour
 {
-
+	/*
     private Animator anim;							// a reference to the animator on the character
     private AnimatorStateInfo state;
     private GUINameOfAvatar textUnderAI;
@@ -51,5 +51,5 @@ public class AIControl : Photon.MonoBehaviour
         {
             anim.SetBool("Excursion", true);
         }        
-    }
+    }*/
 }

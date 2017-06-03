@@ -55,7 +55,7 @@ public class PhotonMenu : MonoBehaviour
         //PhotonNetwork.isMessageQueueRunning = false;
         PlayerPrefs.SetString(CourseID, coursesNames[comboBoxControl.GetSelectedItemIndex()].id);
 		PlayerPrefs.SetString(CourseName, coursesNames[comboBoxControl.GetSelectedItemIndex()].name);
-        PhotonNetwork.LoadLevel(SceneNameGame);
+		Application.LoadLevel(SceneNameGame);
     }
 
     public void OnDisconnectedFromPhoton()
@@ -66,7 +66,7 @@ public class PhotonMenu : MonoBehaviour
     public void OnFailedToConnectToPhoton(object parameters)
     {
         this.connectFailed = true;
-        Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.networkingPeer.ServerAddress);
+//        Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.networkingPeer.ServerAddress);
     }
 
     public void Awake()
@@ -78,20 +78,20 @@ public class PhotonMenu : MonoBehaviour
         LoadCoursesList();
 
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-        PhotonNetwork.automaticallySyncScene = true;
+        //PhotonNetwork.automaticallySyncScene = true;
 
         // the following line checks if this client was just created (and not yet online). if so, we connect
-        if (PhotonNetwork.connectionStateDetailed == PeerState.PeerCreated)
-        {
+        //if (PhotonNetwork.connectionStateDetailed == PeerState.PeerCreated)
+        //{
             // Connect to the photon master-server. We use the settings saved in PhotonServerSettings (a .asset file in this project)
-            PhotonNetwork.ConnectUsingSettings("1.0");
-        }
+        //    PhotonNetwork.ConnectUsingSettings("1.0");
+        //}
 
         // generate a name for this player, if none is assigned yet
-        if (String.IsNullOrEmpty(PhotonNetwork.playerName))
-        {
-            PhotonNetwork.playerName = userName + " " + Random.Range(1, 9999);
-        }
+        //if (String.IsNullOrEmpty(PhotonNetwork.playerName))
+        //{
+        //    PhotonNetwork.playerName = userName + " " + Random.Range(1, 9999);
+        //}
 
         // if you wanted more debug out, turn this on:
         // PhotonNetwork.logLevel = NetworkLogLevel.Full;
@@ -104,11 +104,11 @@ public class PhotonMenu : MonoBehaviour
 
     void GetUserFromServer()
     {
-        httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUsernameUrl, www =>
-        {
-            PhotonNetwork.playerName = JsonReader.Deserialize<String>(www.text);
-			},
-			w=>{});
+        //httpConnector.Get(HttpConnector.ServerUrl + HttpConnector.GetUsernameUrl, www =>
+        //{
+            //PhotonNetwork.playerName = JsonReader.Deserialize<String>(www.text);
+			//},
+			//w=>{});
     }
 
     public void LoadCoursesList()
@@ -125,7 +125,7 @@ public class PhotonMenu : MonoBehaviour
 
     public void OnGUI()
     {
-        GUI.skin.box.fontStyle = FontStyle.Bold;
+        /*GUI.skin.box.fontStyle = FontStyle.Bold;
         GUI.Box(new Rect((Screen.width - dlgWidth) / 2 - dlgPadding, (Screen.height - dlgheight) / 2 - dlgPadding, dlgWidth + dlgPadding, dlgheight + dlgPadding), Strings.Get("Join or Create a Course"));
         GUILayout.BeginArea(new Rect((Screen.width - dlgWidth) / 2, (Screen.height - dlgheight) / 2, dlgWidth, dlgheight));
 
@@ -244,7 +244,7 @@ public class PhotonMenu : MonoBehaviour
             }
         }
 
-        GUILayout.EndArea();
+        GUILayout.EndArea();*/
     }
 
 }

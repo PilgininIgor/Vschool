@@ -17,7 +17,7 @@ public class TeleportToSceneScript : MonoBehaviour
             Global.theme_num = theme_num;
             Global.content_num = content_num;
             Global.teleportBoothPos = transform.position;
-            PhotonNetwork.LoadLevel(SceneNameRoom);
+//            PhotonNetwork.LoadLevel(SceneNameRoom);
         }
         else
         {

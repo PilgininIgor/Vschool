@@ -4,8 +4,9 @@ using System.Threading;
 using System;
 using System.Collections.Generic;
 
-public class NetworkCharacterAnimSync : Photon.MonoBehaviour {
-
+public class NetworkCharacterAnimSync //: Photon.MonoBehaviour 
+{
+/*
     Vector3 realPosition = Vector3.zero;
     Quaternion realRotation = Quaternion.identity;
     Thread thread;
@@ -91,5 +92,5 @@ public class NetworkCharacterAnimSync : Photon.MonoBehaviour {
             //anim.SetBool("Dancing", (bool)stream.ReceiveNext());
             //anim.SetBool("Slide", (bool)stream.ReceiveNext());
         }
-    }
+    }*/
 }

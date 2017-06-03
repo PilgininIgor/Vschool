@@ -6,15 +6,30 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/user.css")" />
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/about.css")" />
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/profile.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/UnityDeploy/TemplateData/style.css")">
+    <link rel="shortcut icon" href="@Url.Content("~/UnityDeploy/TemplateData/favicon.ico")" />
 }
 @section scripts{
-    <script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="@Url.Content("~/UnityDeploy/TemplateData/UnityProgress.js")"></script>
     <script type="text/javascript" src="Scripts/jwp/jwplayer.js"></script>
     <script type="text/javascript" src="Scripts/ils.about.js"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/render.js")"></script>
+    <script type='text/javascript'>
+            var Module = {
+                TOTAL_MEMORY: 268435456,
+                errorhandler: null,
+                compatibilitycheck: null,
+                backgroundColor: "#222C36",
+                splashStyle: "Light",
+                dataUrl: "@Url.Content("~/UnityDeploy/Release/WebGL.data")",
+                codeUrl: "@Url.Content("~/UnityDeploy/Release/WebGL.js")",
+                asmUrl: "@Url.Content("~/UnityDeploy/Release/WebGL.asm.js")",
+                memUrl: "@Url.Content("~/UnityDeploy/Release/WebGL.mem")",
+            };
+    </script>
     <script type="text/javascript">
         getUnityImage = '@Url.Content("~/Content/pics_service/UnitySetup.png")';
-        link_unityfile = '@Url.Content("~/UnityDeploy/Main.unity3d")';
         link_unityRPG = '@Url.Action("UnityRPG", "Render")';
         link_unitylist = '@Url.Action("UnityList", "Render")';
         link_unitydata = '@Url.Action("UnityData", "Render")';
@@ -29,25 +44,29 @@
         var width; var height;
 
         function startUnityPlayer() {
-            if (!embedded && typeof unityObject != "undefined") {
-                width = 809;
-                height = 400;
-                if (width < 200 || height < 200) return;
+            if (!embedded) {
                 embedded = true;
-
                 var params = { disableContextMenu: true };
-                unityObject.embedUnity("unityPlayer", link_unityfile, width, height, params);
+
+                document.getElementById("unityPlayer").innerHTML =
+                    '<div class="template" style="width: 809px; height: 400px; position: static">' +
+                    '<div class="template-wrap clear" title="" style="width: 809px; height: 400px;">' +
+                    '<canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" width="809" height="320"></canvas>' +
+                    '<br>' +
+                    '<div class="logo"></div>' +
+                        '<div class="fullscreen">' +
+                            '<img src="@Url.Content("~/UnityDeploy/TemplateData/fullscreen.png")" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" width="38" height="38">' +
+                    '</div>' +
+                    '<div class="title">Main</div>' +
+                    '</div>' +
+                '</div>';
+                $.getScript('@Url.Content("~/UnityDeploy/Release/UnityLoader.js")');
+
                 if (document.getElementById("unityPlayer").childNodes[0].tagName == "DIV") {
-                    document.getElementById("unityPlayer").childNodes[0].style.width = "500px";
-                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.height = "125px";
-                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.top = "0px";
-                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.left = "50%";
-                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].style.marginLeft = "-96px";
-                    document.getElementById("unityPlayer").childNodes[0].childNodes[0].title = "";
+                    document.getElementById('loadingContainer').style.display = 'none';
+                    document.getElementById('updater').style.display = 'none';
                 }
-                document.getElementById("unityPlayer").style.height = "1px";
-                document.getElementById("unityPlayer").style.width = "1px";
-                setTimeout(UnityLoaded, 10000);
+
             }
         }
 
@@ -118,7 +137,7 @@
                 framesDots[frameDots].style.display = "block";
             }
             timerDots = setInterval(Dots, 120);
-			
+
 			resume();
 
         }
@@ -540,7 +559,7 @@
                 });
 
             }
-            document.getElementById('unityPlayer').innerHTML = '';
+            //document.getElementById('unityPlayer').innerHTML = '';
             document.getElementById("videoPlayer").style.display = 'none';
             reinitialized = false;
         }
@@ -562,23 +581,23 @@
 			selectedUser = null;
             initProfile();
         }
-		
+
 		function getUserForProfile() {
 			return selectedUser == null ? currentUser : selectedUser;
 		}
-		
+
 		function initProfile() {
 			loadAchievements();
 			parseProfile();
 		}
-		
+
 		function changeSelectedUser(newUser) {
 			selectedUser = newUser;
 			initGameAchievements();
 			parseProfile();
 			loadRating();
 		}
-		
+
 		var firstRowInnerHTML = "";
 		var secondRowInnerHTML = "";
 
@@ -619,7 +638,7 @@
                 }
 			});
         }
-		
+
 		function initGameAchievements() {
 			var container = document.getElementById('profileAchievementsContent');
 			container.children[0].innerHTML = firstRowInnerHTML;
@@ -670,7 +689,7 @@
 		var themeString;
 		var testString;
 		var testRunString;
-		
+
         function loadProgressCourses() {
             var url = document.location.href.slice(0, document.location.href.lastIndexOf("/") + 1) + "render/getCoursesProgress";
 			suspend();
@@ -700,7 +719,7 @@
 					} finally {
 						resume();
 					}
-                },    
+                },
                 failure: function (response, opts) {
                     resume();
                 },
@@ -1150,7 +1169,7 @@
             <img src="/Content/Sprites//enter//enter13.png" id="enter13" style="display: none">
             <canvas id="rotate"></canvas>
         </div>
-        <div class="enter" id="container" onclick="javascript:enter_main()" onmouseover="    javascript: enter_animate()"
+        <div class="enter" id="container" onclick="javascript:enter_main()" onmouseover=" javascript: enter_animate()"
              onmouseout="javascript:enter_stop()" style="cursor: pointer;">
         </div>
         <div class="renderOverlayT">
@@ -1198,21 +1217,21 @@
             <div id="profileSeparator" class="profileSeparator">
             </div>
             <div id="profileContent" class="profileContent">
-				<div id="profileAchievementsTab">
-					<div id="profileAchievementsContent" class="profileAchievementsContent">
-						<div class="profileAchievementsRows">							
-						</div>
-						<div class="profileAchievementsShortRow">							
-						</div>
-					</div>
-				</div>
-				<div id="profileRatingTab" >
-					<div id="profileRatingContent" class="profileRatingContent">
-						
-					</div>
-				</div>
-				<div id="profileProgressTab" >
-					<div class="profileProgressNavigation"><p id="profileProgressNavigation" style="text-align:left" class="profileText"></p></div>
+                <div id="profileAchievementsTab">
+                    <div id="profileAchievementsContent" class="profileAchievementsContent">
+                        <div class="profileAchievementsRows">
+                        </div>
+                        <div class="profileAchievementsShortRow">
+                        </div>
+                    </div>
+                </div>
+                <div id="profileRatingTab">
+                    <div id="profileRatingContent" class="profileRatingContent">
+
+                    </div>
+                </div>
+                <div id="profileProgressTab">
+                    <div class="profileProgressNavigation"><p id="profileProgressNavigation" style="text-align:left" class="profileText"></p></div>
                     <div id="profileProgressContent" class="profileProgressContent">
 
                     </div>

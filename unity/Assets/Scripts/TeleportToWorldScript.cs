@@ -8,7 +8,7 @@ public class TeleportToWorldScript : MonoBehaviour
     {
         if (!be_ready_to_receive)
         {
-            PhotonNetwork.LoadLevel("world");
+//            PhotonNetwork.LoadLevel("world");
             Global.returning = true;
         }
         else

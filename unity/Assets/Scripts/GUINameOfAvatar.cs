@@ -2,10 +2,10 @@
 using System.Collections;
 
 
-public class GUINameOfAvatar : Photon.MonoBehaviour
+public class GUINameOfAvatar //: Photon.MonoBehaviour
 {
 
-
+	/*
     Vector3 pos;
     Vector3 worldPos;
     public string textUnderAvatar = "";
@@ -15,7 +15,7 @@ public class GUINameOfAvatar : Photon.MonoBehaviour
 	// Use this for initialization
 	void Start () {
         if(isNetworking)
-            textUnderAvatar = photonView.owner.name;
+            //textUnderAvatar = photonView.owner.name;
         style = new GUIStyle();
         style.fontSize = 14;
         style.fontStyle = FontStyle.Bold;
@@ -41,5 +41,5 @@ public class GUINameOfAvatar : Photon.MonoBehaviour
     void OnGUI()
     {
         GUI.Label(new Rect(worldPos.x - 120, worldPos.y, 240, 18), textUnderAvatar, style);
-    }
+    }*/
 }
