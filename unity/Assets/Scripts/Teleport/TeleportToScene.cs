@@ -23,7 +23,7 @@ public class TeleportToScene : MonoBehaviour {
 				SaveStat ();
 			}
 			Global.fromSceneName = currentSceneName;
-			Application.LoadLevel(SceneNameRoom);
+			PhotonNetwork.LoadLevel(SceneNameRoom);
 		}
 	}
 
