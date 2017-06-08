@@ -10,11 +10,18 @@
     <link rel="shortcut icon" href="@Url.Content("~/UnityDeploy/TemplateData/favicon.ico")" />
 }
 @section scripts{
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="@Url.Content("~/UnityDeploy/TemplateData/UnityProgress.js")"></script>
     <script type="text/javascript" src="Scripts/jwp/jwplayer.js"></script>
     <script type="text/javascript" src="Scripts/ils.about.js"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/render.js")"></script>
+    <script type="text/javascript">
+        function dhtmlLoadScript(url) {
+           var e = document.createElement("script");
+           e.src = url;
+           e.type="text/javascript";
+           document.getElementsByTagName("head")[0].appendChild(e);
+        }
+    </script>
     <script type='text/javascript'>
             var Module = {
                 TOTAL_MEMORY: 268435456,
@@ -60,7 +67,7 @@
                     '<div class="title">Main</div>' +
                     '</div>' +
                 '</div>';
-                $.getScript('@Url.Content("~/UnityDeploy/Release/UnityLoader.js")');
+                dhtmlLoadScript("/UnityDeploy/Release/UnityLoader.js");
 
                 if (document.getElementById("unityPlayer").childNodes[0].tagName == "DIV") {
                     document.getElementById('loadingContainer').style.display = 'none';

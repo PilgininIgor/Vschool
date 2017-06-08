@@ -4,7 +4,7 @@ using System;
 
 public class TitleMover : MonoBehaviour {
 	public float scrollSpeed = 0.2f;
-	public float stopTime = 5f;
+	public float stopTime = 2f;
 	public int positionScroll = 1;
 	public string title = "Закрыто";
 
@@ -12,6 +12,7 @@ public class TitleMover : MonoBehaviour {
 	private float width;
 	private string currentTitle;
 	private int position;
+	private int gap = 5;
 	private float currentTime;
 	private float nextTime;
 	private bool active;
@@ -54,11 +55,56 @@ public class TitleMover : MonoBehaviour {
 			if (currentTime > nextTime) {
 				nextTime += scrollSpeed;
 				position += positionScroll;
-				if (position > title.Length + positionScroll * 5) {
+				if (position > title.Length - 1 + positionScroll * gap) {
 					position = 0;
 					nextTime += stopTime;
 				}
-				int curPos = TestTitle (position);
+
+				int curPos = position;
+				GetComponent<TextMesh>().text = "Закрыто";
+				string d = "";
+				float w = 0;
+				if (GetComponent<MeshRenderer> ().bounds.size.x > GetComponent<MeshRenderer> ().bounds.size.y &&
+					GetComponent<MeshRenderer> ().bounds.size.x > GetComponent<MeshRenderer> ().bounds.size.z) {
+					d = "x";
+				} else if (GetComponent<MeshRenderer> ().bounds.size.y > GetComponent<MeshRenderer> ().bounds.size.x &&
+					GetComponent<MeshRenderer> ().bounds.size.y > GetComponent<MeshRenderer> ().bounds.size.z) {
+					d = "y";
+				} else {
+					d = "z";
+				}
+				GetComponent<TextMesh> ().text = "";
+				switch (d) {
+				case "x":
+					w = GetComponent<MeshRenderer> ().bounds.size.x;
+					break;
+				case "y":
+					w = GetComponent<MeshRenderer> ().bounds.size.y;
+					break;
+				case "z":
+					w = GetComponent<MeshRenderer> ().bounds.size.z;
+					break;
+				}
+				while (w <= width) {
+					if (curPos < title.Length)
+						GetComponent<TextMesh> ().text += title [curPos];
+					else if ( curPos <= title.Length - 1 + positionScroll * gap)
+						GetComponent<TextMesh> ().text += "  ";
+					else
+						GetComponent<TextMesh> ().text += title [curPos - (title.Length + positionScroll * gap)];
+					curPos++;
+					switch (d) {
+					case "x":
+						w = GetComponent<MeshRenderer> ().bounds.size.x;
+						break;
+					case "y":
+						w = GetComponent<MeshRenderer> ().bounds.size.y;
+						break;
+					case "z":
+						w = GetComponent<MeshRenderer> ().bounds.size.z;
+						break;
+					}
+				}
 
 			}
 		}
