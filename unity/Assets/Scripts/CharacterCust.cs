@@ -19,6 +19,8 @@ public class CharacterCust : MonoBehaviour
 
 	public GUIStyle guiStyle;
 
+	public Font font;
+
 	int curCharacter = 0;
 	int curEffect = 0;
 	bool closerCamera = false;
@@ -41,7 +43,7 @@ public class CharacterCust : MonoBehaviour
 		GUILayout.BeginHorizontal();
 		if (!closerCamera)
 		{
-			if (GUILayout.Button("Look Around", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
+			if (GUILayout.Button(Strings.Get("Look Around"), GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
 			{
 				Observation.transform.Find("MainCamera").localPosition = new Vector3(2, 3, -3);
 				Observation.transform.Find("MainCamera").eulerAngles = new Vector3(0, 325, 0);
@@ -55,7 +57,7 @@ public class CharacterCust : MonoBehaviour
 				Vector3.up,
 				-20 * Time.deltaTime
 			);
-			if (GUILayout.Button("Stop Watch", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
+			if (GUILayout.Button(Strings.Get("Stop Watch"), GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
 			{
 				Observation.transform.Find("MainCamera").localPosition = new Vector3(2, 3, -3);
 				Observation.transform.Find("MainCamera").eulerAngles = new Vector3(0, 325, 0);
@@ -76,12 +78,13 @@ public class CharacterCust : MonoBehaviour
 			ChangeCharecters(curCharacter);
 		}
 
-		if (GUILayout.Button("Go", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
+		if (GUILayout.Button(Strings.Get("Go"), GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
 		{
 			nameOfAvatar = characters[curCharacter].name;
 			Debug.Log("Selected avatar " + characters[curCharacter].name);
 			var menu = GameObject.Find("_Customization").AddComponent<PhotonMenu>();
 			menu.listStyle = guiStyle;
+			menu.font = font;
 			buttonsIsVisible = false;
 		}
 		if (GUILayout.Button(">", GUILayout.Width(wRegularButton), GUILayout.Height(hUnit)))
@@ -99,6 +102,7 @@ public class CharacterCust : MonoBehaviour
 		if (buttonsIsVisible)
 			using (var skin = new DefaultSkin())
 			{
+				GUI.skin.font = font;
 				int hUnit = Mathf.RoundToInt(Screen.height * DefaultSkin.LayoutScale);
 				int wUnit = Mathf.RoundToInt(Screen.width * DefaultSkin.LayoutScale);
 
